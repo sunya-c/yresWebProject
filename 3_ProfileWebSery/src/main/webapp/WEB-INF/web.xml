@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="https://jakarta.ee/xml/ns/jakartaee"
+	xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
+	id="WebApp_ID" version="6.0">
+	<display-name>3_ProfileWebSery</display-name>
+	<welcome-file-list>
+		<!-- <welcome-file>OldPages/LoginPageOld.jsp</welcome-file> -->
+		<welcome-file>WelcomePage.jsp</welcome-file>
+	</welcome-file-list>
+
+	<!-- Servlet Context -->
+	<context-param>
+		<param-name>ServletPersonalInformation</param-name>
+		<param-value>com.sunya.servlets.ServletPersonalInformation</param-value>
+	</context-param>
+	<context-param>
+		<param-name>ServletCreateAccount</param-name>
+		<param-value>com.sunya.servlets.ServletCreateAccount</param-value>
+	</context-param>
+	<context-param>
+		<param-name>ServletFeedback</param-name>
+		<param-value>com.sunya.servlets.ServletFeedback</param-value>
+	</context-param>
+	<context-param>
+		<param-name>UnderConstruction</param-name>
+		<param-value>UnderConstruction</param-value>
+	</context-param>
+	
+
+</web-app>
