@@ -47,7 +47,7 @@
 			<form method="post" action="ServletCreateAccount" id="ijtey8">
 				<div id="ip4cc6">
 					<label id="iyd4c4">Username<br /></label><input type="text"
-						placeholder="Create your username" name="username" value="${preTypeCreateUsername}" id="ir4udv" /><br>
+						placeholder="Create your username" name="username" value="${preTypedCreateUsername}" id="ir4udv" /><br>
 					<label id="iy009g">${usernameErr}<br /></label>
 				</div>
 				<div id="i69h82">

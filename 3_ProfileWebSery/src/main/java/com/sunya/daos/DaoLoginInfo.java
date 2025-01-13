@@ -18,6 +18,7 @@ public class DaoLoginInfo implements Dao
 	final String USERNAME = "webuname";
 	final String PASSWORD = "webpass";
 	// end -- columnName
+	
 	// Error report :
 	final String ERR1 = "Username already exists";
 	final String ERR2 = "Invalid username";
@@ -33,7 +34,7 @@ public class DaoLoginInfo implements Dao
 		setupDbms();
 	}
 
-	/**
+	/*
 	 * url format for aws ~ jdbc:mysql://endpoint:port/database_name
 	 * 
 	 * awseb-e-fmjeb2yxvx-stack-awsebrdsdatabase-3ikkzjcmzyvi.cni0gomkygjq.ap-southeast-1.rds.amazonaws.com
@@ -43,23 +44,22 @@ public class DaoLoginInfo implements Dao
 	 * jdbc:mysql://aws-mysql-yresproject.cni0gomkygjq.ap-southeast-1.rds.amazonaws.com:3306/sunyadb
 	 * aws-rds-yres-database.cni0gomkygjq.ap-southeast-1.rds.amazonaws.com
 	 * yres-rds.cni0gomkygjq.ap-southeast-1.rds.amazonaws.com
-	 * @throws ServletException 
 	 * 
 	 */
 	@Override
 	public void setupDbms()
 	{
-//		url = "jdbc:mysql://localhost:3306/sunyadb";
-//		uname = "root";
-//		pass = "0909";
+		url = "jdbc:mysql://localhost:3306/sunyadb";
+		uname = "root";
+		pass = "0909";
 
 //		url = System.getenv("SERY_DB_URL");
 //		uname = System.getenv("SERY_DB_UNAME");
 //		pass = System.getenv("SERY_DB_PASS");
 
-		url = "jdbc:mysql://yres-rds.cni0gomkygjq.ap-southeast-1.rds.amazonaws.com:3306/sunyadb";
-		uname = "root";
-		pass = "09090909";
+//		url = "jdbc:mysql://yres-rds.cni0gomkygjq.ap-southeast-1.rds.amazonaws.com:3306/sunyadb";
+//		uname = "root";
+//		pass = "09090909";
 
 		// 2: Initiate the driver
 		try

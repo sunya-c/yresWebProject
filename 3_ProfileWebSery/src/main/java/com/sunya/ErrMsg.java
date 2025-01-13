@@ -10,7 +10,12 @@ public enum ErrMsg
 	// Password error
 	LENGTH_PASS_ERR(ErrMsg.LENGTH_PASS_MESSAGE),
 	SPACE_PASS_ERR(ErrMsg.SPACE_PASS_MESSAGE),
-	CONFIRM_PASS_ERR(ErrMsg.CONFIRM_PASS_MESSAGE);
+	CONFIRM_PASS_ERR(ErrMsg.CONFIRM_PASS_MESSAGE),
+	
+	// Report title error
+	// Report detail error
+	EMPTY_ERR(ErrMsg.EMPTY_MESSAGE);
+	
 
 	private final static String LENGTH_UNAME_MESSAGE = "Must be 4 - 10 characters.";
 	private final static String SPACE_UNAME_MESSAGE = "Remove the space!";
@@ -19,13 +24,17 @@ public enum ErrMsg
 	private final static String LENGTH_PASS_MESSAGE = "Must be 4 - 20 characters.";
 	private final static String SPACE_PASS_MESSAGE = "There's a space in your password!";
 	private final static String CONFIRM_PASS_MESSAGE = "Passwords don't match.";
+	
+	private final static String EMPTY_MESSAGE = "This field is required!";
 
 	private String errMessage;
 
+	// Constructor
 	private ErrMsg(String errMessage)
 	{
 		this.errMessage = errMessage;
 	}
+	// end -- Constructor
 
 	@Override
 	public String toString()

@@ -7,19 +7,21 @@ import jakarta.servlet.ServletException;
 public class RestrictionsCreateAccount
 {
 	DaoLoginInfo dao;
-	ErrorMessageSetterCreateAccount errMessage;
+	ErrorMessageSetterCreateAccount errSetter;
 	String username;
 	String password1;
 	String password2;
 
-	public RestrictionsCreateAccount(DaoLoginInfo dao, ErrorMessageSetterCreateAccount errMessage, String username, String password1, String password2)
+	// Constructor
+	public RestrictionsCreateAccount(DaoLoginInfo dao, ErrorMessageSetterCreateAccount errSetter, String username, String password1, String password2)
 	{
-		this.errMessage = errMessage;
+		this.errSetter = errSetter;
 		this.username = username;
 		this.password1 = password1;
 		this.password2 = password2;
 		this.dao = dao;
 	}
+	// end -- Constructor
 
 	
 	public boolean checkRestriction() throws ServletException
@@ -33,19 +35,19 @@ public class RestrictionsCreateAccount
 			{
 				if (dao.checkUsername(username))
 				{
-					errMessage.setUsernameErr(ErrMsg.DUPLICATE_UNAME_ERR);  // pass error message enum here.
+					errSetter.setUsernameErr(ErrMsg.DUPLICATE_UNAME_ERR);  // pass error message enum here.
 					validInfo = false;
 				}
 			}
 			else
 			{
-				errMessage.setUsernameErr(ErrMsg.SPACE_UNAME_ERR);  // pass error message enum here.
+				errSetter.setUsernameErr(ErrMsg.SPACE_UNAME_ERR);  // pass error message enum here.
 				validInfo = false;
 			}
 		}
 		else
 		{
-			errMessage.setUsernameErr(ErrMsg.LENGTH_UNAME_ERR);
+			errSetter.setUsernameErr(ErrMsg.LENGTH_UNAME_ERR);
 			validInfo = false;
 		}
 		
@@ -54,20 +56,20 @@ public class RestrictionsCreateAccount
 		{
 			if (!checkSpacePassword())
 			{
-				errMessage.setPasswordErr1(ErrMsg.SPACE_PASS_ERR);  // pass error message here.
+				errSetter.setPasswordErr1(ErrMsg.SPACE_PASS_ERR);  // pass error message here.
 				validInfo = false;
 			}
 		}
 		else
 		{
-			errMessage.setPasswordErr1(ErrMsg.LENGTH_PASS_ERR);  // pass error message enum here.
+			errSetter.setPasswordErr1(ErrMsg.LENGTH_PASS_ERR);  // pass error message enum here.
 			validInfo = false;
 		}
 		
 		// confirm password check
 		if (!confirmPassword())
 		{
-			errMessage.setPasswordErr2(ErrMsg.CONFIRM_PASS_ERR);  // pass error message enum here.
+			errSetter.setPasswordErr2(ErrMsg.CONFIRM_PASS_ERR);  // pass error message enum here.
 			validInfo = false;
 		}
 		

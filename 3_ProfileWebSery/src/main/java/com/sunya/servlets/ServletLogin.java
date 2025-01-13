@@ -40,7 +40,7 @@ public class ServletLogin extends HttpServlet
 
 		session.invalidate();
 		session = request.getSession();
-		session.setAttribute("preTypeUsername", username);
+		session.setAttribute("preTypedUsername", username);
 
 		try
 		{

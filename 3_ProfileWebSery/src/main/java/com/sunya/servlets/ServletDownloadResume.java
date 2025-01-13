@@ -26,7 +26,7 @@ public class ServletDownloadResume extends HttpServlet
 		try
 		{
 			// Path to the file to be downloaded
-			String filePath = getServletContext().getRealPath("/outBox/resumeC6_pdf.pdf");
+			String filePath = getServletContext().getRealPath("/outBox/resumeC_pdf.pdf");
 			File downloadFile = new File(filePath);
 			inStream = new FileInputStream(downloadFile);
 

@@ -1,5 +1,6 @@
 package com.sunya.servlets;
 
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -29,14 +30,14 @@ public class ServletCreateAccount extends HttpServlet
 		HttpSession session = request.getSession();
 		session.invalidate();
 		session = request.getSession();
-		session.setAttribute("preTypeCreateUsername", username);
+		session.setAttribute("preTypedCreateUsername", username);
 
 		DaoLoginInfo dao = new DaoLoginInfo();
 		
-		ErrorMessageSetterCreateAccount errMessage = new ErrorMessageSetterCreateAccount(session);
+		ErrorMessageSetterCreateAccount errSetter = new ErrorMessageSetterCreateAccount(session);
 		RestrictionsCreateAccount restriction = new RestrictionsCreateAccount(
 				dao,
-				errMessage,
+				errSetter,
 				username,
 				password1,
 				password2);
@@ -50,14 +51,15 @@ public class ServletCreateAccount extends HttpServlet
 					session.setAttribute("message", "Done!");
 					session.setAttribute("destinationPage", "\"Home page\"");
 					session.setAttribute("fromServlet", getServletName());
-					session.setAttribute("preTypeUsername", username);				// TODO: Check if this preTypeUsername works.
-					response.sendRedirect("RedirectingPage.jsp");					// TODO: Try to change this to Request Dispatcher.
+					session.setAttribute("preTypeUsername", username);
+					RequestDispatcher rd = request.getRequestDispatcher("RedirectingPage.jsp");
+					rd.forward(request, response);
 				}
 				else
 				{
 					ErrMsg CUSTOM_ERR = ErrMsg.DUPLICATE_UNAME_ERR;
 					CUSTOM_ERR.setCustomErrMessage("Something's wrong, please try again.");
-					errMessage.setUsernameErr(CUSTOM_ERR);
+					errSetter.setUsernameErr(CUSTOM_ERR);
 					response.sendRedirect("CreateAccountPage.jsp");
 				}
 			}

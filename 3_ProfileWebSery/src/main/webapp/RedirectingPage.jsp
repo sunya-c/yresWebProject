@@ -17,7 +17,7 @@
 	// Redirect to ServletRedirecting after a delay
 	setTimeout(function() {
 		window.location.href = "WelcomePage.jsp";
-	}, 3000); // 3000 milliseconds = 3 seconds
+	}, 5000); // 5000 milliseconds = 5 seconds
 </script>
 </head>
 <body id="ieu1zk">

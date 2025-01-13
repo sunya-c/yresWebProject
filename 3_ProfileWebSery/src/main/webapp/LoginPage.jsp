@@ -42,7 +42,7 @@
 			<form method="post" id="iipx" action="ServletLogin">
 				<div id="i2sh">
 					<label id="i9zl">Username<br /></label><input type="text"
-						id="ikq8l" placeholder="Enter your username" name="username" value="${preTypeUsername}" /><br>
+						id="ikq8l" placeholder="Enter your username" name="username" value="${preTypedUsername}" /><br>
 					<label id="irep4">${wrongUsername}<br /></label>
 				</div>
 				<div id="i1uz3">
