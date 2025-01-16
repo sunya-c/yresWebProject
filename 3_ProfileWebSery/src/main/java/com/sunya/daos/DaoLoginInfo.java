@@ -10,11 +10,9 @@ import com.sunya.exceptions.WebUnameException;
 
 import jakarta.servlet.ServletException;
 
-public class DaoLoginInfo implements Dao
+public class DaoLoginInfo extends Dao
 {
 	// columnName :
-//	final String USERNAME = System.getenv("SERY_DB_WEBUNAME");
-//	final String PASSWORD = System.getenv("SERY_DB_WEBPASS");
 	final String USERNAME = "webuname";
 	final String PASSWORD = "webpass";
 	// end -- columnName
@@ -26,52 +24,11 @@ public class DaoLoginInfo implements Dao
 	String errText = null;
 	// end -- Error report
 
-	String url;
-	String uname;
-	String pass;
 
 	{
-		setupDbms();
+		setupDbms("sunyadb");
 	}
-
-	/*
-	 * url format for aws ~ jdbc:mysql://endpoint:port/database_name
-	 * 
-	 * awseb-e-fmjeb2yxvx-stack-awsebrdsdatabase-3ikkzjcmzyvi.cni0gomkygjq.ap-southeast-1.rds.amazonaws.com
-	 * 
-	 * jdbc:mysql://awseb-e-fmjeb2yxvx-stack-awsebrdsdatabase-3ikkzjcmzyvi.cni0gomkygjq.ap-southeast-1.rds.amazonaws.com:3306/sunyadb
-	 * jdbc:mysql://awseb-e-fmjeb2yxvx-stack-awsebrdsdatabase-ljwyuibakboi.cni0gomkygjq.ap-southeast-1.rds.amazonaws.com:3306/sunyadb
-	 * jdbc:mysql://aws-mysql-yresproject.cni0gomkygjq.ap-southeast-1.rds.amazonaws.com:3306/sunyadb
-	 * aws-rds-yres-database.cni0gomkygjq.ap-southeast-1.rds.amazonaws.com
-	 * yres-rds.cni0gomkygjq.ap-southeast-1.rds.amazonaws.com
-	 * 
-	 */
-	@Override
-	public void setupDbms()
-	{
-		url = "jdbc:mysql://localhost:3306/sunyadb";
-		uname = "root";
-		pass = "0909";
-
-//		url = System.getenv("SERY_DB_URL");
-//		uname = System.getenv("SERY_DB_UNAME");
-//		pass = System.getenv("SERY_DB_PASS");
-
-//		url = "jdbc:mysql://yres-rds.cni0gomkygjq.ap-southeast-1.rds.amazonaws.com:3306/sunyadb";
-//		uname = "root";
-//		pass = "09090909";
-
-		// 2: Initiate the driver
-		try
-		{
-			Class.forName("com.mysql.cj.jdbc.Driver");
-		}
-		catch (ClassNotFoundException e)
-		{
-			System.err.println(">>> Exception setupDbms-01 !!! <<<");
-			System.err.println(e);
-		}
-	}
+	
 
 	public void getData() throws ServletException
 	{
@@ -161,7 +118,7 @@ public class DaoLoginInfo implements Dao
 				st = con.prepareStatement(query1);
 				st.setString(1, username);
 				st.setString(2, password);
-				st.setString(1, "1");
+				st.setString(3, "1");
 
 				// 5: Execute the query
 				row = st.executeUpdate();

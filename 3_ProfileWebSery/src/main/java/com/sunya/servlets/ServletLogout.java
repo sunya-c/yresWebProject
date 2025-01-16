@@ -9,6 +9,8 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
+import com.sunya.SessionManager;
+
 
 @WebServlet("/ServletLogout")
 public class ServletLogout extends HttpServlet
@@ -18,7 +20,8 @@ public class ServletLogout extends HttpServlet
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		HttpSession session = request.getSession();
-		session.invalidate();
+		SessionManager sm = new SessionManager(session);
+		sm.removeLoginState();
 		response.sendRedirect("LoginPage.jsp");
 	}
 }

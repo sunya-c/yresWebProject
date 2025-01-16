@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.concurrent.locks.Condition;
 
 import com.mysql.cj.Session;
+import com.sunya.SessionManager;
 import com.sunya.daos.DaoLoginInfo;
 
 @WebServlet("/ServletLogin")
@@ -28,25 +29,24 @@ public class ServletLogin extends HttpServlet
 		String password = request.getParameter("password");
 
 		HttpSession session = request.getSession();
+		SessionManager sm = new SessionManager(session);
 		
-		fromPage = (String) session.getAttribute("fromPage");
+		fromPage = (String) session.getAttribute(sm.LOGIN_FROMPAGE);
 		if (fromPage == null)
 		{
 			fromPage = "WelcomePage.jsp";
 		}
-		System.out.println(fromPage);
 
 		DaoLoginInfo dao = new DaoLoginInfo();
 
-		session.invalidate();
-		session = request.getSession();
-		session.setAttribute("preTypedUsername", username);
+		sm.removeLoginErr();
+		session.setAttribute(sm.LOGIN_UNAME_PRETYPED, username);
 
 		try
 		{
 			if (!dao.checkUsernameCaseSen(username)) // if username is invalid
 			{
-				session.setAttribute("wrongUsername", "Invalid username!!!");
+				session.setAttribute(sm.LOGIN_UNAME_ERR, "Invalid username!!!");
 
 				response.sendRedirect(fromPage);
 			}
@@ -54,14 +54,15 @@ public class ServletLogin extends HttpServlet
 			{
 				if (!dao.checkPasswordCaseSen(username, password))
 				{
-					session.setAttribute("wrongPassword", "Incorrect password!!!");
+					session.setAttribute(sm.LOGIN_PASS_ERR, "Incorrect password!!!");
 
 					response.sendRedirect(fromPage);
 				}
 				else
 				{
-					session.setAttribute("username", username);
-					session.setAttribute("loggedIn", true);
+					session.removeAttribute(sm.LOGIN_UNAME_PRETYPED);
+					session.setAttribute(sm.LOGIN_USERNAME, username);
+					session.setAttribute(sm.LOGIN_LOGGED_IN, true);
 					response.sendRedirect(fromPage);
 				}
 

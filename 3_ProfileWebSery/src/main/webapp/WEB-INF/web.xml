@@ -9,6 +9,17 @@
 		<welcome-file>WelcomePage.jsp</welcome-file>
 	</welcome-file-list>
 
+	<!-- Redirecting HTTP to HTTPS -->
+	<!-- <security-constraint>
+		<web-resource-collection>
+			<web-resource-name>Secure Area</web-resource-name>
+			<url-pattern>/*</url-pattern>
+		</web-resource-collection>
+		<user-data-constraint>
+			<transport-guarantee>CONFIDENTIAL</transport-guarantee>
+		</user-data-constraint>
+	</security-constraint> -->
+
 	<!-- Servlet Context -->
 	<context-param>
 		<param-name>ServletPersonalInformation</param-name>
@@ -26,6 +37,6 @@
 		<param-name>UnderConstruction</param-name>
 		<param-value>UnderConstruction</param-value>
 	</context-param>
-	
+
 
 </web-app>

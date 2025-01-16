@@ -1,3 +1,4 @@
+<%@page import="com.sunya.SessionManager"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
@@ -9,13 +10,23 @@
 <link rel="stylesheet" href="css/LoginPageCss.css" />
 <link href="https://fonts.googleapis.com" rel="preconnect">
 <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-<link href="https://fonts.googleapis.com/css?family=Open+Sans:regular,italic&display=swap" rel="stylesheet" >
+<link
+	href="https://fonts.googleapis.com/css?family=Open+Sans:regular,italic&display=swap"
+	rel="stylesheet">
 </head>
 
 <body id="i5xm">
 
 	<%
-	session.setAttribute("fromPage", "LoginPage.jsp");
+	SessionManager sm = new SessionManager(session);
+	session.setAttribute(sm.LOGIN_FROMPAGE, "LoginPage.jsp");
+	%>
+
+	<%
+	if (System.getenv("SERY_WEB_NOTE1") == null)
+		session.setAttribute("WEB_NOTE1", System.getProperty("SERY_WEB_NOTE1"));
+	else
+		session.setAttribute("WEB_NOTE1", System.getenv("SERY_WEB_NOTE1"));
 	%>
 
 	<!--
@@ -34,6 +45,10 @@
 	// when loggedIn is not null and not boolean
 	%>
 
+	<div id="ilt5zk">
+		<div id="i99fq4">Important : </div>
+		<div id="i1hupq">${WEB_NOTE1}</div>
+	</div>
 	<div id="i5dg">
 		<form method="get" id="iq2wzk" action="WelcomePage.jsp">
 			<button type="submit" id="ix3vku">Home</button>
@@ -42,13 +57,13 @@
 			<form method="post" id="iipx" action="ServletLogin">
 				<div id="i2sh">
 					<label id="i9zl">Username<br /></label><input type="text"
-						id="ikq8l" placeholder="Enter your username" name="username" value="${preTypedUsername}" /><br>
-					<label id="irep4">${wrongUsername}<br /></label>
+						id="ikq8l" placeholder="Enter your username" name="username"
+						value="${preTypedUsername}" /><label id="irep4"><br>${wrongUsername}<br /></label>
 				</div>
 				<div id="i1uz3">
 					<label id="ianeo">Password<br /></label><input type="password"
-						id="in4rx" placeholder="Enter your password" name="password" /><br>
-					<label id="igiel">${wrongPassword}<br /></label>
+						id="in4rx" placeholder="Enter your password" name="password" /><label
+						id="igiel"><br>${wrongPassword}<br /></label>
 				</div>
 				<button type="submit" id="ikmqp">Log in</button>
 			</form>
@@ -68,14 +83,21 @@
 		<form method="get" id="iuoax" action="ServletDownloadResume">
 			<button type="submit" id="i9ami">Download Resume</button>
 		</form>
+		<div id="ip7596">
+			Website's source code:  <a id="ir0137"
+				href="https://github.com/sunya-c/yresWebProject">https://github.com/sunya-c/yresWebProject</a>
+		</div>
 	</div>
+
 	<%
-	session.setAttribute("trial1", System.getenv("SERY_DB_URL"));
-	session.setAttribute("trial2", System.getenv("SERY_DB_UNAME"));
+	session.setAttribute("trial1",
+			!(System.getProperty("SERY_DB_URL") == null || System.getProperty("SERY_DB_URL").isBlank()));
+	session.setAttribute("trial2",
+			!(System.getProperty("SERY_DB_UNAME") == null || System.getProperty("SERY_DB_UNAME").isBlank()));
 	%>
 
-	test Environment variables : ${trial1}<br>
-	test Environment variables : ${trial2}
+	test Environment variable1 : ${trial1}<br>
+	test Environment variable2 : ${trial2}
 </body>
 </html>
 

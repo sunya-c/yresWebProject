@@ -35,19 +35,19 @@ public class RestrictionsCreateAccount
 			{
 				if (dao.checkUsername(username))
 				{
-					errSetter.setUsernameErr(ErrMsg.DUPLICATE_UNAME_ERR);  // pass error message enum here.
+					errSetter.setUsernameErr(ErrMsg.CREATEACCOUNT_UNAME_DUPLICATE);  // pass error message enum here.
 					validInfo = false;
 				}
 			}
 			else
 			{
-				errSetter.setUsernameErr(ErrMsg.SPACE_UNAME_ERR);  // pass error message enum here.
+				errSetter.setUsernameErr(ErrMsg.CREATEACCOUNT_UNAME_SPACE);  // pass error message enum here.
 				validInfo = false;
 			}
 		}
 		else
 		{
-			errSetter.setUsernameErr(ErrMsg.LENGTH_UNAME_ERR);
+			errSetter.setUsernameErr(ErrMsg.CREATEACCOUNT_UNAME_LENGTH);
 			validInfo = false;
 		}
 		
@@ -56,20 +56,20 @@ public class RestrictionsCreateAccount
 		{
 			if (!checkSpacePassword())
 			{
-				errSetter.setPasswordErr1(ErrMsg.SPACE_PASS_ERR);  // pass error message here.
+				errSetter.setPasswordErr1(ErrMsg.CREATEACCOUNT_PASS_SPACE);  // pass error message here.
 				validInfo = false;
 			}
 		}
 		else
 		{
-			errSetter.setPasswordErr1(ErrMsg.LENGTH_PASS_ERR);  // pass error message enum here.
+			errSetter.setPasswordErr1(ErrMsg.CREATEACCOUNT_PASS_LENGTH);  // pass error message enum here.
 			validInfo = false;
 		}
 		
 		// confirm password check
 		if (!confirmPassword())
 		{
-			errSetter.setPasswordErr2(ErrMsg.CONFIRM_PASS_ERR);  // pass error message enum here.
+			errSetter.setPasswordErr2(ErrMsg.CREATEACCOUNT_PASS_CONFIRM);  // pass error message enum here.
 			validInfo = false;
 		}
 		

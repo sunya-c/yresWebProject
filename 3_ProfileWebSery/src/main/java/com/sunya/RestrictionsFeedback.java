@@ -3,18 +3,21 @@ package com.sunya;
 public class RestrictionsFeedback
 {
 	ErrorMessageSetterFeedback errSetter;
-	String reportTitle;
-	String reportDetail;
+	String feedbackTitle;
+	String feedbackDetail;
+	String feedbackErrorMessage;
 
 	// Constructor
 	public RestrictionsFeedback(
 			ErrorMessageSetterFeedback errSetter,
-			String reportTitle,
-			String reportDetail)
+			String feedbackTitle,
+			String feedbackDetail,
+			String feedbackErrorMessage)
 	{
 		this.errSetter = errSetter;
-		this.reportTitle = reportTitle;
-		this.reportDetail = reportDetail;
+		this.feedbackTitle = feedbackTitle;
+		this.feedbackDetail = feedbackDetail;
+		this.feedbackErrorMessage = feedbackErrorMessage;
 	}
 	// end -- Constructor
 	
@@ -22,14 +25,37 @@ public class RestrictionsFeedback
 	public boolean checkRestriction()
 	{
 		boolean validInfo = true;
-		if (reportTitle.isBlank())
+		if (!feedbackTitle.isBlank())
 		{
-			errSetter.setReportTitleErr(ErrMsg.EMPTY_ERR);
+			if ( !(feedbackTitle.length() <= 200) )
+			{
+				errSetter.setFeedbackTitleErr(ErrMsg.FEEDBACK_TITLE_LENGTH);
+				validInfo = false;
+			}
+		}
+		else
+		{
+			errSetter.setFeedbackTitleErr(ErrMsg.FEEDBACK_FIELD_EMPTY);
 			validInfo = false;
 		}
-		if (reportDetail.isBlank())
+		
+		if (!feedbackDetail.isBlank())
 		{
-			errSetter.setReportDetailErr(ErrMsg.EMPTY_ERR);
+			if ( !(feedbackDetail.length() <= 4000) )
+			{
+				errSetter.setFeedbackDetailErr(ErrMsg.FEEDBACK_DETAIL_LENGTH);
+				validInfo = false;
+			}
+		}
+		else
+		{
+			errSetter.setFeedbackDetailErr(ErrMsg.FEEDBACK_FIELD_EMPTY);
+			validInfo = false;
+		}
+
+		if ( !(feedbackErrorMessage.length() <= 2000) )
+		{
+			errSetter.setFeedbackErrorMessageErr(ErrMsg.FEEDBACK_ERRORMESSAGE_LENGTH);
 			validInfo = false;
 		}
 		

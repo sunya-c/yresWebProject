@@ -27,12 +27,12 @@
 			----- ERROR -----<br />
 		</div>
 		<div id="iakzlo">>>> ${errorDescription}</div>
-		<div id="i3wdhj">If the error persists, please report via bug
-			report button.</div>
+		<form method="get" action="FeedbackPage.jsp" id="ijo1ol">
+			<div id="i3wdhj">If the error persists, please report via bug
+				report button.</div>
+			<button type="submit" id="iwacim">Give feedback / bug report</button>
+			<input type="hidden" name="preTypedFeedbackErrorMessage" value="${errorDescription}">
+		</form>
 	</div>
-	<form method="get" action="FeedbackPage.jsp" id="ijo1ol">
-		<button type="submit" id="iwacim">Give feedback / bug report</button>
-		<input type="hidden" name="preTypedErrMessage" value="${errorDescription}">
-	</form>
 </body>
 </html>

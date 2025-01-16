@@ -13,7 +13,9 @@
 <link rel="stylesheet" href="css/PersonalInformationPageCss.css" />
 <link href="https://fonts.googleapis.com" rel="preconnect">
 <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-<link href="https://fonts.googleapis.com/css?family=Open+Sans:regular,italic&display=swap" rel="stylesheet" >
+<link
+	href="https://fonts.googleapis.com/css?family=Open+Sans:regular,italic&display=swap"
+	rel="stylesheet">
 </head>
 
 <body id="io13me">
@@ -45,7 +47,7 @@
 		System.err.println("fromServlet attribute : " + fs.getFromServletAttribute());
 		System.err.println("ServletContext        : " + fs.getFullServletName());
 		session.setAttribute("fromServlet", null);
-		
+
 		RequestDispatcher rd = request.getRequestDispatcher("ServletPersonalInformation");
 		rd.forward(request, response);
 	}
@@ -61,8 +63,8 @@
 				<form method="post" action="ServletLogin" id="ivnm6i">
 					<div id="isl8bj">
 						<label id="i94q24">Username<br /></label><input type="text"
-							placeholder="Enter your username" name="username" value="${preTypeUsername}" id="i7vzyb" /><label
-							id="i1bciw"><br>${wrongUsername}<br /></label>
+							placeholder="Enter your username" name="username"
+							value="${preTypeUsername}" id="i7vzyb" /><label id="i1bciw"><br>${wrongUsername}<br /></label>
 					</div>
 					<div id="i7ri3j">
 						<label id="i10bjd">Password<br /></label><input type="password"
@@ -197,6 +199,8 @@
 				<div id="iatzbi">${lineId}</div>
 			</div>
 		</div>
+		<img id="i1t2dk" src="pics/Certificate1.png" />
+		<img id="i8tfk1" src="pics/Certificate2.png" />
 	</div>
 
 </body>

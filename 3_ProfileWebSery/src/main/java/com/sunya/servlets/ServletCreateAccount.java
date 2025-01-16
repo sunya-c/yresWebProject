@@ -14,6 +14,7 @@ import com.sunya.ErrMsg;
 import com.sunya.ErrorMessageSetterCreateAccount;
 import com.sunya.PrintError;
 import com.sunya.RestrictionsCreateAccount;
+import com.sunya.SessionManager;
 import com.sunya.daos.DaoLoginInfo;
 
 @WebServlet("/ServletCreateAccount")
@@ -28,9 +29,9 @@ public class ServletCreateAccount extends HttpServlet
 		String password2 = request.getParameter("password2");
 
 		HttpSession session = request.getSession();
-		session.invalidate();
-		session = request.getSession();
-		session.setAttribute("preTypedCreateUsername", username);
+		SessionManager sm = new SessionManager(session);
+		sm.removeCreateAccountErr();
+		session.setAttribute(sm.CREATEACCOUNT_UNAME_PRETYPED, username);
 
 		DaoLoginInfo dao = new DaoLoginInfo();
 		
@@ -48,16 +49,16 @@ public class ServletCreateAccount extends HttpServlet
 			{
 				if (dao.addUser(username, password1))
 				{
-					session.setAttribute("message", "Done!");
-					session.setAttribute("destinationPage", "\"Home page\"");
+					session.setAttribute(sm.REDIRECT_MESSAGE, "Done!");
+					session.setAttribute(sm.REDIRECT_DESTINATION, "\"Home page\"");
 					session.setAttribute("fromServlet", getServletName());
-					session.setAttribute("preTypeUsername", username);
+					session.setAttribute(sm.LOGIN_UNAME_PRETYPED, username);
 					RequestDispatcher rd = request.getRequestDispatcher("RedirectingPage.jsp");
 					rd.forward(request, response);
 				}
 				else
 				{
-					ErrMsg CUSTOM_ERR = ErrMsg.DUPLICATE_UNAME_ERR;
+					ErrMsg CUSTOM_ERR = ErrMsg.CREATEACCOUNT_UNAME_DUPLICATE;
 					CUSTOM_ERR.setCustomErrMessage("Something's wrong, please try again.");
 					errSetter.setUsernameErr(CUSTOM_ERR);
 					response.sendRedirect("CreateAccountPage.jsp");

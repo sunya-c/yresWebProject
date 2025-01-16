@@ -10,7 +10,13 @@ import com.sunya.daos.DaoAutoRemove;
 
 public class TrialMain
 {
-
+	/**
+	 * Run this on any machine with internet connection to start 
+	 * automatic account deletion every specified period of time.
+	 * 
+	 * @param args
+	 * @throws SQLException
+	 */
 	public static void main(String[] args) throws SQLException
 	{
 		ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
@@ -25,7 +31,6 @@ public class TrialMain
 			{
 				e.printStackTrace();
 			}
-		}, 0, 5, TimeUnit.MINUTES);
+		}, 0, 5, TimeUnit.MINUTES); // Run auto-delete commands, starting at 0 minute and repeating every 5 minutes.
 	}
-
 }

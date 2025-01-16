@@ -1,33 +1,25 @@
-1.Generalized resume's filename
-2.Removed unnecessary files from git tracking
-3.Added decorations to the ErrorPage.jsp
-4.Added FeedbackPage.jsp and its servlet
-5.Added SessionManager.java
-6.Simplified some variable names
+1.Fixed a bug which environment variables on AWS are inaccessible
+2.Added database connection to store feedback from users
+3.Updated SessionManager.java class to control a larger portion of the session
+4.Updated webpage decorations and added Github link to the Home page
 
 ----------
 
-1.Generalized resume's filename:
--Updated resume's file path in the source code to match the new name.
+1.Fixed a bug which environment variables on AWS are inaccessible:
+-AWS elastic beanstalk treats environment variables differently from other platforms.
+To make them accessible from Java web app, use "System.getProperty()" instead of "System.getenv()".
+-Added a few lines of code to automatically run either "System.getProperty()" or "System.getenv()"
+depending on which one available.
 
-2.Removed unnecessary files from git tracking system:
--Removed "OldPages/" folder from git tracking system.
--Added "/3_ProfileWebSery/src/main/webapp/OldPages/" to .gitignore.
+2.Added database connection to store feedback from users:
+-Added DaoFeedback.java as a JDBC connection class.
+-Updated ServletFeedback.java to pass feedback infomation to DaoFeedback.java.
 
-3.Added decorations to the ErrorPage.jsp:
--Updated the source code.
--Added a css file.
+3.Updated SessionManager.java class to control a larger portion of the session:
+-Updated SessionManager to have finer control over a session, allowing a group of attributes to be
+removed at once.
 
-4.Added FeedbackPage.jsp and its servlet:
--Added FeedbackPage.jsp and FeedbackPageCss.css.
--Added ServletFeedback.java.
--Added RestrictionsFeedback.java.
--Added ErrorMessageSetterFeedback.java.
--Updated error message in ErrMsg.java.
--Added "Feedback/bug report" button directly to the ErrorPage.jsp
-
-5.Added SessionManager.java:
--Added SessionManager.java to be able to manage/clear just some part of the session.
-
-6.Simplified some variable names:
--Updated some variable names to make it short and meaningful.
+4.Updated webpage decorations and added Github link to the Home page:
+-Added important note area at the top of home page.
+-Added Github link for the website's source code to Home page.
+-Added certificates to Personal Information page.

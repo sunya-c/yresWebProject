@@ -14,6 +14,7 @@ import com.sunya.ErrMsg;
 import com.sunya.ErrorMessageSetterFeedback;
 import com.sunya.RestrictionsFeedback;
 import com.sunya.SessionManager;
+import com.sunya.daos.DaoFeedback;
 
 
 @WebServlet("/ServletFeedback")
@@ -24,25 +25,27 @@ public class ServletFeedback extends HttpServlet
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
 	{
-		String reportTitle = request.getParameter("reportTitle");
-		String reportDetail = request.getParameter("reportDetail");
-		String errorMessage = request.getParameter("errorMessage");
+		String feedbackTitle = request.getParameter("reportTitle");
+		String feedbackDetail = request.getParameter("reportDetail");
+		String feedbackErrorMessage = request.getParameter("errorMessage");
 		
 		HttpSession session = request.getSession();
 		SessionManager sm = new SessionManager(session);
 		sm.removeFeedbackErr();
 		
 		ErrorMessageSetterFeedback errSetter = new ErrorMessageSetterFeedback(session);
-		RestrictionsFeedback restriction = new RestrictionsFeedback(errSetter, reportTitle, reportDetail);
+		RestrictionsFeedback restriction = new RestrictionsFeedback(errSetter, feedbackTitle, feedbackDetail, feedbackErrorMessage);
 		
 		if (restriction.checkRestriction())
 		{
-			// TODO: dao save report to database
+			DaoFeedback dao = new DaoFeedback();
+			String username = (String) session.getAttribute(sm.LOGIN_USERNAME);
+			dao.submitFeedback(username, feedbackTitle, feedbackDetail, feedbackErrorMessage);
 			
 			session.setAttribute("message", "Thank you for reaching out!");
 			session.setAttribute("destinationPage", "\"Home page\"");
 			
-			sm.removeFeedback();
+			sm.removeFeedbackPreTyped();
 			
 			session.setAttribute("fromServlet", getServletName());
 			RequestDispatcher rd = request.getRequestDispatcher("RedirectingPage.jsp");
@@ -50,11 +53,11 @@ public class ServletFeedback extends HttpServlet
 		}
 		else
 		{
-			session.setAttribute("preTypedReportTitle", reportTitle);
-			session.setAttribute("preTypedReportDetail", reportDetail);
+			session.setAttribute(sm.FEEDBACK_TITLE_PRETYPED, feedbackTitle);
+			session.setAttribute(sm.FEEDBACK_DETAIL_PRETYPED, feedbackDetail);
 			
 			session.setAttribute("fromServlet", getServletName());
-			response.sendRedirect("FeedbackPage.jsp?preTypedErrMessage="+errorMessage);
+			response.sendRedirect("FeedbackPage.jsp?"+sm.FEEDBACK_ERRORMESSAGE_PRETYPED+"="+feedbackErrorMessage);
 		}
 
 

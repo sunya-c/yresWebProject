@@ -66,7 +66,7 @@ public class PojoPersonalInformation
 			
 
 			addProgrammingLanguageToList("Java",
-										"Core Java, Servlet, JSP, JDBC, Spring");
+										"Core Java, Servlets, JSP, JDBC");
 			addProgrammingLanguageToList("SQL",
 										"Basic syntax and concepts");
 			addProgrammingLanguageToList("Python",
