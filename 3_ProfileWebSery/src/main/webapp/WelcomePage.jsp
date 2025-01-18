@@ -1,3 +1,5 @@
+<%@page import="com.sunya.SessionManager"%>
+<%@page import="com.sunya.daos.DaoWebdatainfo"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
@@ -21,6 +23,15 @@
 	response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // http 1.1
 	response.setHeader("Pragma", "no-cache"); // http 1.0
 	response.setHeader("Expires", "0"); // Proxies ***Someone has said "0" will sometimes not work, instead set it to be a date in the past.
+	%>
+	
+	<%
+	SessionManager sm = new SessionManager(session);
+	DaoWebdatainfo dao = new DaoWebdatainfo();
+	if (session.getAttribute(sm.WEB_NOTE1) == null || ((String)session.getAttribute(sm.WEB_NOTE1)).isEmpty())
+	{
+		session.setAttribute(sm.WEB_NOTE1, dao.getWebinfo(sm.WEB_NOTE1));
+	}
 	%>
 
 	<div id="iy0w9r">

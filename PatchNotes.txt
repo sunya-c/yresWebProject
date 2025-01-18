@@ -1,25 +1,8 @@
-1.Fixed a bug which environment variables on AWS are inaccessible
-2.Added database connection to store feedback from users
-3.Updated SessionManager.java class to control a larger portion of the session
-4.Updated webpage decorations and added Github link to the Home page
+1. Moved large environment variable's values to be stored on database
 
 ----------
 
-1.Fixed a bug which environment variables on AWS are inaccessible:
--AWS elastic beanstalk treats environment variables differently from other platforms.
-To make them accessible from Java web app, use "System.getProperty()" instead of "System.getenv()".
--Added a few lines of code to automatically run either "System.getProperty()" or "System.getenv()"
-depending on which one available.
-
-2.Added database connection to store feedback from users:
--Added DaoFeedback.java as a JDBC connection class.
--Updated ServletFeedback.java to pass feedback infomation to DaoFeedback.java.
-
-3.Updated SessionManager.java class to control a larger portion of the session:
--Updated SessionManager to have finer control over a session, allowing a group of attributes to be
-removed at once.
-
-4.Updated webpage decorations and added Github link to the Home page:
--Added important note area at the top of home page.
--Added Github link for the website's source code to Home page.
--Added certificates to Personal Information page.
+1. Moved large environment variable's values to database:
+-AWS' environment variable feature has a file size limitation, which environment variable's keys
+and values altogether couldn't exceed 4096 bytes. To overcome this limitation, the large values
+were moved to database, and the values were replaced by a short reference name instead.

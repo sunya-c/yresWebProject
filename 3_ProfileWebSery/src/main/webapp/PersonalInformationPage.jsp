@@ -1,3 +1,4 @@
+<%@page import="com.sunya.SessionManager"%>
 <%@page import="com.sunya.FromServlet"%>
 <%@page import="com.sunya.PrintError"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -20,7 +21,8 @@
 
 <body id="io13me">
 	<%
-	session.setAttribute("fromPage", "PersonalInformationPage.jsp");
+	SessionManager sm = new SessionManager(session);
+	session.setAttribute(sm.LOGIN_FROMPAGE, "PersonalInformationPage.jsp");
 	%>
 
 	<!-- Prevent the back button -->

@@ -33,6 +33,9 @@ public class SessionManager
 	final public String REDIRECT_MESSAGE = "message";
 	final public String REDIRECT_DESTINATION = "destinationPage";
 	
+	// Attribute names LoginPage, WelcomePage
+	final public String WEB_NOTE1 = "WEB_NOTE1";
+	
 	
 	// Constructor
 	public SessionManager(HttpSession session)
@@ -120,6 +123,11 @@ public class SessionManager
 	{
 		session.removeAttribute(FEEDBACK_TITLE_PRETYPED);
 		session.removeAttribute(FEEDBACK_DETAIL_PRETYPED);
+	}
+	
+	public void removeWebNote()
+	{
+		session.removeAttribute(WEB_NOTE1);
 	}
 
 }

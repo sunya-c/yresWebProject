@@ -1,3 +1,4 @@
+<%@page import="com.sunya.daos.DaoWebdatainfo"%>
 <%@page import="com.sunya.SessionManager"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
@@ -23,10 +24,11 @@
 	%>
 
 	<%
-	if (System.getenv("SERY_WEB_NOTE1") == null)
-		session.setAttribute("WEB_NOTE1", System.getProperty("SERY_WEB_NOTE1"));
-	else
-		session.setAttribute("WEB_NOTE1", System.getenv("SERY_WEB_NOTE1"));
+	DaoWebdatainfo dao = new DaoWebdatainfo();
+	if (session.getAttribute(sm.WEB_NOTE1) == null || ((String)session.getAttribute(sm.WEB_NOTE1)).isEmpty())
+	{
+		session.setAttribute(sm.WEB_NOTE1, dao.getWebinfo(sm.WEB_NOTE1));
+	}
 	%>
 
 	<!--
@@ -96,8 +98,8 @@
 			!(System.getProperty("SERY_DB_UNAME") == null || System.getProperty("SERY_DB_UNAME").isBlank()));
 	%>
 
-	test Environment variable1 : ${trial1}<br>
-	test Environment variable2 : ${trial2}
+	test Environment variable1 : ${trial1}
+	<br> test Environment variable2 : ${trial2}
 </body>
 </html>
 
