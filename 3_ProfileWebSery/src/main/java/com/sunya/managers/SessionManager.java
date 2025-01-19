@@ -1,4 +1,4 @@
-package com.sunya;
+package com.sunya.managers;
 
 import jakarta.servlet.http.HttpSession;
 

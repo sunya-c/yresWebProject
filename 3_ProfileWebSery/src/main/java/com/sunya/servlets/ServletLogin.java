@@ -12,8 +12,8 @@ import java.io.IOException;
 import java.util.concurrent.locks.Condition;
 
 import com.mysql.cj.Session;
-import com.sunya.SessionManager;
 import com.sunya.daos.DaoLoginInfo;
+import com.sunya.managers.SessionManager;
 
 @WebServlet("/ServletLogin")
 public class ServletLogin extends HttpServlet

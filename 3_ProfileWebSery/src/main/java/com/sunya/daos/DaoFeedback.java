@@ -9,6 +9,7 @@ import java.text.Format;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Random;
+import java.util.TimeZone;
 
 import com.sunya.PrintError;
 
@@ -105,7 +106,11 @@ public class DaoFeedback extends Dao
 			while (isExistingRefNumber(refNumber));
 			st.setString(1, refNumber);
 			
-			LocalDateTime time = LocalDateTime.now().plusHours(7);
+			TimeZone tzone = TimeZone.getDefault();
+			int timeOffset = -tzone.getRawOffset();
+			int gmtPlus7 = (timeOffset/(1000*60*60))+7;  // an offset for converting local machine's time to GMT+7
+			
+			LocalDateTime time = LocalDateTime.now().plusHours(gmtPlus7);  // converting local machine's time to GMT+7
 			DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 			String reportDate = time.format(format);
 			st.setString(2, reportDate);
@@ -222,7 +227,7 @@ public class DaoFeedback extends Dao
 	}
 	
 	/**
-	 * Generate a 7-digit hash, for reference in feedbackinfo table.
+	 * Generate a 7-digit hash, for reference in <i>feedbackinfo</i> table.
 	 * 
 	 * @return <strong>a string of 7-digit reference number</strong>
 	 */

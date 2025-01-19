@@ -1,5 +1,5 @@
 <%@page import="com.sunya.daos.DaoWebdatainfo"%>
-<%@page import="com.sunya.SessionManager"%>
+<%@page import="com.sunya.managers.SessionManager"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
@@ -99,7 +99,8 @@
 	%>
 
 	test Environment variable1 : ${trial1}
-	<br> test Environment variable2 : ${trial2}
+	<br> test Environment variable2 : ${trial2}<br>
+	version : v0.5
 </body>
 </html>
 

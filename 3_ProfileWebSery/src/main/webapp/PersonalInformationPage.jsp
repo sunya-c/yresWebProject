@@ -1,4 +1,4 @@
-<%@page import="com.sunya.SessionManager"%>
+<%@page import="com.sunya.managers.SessionManager"%>
 <%@page import="com.sunya.FromServlet"%>
 <%@page import="com.sunya.PrintError"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -66,7 +66,7 @@
 					<div id="isl8bj">
 						<label id="i94q24">Username<br /></label><input type="text"
 							placeholder="Enter your username" name="username"
-							value="${preTypeUsername}" id="i7vzyb" /><label id="i1bciw"><br>${wrongUsername}<br /></label>
+							value="${preTypedUsername}" id="i7vzyb" /><label id="i1bciw"><br>${wrongUsername}<br /></label>
 					</div>
 					<div id="i7ri3j">
 						<label id="i10bjd">Password<br /></label><input type="password"

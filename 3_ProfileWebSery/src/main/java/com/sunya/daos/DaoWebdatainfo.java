@@ -14,8 +14,8 @@ public class DaoWebdatainfo extends Dao
 	private final String TABLE_NAME = "webdatainfo";
 	
 	// columnName
-	private final String KEY = "key_webinfo";
-	private final String VALUE = "value_webinfo";
+	private final String COLUMN_KEY = "key_webinfo";
+	private final String COLUMN_VALUE = "value_webinfo";
 	
 	{
 		setupDbms("sunyadb");
@@ -23,7 +23,7 @@ public class DaoWebdatainfo extends Dao
 	
 	public String getWebinfo(String keyName) throws ServletException
 	{
-		String query = "SELECT "+VALUE+", "+KEY+" FROM "+TABLE_NAME+" WHERE "+KEY+" = ?";
+		String query = "SELECT "+COLUMN_VALUE+", "+COLUMN_KEY+" FROM "+TABLE_NAME+" WHERE "+COLUMN_KEY+" = ?";
 		
 		Connection con = null;
 		PreparedStatement st = null;
@@ -39,9 +39,9 @@ public class DaoWebdatainfo extends Dao
 			if (rs.next())
 			{
 				// Double check for case sensitive
-				if (rs.getString(KEY).equals(keyName))
+				if (rs.getString(COLUMN_KEY).equals(keyName))
 				{
-					return rs.getString(VALUE);
+					return rs.getString(COLUMN_VALUE);
 				}
 			}
 		}

@@ -42,8 +42,6 @@ public class FilterAccountExistence extends HttpFilter implements Filter
 	final String ERR2 = "Filter failed";
 	String errText = "";
 
-	private String fromPage;
-
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException
 	{
 		System.out.println("in Filter Account State.");

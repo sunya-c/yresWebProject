@@ -4,6 +4,7 @@ package com.sunya.daos;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.TimeZone;
 
 import com.sunya.PrintError;
 import com.sunya.exceptions.WebUnameException;
@@ -12,9 +13,15 @@ import jakarta.servlet.ServletException;
 
 public class DaoLoginInfo extends Dao
 {
+	// Table name :
+	protected final String TABLE_NAME = "logininfo";
+	
+	
 	// columnName :
-	final String USERNAME = "webuname";
-	final String PASSWORD = "webpass";
+	protected final String COLUMN_USERNAME = "webuname";
+	protected final String COLUMN_PASSWORD = "webpass";
+	protected final String COLUMN_TEMPACCOUNT = "tempaccount";
+	protected final String COLUMN_TIMECREATED = "timecreated";
 	// end -- columnName
 	
 	// Error report :
@@ -32,7 +39,7 @@ public class DaoLoginInfo extends Dao
 
 	public void getData() throws ServletException
 	{
-		String query1 = "SELECT * FROM logininfo ;";
+		String query1 = "SELECT * FROM "+TABLE_NAME+";";
 
 		Connection con = null;
 		Statement st = null;
@@ -51,8 +58,8 @@ public class DaoLoginInfo extends Dao
 			// 6: Get the results
 			while (rs.next())
 			{
-				System.out.print("Username: " + rs.getString(USERNAME) + ", ");
-				System.out.println("Password: " + rs.getString(PASSWORD));
+				System.out.print("Username: " + rs.getString(COLUMN_USERNAME) + ", ");
+				System.out.println("Password: " + rs.getString(COLUMN_PASSWORD));
 			}
 		}
 		catch (SQLException e)
@@ -103,8 +110,7 @@ public class DaoLoginInfo extends Dao
 	{
 		if (isExistingPasswordCaseSen(username, password))
 		{
-			String query1 = "DELETE FROM logininfo WHERE " + USERNAME + " = ? AND " + PASSWORD + " = ? AND "
-					+ " tempaccount = ?";
+			String query1 = "DELETE FROM "+TABLE_NAME+" WHERE "+COLUMN_USERNAME+" = ? AND "+COLUMN_PASSWORD+" = ? AND "+COLUMN_TEMPACCOUNT+" = ?";
 
 			Connection con = null;
 			PreparedStatement st = null;
@@ -180,8 +186,7 @@ public class DaoLoginInfo extends Dao
 	{
 		if (!isExistingUsername(username))
 		{
-			String query1 = "INSERT INTO logininfo (" + USERNAME + ", " + PASSWORD + ", "
-					+ "timecreated) VALUES (?, ?, ?);";
+			String query1 = "INSERT INTO "+TABLE_NAME+" ("+COLUMN_USERNAME+", "+COLUMN_PASSWORD+", "+COLUMN_TIMECREATED+") VALUES (?, ?, ?);";
 
 			Connection con = null;
 			PreparedStatement st = null;
@@ -196,7 +201,11 @@ public class DaoLoginInfo extends Dao
 				st.setString(1, username);
 				st.setString(2, password);
 
-				LocalDateTime time = LocalDateTime.now().plusHours(7);
+				TimeZone tzone = TimeZone.getDefault();
+				int timeOffset = -tzone.getRawOffset();
+				int gmtPlus7 = (timeOffset/(1000*60*60))+7;  // an offset for converting local machine's time to GMT+7
+				
+				LocalDateTime time = LocalDateTime.now().plusHours(gmtPlus7);  // converting local machine's time to GMT+7
 				DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 				String formattedTime = time.format(timeFormat);
 				st.setString(3, formattedTime);
@@ -262,7 +271,7 @@ public class DaoLoginInfo extends Dao
 	private boolean isExistingUsername(String username) throws ServletException
 	{
 		// For username checking
-		String query1 = "SELECT " + USERNAME + " FROM logininfo WHERE " + USERNAME + " = ? ;";
+		String query1 = "SELECT "+COLUMN_USERNAME+" FROM "+TABLE_NAME+" WHERE "+COLUMN_USERNAME+" = ?;";
 
 		Connection con = null;
 		PreparedStatement st = null;
@@ -330,7 +339,7 @@ public class DaoLoginInfo extends Dao
 	private boolean isExistingUsernameCaseSen(String username) throws ServletException
 	{
 		// For username checking
-		String query1 = "SELECT " + USERNAME + " FROM logininfo WHERE " + USERNAME + " = ? ;";
+		String query1 = "SELECT "+COLUMN_USERNAME+" FROM "+TABLE_NAME+" WHERE "+COLUMN_USERNAME+" = ?;";
 
 		Connection con = null;
 		PreparedStatement st = null;
@@ -406,7 +415,7 @@ public class DaoLoginInfo extends Dao
 	private boolean isExistingPasswordCaseSen(String username, String password) throws ServletException
 	{
 		// For password checking
-		String query1 = "SELECT * FROM logininfo WHERE " + USERNAME + " = ? AND " + PASSWORD + " = ? ;";
+		String query1 = "SELECT "+COLUMN_USERNAME+", "+COLUMN_PASSWORD+" FROM "+TABLE_NAME+" WHERE "+COLUMN_USERNAME+" = ? AND "+COLUMN_PASSWORD+" = ?;";
 
 		Connection con = null;
 		PreparedStatement st = null;
@@ -429,7 +438,7 @@ public class DaoLoginInfo extends Dao
 			if (rs.next())
 			{
 				// Double check for case-sensitive
-				if (rs.getString(USERNAME).equals(username) && rs.getString(PASSWORD).equals(password))
+				if (rs.getString(COLUMN_USERNAME).equals(username) && rs.getString(COLUMN_PASSWORD).equals(password))
 					return true;
 			}
 		}

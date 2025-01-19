@@ -1,8 +1,12 @@
-1. Moved large environment variable's values to be stored on database
+1. Added automatic time zone detection
+2. Added website usage tracking
 
 ----------
 
-1. Moved large environment variable's values to database:
--AWS' environment variable feature has a file size limitation, which environment variable's keys
-and values altogether couldn't exceed 4096 bytes. To overcome this limitation, the large values
-were moved to database, and the values were replaced by a short reference name instead.
+1. Added automatic time zone detection:
+-Time zone of the machine running this application will be detected,
+and conversion to GMT+7 will be done automatically for each feature requiring time.
+
+2. Added website usage tracking:
+-Added DaoSiteUsage.java and FilterSiteUsage0.java - FilterSiteUsage8.java to track
+pages' view count.

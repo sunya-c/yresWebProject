@@ -13,8 +13,8 @@ import java.io.IOException;
 import com.sunya.ErrMsg;
 import com.sunya.ErrorMessageSetterFeedback;
 import com.sunya.RestrictionsFeedback;
-import com.sunya.SessionManager;
 import com.sunya.daos.DaoFeedback;
+import com.sunya.managers.SessionManager;
 
 
 @WebServlet("/ServletFeedback")

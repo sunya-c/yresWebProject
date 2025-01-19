@@ -9,7 +9,7 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
-import com.sunya.SessionManager;
+import com.sunya.managers.SessionManager;
 
 
 @WebServlet("/ServletLogout")

@@ -9,6 +9,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.util.TimeZone;
 
 import org.springframework.aop.support.DelegatePerTargetObjectIntroductionInterceptor;
 
@@ -17,11 +18,17 @@ import jakarta.servlet.ServletException;
 public class DaoAutoRemove extends DaoLoginInfo
 {
 
-	// Automatically delete the user 60 minutes after registration
+	/**
+	 * Delete the the user which usern
+	 * 
+	 * @param username
+	 * @param password
+	 * @param sqlDateTime
+	 * @return
+	 */
 	private boolean removeTempUser(String username, String password, String sqlDateTime)
 	{
-//		String query1 = "DELETE FROM logininfo WHERE " + USERNAME + " = ? AND " + PASSWORD + " = ? AND " + " tempaccount = ?";
-		String query2 = "DELETE FROM logininfo WHERE tempaccount = '1' AND timecreated = ?";
+		String query = "DELETE FROM logininfo WHERE "+COLUMN_TEMPACCOUNT+" = ? AND "+COLUMN_USERNAME+" = ? AND "+COLUMN_PASSWORD+" = ? AND "+COLUMN_TIMECREATED+" = ?";
 
 		Connection con = null;
 		PreparedStatement st = null;
@@ -32,10 +39,11 @@ public class DaoAutoRemove extends DaoLoginInfo
 			con = DriverManager.getConnection(url, uname, pass);
 
 			// 4: Create Statement
-			st = con.prepareStatement(query2);
-//			st.setString(1, username);
-//			st.setString(2, password);
-			st.setString(1, sqlDateTime);
+			st = con.prepareStatement(query);
+			st.setString(1, "1");
+			st.setString(2, username);
+			st.setString(3, password);
+			st.setString(4, sqlDateTime);
 
 			// 5: Execute the query
 			row = st.executeUpdate();
@@ -68,10 +76,15 @@ public class DaoAutoRemove extends DaoLoginInfo
 		return false;
 	}
 	
-	// Get the time
+
+	/**
+	 * Automatically delete the user <i>60</i> minutes after registration
+	 * 
+	 * @throws SQLException
+	 */
 	public void autoRemoveTempUser() throws SQLException
 	{
-		String query1 = "SELECT timecreated FROM logininfo WHERE tempaccount = ?";
+		String query1 = "SELECT "+COLUMN_USERNAME+", "+COLUMN_PASSWORD+", "+COLUMN_TIMECREATED+" FROM "+TABLE_NAME+" WHERE "+COLUMN_TEMPACCOUNT+" = ?";
 
 		Connection con = null;
 		PreparedStatement st = null;
@@ -88,16 +101,20 @@ public class DaoAutoRemove extends DaoLoginInfo
 			// 5: Execute the query
 			rs = st.executeQuery();
 
-			LocalDateTime timeNow = LocalDateTime.now();
+			TimeZone tzone = TimeZone.getDefault();
+			int timeOffset = -tzone.getRawOffset();
+			int gmtPlus7 = (timeOffset/(1000*60*60))+7;  // an offset for converting local machine's time to GMT+7
+			LocalDateTime timeNow = LocalDateTime.now().plusHours(gmtPlus7);  // converting local machine's time to GMT+7
+			
 			// 6: Get the results
 			while (rs.next())
 			{
 				DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-				LocalDateTime timeCreated = LocalDateTime.parse(rs.getString("timecreated"), timeFormat);
+				LocalDateTime timeCreated = LocalDateTime.parse(rs.getString(COLUMN_TIMECREATED), timeFormat);
 				Duration duration = Duration.between(timeCreated, timeNow);
 				if (duration.toMinutes() >= 60)
 				{
-					removeTempUser("", "", rs.getString("timecreated"));
+					removeTempUser(rs.getString(COLUMN_USERNAME), rs.getString(COLUMN_PASSWORD), rs.getString(COLUMN_TIMECREATED));
 					System.out.println(timeCreated);
 					System.out.println(timeNow);
 					System.out.println(duration.toDays());

@@ -1,4 +1,4 @@
-<%@page import="com.sunya.SessionManager"%>
+<%@page import="com.sunya.managers.SessionManager"%>
 <%@page import="com.sunya.PrintError"%>
 <%@page import="com.sunya.FromServlet"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"

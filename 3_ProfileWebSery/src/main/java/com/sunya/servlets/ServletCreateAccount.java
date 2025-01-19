@@ -14,8 +14,8 @@ import com.sunya.ErrMsg;
 import com.sunya.ErrorMessageSetterCreateAccount;
 import com.sunya.PrintError;
 import com.sunya.RestrictionsCreateAccount;
-import com.sunya.SessionManager;
 import com.sunya.daos.DaoLoginInfo;
+import com.sunya.managers.SessionManager;
 
 @WebServlet("/ServletCreateAccount")
 public class ServletCreateAccount extends HttpServlet
