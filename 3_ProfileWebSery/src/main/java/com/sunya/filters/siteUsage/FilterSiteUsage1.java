@@ -2,7 +2,6 @@ package com.sunya.filters.siteUsage;
 
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
-import jakarta.servlet.FilterConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
@@ -20,8 +19,8 @@ import com.sunya.PrintError;
 import com.sunya.daos.DaoSiteUsage;
 import com.sunya.managers.CookieManager;
 
-@WebFilter("/ErrorPage.jsp")
-@Order(3)
+//@WebFilter("/ErrorPage.jsp")
+//@Order(3)
 public class FilterSiteUsage1 extends HttpFilter implements Filter
 {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
@@ -68,8 +67,7 @@ public class FilterSiteUsage1 extends HttpFilter implements Filter
 			Cookie cookie = new Cookie(cm.CLIENT_REF, result);
 			cookie.setMaxAge(7*24*60*60);
 			res.addCookie(cookie);
+			chain.doFilter(req, res);
 		}
-		
-		chain.doFilter(req, res);
 	}
 }

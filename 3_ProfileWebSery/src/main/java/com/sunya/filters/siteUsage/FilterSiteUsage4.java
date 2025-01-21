@@ -2,7 +2,6 @@ package com.sunya.filters.siteUsage;
 
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
-import jakarta.servlet.FilterConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
@@ -68,8 +67,7 @@ public class FilterSiteUsage4 extends HttpFilter implements Filter
 			Cookie cookie = new Cookie(cm.CLIENT_REF, result);
 			cookie.setMaxAge(7*24*60*60);
 			res.addCookie(cookie);
+			chain.doFilter(req, res);
 		}
-		
-		chain.doFilter(req, res);
 	}
 }

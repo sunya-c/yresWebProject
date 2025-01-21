@@ -2,7 +2,6 @@ package com.sunya.filters.siteUsage;
 
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
-import jakarta.servlet.FilterConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
@@ -13,6 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+
 import org.springframework.core.annotation.Order;
 
 import com.sunya.PrintError;
@@ -49,7 +49,6 @@ public class FilterSiteUsage0 extends HttpFilter implements Filter
 		}
 
 		updatedUsage[0] += 1;
-		
 		String result = dao.updateUsage(refNumber, updatedUsage);
 		
 		if (result == null)
@@ -68,8 +67,7 @@ public class FilterSiteUsage0 extends HttpFilter implements Filter
 			Cookie cookie = new Cookie(cm.CLIENT_REF, result);
 			cookie.setMaxAge(7*24*60*60);
 			res.addCookie(cookie);
+			chain.doFilter(req, res);
 		}
-		
-		chain.doFilter(req, res);
 	}
 }

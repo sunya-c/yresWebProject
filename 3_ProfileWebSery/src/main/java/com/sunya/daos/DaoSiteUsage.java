@@ -201,11 +201,11 @@ public class DaoSiteUsage extends Dao
 	
 	private int[] getUsageArray(ResultSet rs) throws ServletException
 	{
-		int[] currentUsage = new int[9];
+		int[] currentUsage = new int[getArraySize()];
 		
 		try
 		{
-			for (int i=0; i<9; i++)
+			for (int i=0; i<getArraySize(); i++)
 			{
 				currentUsage[i] = rs.getInt(pageNames[i]);
 			}
