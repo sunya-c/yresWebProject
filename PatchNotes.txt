@@ -1,8 +1,6 @@
-1. Moved large environment variable's values to be stored on database
+1.Added CSS forced updating
 
 ----------
 
-1. Moved large environment variable's values to database:
--AWS' environment variable feature has a file size limitation, which environment variable's keys
-and values altogether couldn't exceed 4096 bytes. To overcome this limitation, the large values
-were moved to database, and the values were replaced by a short reference name instead.
+1.Added CSS forced updating:
+-Made CSS files to be forced updated by browsers after a new website version is deployed.
