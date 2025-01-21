@@ -19,12 +19,12 @@ import com.sunya.PrintError;
 import com.sunya.daos.DaoSiteUsage;
 import com.sunya.managers.CookieManager;
 
-//@WebFilter("/ErrorPage.jsp")
-//@Order(3)
+@WebFilter("/ErrorPage.jsp")
+@Order(3)
 public class FilterSiteUsage1 extends HttpFilter implements Filter
 {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-			throws IOException, ServletException
+			throws IOException
 	{
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse res = (HttpServletResponse) response;
@@ -36,38 +36,41 @@ public class FilterSiteUsage1 extends HttpFilter implements Filter
 		
 		int[] updatedUsage;
 		
-		if (refNumber == null)
-			updatedUsage = new int[dao.getArraySize()];
-		else
+		String result = null;
+		try
 		{
-			updatedUsage = dao.getUsage(refNumber);
-			if (updatedUsage == null)
-			{
-				refNumber = null;
+			if (refNumber == null)
 				updatedUsage = new int[dao.getArraySize()];
+			else
+			{
+				updatedUsage = dao.getUsage(refNumber);
+				if (updatedUsage == null)
+				{
+					refNumber = null;
+					updatedUsage = new int[dao.getArraySize()];
+				}
 			}
+			
+			updatedUsage[1] += 1;
+			result = dao.updateUsage(refNumber, updatedUsage);
 		}
-		
-		updatedUsage[1] += 1;
-		String result = dao.updateUsage(refNumber, updatedUsage);
-		
-		if (result == null)
+		catch (Exception e)
 		{
-			try
-			{
-				throw new ServletException("SiteUsage update failed.");
-			}
-			catch (ServletException e)
-			{
-				PrintError.toErrorPage(req.getSession(), res, this, e);
-			}
 		}
-		else
+		
+		if (result != null)
 		{
 			Cookie cookie = new Cookie(cm.CLIENT_REF, result);
 			cookie.setMaxAge(7*24*60*60);
 			res.addCookie(cookie);
+		}
+
+		try
+		{
 			chain.doFilter(req, res);
+		}
+		catch (ServletException e)
+		{
 		}
 	}
 }

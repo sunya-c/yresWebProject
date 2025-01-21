@@ -22,8 +22,7 @@ import com.sunya.PrintError;
 @Order(2)
 public class FilterLoginState extends HttpFilter implements Filter
 {
-	final String ERR1 = "loggedIn attribute is NOT boolean type";
-	final String ERR2 = "Filter failed";
+	final String ERR1 = "Filter LoginState failed";
 	String errText = "";
 
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
@@ -33,39 +32,20 @@ public class FilterLoginState extends HttpFilter implements Filter
 		HttpServletResponse res = (HttpServletResponse) response;
 		HttpSession session = req.getSession();
 		
-//		session.setAttribute("loggedIn", "ggg");
-
-		System.out.println("in Filter Login State:");
-		try
+		if (
+				(session.getAttribute("loggedIn") != null) &&
+				((boolean) session.getAttribute("loggedIn") == true)
+				)
 		{
-			if (
-					(session.getAttribute("loggedIn") != null) &&
-					((boolean) session.getAttribute("loggedIn") == true)
-					)
-			{
-				System.out.println("Filter passed");
-				chain.doFilter(req, res);
-			}
-			else
-			{
-				errText = ERR2;
-				PrintError.println(errText);
-				res.sendRedirect("LoginPage.jsp");
-			}
+			System.out.println("Filter LoginState passed");
+			chain.doFilter(req, res);
 		}
-		catch (ClassCastException e)
+		else
 		{
 			errText = ERR1;
 			PrintError.println(errText);
-			
-			// TODO
-			// Create an ErrorPage
-			// Redirect to the ErrorPage
-			// Automatically reset session
-			// Redirect back to LoginPage.jsp
+			res.sendRedirect("LoginPage.jsp");
 		}
-		
 
 	}
-
 }

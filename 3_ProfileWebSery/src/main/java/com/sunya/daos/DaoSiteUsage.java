@@ -62,7 +62,7 @@ public class DaoSiteUsage extends Dao
 	 * 
 	 * @param refNumber ~ enter {@code null} to create new refNumber.
 	 * @param updatedUsage ~ the updated usage data for overwriting the existing one on the database.
-	 * @return <strong>String of refNumber</strong> ~ if successfully updated the
+	 * @return <strong>String refNumber</strong> ~ if successfully updated the
 	 *         database.<br>
 	 *         <strong>null</strong> ~ if failed.
 	 * @throws ServletException

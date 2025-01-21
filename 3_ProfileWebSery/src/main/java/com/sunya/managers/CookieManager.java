@@ -20,19 +20,21 @@ public class CookieManager
 	
 	
 	/**
-	 * Remove <i>ERROR</i> attributes related to 
-	 * {@code ServletLogin.java}, 
-	 * which include:
-	 * <p>    "fromPage",
-	 * <p>    "wrongUsername",
-	 * <p>    "wrongPassword"
+	 * Get the <strong>value</strong> of the specified cookie name.
+	 * 
+	 * @param cookieName ~ the name of the interested cookie.
+	 * @return <strong>String cookieValue</strong> ~ the value of the specified cookie.<br>
+	 *         <strong>null</strong> ~ if either the cookie name doesn't exist or the cookie contains nothing.
 	 */
 	public String getCookieValue(String cookieName)
 	{
-		for (Cookie c : cookies)
+		if (cookies != null)
 		{
-			if (c.getName().equals(cookieName))
-				return c.getValue();
+			for (Cookie c : cookies)
+			{
+				if (c.getName().equals(cookieName))
+					return c.getValue();
+			}
 		}
 		return null;
 	}

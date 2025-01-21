@@ -19,6 +19,7 @@ import org.springframework.core.annotation.Order;
 import com.sunya.PrintError;
 import com.sunya.daos.DaoLoginInfo;
 import com.sunya.exceptions.WebUnameException;
+import com.sunya.managers.SessionManager;
 
 @WebFilter(urlPatterns = {
 		"/CreateAccountPage.jsp",
@@ -38,14 +39,11 @@ import com.sunya.exceptions.WebUnameException;
 @Order(1)
 public class FilterAccountExistence extends HttpFilter implements Filter
 {
-	final String ERR1 = "loggedIn attribute is NOT boolean type";
-	final String ERR2 = "Filter failed";
+	final String ERR1 = "Filter AccountExistence failed";
 	String errText = "";
 
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException
 	{
-		System.out.println("in Filter Account State.");
-
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse res = (HttpServletResponse) response;
 
@@ -58,45 +56,25 @@ public class FilterAccountExistence extends HttpFilter implements Filter
 			if ((session.getAttribute("loggedIn") != null) && ((boolean) session.getAttribute("loggedIn") == true)
 					&& !dao.checkUsername((String) session.getAttribute("username")))
 			{
-				session.invalidate();
-				session = req.getSession();
+				SessionManager sm = new SessionManager(session);
+				sm.removeLoginState();
+				errText = ERR1;
+				PrintError.println(errText);
 				throw new WebUnameException("This account doesn't exist");
 			}
-		}
-		catch (ClassCastException e)
-		{
-			errText = ERR1;
-			PrintError.println(errText);
-
-			// TODO
-			// Create an ErrorPage
-			// Redirect to the ErrorPage
-			// Automatically reset session
-			// Redirect back to LoginPage.jsp
+			else
+			{
+				System.out.println("Filter AccountExistence passed");
+				chain.doFilter(req, res);
+			}
 		}
 		catch (ServletException se)
 		{
-			session.setAttribute("errorDescription", se);
-			session.setAttribute("fromServlet", getFilterName());
-			res.sendRedirect("ErrorPage.jsp");
+			PrintError.toErrorPage(session, res, this, se);
 		}
 		catch (WebUnameException we)
 		{
-			session.setAttribute("errorDescription", we);
-			session.setAttribute("fromServlet", getFilterName());
-			res.sendRedirect("ErrorPage.jsp");
+			PrintError.toErrorPage(session, res, this, we);
 		}
-
-		try
-		{
-			chain.doFilter(request, response);
-		}
-		catch (ServletException se)
-		{
-			session.setAttribute("errorDescription", se);
-			session.setAttribute("fromServlet", getFilterName());
-			res.sendRedirect("ErrorPage.jsp");
-		}
-
 	}
 }

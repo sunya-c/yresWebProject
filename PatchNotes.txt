@@ -1,6 +1,17 @@
-1.Tried to fix severe bug from v0.5
+1.SEVERE! Fixed a bug where users visiting the website for the first time encountered an error
+2.Simplified codes in FilterAccountExistence.java and FilterLoginState.java
+3.Added significant compromise for reaching ErrorPage.jsp
 
 ----------
 
-1.Tried to fix severe bug from v0.5:
--Removed all filters from ErrorPage.jsp to see error message.
+1.SEVERE! Fixed a bug where users visiting the website for the first time encountered an error:
+-AWS servers seemed to behave differently comparing to other systems. It somehow just got the
+user's request before the JSESSIONID cookie was even created, which resulted in null cookie, which
+was the cause of the error preventing users from entering the website. Simply adding a condition
+to handle null cookie in CookieManager.java fixed the issue.
+
+2.Simplified codes in FilterAccountExistence.java and FilterLoginState.java:
+-Nothing special, just made it less tedious and more readable.
+
+3.Added significant compromise to restrictions for entering ErrorPage.jsp:
+-Removed a number of restrictions which used to prevent some error cases to reach ErrorPage.jsp.
