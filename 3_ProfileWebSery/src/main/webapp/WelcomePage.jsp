@@ -8,7 +8,14 @@
 <head>
 <meta charset="UTF-8">
 <title>Yres home</title>
-<link rel="stylesheet" href="css/WelcomePageCss.css" />
+<%
+	String cssVersion;
+	if (System.getenv("SERY_CSS_VERSION")==null || System.getenv("SERY_CSS_VERSION").isBlank())
+		cssVersion = System.getProperty("SERY_CSS_VERSION");
+	else
+		cssVersion = System.getenv("SERY_CSS_VERSION");
+%>
+<link rel="stylesheet" href="css/WelcomePageCss.css<%= cssVersion %>" />
 <link href="https://fonts.googleapis.com" rel="preconnect">
 <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
 <link

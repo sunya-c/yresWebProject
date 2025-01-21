@@ -1,6 +1,7 @@
 1.SEVERE! Fixed a bug where users visiting the website for the first time encountered an error
 2.Simplified codes in FilterAccountExistence.java and FilterLoginState.java
 3.Added significant compromise for reaching ErrorPage.jsp
+4.Added CSS forced updating
 
 ----------
 
@@ -15,3 +16,6 @@ to handle null cookie in CookieManager.java fixed the issue.
 
 3.Added significant compromise to restrictions for entering ErrorPage.jsp:
 -Removed a number of restrictions which used to prevent some error cases to reach ErrorPage.jsp.
+
+4.Added CSS forced updating:
+-Made CSS files to be forced updated by browsers after a new website version is deployed.
