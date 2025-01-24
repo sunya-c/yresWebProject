@@ -22,30 +22,31 @@ public class DaoSiteUsage extends Dao
 	// end -- tableName
 
 	// columnName :
-	private final String USAGE_REF_NUMBER = "reference_number";
-	private final String USAGE_DATE = "latest_interaction_date";
-	private final String USAGE_PAGE_CREATEACCOUNT = "page_createaccount";
-	private final String USAGE_PAGE_ERROR = "page_error";
-	private final String USAGE_PAGE_FEEDBACK = "page_feedback";
-	private final String USAGE_PAGE_LOGIN = "page_login";
-	private final String USAGE_PAGE_PERSINFO = "page_persinfo";
-	private final String USAGE_PAGE_REDIRECTING = "page_redirecting";
-	private final String USAGE_PAGE_UNDERCONSTRUCTION = "page_underconstruction";
-	private final String USAGE_PAGE_WELCOME = "page_welcome";
-	private final String USAGE_RESUME_DOWNLOAD = "resume_download";
+	private final String COLUMN_REF_NUMBER = "reference_number";
+	private final String COLUMN_IP = "ip_address";
+	private final String COLUMN_DATE = "latest_interaction_date";
+	private final String COLUMN_PAGE_CREATEACCOUNT = "page_createaccount";
+	private final String COLUMN_PAGE_ERROR = "page_error";
+	private final String COLUMN_PAGE_FEEDBACK = "page_feedback";
+	private final String COLUMN_PAGE_LOGIN = "page_login";
+	private final String COLUMN_PAGE_PERSINFO = "page_persinfo";
+	private final String COLUMN_PAGE_REDIRECTING = "page_redirecting";
+	private final String COLUMN_PAGE_UNDERCONSTRUCTION = "page_underconstruction";
+	private final String COLUMN_PAGE_WELCOME = "page_welcome";
+	private final String COLUMN_RESUME_DOWNLOAD = "resume_download";
 	// end -- columnName
 	
 	//columnName in Array :
 	private final String[] pageNames = {
-			USAGE_PAGE_CREATEACCOUNT,
-			USAGE_PAGE_ERROR,
-			USAGE_PAGE_FEEDBACK,
-			USAGE_PAGE_LOGIN,
-			USAGE_PAGE_PERSINFO,
-			USAGE_PAGE_REDIRECTING,
-			USAGE_PAGE_UNDERCONSTRUCTION,
-			USAGE_PAGE_WELCOME,
-			USAGE_RESUME_DOWNLOAD};
+			COLUMN_PAGE_CREATEACCOUNT,
+			COLUMN_PAGE_ERROR,
+			COLUMN_PAGE_FEEDBACK,
+			COLUMN_PAGE_LOGIN,
+			COLUMN_PAGE_PERSINFO,
+			COLUMN_PAGE_REDIRECTING,
+			COLUMN_PAGE_UNDERCONSTRUCTION,
+			COLUMN_PAGE_WELCOME,
+			COLUMN_RESUME_DOWNLOAD};
 	// end -- columnName in Array
 
 	{
@@ -69,10 +70,10 @@ public class DaoSiteUsage extends Dao
 	 */
 	public String updateUsage(String refNumber, int[] updatedUsage) throws ServletException
 	{
-		String query = "UPDATE "+TABLE_NAME+" SET "+USAGE_DATE+" = ?, "+USAGE_PAGE_CREATEACCOUNT+" = ?, "+USAGE_PAGE_ERROR+" = ?, "
-				+USAGE_PAGE_FEEDBACK+" = ?, "+USAGE_PAGE_LOGIN+" = ?, "+USAGE_PAGE_PERSINFO+" = ?, "
-				+USAGE_PAGE_REDIRECTING+" = ?, "+USAGE_PAGE_UNDERCONSTRUCTION+" = ?, "+USAGE_PAGE_WELCOME
-				+" = ?, "+USAGE_RESUME_DOWNLOAD+" = ? WHERE "+USAGE_REF_NUMBER+" = ?;";
+		String query = "UPDATE "+TABLE_NAME+" SET "+COLUMN_DATE+" = ?, "+COLUMN_PAGE_CREATEACCOUNT+" = ?, "+COLUMN_PAGE_ERROR+" = ?, "
+				+COLUMN_PAGE_FEEDBACK+" = ?, "+COLUMN_PAGE_LOGIN+" = ?, "+COLUMN_PAGE_PERSINFO+" = ?, "
+				+COLUMN_PAGE_REDIRECTING+" = ?, "+COLUMN_PAGE_UNDERCONSTRUCTION+" = ?, "+COLUMN_PAGE_WELCOME
+				+" = ?, "+COLUMN_RESUME_DOWNLOAD+" = ? WHERE "+COLUMN_REF_NUMBER+" = ?;";
 
 		if (refNumber == null)
 			refNumber = addNewUsageRef();
@@ -144,9 +145,17 @@ public class DaoSiteUsage extends Dao
 		return null;
 	}
 	
+	/**
+	 * Retrieve the site usage from the database and return it in an array format.
+	 * 
+	 * @param refNumber
+	 * @return <strong>int[] siteUsage</strong> ~ the site usage retrieved from the database.<br>
+	 *         <strong>null</strong> ~ if the specified refNumber doesn't exist in the database.
+	 * @throws ServletException
+	 */
 	public int[] getUsage(String refNumber) throws ServletException
 	{
-		String query = "SELECT * FROM "+TABLE_NAME+" WHERE "+USAGE_REF_NUMBER+" = ?;";
+		String query = "SELECT * FROM "+TABLE_NAME+" WHERE "+COLUMN_REF_NUMBER+" = ?;";
 		
 		Connection con = null;
 		PreparedStatement st = null;
@@ -163,7 +172,7 @@ public class DaoSiteUsage extends Dao
 
 			if (rs.next())
 				// Double check
-				if (rs.getString(USAGE_REF_NUMBER).equals(refNumber))
+				if (rs.getString(COLUMN_REF_NUMBER).equals(refNumber))
 				{
 					return getUsageArray(rs);
 				}
@@ -227,7 +236,7 @@ public class DaoSiteUsage extends Dao
 	 */
 	private String addNewUsageRef() throws ServletException
 	{
-		String query = "INSERT INTO " + TABLE_NAME + " (" + USAGE_REF_NUMBER + ") VALUES (?);";
+		String query = "INSERT INTO " + TABLE_NAME + " (" + COLUMN_REF_NUMBER + ") VALUES (?);";
 
 		String refNumber;
 
@@ -292,7 +301,7 @@ public class DaoSiteUsage extends Dao
 	 */
 	private boolean isExistingRefNumber(String refNumber) throws ServletException
 	{
-		String query = "SELECT " + USAGE_REF_NUMBER + " FROM " + TABLE_NAME + " WHERE " + USAGE_REF_NUMBER + " = ?";
+		String query = "SELECT " + COLUMN_REF_NUMBER + " FROM " + TABLE_NAME + " WHERE " + COLUMN_REF_NUMBER + " = ?";
 
 		Connection con = null;
 		PreparedStatement st = null;
@@ -313,7 +322,7 @@ public class DaoSiteUsage extends Dao
 			if (rs.next())
 			{
 				// Double check
-				if (rs.getString(USAGE_REF_NUMBER).equals(refNumber))
+				if (rs.getString(COLUMN_REF_NUMBER).equals(refNumber))
 					return true;
 				else
 					throw new ServletException("Something went wrong. isExistingRefNumber-01 !!!");
@@ -365,6 +374,147 @@ public class DaoSiteUsage extends Dao
 			refNumber += String.valueOf(random.nextInt(0, 10));
 
 		return refNumber;
+	}
+	
+	
+	/**
+	 * Add client's IP address to the database.
+	 * 
+	 * @param ip ~ client's IP address to be added.
+	 * @param refNumber ~ client's reference number of the IP address.
+	 * @return <strong>String refNumber</strong> ~ reference number of the user (this is the same as the refNumber above, which you pass to this method).<br>
+	 *         <strong>null</strong> ~ Adding IP address failed.
+	 * @throws ServletException
+	 */
+	public String addIp(String ip, String refNumber) throws ServletException
+	{
+		String query = "UPDATE "+TABLE_NAME+" SET "+COLUMN_IP+" = ? WHERE "+COLUMN_REF_NUMBER+" = ?;";
+		
+		Connection con = null;
+		PreparedStatement st = null;
+		int row = 0;
+		
+		if (isExistingRefNumber(refNumber))
+		{
+			if (getIp(refNumber)==null || getIp(refNumber).equals(ip))
+			{
+				try
+				{
+					con = DriverManager.getConnection(url, uname, pass);
+					st = con.prepareStatement(query);
+					st.setString(1, ip);
+					st.setString(2, refNumber);
+					
+					row = st.executeUpdate();
+					
+					if (row==1)
+					{
+						return refNumber;
+					}
+					else
+						throw new ServletException("daositeusage.addip-01: Something went wrong.");
+				}
+				catch (SQLException e)
+				{
+					System.err.println(">>> Exception addIp-02 !!! <<<");
+					System.err.println(e);
+					throw new ServletException("daositeusage.addip-02: SQL Exception");
+				}
+				finally
+				{
+					try
+					{
+						st.close();
+						con.close();
+					}
+					catch (SQLException e)
+					{
+						System.err.println(">>> Exception addIp-03 !!! <<<");
+						System.err.println("Either 'Statement' or 'Connection' cannot be closed.");
+						System.err.println(e);
+						throw new ServletException("daositeusage.addip-03: Database connection failed.");
+					}
+					catch (NullPointerException ne)
+					{
+						System.err.println(">>> Exception addIp-04 !!! <<<");
+						System.err.println("Either 'Statement' or 'Connection' cannot be closed.");
+						System.err.println(ne);
+						throw new ServletException("daositeusage.addip-04: Database connection failed.");
+					}
+				}
+			}
+			else
+				return null;
+		}
+		else
+			return null;
+	}
+	
+	/**
+	 * Return IP address in the database. Return null if there's no IP address information.
+	 * 
+	 * @param refNumber ~ the method returns the IP address of this reference number.
+	 * @return <strong>String IP address</strong> ~ of the given reference number.
+	 *         <strong>null</strong> ~ if there's no IP address information.
+	 * @throws ServletException
+	 */
+	private String getIp(String refNumber) throws ServletException
+	{
+		String query = "SELECT "+COLUMN_REF_NUMBER+", "+COLUMN_IP+" FROM "+TABLE_NAME+" WHERE "+COLUMN_REF_NUMBER+" = ?;";
+		
+		Connection con = null;
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		try
+		{
+			con = DriverManager.getConnection(url, uname, pass);
+			st = con.prepareStatement(query);
+			st.setString(1, refNumber);
+			
+			rs = st.executeQuery();
+			
+			if (rs.next())
+			{
+				// Double check
+				if (rs.getString(COLUMN_REF_NUMBER).equals(refNumber))
+				{
+					return rs.getString(COLUMN_IP);
+				}
+				else
+					throw new ServletException("daositeusage.getip-01: refNumber not found.");
+			}
+			else
+				throw new ServletException("daositeusage.getip-01: refNumber not found.");
+			
+		}
+		catch (SQLException e)
+		{
+			System.err.println(">>> Exception getIp-02 !!! <<<");
+			System.err.println(e);
+			throw new ServletException("daositeusage.getip-02: SQL Exception");
+		}
+		finally
+		{
+			try
+			{
+				st.close();
+				con.close();
+			}
+			catch (SQLException e)
+			{
+				System.err.println(">>> Exception getIp-02 !!! <<<");
+				System.err.println("Either 'Statement' or 'Connection' cannot be closed.");
+				System.err.println(e);
+				throw new ServletException("Database connection failed.");
+			}
+			catch (NullPointerException ne)
+			{
+				System.err.println(">>> Exception getIp-03 !!! <<<");
+				System.err.println("Either 'Statement' or 'Connection' cannot be closed.");
+				System.err.println(ne);
+				throw new ServletException("Database connection failed.");
+			}
+		}
 	}
 
 }

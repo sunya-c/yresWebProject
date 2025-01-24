@@ -22,12 +22,12 @@ public class DaoFeedback extends Dao
 	// end -- tableName
 	
 	// columnName :
-	private final String FEEDBACK_REF_NUMBER = "reference_number";
-	private final String FEEDBACK_DATE = "report_date";
+	private final String COLUMN_REF_NUMBER = "reference_number";
+	private final String COLUMN_DATE = "report_date";
 	private final String USERNAME = "webuname";
-	private final String FEEDBACK_TITLE = "title";
-	private final String FEEDBACK_DETAIL = "detail";
-	private final String FEEDBACK_ERRORMESSAGE = "error_message";
+	private final String COLUMN_TITLE = "title";
+	private final String COLUMN_DETAIL = "detail";
+	private final String COLUMN_ERRORMESSAGE = "error_message";
 	// end -- columnName
 	
 	private final String ERR1 = "Failed to submit feedback/bug report.";
@@ -88,7 +88,7 @@ public class DaoFeedback extends Dao
 			String feedbackErrorMessage) throws ServletException
 	{
 		String query = "INSERT INTO "+TABLE_NAME
-				+ " ("+FEEDBACK_REF_NUMBER+", "+FEEDBACK_DATE+", "+USERNAME+", "+FEEDBACK_TITLE+", "+FEEDBACK_DETAIL+", "+FEEDBACK_ERRORMESSAGE+") "
+				+ " ("+COLUMN_REF_NUMBER+", "+COLUMN_DATE+", "+USERNAME+", "+COLUMN_TITLE+", "+COLUMN_DETAIL+", "+COLUMN_ERRORMESSAGE+") "
 						+ "VALUES (?, ?, ?, ?, ?, ?);";
 		
 		String refNumber;
@@ -166,7 +166,7 @@ public class DaoFeedback extends Dao
 	 */
 	private boolean isExistingRefNumber(String refNumber) throws ServletException
 	{
-		String query = "SELECT "+FEEDBACK_REF_NUMBER+" FROM "+TABLE_NAME+" WHERE "+FEEDBACK_REF_NUMBER+" = ?";
+		String query = "SELECT "+COLUMN_REF_NUMBER+" FROM "+TABLE_NAME+" WHERE "+COLUMN_REF_NUMBER+" = ?";
 		
 
 		Connection con = null;
@@ -188,7 +188,7 @@ public class DaoFeedback extends Dao
 			if (rs.next())
 			{
 				// Double check
-				if (rs.getString(FEEDBACK_REF_NUMBER).equals(refNumber))
+				if (rs.getString(COLUMN_REF_NUMBER).equals(refNumber))
 					return true;
 				else
 					throw new ServletException("Something went wrong. isExistingRefNumber-01 !!!");

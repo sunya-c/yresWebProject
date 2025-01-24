@@ -23,19 +23,43 @@ import com.sunya.managers.CookieManager;
 @Order(3)
 public class FilterSiteUsage7 extends HttpFilter implements Filter
 {
+	HttpServletRequest req;
+	HttpServletResponse res;
+	
+	int[] updatedUsage;
+	String refNumber;
+	DaoSiteUsage dao;
+	
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-			throws IOException, ServletException
+			throws IOException
 	{
-		HttpServletRequest req = (HttpServletRequest) request;
-		HttpServletResponse res = (HttpServletResponse) response;
+		req = (HttpServletRequest) request;
+		res = (HttpServletResponse) response;
 
-		DaoSiteUsage dao = new DaoSiteUsage();
+		dao = new DaoSiteUsage();
 		
 		CookieManager cm = new CookieManager(req.getCookies());
-		String refNumber = cm.getCookieValue(cm.CLIENT_REF);
+		refNumber = cm.getCookieValue(cm.CLIENT_REF);
 		
-		int[] updatedUsage;
-		
+
+		try
+		{
+			String result = updateUsage();
+			checkOutcome(result, cm, chain);
+		}
+		catch (IOException e)
+		{
+			PrintError.toErrorPage(req.getSession(), res, this, e);
+		}
+		catch (ServletException e)
+		{
+			PrintError.toErrorPage(req.getSession(), res, this, e);
+		}
+	}
+	
+	
+	private String updateUsage() throws ServletException
+	{
 		if (refNumber == null)
 			updatedUsage = new int[dao.getArraySize()];
 		else
@@ -49,8 +73,13 @@ public class FilterSiteUsage7 extends HttpFilter implements Filter
 		}
 		
 		updatedUsage[7] += 1;
-		String result = dao.updateUsage(refNumber, updatedUsage);
 		
+		return dao.updateUsage(refNumber, updatedUsage);
+	}
+	
+	
+	private void checkOutcome(String result, CookieManager cm, FilterChain chain) throws IOException, ServletException
+	{
 		if (result == null)
 		{
 			try

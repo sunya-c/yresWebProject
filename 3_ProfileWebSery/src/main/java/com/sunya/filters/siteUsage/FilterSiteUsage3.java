@@ -23,19 +23,43 @@ import com.sunya.managers.CookieManager;
 @Order(3)
 public class FilterSiteUsage3 extends HttpFilter implements Filter
 {
+	HttpServletRequest req;
+	HttpServletResponse res;
+	
+	int[] updatedUsage;
+	String refNumber;
+	DaoSiteUsage dao;
+	
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException
 	{
-		HttpServletRequest req = (HttpServletRequest) request;
-		HttpServletResponse res = (HttpServletResponse) response;
+		req = (HttpServletRequest) request;
+		res = (HttpServletResponse) response;
 
-		DaoSiteUsage dao = new DaoSiteUsage();
+		dao = new DaoSiteUsage();
 		
 		CookieManager cm = new CookieManager(req.getCookies());
-		String refNumber = cm.getCookieValue(cm.CLIENT_REF);
+		refNumber = cm.getCookieValue(cm.CLIENT_REF);
 		
-		int[] updatedUsage;
 		
+		try
+		{
+			String result = updateUsage();
+			checkOutcome(result, request.getRemoteAddr(), cm, chain);
+		}
+		catch (IOException e)
+		{
+			PrintError.toErrorPage(req.getSession(), res, this, e);
+		}
+		catch (ServletException e)
+		{
+			PrintError.toErrorPage(req.getSession(), res, this, e);
+		}
+	}
+	
+	
+	private String updateUsage() throws ServletException
+	{
 		if (refNumber == null)
 			updatedUsage = new int[dao.getArraySize()];
 		else
@@ -49,8 +73,13 @@ public class FilterSiteUsage3 extends HttpFilter implements Filter
 		}
 		
 		updatedUsage[3] += 1;
-		String result = dao.updateUsage(refNumber, updatedUsage);
 		
+		return dao.updateUsage(refNumber, updatedUsage);
+	}
+	
+	
+	private void checkOutcome(String result, String ip, CookieManager cm, FilterChain chain) throws IOException, ServletException
+	{
 		if (result == null)
 		{
 			try
@@ -64,10 +93,19 @@ public class FilterSiteUsage3 extends HttpFilter implements Filter
 		}
 		else
 		{
-			Cookie cookie = new Cookie(cm.CLIENT_REF, result);
-			cookie.setMaxAge(7*24*60*60);
-			res.addCookie(cookie);
-			chain.doFilter(req, res);
+			if ( dao.addIp(ip, result) == null )
+			{
+				refNumber = null;
+				result = updateUsage();
+				checkOutcome(result, ip, cm, chain);
+			}
+			else
+			{
+				Cookie cookie = new Cookie(cm.CLIENT_REF, result);
+				cookie.setMaxAge(7*24*60*60);
+				res.addCookie(cookie);
+				chain.doFilter(req, res);
+			}
 		}
 	}
 }
