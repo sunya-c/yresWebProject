@@ -36,6 +36,9 @@ public class SessionManager
 	// Attribute names LoginPage, WelcomePage
 	final public String WEB_NOTE1 = "WEB_NOTE1";
 	
+	// Attribute names ErrorPage
+	final public String ERROR_DESCRIPTION = "errorDescription";
+	
 	
 	// Constructor
 	public SessionManager(HttpSession session)
@@ -128,6 +131,18 @@ public class SessionManager
 	public void removeWebNote()
 	{
 		session.removeAttribute(WEB_NOTE1);
+	}
+	
+	/**
+	 * Remove <strong>ALL</strong> attributes related to
+	 * {@code ErrorPage.jsp}
+	 * which include:
+	 * <p>    "errorDescription"
+	 * 
+	 */
+	public void removeErrorPage()
+	{
+		session.removeAttribute(ERROR_DESCRIPTION);
 	}
 
 }

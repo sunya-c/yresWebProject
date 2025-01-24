@@ -25,7 +25,7 @@ public class PrintError
 	public static void toErrorPage(HttpSession session, HttpServletResponse response, HttpServlet servlet, Exception e) throws IOException
 	{
 		session.setAttribute("errorDescription", e);
-		session.setAttribute("fromServlet", servlet.getServletName());  // TODO: check if this works or not!!! The type is HttpServlet!!!
+		session.setAttribute("fromServlet", servlet.getServletName());
 		response.sendRedirect("ErrorPage.jsp");
 	}
 	

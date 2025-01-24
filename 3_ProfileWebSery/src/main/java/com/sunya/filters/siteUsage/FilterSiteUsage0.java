@@ -1,5 +1,6 @@
 package com.sunya.filters.siteUsage;
 
+import jakarta.annotation.Priority;
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -20,7 +21,7 @@ import com.sunya.daos.DaoSiteUsage;
 import com.sunya.managers.CookieManager;
 
 @WebFilter("/CreateAccountPage.jsp")
-@Order(3)
+@Priority(3)
 public class FilterSiteUsage0 extends HttpFilter implements Filter
 {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)

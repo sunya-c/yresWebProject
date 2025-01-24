@@ -1,10 +1,8 @@
-1.Added request's IP address tracking to identify suspicious spam requests
+1.Added feature that prevents suspicious requests from entering the website
 
 ----------
 
-1.Added request's IP address tracking to identify suspicious spam requests:
--Recently, there's an increasing number of requests which are suspected to be bots.
-This particular update was added to take a deeper look into the identity of those
-suspicious requests. The update that prevents bots from entering the website will be
-rolled out soon when I see the common behavior which differentiates normal requests
-from spam requests.
+1.Added feature that prevents suspicious requests from entering the website:
+-Added FilterBot.java, DaoIPBlacklist.java, and SuspiciousRequestException.java which
+belong to spam request-detection process. I hope this could filter out most of the spam
+requests. Let's see how effective it will be.

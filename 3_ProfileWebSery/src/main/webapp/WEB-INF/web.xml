@@ -6,7 +6,7 @@
 	<display-name>3_ProfileWebSery</display-name>
 	<welcome-file-list>
 		<!-- <welcome-file>OldPages/LoginPageOld.jsp</welcome-file> -->
-		<welcome-file>LoginPage.jsp</welcome-file>
+		<welcome-file>PreHomePage.jsp</welcome-file>
 		<!-- <welcome-file>WelcomePage.jsp</welcome-file> -->
 	</welcome-file-list>
 

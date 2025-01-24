@@ -107,7 +107,7 @@
 
 	test Environment variable1 : ${trial1}
 	<br> test Environment variable2 : ${trial2}<br>
-	version : v0.7
+	version : v0.8
 </body>
 </html>
 

@@ -1,5 +1,6 @@
 package com.sunya.filters;
 
+import jakarta.annotation.Priority;
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.FilterConfig;
@@ -36,7 +37,7 @@ import com.sunya.managers.SessionManager;
 		"/ServletLogin",
 		"/ServletLogout",
 		"/ServletPersonalInformation"})
-@Order(1)
+@Priority(1)
 public class FilterAccountExistence extends HttpFilter implements Filter
 {
 	final String ERR1 = "Filter AccountExistence failed";

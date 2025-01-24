@@ -1,3 +1,4 @@
+<%@page import="com.sunya.managers.SessionManager"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8" isErrorPage="true"%>
 <!DOCTYPE html>
@@ -41,5 +42,9 @@
 			<input type="hidden" name="preTypedFeedbackErrorMessage" value="${errorDescription}">
 		</form>
 	</div>
+	<%
+	SessionManager sm = new SessionManager(session);
+	sm.removeErrorPage();
+	%>
 </body>
 </html>

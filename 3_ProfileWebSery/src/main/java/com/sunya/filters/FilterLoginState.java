@@ -1,5 +1,6 @@
 package com.sunya.filters;
 
+import jakarta.annotation.Priority;
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.FilterConfig;
@@ -19,7 +20,7 @@ import org.springframework.core.annotation.Order;
 import com.sunya.PrintError;
 
 @WebFilter("/WelcomePage.jsp")
-@Order(2)
+@Priority(2)
 public class FilterLoginState extends HttpFilter implements Filter
 {
 	final String ERR1 = "Filter LoginState failed";
