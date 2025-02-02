@@ -6,7 +6,7 @@
 	<display-name>3_ProfileWebSery</display-name>
 	<welcome-file-list>
 		<!-- <welcome-file>OldPages/LoginPageOld.jsp</welcome-file> -->
-		<welcome-file>PreHomePage.jsp</welcome-file>
+		<welcome-file>/WEB-INF/pages/PreHomePage.jsp</welcome-file>
 		<!-- <welcome-file>WelcomePage.jsp</welcome-file> -->
 	</welcome-file-list>
 
@@ -34,19 +34,19 @@
 	<!-- Servlet Context -->
 	<context-param>
 		<param-name>ServletLogin</param-name>
-		<param-value>com.sunya.servlets.ServletLogin</param-value>
+		<param-value>com.sunya.services.ServiceLogin</param-value>
 	</context-param>
 	<context-param>
 		<param-name>ServletPersonalInformation</param-name>
-		<param-value>com.sunya.servlets.ServletPersonalInformation</param-value>
+		<param-value>com.sunya.services.ServicePersonalInformation</param-value>
 	</context-param>
 	<context-param>
 		<param-name>ServletCreateAccount</param-name>
-		<param-value>com.sunya.servlets.ServletCreateAccount</param-value>
+		<param-value>com.sunya.services.ServiceCreateAccount</param-value>
 	</context-param>
 	<context-param>
 		<param-name>ServletFeedback</param-name>
-		<param-value>com.sunya.servlets.ServletFeedback</param-value>
+		<param-value>com.sunya.services.ServiceFeedback</param-value>
 	</context-param>
 	<context-param>
 		<param-name>UnderConstruction</param-name>

@@ -1,14 +1,14 @@
-package com.sunya.servlets;
+package com.sunya.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
-public class ServletDownloadResume
+@Service
+public class ServiceDownloadResume
 {
 	@Autowired
 	private ResourceLoader loader;
@@ -18,7 +18,7 @@ public class ServletDownloadResume
 		try
 		{
 			// Path to the file to be downloaded
-			Resource resource = loader.getResource("/outBox/resumeC_pdf.pdf");
+			Resource resource = loader.getResource("/resources/outBox/resumeC_pdf.pdf");
 
 			// Set headers for the response
 			if (resource.exists())

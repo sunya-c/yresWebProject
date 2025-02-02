@@ -14,7 +14,7 @@
 	else
 		cssVersion = System.getenv("SERY_CSS_VERSION");
 %>
-<link rel="stylesheet" href="css/RedirectingPageCss.css<%= cssVersion %>" />
+<link rel="stylesheet" href="resources/css/RedirectingPageCss.css<%= cssVersion %>" />
 <link href="https://fonts.googleapis.com" rel="preconnect">
 <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
 <link

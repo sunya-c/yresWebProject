@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.sunya.servlets.ServletCreateAccount;
-import com.sunya.servlets.ServletDownloadResume;
-import com.sunya.servlets.ServletFeedback;
-import com.sunya.servlets.ServletLogin;
-import com.sunya.servlets.ServletLogout;
-import com.sunya.servlets.ServletPersonalInformation;
+import com.sunya.services.ServiceCreateAccount;
+import com.sunya.services.ServiceDownloadResume;
+import com.sunya.services.ServiceFeedback;
+import com.sunya.services.ServiceLogin;
+import com.sunya.services.ServiceLogout;
+import com.sunya.services.ServicePersonalInformation;
 
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
@@ -48,7 +48,7 @@ public class Controller1
 	
 	
 	@Autowired
-	ServletLogin sli;
+	ServiceLogin sli;
 	
 	@PostMapping("/sLogin")
 	public String sLogin(HttpServletRequest request, HttpServletResponse response) throws IOException
@@ -57,7 +57,7 @@ public class Controller1
 	}
 	
 	@Autowired
-	ServletLogout slo;
+	ServiceLogout slo;
 	
 	@PostMapping("/sLogout")
 	public String sLogout(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
@@ -84,7 +84,7 @@ public class Controller1
 	}
 	
 	@Autowired
-	ServletCreateAccount sca;
+	ServiceCreateAccount sca;
 	
 	@PostMapping("/sCreateAccount")
 	public String sCreateAccount(HttpServletRequest request, HttpServletResponse response) throws IOException
@@ -96,7 +96,7 @@ public class Controller1
 	
 	
 	@Autowired
-	ServletPersonalInformation spinfo;
+	ServicePersonalInformation spinfo;
 	
 	@GetMapping("/personalInformation")
 	public String persInfoPage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
@@ -116,7 +116,7 @@ public class Controller1
 	}
 	
 	@Autowired
-	ServletFeedback sf;
+	ServiceFeedback sf;
 	
 	@PostMapping("/sFeedback")
 	public String sFeedback(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
@@ -128,7 +128,7 @@ public class Controller1
 	
 	
 	@Autowired
-	ServletDownloadResume sdr;
+	ServiceDownloadResume sdr;
 	
 	@GetMapping("/sDownloadResume")
 	public ResponseEntity<Resource> sDownloadResume()

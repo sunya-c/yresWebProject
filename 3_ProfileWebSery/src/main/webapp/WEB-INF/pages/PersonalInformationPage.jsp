@@ -18,7 +18,7 @@
 	else
 		cssVersion = System.getenv("SERY_CSS_VERSION");
 %>
-<link rel="stylesheet" href="css/PersonalInformationPageCss.css<%= cssVersion %>" />
+<link rel="stylesheet" href="resources/css/PersonalInformationPageCss.css<%= cssVersion %>" />
 <link href="https://fonts.googleapis.com" rel="preconnect">
 <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
 <link
@@ -207,8 +207,8 @@
 				<div id="iatzbi">${lineId}</div>
 			</div>
 		</div>
-		<img id="i1t2dk" src="pics/Certificate1.png" />
-		<img id="i8tfk1" src="pics/Certificate2.png" />
+		<img id="i1t2dk" src="resources/pics/Certificate1.png" />
+		<img id="i8tfk1" src="resources/pics/Certificate2.png" />
 	</div>
 
 </body>

@@ -1,4 +1,4 @@
-<%@page import="com.sunya.servlets.ServletLogin"%>
+<%@page import="com.sunya.services.ServiceLogin"%>
 <%@page import="com.sunya.config.WebConfig"%>
 <%@page import="org.springframework.context.annotation.AnnotationConfigApplicationContext"%>
 <%@page import="org.springframework.context.support.ClassPathXmlApplicationContext"%>
@@ -18,7 +18,7 @@
 		cssVersion = System.getenv("SERY_CSS_VERSION");
 %>
 <link rel="stylesheet"
-	href="css/PreHomePageCss.css" />
+	href="resources/css/PreHomePageCss.css" />
 <link href="https://fonts.googleapis.com" rel="preconnect">
 <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
 <link

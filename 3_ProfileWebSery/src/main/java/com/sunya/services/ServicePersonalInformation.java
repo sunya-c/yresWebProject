@@ -1,20 +1,19 @@
-package com.sunya.servlets;
+package com.sunya.services;
 
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import com.sunya.pojos.PojoPersonalInformation;
 
-import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-@Component
-public class ServletPersonalInformation
+@Service
+public class ServicePersonalInformation
 {
 	public void sPersInfo(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{

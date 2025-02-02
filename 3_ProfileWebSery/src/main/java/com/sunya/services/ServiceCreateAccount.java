@@ -1,16 +1,8 @@
-package com.sunya.servlets;
-
-import jakarta.servlet.RequestDispatcher;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+package com.sunya.services;
 
 import java.io.IOException;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import com.sunya.ErrMsg;
 import com.sunya.ErrorMessageSetterCreateAccount;
@@ -19,8 +11,13 @@ import com.sunya.RestrictionsCreateAccount;
 import com.sunya.daos.DaoLoginInfo;
 import com.sunya.managers.SessionManager;
 
-@Component
-public class ServletCreateAccount
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
+@Service
+public class ServiceCreateAccount
 {
 	public String sCreateAccount(HttpServletRequest request, HttpServletResponse response) throws IOException
 	{

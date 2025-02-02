@@ -15,7 +15,7 @@
 	else
 		cssVersion = System.getenv("SERY_CSS_VERSION");
 %>
-<link rel="stylesheet" href="css/FeedbackPageCss.css<%= cssVersion %>" />
+<link rel="stylesheet" href="resources/css/FeedbackPageCss.css<%= cssVersion %>" />
 <link href="https://fonts.googleapis.com" rel="preconnect">
 <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
 <link
