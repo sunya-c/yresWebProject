@@ -27,7 +27,7 @@
 
 	<%
 	SessionManager sm = new SessionManager(session);
-	session.setAttribute(sm.LOGIN_FROMPAGE, "LoginPage.jsp");
+	session.setAttribute(sm.LOGIN_FROMPAGE, "Home");
 	%>
 
 	<%
@@ -48,7 +48,7 @@
 	<%
 	if ((session.getAttribute("loggedIn") != null) && ((boolean) session.getAttribute("loggedIn") == true))
 	{
-		response.sendRedirect("WelcomePage.jsp");
+		response.sendRedirect("welcome");
 	}
 	// try catch ClassCastException e
 	// when loggedIn is not null and not boolean
@@ -59,11 +59,11 @@
 		<div id="i1hupq">${WEB_NOTE1}</div>
 	</div>
 	<div id="i5dg">
-		<form method="get" id="iq2wzk" action="WelcomePage.jsp">
+		<form method="get" id="iq2wzk" action="Home">
 			<button type="submit" id="ix3vku">Home</button>
 		</form>
 		<div id="iao9b">
-			<form method="post" id="iipx" action="ServletLogin">
+			<form method="post" id="iipx" action="sLogin">
 				<div id="i2sh">
 					<label id="i9zl">Username<br /></label><input type="text"
 						id="ikq8l" placeholder="Enter your username" name="username"
@@ -76,20 +76,20 @@
 				</div>
 				<button type="submit" id="ikmqp">Log in</button>
 			</form>
-			<form method="get" id="i8bga" action="CreateAccountPage.jsp">
+			<form method="get" id="i8bga" action="createAccount">
 				<button type="submit" id="i3xat">Create an account</button>
 			</form>
 		</div>
-		<form method="get" action="FeedbackPage.jsp" id="i9ojw1">
+		<form method="get" action="feedback" id="i9ojw1">
 			<button type="submit" id="i9l8gi">Give feedback / bug report</button>
 		</form>
 	</div>
 	<div id="imxfh">
-		<form method="get" id="i0ydh" action="PersonalInformationPage.jsp">
+		<form method="get" id="i0ydh" action="personalInformation">
 			<button type="submit" id="i6m6h">Personal Information</button>
 			<div id="illyu">What are you looking for?</div>
 		</form>
-		<form method="get" id="iuoax" action="ServletDownloadResume">
+		<form method="get" id="iuoax" action="sDownloadResume">
 			<button type="submit" id="i9ami">Download Resume</button>
 		</form>
 		<div id="ip7596">

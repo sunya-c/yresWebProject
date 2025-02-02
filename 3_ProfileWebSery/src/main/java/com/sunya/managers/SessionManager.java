@@ -84,7 +84,7 @@ public class SessionManager
 	 * which include:
 	 * <p>    "preTypedCreateUsername",
 	 * <p>    "usernameErr",
-	 * <p>    "passwordErr1"
+	 * <p>    "passwordErr1",
 	 * <p>    "passwordErr2"
 	 */
 	public void removeCreateAccountErr()
@@ -119,8 +119,8 @@ public class SessionManager
 	 * Remove <i>ALL</i> attributes related to 
 	 * {@code FeedbackPage.jsp} and {@code ServletFeedback.java}, 
 	 * which include:
-	 * <p>    "preTypeTitle",
-	 * <p>    "preTypeDetail"
+	 * <p>    "preTypedTitle",
+	 * <p>    "preTypedDetail"
 	 */
 	public void removeFeedbackPreTyped()
 	{

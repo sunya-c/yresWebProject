@@ -1,8 +1,10 @@
-1.Added feature that prevents suspicious requests from entering the website
+Converted Servlets to Spring / Spring MVC
 
 ----------
 
-1.Added feature that prevents suspicious requests from entering the website:
--Added FilterBot.java, DaoIPBlacklist.java, and SuspiciousRequestException.java which
-belong to spam request-detection process. I hope this could filter out most of the spam
-requests. Let's see how effective it will be.
+Converted Servlets to Spring / Spring MVC:
+-Disabled filters, waiting for Spring filter implementation.
+-Set up the project for Spring.
+-Converted servlets class to Spring component.
+-Started using @Autowired.
+-Hid the view technology extension from the url.

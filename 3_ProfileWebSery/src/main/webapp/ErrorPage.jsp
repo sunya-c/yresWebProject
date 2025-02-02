@@ -25,7 +25,7 @@
 
 	<%
 	if (session.getAttribute("fromServlet") == null)
-		response.sendRedirect("WelcomePage.jsp");
+		response.sendRedirect("Home");
 	else
 		session.setAttribute("fromServlet", null);
 	%>
@@ -35,7 +35,7 @@
 			----- ERROR -----<br />
 		</div>
 		<div id="iakzlo">>>> ${errorDescription}</div>
-		<form method="get" action="FeedbackPage.jsp" id="ijo1ol">
+		<form method="get" action="feedback" id="ijo1ol">
 			<div id="i3wdhj">If the error persists, please report via bug
 				report button.</div>
 			<button type="submit" id="iwacim">Give feedback / bug report</button>

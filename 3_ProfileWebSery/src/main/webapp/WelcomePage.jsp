@@ -48,26 +48,26 @@
 		</div>
 	</div>
 	<div id="ij1hw">
-		<form method="get" id="ikz7hf" action="WelcomePage.jsp">
+		<form method="get" id="ikz7hf" action="Home">
 			<button type="submit" id="ifffxi">Home</button>
 		</form>
 		<div id="iqzgf4">
-			<form method="post" action="ServletLogout" id="i6yg8g">
+			<form method="post" action="sLogout" id="i6yg8g">
 				<label id="iplzo3">Welcome ${username},<br /></label><label
 					id="iv9349">You're logged in<br /></label>
 				<button type="submit" id="i8e392">Log out</button>
 			</form>
 		</div>
-		<form method="get" action="FeedbackPage.jsp" id="ixkbtg">
+		<form method="get" action="feedback" id="ixkbtg">
 			<button type="submit" id="i71s98">Give feedback / bug report</button>
 		</form>
 	</div>
 	<div id="ihdmp2">
-		<form method="get" id="ijk4nn" action="PersonalInformationPage.jsp">
+		<form method="get" id="ijk4nn" action="personalInformation">
 			<button type="submit" id="io9tx">Personal Information</button>
 			<div id="i6t9u">What are you looking for?</div>
 		</form>
-		<form method="get" id="i4s965" action="ServletDownloadResume">
+		<form method="get" id="i4s965" action="sDownloadResume">
 			<button type="submit" id="itj0iw">Download Resume</button>
 		</form>
 		<div id="ig39tr">

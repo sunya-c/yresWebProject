@@ -10,6 +10,8 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
+import org.springframework.stereotype.Component;
+
 import com.sunya.ErrMsg;
 import com.sunya.ErrorMessageSetterCreateAccount;
 import com.sunya.PrintError;
@@ -17,12 +19,10 @@ import com.sunya.RestrictionsCreateAccount;
 import com.sunya.daos.DaoLoginInfo;
 import com.sunya.managers.SessionManager;
 
-@WebServlet("/ServletCreateAccount")
-public class ServletCreateAccount extends HttpServlet
+@Component
+public class ServletCreateAccount
 {
-	private static final long serialVersionUID = 1L;
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException
+	public String sCreateAccount(HttpServletRequest request, HttpServletResponse response) throws IOException
 	{
 		String username = request.getParameter("username");
 		String password1 = request.getParameter("password1");
@@ -35,7 +35,7 @@ public class ServletCreateAccount extends HttpServlet
 
 		DaoLoginInfo dao = new DaoLoginInfo();
 		
-		ErrorMessageSetterCreateAccount errSetter = new ErrorMessageSetterCreateAccount(session);
+		ErrorMessageSetterCreateAccount errSetter = new ErrorMessageSetterCreateAccount(session); //TODO: try to put this into the restriction class so that this line can be removed.
 		RestrictionsCreateAccount restriction = new RestrictionsCreateAccount(
 				dao,
 				errSetter,
@@ -50,28 +50,34 @@ public class ServletCreateAccount extends HttpServlet
 				if (dao.addUser(username, password1))
 				{
 					session.setAttribute(sm.REDIRECT_MESSAGE, "Done!");
-					session.setAttribute(sm.REDIRECT_DESTINATION, "\"Home page\"");
-					session.setAttribute("fromServlet", getServletName());
+					session.setAttribute(sm.REDIRECT_DESTINATION, "Home page");
+					session.setAttribute("fromServlet", toString());
 					session.setAttribute(sm.LOGIN_UNAME_PRETYPED, username);
-					RequestDispatcher rd = request.getRequestDispatcher("RedirectingPage.jsp");
-					rd.forward(request, response);
+					
+					return "redirecting";
 				}
 				else
 				{
 					ErrMsg CUSTOM_ERR = ErrMsg.CREATEACCOUNT_UNAME_DUPLICATE;
 					CUSTOM_ERR.setCustomErrMessage("Something's wrong, please try again.");
 					errSetter.setUsernameErr(CUSTOM_ERR);
-					response.sendRedirect("CreateAccountPage.jsp");
+					session.setAttribute("fromServlet", toString());
+					return "createAccount";
 				}
 			}
 			else
-				response.sendRedirect("CreateAccountPage.jsp");
+				session.setAttribute("fromServlet", toString());
+				return "createAccount";
 		}
 		catch (ServletException e)
 		{
-			PrintError.toErrorPage(session, response, this, e);
+			return PrintError.toErrorPage(session, this, e);
 		}
-
-		session.setAttribute("fromServlet", this.getServletName());
+	}
+	
+	@Override
+	public String toString()
+	{
+		return this.getClass().getName();
 	}
 }

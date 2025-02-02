@@ -38,6 +38,7 @@
 		PrintError.println(errText);
 		System.err.println("fromServlet attribute : " + fs.getFromServletAttribute());
 		System.err.println("ServletContext        : " + fs.getFullServletName());
+		session.setAttribute("fromServlet", null);
 
 		SessionManager sm = new SessionManager(session);
 		sm.removeCreateAccountErr();
@@ -45,17 +46,17 @@
 	%>
 
 	<div id="i1h2wx">
-		<form method="get" action="WelcomePage.jsp" id="idtzab">
+		<form method="get" action="Home" id="idtzab">
 			<button type="submit" id="i1ckeh">Home</button>
 		</form>
-		<form method="get" action="FeedbackPage.jsp" id="in9x4b">
+		<form method="get" action="feedback" id="in9x4b">
 			<button type="submit" id="ikzg0o">Give feedback / bug report</button>
 		</form>
 	</div>
 	<div id="ia2ryx">
 		<div id="i82jpw">Creating an account</div>
 		<div id="itqzxp">
-			<form method="post" action="ServletCreateAccount" id="ijtey8">
+			<form method="post" action="sCreateAccount" id="ijtey8">
 				<div id="ip4cc6">
 					<label id="iyd4c4">Username<br /></label><input type="text"
 						placeholder="Create your username" name="username"

@@ -20,8 +20,8 @@ import com.sunya.PrintError;
 import com.sunya.daos.DaoSiteUsage;
 import com.sunya.managers.CookieManager;
 
-@WebFilter("/RedirectingPage.jsp")
-@Priority(3)
+//@WebFilter("/RedirectingPage.jsp")
+//@Priority(3)
 public class FilterSiteUsage5 extends HttpFilter implements Filter
 {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)

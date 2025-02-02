@@ -20,8 +20,8 @@ import com.sunya.PrintError;
 import com.sunya.daos.DaoSiteUsage;
 import com.sunya.managers.CookieManager;
 
-@WebFilter("/LoginPage.jsp")
-@Priority(3)
+//@WebFilter("/LoginPage.jsp")
+//@Priority(3)
 public class FilterSiteUsage3 extends HttpFilter implements Filter
 {
 	HttpServletRequest req;

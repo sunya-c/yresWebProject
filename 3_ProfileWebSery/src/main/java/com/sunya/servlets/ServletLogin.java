@@ -1,30 +1,25 @@
 package com.sunya.servlets;
 
-import jakarta.servlet.RequestDispatcher;
+import java.io.IOException;
+
+import org.springframework.stereotype.Component;
+
+import com.sunya.PrintError;
+import com.sunya.daos.DaoLoginInfo;
+import com.sunya.managers.SessionManager;
+
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-import java.io.IOException;
-import java.util.concurrent.locks.Condition;
-
-import com.mysql.cj.Session;
-import com.sunya.daos.DaoLoginInfo;
-import com.sunya.managers.SessionManager;
-
-@WebServlet("/ServletLogin")
-public class ServletLogin extends HttpServlet
+@Component
+public class ServletLogin
 {
-	private static final long serialVersionUID = 1L;
-
 	private String fromPage;
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException
+	public String sLogin(HttpServletRequest request, HttpServletResponse response) throws IOException
 	{
-
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 
@@ -34,7 +29,7 @@ public class ServletLogin extends HttpServlet
 		fromPage = (String) session.getAttribute(sm.LOGIN_FROMPAGE);
 		if (fromPage == null)
 		{
-			fromPage = "WelcomePage.jsp";
+			fromPage = "Home";
 		}
 
 		DaoLoginInfo dao = new DaoLoginInfo();
@@ -48,7 +43,7 @@ public class ServletLogin extends HttpServlet
 			{
 				session.setAttribute(sm.LOGIN_UNAME_ERR, "Invalid username!!!");
 
-				response.sendRedirect(fromPage);
+				return fromPage;
 			}
 			else // if username is valid, proceed with password check
 			{
@@ -56,25 +51,28 @@ public class ServletLogin extends HttpServlet
 				{
 					session.setAttribute(sm.LOGIN_PASS_ERR, "Incorrect password!!!");
 
-					response.sendRedirect(fromPage);
+					return fromPage;
 				}
 				else
 				{
 					session.removeAttribute(sm.LOGIN_UNAME_PRETYPED);
 					session.setAttribute(sm.LOGIN_USERNAME, username);
 					session.setAttribute(sm.LOGIN_LOGGED_IN, true);
-					response.sendRedirect(fromPage);
+					
+					return fromPage;
 				}
-
 			}
 		}
 		catch (ServletException e)
 		{
-			session.setAttribute("errorDescription", e);
-			session.setAttribute("fromServlet", getServletName());
-			response.sendRedirect("ErrorPage.jsp");
+			return PrintError.toErrorPage(session, this, e);
 		}
-
+	}
+	
+	@Override
+	public String toString()
+	{
+		return this.getClass().getName();
 	}
 
 }

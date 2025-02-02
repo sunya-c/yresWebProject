@@ -22,22 +22,22 @@ import com.sunya.daos.DaoLoginInfo;
 import com.sunya.exceptions.WebUnameException;
 import com.sunya.managers.SessionManager;
 
-@WebFilter(urlPatterns = {
-		"/CreateAccountPage.jsp",
-		"/ErrorPage.jsp",
-		"/FeedbackPage.jsp",
-		"/LoginPage.jsp",
-		"/PersonalInformationPage.jsp",
-		"/RedirectingPage.jsp",
-		"/UnderConstructionPage.jsp",
-		"/WelcomePage.jsp",
-		"/ServletCreateAccount",
-		"/ServletDownloadResume",
-		"/ServletFeedback",
-		"/ServletLogin",
-		"/ServletLogout",
-		"/ServletPersonalInformation"})
-@Priority(1)
+//@WebFilter(urlPatterns = {
+//		"/CreateAccountPage.jsp",
+//		"/ErrorPage.jsp",
+//		"/FeedbackPage.jsp",
+//		"/LoginPage.jsp",
+//		"/PersonalInformationPage.jsp",
+//		"/RedirectingPage.jsp",
+//		"/UnderConstructionPage.jsp",
+//		"/WelcomePage.jsp",
+//		"/ServletCreateAccount",
+//		"/ServletDownloadResume",
+//		"/ServletFeedback",
+//		"/ServletLogin",
+//		"/ServletLogout",
+//		"/ServletPersonalInformation"})
+//@Priority(1)
 public class FilterAccountExistence extends HttpFilter implements Filter
 {
 	final String ERR1 = "Filter AccountExistence failed";

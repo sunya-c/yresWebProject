@@ -19,8 +19,8 @@ import org.springframework.core.annotation.Order;
 
 import com.sunya.PrintError;
 
-@WebFilter("/WelcomePage.jsp")
-@Priority(2)
+//@WebFilter("/WelcomePage.jsp")
+//@Priority(2)
 public class FilterLoginState extends HttpFilter implements Filter
 {
 	final String ERR1 = "Filter LoginState failed";

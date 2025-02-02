@@ -26,8 +26,8 @@ import io.ipinfo.api.cache.SimpleCache;
 import io.ipinfo.api.errors.RateLimitedException;
 import io.ipinfo.api.model.IPResponse;
 
-@WebFilter("/PreHomePage.jsp")
-@Priority(0)
+//@WebFilter("/PreHomePage.jsp")
+//@Priority(0)
 public class FilterBot extends HttpFilter implements Filter
 {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)

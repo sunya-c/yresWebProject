@@ -10,6 +10,8 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
+import org.springframework.stereotype.Component;
+
 import com.sunya.ErrMsg;
 import com.sunya.ErrorMessageSetterFeedback;
 import com.sunya.RestrictionsFeedback;
@@ -17,13 +19,10 @@ import com.sunya.daos.DaoFeedback;
 import com.sunya.managers.SessionManager;
 
 
-@WebServlet("/ServletFeedback")
-public class ServletFeedback extends HttpServlet
+@Component
+public class ServletFeedback
 {
-	private static final long serialVersionUID = 1L;
-
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
+	public String sFeedback(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
 	{
 		String feedbackTitle = request.getParameter("reportTitle");
 		String feedbackDetail = request.getParameter("reportDetail");
@@ -33,7 +32,7 @@ public class ServletFeedback extends HttpServlet
 		SessionManager sm = new SessionManager(session);
 		sm.removeFeedbackErr();
 		
-		ErrorMessageSetterFeedback errSetter = new ErrorMessageSetterFeedback(session);
+		ErrorMessageSetterFeedback errSetter = new ErrorMessageSetterFeedback(session);  //TODO: try to put this inside restriction class so that this line can be removed.
 		RestrictionsFeedback restriction = new RestrictionsFeedback(errSetter, feedbackTitle, feedbackDetail, feedbackErrorMessage);
 		
 		if (restriction.checkRestriction())
@@ -42,26 +41,28 @@ public class ServletFeedback extends HttpServlet
 			String username = (String) session.getAttribute(sm.LOGIN_USERNAME);
 			dao.submitFeedback(username, feedbackTitle, feedbackDetail, feedbackErrorMessage);
 			
-			session.setAttribute("message", "Thank you for reaching out!");
-			session.setAttribute("destinationPage", "\"Home page\"");
+			session.setAttribute(sm.REDIRECT_MESSAGE, "Thank you for reaching out!");
+			session.setAttribute(sm.REDIRECT_DESTINATION, "Home page");
 			
 			sm.removeFeedbackPreTyped();
 			
-			session.setAttribute("fromServlet", getServletName());
-			RequestDispatcher rd = request.getRequestDispatcher("RedirectingPage.jsp");
-			rd.forward(request, response);
+			session.setAttribute("fromServlet", toString());
+			return "redirecting";
 		}
 		else
 		{
 			session.setAttribute(sm.FEEDBACK_TITLE_PRETYPED, feedbackTitle);
 			session.setAttribute(sm.FEEDBACK_DETAIL_PRETYPED, feedbackDetail);
 			
-			session.setAttribute("fromServlet", getServletName());
-			response.sendRedirect("FeedbackPage.jsp?"+sm.FEEDBACK_ERRORMESSAGE_PRETYPED+"="+feedbackErrorMessage);
+			session.setAttribute("fromServlet", toString());
+			return "feedback?"+sm.FEEDBACK_ERRORMESSAGE_PRETYPED+"="+feedbackErrorMessage;
 		}
-
-
-		
+	}
+	
+	@Override
+	public String toString()
+	{
+		return this.getClass().getName();
 	}
 
 }

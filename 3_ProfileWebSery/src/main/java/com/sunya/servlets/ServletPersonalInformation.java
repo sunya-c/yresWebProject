@@ -1,26 +1,22 @@
 package com.sunya.servlets;
 
+import java.io.IOException;
+import java.time.format.DateTimeFormatter;
+
+import org.springframework.stereotype.Component;
+
+import com.sunya.pojos.PojoPersonalInformation;
+
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-import java.io.IOException;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-
-import com.sunya.pojos.PojoPersonalInformation;
-
-
-@WebServlet("/ServletPersonalInformation")
-public class ServletPersonalInformation extends HttpServlet
+@Component
+public class ServletPersonalInformation
 {
-	private static final long serialVersionUID = 1L;
-
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+	public void sPersInfo(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		PojoPersonalInformation pInfo = new PojoPersonalInformation("sunyapong");
 		
@@ -58,11 +54,13 @@ public class ServletPersonalInformation extends HttpServlet
 		request.setAttribute("listEnghlishTest", 	pInfo.getListEnglishTest());
 		
 		HttpSession session = request.getSession();
-		session.setAttribute("fromServlet", getServletName());
-
-		
-		RequestDispatcher rd = request.getRequestDispatcher("PersonalInformationPage.jsp");
-		rd.forward(request, response);
+		session.setAttribute("fromServlet", toString());
+	}
+	
+	@Override
+	public String toString()
+	{
+		return this.getClass().getName();
 	}
 
 }

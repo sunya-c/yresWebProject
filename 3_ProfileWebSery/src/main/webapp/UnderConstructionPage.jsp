@@ -48,7 +48,7 @@
 			System.err.println("ServletContext        : " + fs.getFullServletName());
 			session.setAttribute("fromServlet", null);
 			
-			response.sendRedirect("WelcomePage.jsp");
+			response.sendRedirect("Home");
 		}
 	%>
 

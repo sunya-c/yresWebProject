@@ -1,3 +1,8 @@
+<%@page import="com.sunya.servlets.ServletLogin"%>
+<%@page import="com.sunya.config.WebConfig"%>
+<%@page import="org.springframework.context.annotation.AnnotationConfigApplicationContext"%>
+<%@page import="org.springframework.context.support.ClassPathXmlApplicationContext"%>
+<%@page import="org.springframework.context.ApplicationContext"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -23,11 +28,11 @@
 <body id="i0wps4">
 	<div id="ij9j5j">
 		<div id="ibamvk">
-			Loading...
+			Loading. . .
 		</div>
 	</div>
 	<%
-	response.sendRedirect("LoginPage.jsp");
+	response.sendRedirect("Home");
 	%>
 </body>
 </html>

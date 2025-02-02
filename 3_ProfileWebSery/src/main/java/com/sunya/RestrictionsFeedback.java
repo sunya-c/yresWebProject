@@ -1,5 +1,7 @@
 package com.sunya;
 
+import jakarta.servlet.ServletException;
+
 public class RestrictionsFeedback
 {
 	ErrorMessageSetterFeedback errSetter;
@@ -21,7 +23,14 @@ public class RestrictionsFeedback
 	}
 	// end -- Constructor
 	
-	
+	/**
+	 * Check whether the given feedback information comply with the restriction.
+	 * 
+	 * @return <strong>true</strong> ~ if the given feedback information comply with ALL the restriction.<br>
+	 *         <strong>false</strong> ~ if at least one of them doesn't meet the restriction. 
+	 *         							The error messages, containing the detail, will be set to the session by {@code ErrorMessageSetterFeedback.java} object
+	 * @throws ServletException
+	 */
 	public boolean checkRestriction()
 	{
 		boolean validInfo = true;

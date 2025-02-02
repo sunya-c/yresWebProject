@@ -23,7 +23,14 @@ public class RestrictionsCreateAccount
 	}
 	// end -- Constructor
 
-	
+	/**
+	 * Check whether the given username and password comply with the restriction.
+	 * 
+	 * @return <strong>true</strong> ~ if the given username and password comply with ALL the restriction.<br>
+	 *         <strong>false</strong> ~ if at least one of them doesn't meet the restriction. 
+	 *         							The error messages, containing the detail, will be set to the session by {@code ErrorMessageSetterCreateAccount.java} object
+	 * @throws ServletException
+	 */
 	public boolean checkRestriction() throws ServletException
 	{
 		boolean validInfo = true;

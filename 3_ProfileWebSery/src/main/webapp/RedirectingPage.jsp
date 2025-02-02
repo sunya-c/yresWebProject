@@ -23,7 +23,7 @@
 <script type="text/javascript">
 	// Redirect to ServletRedirecting after a delay
 	setTimeout(function() {
-		window.location.href = "WelcomePage.jsp";
+		window.location.href = "Home"; <!-- TODO: change to el for dynamic redirecting -->
 	}, 5000); // 5000 milliseconds = 5 seconds
 </script>
 </head>
@@ -41,13 +41,13 @@
 		PrintError.println(errText);
 		session.setAttribute("fromServlet", null);
 
-		response.sendRedirect("WelcomePage.jsp");
+		response.sendRedirect("Home");
 	}
 	%>
 	
 	<div id="ifn70r">
 		<div id="i20y3j">${message}</div>
-		<div id="iz2qet">Moving you back to ${destinationPage}...</div>
+		<div id="iz2qet">Moving you back to <i>${destinationPage}</i>. . .</div>
 	</div>
 </body>
 </html>

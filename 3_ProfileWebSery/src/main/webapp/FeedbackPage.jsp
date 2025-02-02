@@ -46,14 +46,14 @@
 	%>
 
 	<div id="ixq7f1">
-		<form method="get" action="WelcomePage.jsp" id="i2n2qc">
+		<form method="get" action="Home" id="i2n2qc">
 			<button type="submit" id="iyqs2g">Home</button>
 		</form>
 	</div>
 	<div id="i9sdt7">
 		<div id="ipethv">Give feedback or report bugs</div>
 		<div id="ilnnh1">
-			<form method="post" action="ServletFeedback" id="i9g2n7">
+			<form method="post" action="sFeedback" id="i9g2n7">
 				<div id="i72yhh">
 					<label id="i1qbol">Title<br /></label><input type="text"
 						placeholder="Give a meaningful name for this issue/feedback"
