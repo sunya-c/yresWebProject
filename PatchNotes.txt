@@ -3,6 +3,4 @@ Organized file name and file location.
 ----------
 
 Organized file name and file location.:
--Moved jsp file into WEB-INF folder to prevent direct access from clients.
--Changed file/folder name from servlet to service.
--Put resource files, including css, resume, and pictures, together in resources folder.
+-Put Restriction and its related classes into one package.

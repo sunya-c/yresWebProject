@@ -2,14 +2,15 @@ package com.sunya.services;
 
 import java.io.IOException;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.sunya.ErrMsg;
-import com.sunya.ErrorMessageSetterCreateAccount;
 import com.sunya.PrintError;
-import com.sunya.RestrictionsCreateAccount;
 import com.sunya.daos.DaoLoginInfo;
 import com.sunya.managers.SessionManager;
+import com.sunya.restrictions.ErrMsg;
+import com.sunya.restrictions.ErrorMessageSetterCreateAccount;
+import com.sunya.restrictions.RestrictionsCreateAccount;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,13 +20,15 @@ import jakarta.servlet.http.HttpSession;
 @Service
 public class ServiceCreateAccount
 {
+	@Autowired
+	HttpSession session;
+	
 	public String sCreateAccount(HttpServletRequest request, HttpServletResponse response) throws IOException
 	{
 		String username = request.getParameter("username");
 		String password1 = request.getParameter("password1");
 		String password2 = request.getParameter("password2");
 
-		HttpSession session = request.getSession();
 		SessionManager sm = new SessionManager(session);
 		sm.removeCreateAccountErr();
 		session.setAttribute(sm.CREATEACCOUNT_UNAME_PRETYPED, username);

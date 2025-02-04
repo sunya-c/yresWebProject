@@ -1,4 +1,4 @@
-package com.sunya;
+package com.sunya.restrictions;
 
 import com.sunya.daos.DaoLoginInfo;
 

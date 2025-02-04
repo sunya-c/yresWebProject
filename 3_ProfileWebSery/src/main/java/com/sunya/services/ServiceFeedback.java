@@ -4,10 +4,10 @@ import java.io.IOException;
 
 import org.springframework.stereotype.Service;
 
-import com.sunya.ErrorMessageSetterFeedback;
-import com.sunya.RestrictionsFeedback;
 import com.sunya.daos.DaoFeedback;
 import com.sunya.managers.SessionManager;
+import com.sunya.restrictions.ErrorMessageSetterFeedback;
+import com.sunya.restrictions.RestrictionsFeedback;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

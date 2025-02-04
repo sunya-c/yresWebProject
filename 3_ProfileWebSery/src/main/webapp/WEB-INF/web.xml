@@ -22,7 +22,7 @@
 	</security-constraint> -->
 	
 	<!-- Spring MVC -->
-<!-- 	<servlet>
+ 	<!-- <servlet>
 		<servlet-name>mvc</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 	</servlet>
