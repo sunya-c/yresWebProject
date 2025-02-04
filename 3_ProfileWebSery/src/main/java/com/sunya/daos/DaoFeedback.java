@@ -5,16 +5,20 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.Format;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Random;
 import java.util.TimeZone;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
+
 import com.sunya.PrintError;
 
 import jakarta.servlet.ServletException;
 
+@Component
 public class DaoFeedback extends Dao
 {
 	// tableName :
@@ -32,6 +36,10 @@ public class DaoFeedback extends Dao
 	
 	private final String ERR1 = "Failed to submit feedback/bug report.";
 	private String errText = "";
+	
+	@Autowired
+	@Qualifier("backDateTime")
+	private DateTimeFormatter dateTimeFormat;
 	
 	{
 		setupDbms("sunyadb");
@@ -111,8 +119,7 @@ public class DaoFeedback extends Dao
 			int gmtPlus7 = (timeOffset/(1000*60*60))+7;  // an offset for converting local machine's time to GMT+7
 			
 			LocalDateTime time = LocalDateTime.now().plusHours(gmtPlus7);  // converting local machine's time to GMT+7
-			DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-			String reportDate = time.format(format);
+			String reportDate = time.format(dateTimeFormat);
 			st.setString(2, reportDate);
 			
 			st.setString(3, username);

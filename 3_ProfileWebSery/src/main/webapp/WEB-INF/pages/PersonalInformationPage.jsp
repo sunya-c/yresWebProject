@@ -27,39 +27,6 @@
 </head>
 
 <body id="io13me">
-	<%
-	SessionManager sm = new SessionManager(session);
-	session.setAttribute(sm.LOGIN_FROMPAGE, "personalInformation");
-	%>
-
-	<!-- Prevent the back button -->
-	<%
-	response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // http 1.1
-	response.setHeader("Pragma", "no-cache"); // http 1.0
-	response.setHeader("Expires", "0"); // Proxies
-	%>
-
-	<!-- Forcing to access this page by Servlet -->
-	<!-- Check if this page is called by its servlet -->
-	<%
-	FromServlet fs = new FromServlet(application, "ServletPersonalInformation", session);
-
-	if (fs.isFromServlet())
-	{
-		System.out.println("fromServlet and context matched.");
-		session.setAttribute("fromServlet", null);
-	}
-	else
-	{
-		String errText = "fromServlet mismatch";
-		PrintError.println(errText);
-		System.err.println("fromServlet attribute : " + fs.getFromServletAttribute());
-		System.err.println("ServletContext        : " + fs.getFullServletName());
-		session.setAttribute("fromServlet", null);
-
-		response.sendRedirect("personalInformation");
-	}
-	%>
 
 	<!-- Page content -->
 	<div id="i1lfxj">

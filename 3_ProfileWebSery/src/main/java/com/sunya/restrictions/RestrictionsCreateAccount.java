@@ -1,30 +1,42 @@
 package com.sunya.restrictions;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.sunya.daos.DaoLoginInfo;
 
 import jakarta.servlet.ServletException;
 
+/**
+ * Call {@code setupRestrictionCreateAccount(username, password1, password2)} first before {@code checkRestriction()}
+ */
+@Component
 public class RestrictionsCreateAccount
 {
-	DaoLoginInfo dao;
-	ErrorMessageSetterCreateAccount errSetter;
-	String username;
-	String password1;
-	String password2;
-
-	// Constructor
-	public RestrictionsCreateAccount(DaoLoginInfo dao, ErrorMessageSetterCreateAccount errSetter, String username, String password1, String password2)
+	@Autowired
+	private DaoLoginInfo dao;
+	@Autowired
+	private ErrorMessageSetterCreateAccount errSetter;
+	private String username;
+	private String password1;
+	private String password2;
+	
+	
+	
+	
+	public void setupRestrictionCreateAccount(String username, String password1, String password2)
 	{
-		this.errSetter = errSetter;
 		this.username = username;
 		this.password1 = password1;
 		this.password2 = password2;
-		this.dao = dao;
 	}
-	// end -- Constructor
-
+	
+	
+	
+	
 	/**
-	 * Check whether the given username and password comply with the restriction.
+	 * Check whether the given username and password comply with the restriction. 
+	 * Set up the username, password1, and password2 before calling this method.
 	 * 
 	 * @return <strong>true</strong> ~ if the given username and password comply with ALL the restriction.<br>
 	 *         <strong>false</strong> ~ if at least one of them doesn't meet the restriction. 
@@ -80,6 +92,8 @@ public class RestrictionsCreateAccount
 			validInfo = false;
 		}
 		
+		clearVariables();
+		
 		// overall check
 		return validInfo;
 	}
@@ -124,5 +138,12 @@ public class RestrictionsCreateAccount
 			return false;
 		else
 			return !(password1.contains(" "));
+	}
+	
+	private void clearVariables()
+	{
+		username = null;
+		password1 = null;
+		password2 = null;
 	}
 }

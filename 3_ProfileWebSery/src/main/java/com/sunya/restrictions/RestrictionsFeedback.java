@@ -1,30 +1,41 @@
 package com.sunya.restrictions;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import jakarta.servlet.ServletException;
 
+/**
+ * Call {@code setupRestrictionFeedback(title, detail, errorMessage)} first before {@code checkRestriction()}
+ */
+@Component
 public class RestrictionsFeedback
 {
-	ErrorMessageSetterFeedback errSetter;
-	String feedbackTitle;
-	String feedbackDetail;
-	String feedbackErrorMessage;
-
-	// Constructor
-	public RestrictionsFeedback(
-			ErrorMessageSetterFeedback errSetter,
+	@Autowired
+	private ErrorMessageSetterFeedback errSetter;
+	private String feedbackTitle;
+	private String feedbackDetail;
+	private String feedbackErrorMessage;
+	
+	
+	
+	
+	public void setupRestrictionFeedback(
 			String feedbackTitle,
 			String feedbackDetail,
 			String feedbackErrorMessage)
 	{
-		this.errSetter = errSetter;
 		this.feedbackTitle = feedbackTitle;
 		this.feedbackDetail = feedbackDetail;
 		this.feedbackErrorMessage = feedbackErrorMessage;
 	}
-	// end -- Constructor
+	
+	
+	
 	
 	/**
 	 * Check whether the given feedback information comply with the restriction.
+	 * Set up the feedbackTitle, feedbackDetail, and feedbackErrorMessage before calling this method.
 	 * 
 	 * @return <strong>true</strong> ~ if the given feedback information comply with ALL the restriction.<br>
 	 *         <strong>false</strong> ~ if at least one of them doesn't meet the restriction. 
@@ -68,7 +79,16 @@ public class RestrictionsFeedback
 			validInfo = false;
 		}
 		
+		clearVariables();
+		
 		return validInfo;
+	}
+	
+	private void clearVariables()
+	{
+		feedbackTitle = null;
+		feedbackDetail = null;
+		feedbackErrorMessage = null;
 	}
 
 }

@@ -1,3 +1,4 @@
+<%@page import="org.springframework.beans.factory.annotation.Autowired"%>
 <%@page import="com.sunya.managers.SessionManager"%>
 <%@page import="com.sunya.PrintError"%>
 <%@page import="com.sunya.FromServlet"%>
@@ -24,26 +25,6 @@
 </head>
 
 <body id="ihjsk6">
-
-	<%
-	FromServlet fs = new FromServlet(application, "ServletCreateAccount", session);
-	if (fs.isFromServlet())
-	{
-		System.out.println("fromServlet and context matched.");
-		session.setAttribute("fromServlet", null);
-	}
-	else
-	{
-		String errText = "fromServlet mismatch";
-		PrintError.println(errText);
-		System.err.println("fromServlet attribute : " + fs.getFromServletAttribute());
-		System.err.println("ServletContext        : " + fs.getFullServletName());
-		session.setAttribute("fromServlet", null);
-
-		SessionManager sm = new SessionManager(session);
-		sm.removeCreateAccountErr();
-	}
-	%>
 
 	<div id="i1h2wx">
 		<form method="get" action="Home" id="idtzab">

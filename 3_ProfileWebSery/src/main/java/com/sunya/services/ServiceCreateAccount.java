@@ -1,11 +1,8 @@
 package com.sunya.services;
 
-import java.io.IOException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.sunya.PrintError;
 import com.sunya.daos.DaoLoginInfo;
 import com.sunya.managers.SessionManager;
 import com.sunya.restrictions.ErrMsg;
@@ -21,58 +18,52 @@ import jakarta.servlet.http.HttpSession;
 public class ServiceCreateAccount
 {
 	@Autowired
-	HttpSession session;
+	private HttpSession session;
+	@Autowired
+	private SessionManager sm;
+	@Autowired
+	private ErrorMessageSetterCreateAccount errSetter;
+	@Autowired
+	private DaoLoginInfo dao;
+	@Autowired
+	private RestrictionsCreateAccount restriction;
 	
-	public String sCreateAccount(HttpServletRequest request, HttpServletResponse response) throws IOException
+	public String sCreateAccount(HttpServletRequest request, HttpServletResponse response) throws ServletException
 	{
 		String username = request.getParameter("username");
 		String password1 = request.getParameter("password1");
 		String password2 = request.getParameter("password2");
 
-		SessionManager sm = new SessionManager(session);
 		sm.removeCreateAccountErr();
 		session.setAttribute(sm.CREATEACCOUNT_UNAME_PRETYPED, username);
-
-		DaoLoginInfo dao = new DaoLoginInfo();
 		
-		ErrorMessageSetterCreateAccount errSetter = new ErrorMessageSetterCreateAccount(session); //TODO: try to put this into the restriction class so that this line can be removed.
-		RestrictionsCreateAccount restriction = new RestrictionsCreateAccount(
-				dao,
-				errSetter,
-				username,
-				password1,
-				password2);
+		restriction.setupRestrictionCreateAccount(username, password1, password2);
 		
-		try
+		if (restriction.checkRestriction())
 		{
-			if (restriction.checkRestriction())
+			if (dao.addUser(username, password1))
 			{
-				if (dao.addUser(username, password1))
-				{
-					session.setAttribute(sm.REDIRECT_MESSAGE, "Done!");
-					session.setAttribute(sm.REDIRECT_DESTINATION, "Home page");
-					session.setAttribute("fromServlet", toString());
-					session.setAttribute(sm.LOGIN_UNAME_PRETYPED, username);
-					
-					return "redirecting";
-				}
-				else
-				{
-					ErrMsg CUSTOM_ERR = ErrMsg.CREATEACCOUNT_UNAME_DUPLICATE;
-					CUSTOM_ERR.setCustomErrMessage("Something's wrong, please try again.");
-					errSetter.setUsernameErr(CUSTOM_ERR);
-					session.setAttribute("fromServlet", toString());
-					return "createAccount";
-				}
+				session.setAttribute(sm.REDIRECT_MESSAGE, "Done!");
+				session.setAttribute(sm.REDIRECT_DESTINATION, "Home page");
+				session.setAttribute("fromServlet", toString());
+				session.setAttribute(sm.LOGIN_UNAME_PRETYPED, username);
+				
+				return "redirecting";
 			}
 			else
+			{
+				ErrMsg CUSTOM_ERR = ErrMsg.CREATEACCOUNT_UNAME_DUPLICATE;
+				CUSTOM_ERR.setCustomErrMessage("Something's wrong, please try again.");
+				
+				errSetter.setUsernameErr(CUSTOM_ERR);
+				
 				session.setAttribute("fromServlet", toString());
 				return "createAccount";
+			}
 		}
-		catch (ServletException e)
-		{
-			return PrintError.toErrorPage(session, this, e);
-		}
+		else
+			session.setAttribute("fromServlet", toString());
+			return "createAccount";
 	}
 	
 	@Override

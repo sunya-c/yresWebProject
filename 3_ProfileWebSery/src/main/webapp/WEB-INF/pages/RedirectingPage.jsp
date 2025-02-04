@@ -24,30 +24,14 @@
 	// Redirect to ServletRedirecting after a delay
 	setTimeout(function() {
 		window.location.href = "Home"; <!-- TODO: change to el for dynamic redirecting -->
-	}, 5000); // 5000 milliseconds = 5 seconds
+	}, 4500); // 4500 milliseconds = 4.5 seconds
 </script>
 </head>
 <body id="ieu1zk">
-
-	<%
-	if (session.getAttribute("fromServlet") != null)
-	{
-		System.out.println("fromServlet and context matched.");
-		session.setAttribute("fromServlet", null);
-	}
-	else
-	{
-		String errText = "fromServlet mismatch";
-		PrintError.println(errText);
-		session.setAttribute("fromServlet", null);
-
-		response.sendRedirect("Home");
-	}
-	%>
 	
 	<div id="ifn70r">
 		<div id="i20y3j">${message}</div>
-		<div id="iz2qet">Moving you back to <i>${destinationPage}</i>. . .</div>
+		<div id="iz2qet">Moving you back to <i>${destinationPage}</i> . . .</div>
 	</div>
 </body>
 </html>

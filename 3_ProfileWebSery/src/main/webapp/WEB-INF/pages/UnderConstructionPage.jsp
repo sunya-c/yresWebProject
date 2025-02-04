@@ -22,17 +22,10 @@
 </head>
 
 <body id="ie993">
-
-	<!--
-	TODO
-	Declarative
-	final String ERR1
-	String errText
-	-->
 	
 	<!-- Forcing to access this page by Servlet -->
 	<!-- Check if this page is called by its servlet -->
-	<%
+	<%-- <%
 		FromServlet fs = new FromServlet(application, "UnderConstruction", session);
 	
 		if (fs.isFromServlet())
@@ -50,7 +43,7 @@
 			
 			response.sendRedirect("Home");
 		}
-	%>
+	%> --%>
 
 	<div id="i3p1i">
 		<div id="ikk4r">

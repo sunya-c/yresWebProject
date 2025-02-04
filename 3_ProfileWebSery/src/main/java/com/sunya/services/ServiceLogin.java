@@ -1,10 +1,8 @@
 package com.sunya.services;
 
-import java.io.IOException;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.sunya.PrintError;
 import com.sunya.daos.DaoLoginInfo;
 import com.sunya.managers.SessionManager;
 
@@ -16,56 +14,52 @@ import jakarta.servlet.http.HttpSession;
 @Service
 public class ServiceLogin
 {
+	@Autowired
+	private HttpSession session;
+	@Autowired
+	private SessionManager sm;
+	@Autowired
+	private DaoLoginInfo dao;
+	
 	private String fromPage;
 
-	public String sLogin(HttpServletRequest request, HttpServletResponse response) throws IOException
+	public String sLogin(HttpServletRequest request, HttpServletResponse response) throws ServletException
 	{
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 
-		HttpSession session = request.getSession();
-		SessionManager sm = new SessionManager(session);
-		
 		fromPage = (String) session.getAttribute(sm.LOGIN_FROMPAGE);
 		if (fromPage == null)
 		{
 			fromPage = "Home";
 		}
 
-		DaoLoginInfo dao = new DaoLoginInfo();
-
 		sm.removeLoginErr();
 		session.setAttribute(sm.LOGIN_UNAME_PRETYPED, username);
 
-		try
+
+		if (!dao.checkUsernameCaseSen(username)) // if username is invalid
 		{
-			if (!dao.checkUsernameCaseSen(username)) // if username is invalid
+			session.setAttribute(sm.LOGIN_UNAME_ERR, "Invalid username!!!");
+
+			return fromPage;
+		}
+		else // if username is valid, proceed with password check
+		{
+			if (!dao.checkPasswordCaseSen(username, password))
 			{
-				session.setAttribute(sm.LOGIN_UNAME_ERR, "Invalid username!!!");
+				session.setAttribute(sm.LOGIN_PASS_ERR, "Incorrect password!!!");
 
 				return fromPage;
 			}
-			else // if username is valid, proceed with password check
+			else
 			{
-				if (!dao.checkPasswordCaseSen(username, password))
-				{
-					session.setAttribute(sm.LOGIN_PASS_ERR, "Incorrect password!!!");
-
-					return fromPage;
-				}
-				else
-				{
-					session.removeAttribute(sm.LOGIN_UNAME_PRETYPED);
-					session.setAttribute(sm.LOGIN_USERNAME, username);
-					session.setAttribute(sm.LOGIN_LOGGED_IN, true);
-					
-					return fromPage;
-				}
+				session.removeAttribute(sm.LOGIN_UNAME_PRETYPED);
+				session.setAttribute(sm.LOGIN_USERNAME, username);
+				session.setAttribute(sm.LOGIN_LOGGED_IN, true);
+				
+				return fromPage;
 			}
-		}
-		catch (ServletException e)
-		{
-			return PrintError.toErrorPage(session, this, e);
 		}
 	}
 	

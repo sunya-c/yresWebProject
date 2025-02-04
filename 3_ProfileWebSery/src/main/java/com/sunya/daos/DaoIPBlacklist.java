@@ -1,6 +1,5 @@
 package com.sunya.daos;
 
-import java.awt.Container;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;

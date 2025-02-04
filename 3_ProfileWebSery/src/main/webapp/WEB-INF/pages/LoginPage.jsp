@@ -1,3 +1,4 @@
+<%@page import="org.springframework.beans.factory.annotation.Autowired"%>
 <%@page import="com.sunya.daos.DaoWebdatainfo"%>
 <%@page import="com.sunya.managers.SessionManager"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -24,35 +25,6 @@
 </head>
 
 <body id="i5xm">
-
-	<%
-	SessionManager sm = new SessionManager(session);
-	session.setAttribute(sm.LOGIN_FROMPAGE, "Home");
-	%>
-
-	<%
-	DaoWebdatainfo dao = new DaoWebdatainfo();
-	if (session.getAttribute(sm.WEB_NOTE1) == null || ((String)session.getAttribute(sm.WEB_NOTE1)).isEmpty())
-	{
-		session.setAttribute(sm.WEB_NOTE1, dao.getWebinfo(sm.WEB_NOTE1));
-	}
-	%>
-
-	<!--
-	TODO
-	Declarative
-	final String ERR1
-	String errText
-	-->
-
-	<%
-	if ((session.getAttribute("loggedIn") != null) && ((boolean) session.getAttribute("loggedIn") == true))
-	{
-		response.sendRedirect("welcome");
-	}
-	// try catch ClassCastException e
-	// when loggedIn is not null and not boolean
-	%>
 
 	<div id="ilt5zk">
 		<div id="i99fq4">Important : </div>

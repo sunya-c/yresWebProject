@@ -6,8 +6,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.springframework.stereotype.Component;
+
 import jakarta.servlet.ServletException;
 
+@Component
 public class DaoWebdatainfo extends Dao
 {
 	// Table name

@@ -1,16 +1,25 @@
 package com.sunya.daos;
 
 // 1: Import
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.TimeZone;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
+
 import com.sunya.PrintError;
-import com.sunya.exceptions.WebUnameException;
 
 import jakarta.servlet.ServletException;
 
+@Component
 public class DaoLoginInfo extends Dao
 {
 	// Table name :
@@ -30,6 +39,10 @@ public class DaoLoginInfo extends Dao
 	final String ERR3 = "Incorrect password";
 	String errText = null;
 	// end -- Error report
+	
+	@Autowired
+	@Qualifier("backDateTime")
+	protected DateTimeFormatter dateTimeFormat;
 
 
 	{
@@ -206,8 +219,7 @@ public class DaoLoginInfo extends Dao
 				int gmtPlus7 = (timeOffset/(1000*60*60))+7;  // an offset for converting local machine's time to GMT+7
 				
 				LocalDateTime time = LocalDateTime.now().plusHours(gmtPlus7);  // converting local machine's time to GMT+7
-				DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-				String formattedTime = time.format(timeFormat);
+				String formattedTime = time.format(dateTimeFormat);
 				st.setString(3, formattedTime);
 
 				// 5: Execute the query

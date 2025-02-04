@@ -1,6 +1,10 @@
 package com.sunya;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.sunya.exceptions.ServletContextNotFoundException;
+import com.sunya.managers.SessionManager;
 
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpSession;
@@ -14,56 +18,68 @@ import jakarta.servlet.http.HttpSession;
  * showing the results in ExamplePage.jsp. In this case you don't want 
  * the client to visit ExamplePage.jsp right away without visiting 
  * ExampleServlet.java first.
+ * <br><br>
+ * To use this class, in the class you want clients to visit before visiting a page, 
+ * set the value of the attribute name "fromServlet" to {@code this.getClass().getName()}. 
+ * In the page you don't want clients to visit right away, create an object of {@code FromServlet} class, 
+ * then call {@code isFromServlet(className)}. Replace "className" with the name of the class you 
+ * want clients to visit first.
+ * 
  */
+@Component
 public class FromServlet
 {
 	private String fullServletName = "";
-	String fromServletAttribute;
-
+	private String fromServletAttribute;
+	
+	@Autowired
+	private ServletContext context;
+	
+	@Autowired
+	private HttpSession session;
+	
+	@Autowired
+	private SessionManager sm;
+	
+	
+	
+	
 	/**
-	 * @param context ~ ServletContext, which stores names to compare with.
+	 * Check whether the client has visited the specified page/servlet before visiting this page.
 	 * 
-	 * @param contextReference ~ the servlet name (in the context) which you want the client to visit before this page.
+	 * @param expectedClass ~ the class name that you want the client to visit before visiting this page.<br>
 	 * 
-	 * @param session ~ HttpSession. In the page/servlet you want the client to visit before this page, 
-	 * set the value of the attribute name "fromServlet" to "this.getServletName()".
-	*/
-	// Constructor
-	public FromServlet(ServletContext context, String contextReference, HttpSession session) throws ServletContextNotFoundException
+	 * @return <strong>true</strong> ~ if the client has visited the page you desired ("fromServlet" == page/servlet name desired).<br>
+	 *         <strong>false</strong> ~ otherwise ("fromServlet" != page/servlet name desired).
+	 * @throws ServletContextNotFoundException 
+	 */
+	public boolean isFromServlet(String expectedClass) throws ServletContextNotFoundException
 	{
-		String nameInContext = context.getInitParameter(contextReference);
+		setupFromServlet(expectedClass);
+		
+		if (fullServletName.equals(fromServletAttribute))
+			return true;
+		else
+			return false;
+	}
+	
+	private void setupFromServlet(String expectedClass) throws ServletContextNotFoundException
+	{
+		String nameInContext = context.getInitParameter(expectedClass);
 		
 		if ( nameInContext != null)
 		{
-			System.out.println("nameInContext is valid : " + nameInContext);
 			this.fullServletName = nameInContext;
 		}
 		if (nameInContext == null)
 		{
 			this.fullServletName = null;
-			throw new ServletContextNotFoundException("Check the spelling of \"" + contextReference + "\".");
+			throw new ServletContextNotFoundException("Check the spelling of \"" + expectedClass + "\".");
 		}
 		
-		fromServletAttribute = (String) session.getAttribute("fromServlet");
+		fromServletAttribute = (String)session.getAttribute(sm.FROM_SERVLET);
 	}
-	// end -- Constructor
 	
-	/**
-	 * Check whether the client has visited the specified page/servlet before visiting this page.
-	 * <br>
-	 * @return true ~ if the client has visited the page you desired ("fromServlet" == page/servlet name desired).<br>
-	 * <pre>
-	 *    false ~ otherwise ("fromServlet" != page/servlet name desired).
-	 * </pre>
-	 */
-	// return 
-	public boolean isFromServlet()
-	{
-			if (fullServletName.equals(fromServletAttribute))
-				return true;
-			else
-				return false;
-	}
 	
 	
 	

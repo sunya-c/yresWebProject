@@ -25,22 +25,6 @@
 
 <body id="icnopa">
 
-	<!-- Prevent the back button -->
-	<%
-	response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // http 1.1
-	response.setHeader("Pragma", "no-cache"); // http 1.0
-	response.setHeader("Expires", "0"); // Proxies ***Someone has said "0" will sometimes not work, instead set it to be a date in the past.
-	%>
-	
-	<%
-	SessionManager sm = new SessionManager(session);
-	DaoWebdatainfo dao = new DaoWebdatainfo();
-	if (session.getAttribute(sm.WEB_NOTE1) == null || ((String)session.getAttribute(sm.WEB_NOTE1)).isEmpty())
-	{
-		session.setAttribute(sm.WEB_NOTE1, dao.getWebinfo(sm.WEB_NOTE1));
-	}
-	%>
-
 	<div id="iy0w9r">
 		<div id="i4j7hg">Important : </div>
 		<div id="i7vw6u">

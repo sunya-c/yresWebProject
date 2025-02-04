@@ -1,153 +1,31 @@
 package com.sunya.controllers;
 
-import java.io.IOException;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
 
-import com.sunya.services.ServiceCreateAccount;
-import com.sunya.services.ServiceDownloadResume;
-import com.sunya.services.ServiceFeedback;
-import com.sunya.services.ServiceLogin;
-import com.sunya.services.ServiceLogout;
-import com.sunya.services.ServicePersonalInformation;
+import com.sunya.FromServlet;
+import com.sunya.managers.SessionManager;
 
-import jakarta.servlet.ServletContext;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
-@Controller
 public class Controller1
 {
-	private String redirect = "redirect:";
-	
-	@RequestMapping("/Home")
-	public ModelAndView homePage()
-	{
-		ModelAndView mv = new ModelAndView();
-		mv.setViewName("LoginPage");
-		mv.addObject("name", "value");  // same as request.setAttribute("name", "value");  get the value by request.getAttribute("name");
-		
-		return mv;
-	}
-	
-	@GetMapping("/welcome")
-	public String welcomePage()
-	{
-		return "WelcomePage";
-	}
-	
-	
-	
+	protected String redirect = "redirect:";
 	
 	@Autowired
-	ServiceLogin sli;
-	
-	@PostMapping("/sLogin")
-	public String sLogin(HttpServletRequest request, HttpServletResponse response) throws IOException
-	{
-		return redirect+sli.sLogin(request, response);
-	}
-	
+	protected HttpSession session;
 	@Autowired
-	ServiceLogout slo;
-	
-	@PostMapping("/sLogout")
-	public String sLogout(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
-	{
-		return redirect+slo.sLogout(request, response);
-	}
-	
-	
-	
-	
-	@GetMapping("/redirecting")
-	public String redirectingPage()
-	{
-		return "RedirectingPage";
-	}
-	
-	
-	
-	
-	@GetMapping("/createAccount")
-	public String createAccountPage()
-	{
-		return "CreateAccountPage";
-	}
-	
+	protected SessionManager sm;
 	@Autowired
-	ServiceCreateAccount sca;
+	protected FromServlet fs;
 	
-	@PostMapping("/sCreateAccount")
-	public String sCreateAccount(HttpServletRequest request, HttpServletResponse response) throws IOException
+	
+	
+	
+	protected void preventBackButton(HttpServletResponse response)
 	{
-		return redirect+sca.sCreateAccount(request, response);
+		response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // http 1.1
+		response.setHeader("Pragma", "no-cache"); // http 1.0
+		response.setHeader("Expires", "0"); // Proxies ***Someone has said "0" will sometimes not work, instead set it to be a date in the past.
 	}
-	
-	
-	
-	
-	@Autowired
-	ServicePersonalInformation spinfo;
-	
-	@GetMapping("/personalInformation")
-	public String persInfoPage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
-	{
-		spinfo.sPersInfo(request, response);
-		
-		return "PersonalInformationPage";
-	}
-	
-	
-	
-	
-	@GetMapping("/feedback")
-	public String feedbackPage()
-	{
-		return "FeedbackPage";
-	}
-	
-	@Autowired
-	ServiceFeedback sf;
-	
-	@PostMapping("/sFeedback")
-	public String sFeedback(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
-	{		
-		return redirect+sf.sFeedback(request, response);
-	}
-
-	
-	
-	
-	@Autowired
-	ServiceDownloadResume sdr;
-	
-	@GetMapping("/sDownloadResume")
-	public ResponseEntity<Resource> sDownloadResume()
-	{	
-		return sdr.sDownloadResume();
-	}
-	
-	
-	
-	
-	@GetMapping("/error")
-	public String toErrorPageGet()
-	{
-		return "ErrorPage";
-	}
-	@PostMapping("/error")
-	public String toErrorPagePost()
-	{
-		return "ErrorPage";
-	}
-	
 }

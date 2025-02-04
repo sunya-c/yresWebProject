@@ -1,3 +1,4 @@
+<%@page import="org.springframework.beans.factory.annotation.Autowired"%>
 <%@page import="com.sunya.managers.SessionManager"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8" isErrorPage="true"%>
@@ -22,13 +23,6 @@
 </head>
 
 <body id="i3ptqv">
-
-	<%
-	if (session.getAttribute("fromServlet") == null)
-		response.sendRedirect("Home");
-	else
-		session.setAttribute("fromServlet", null);
-	%>
 
 	<div id="i6jq1w">
 		<div id="i3sbnu">

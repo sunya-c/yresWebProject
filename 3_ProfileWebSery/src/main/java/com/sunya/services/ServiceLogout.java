@@ -2,6 +2,7 @@ package com.sunya.services;
 
 import java.io.IOException;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sunya.managers.SessionManager;
@@ -14,10 +15,11 @@ import jakarta.servlet.http.HttpSession;
 @Service
 public class ServiceLogout
 {
+	@Autowired
+	private SessionManager sm;
+	
 	public String sLogout(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
-		HttpSession session = request.getSession();
-		SessionManager sm = new SessionManager(session);
 		sm.removeLoginState();
 		System.out.println(toString());
 		return "Home";

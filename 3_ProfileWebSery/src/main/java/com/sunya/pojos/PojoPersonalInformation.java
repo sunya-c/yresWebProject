@@ -5,6 +5,9 @@ import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.sunya.exceptions.NegativeAgeException;
 
 public class PojoPersonalInformation
@@ -17,8 +20,11 @@ public class PojoPersonalInformation
 	private String nationality;
 	private boolean drivingLicense;
 	private boolean engineeringLicense;
+	
 	private ArrayList<String[]> listLanguage = new ArrayList<>();  // { {Language1, Proficiency1}, {...2, ...2} }
+	
 	private ArrayList<String[]> listProgrammingLanguage = new ArrayList<>();  // { {Language1, Proficiency1}, {...2, ...2} }
+	
 	private String address;
 	private String phoneNumber;
 	private String email;
@@ -35,7 +41,9 @@ public class PojoPersonalInformation
 	public PojoPersonalInformation()
 	{
 	}
-	public PojoPersonalInformation(String sunyapong)
+	// end -- Constructor
+	
+	public void setupPojoPersonalInformation(String sunyapong)
 	{
 		if ( sunyapong.equals("sunyapong") )
 		{
@@ -49,7 +57,7 @@ public class PojoPersonalInformation
 			}
 			catch (NegativeAgeException e)
 			{
-				System.err.println(">>> Exception 001.1 !!! <<<");
+				System.err.println(">>> Exception pojopersinfo-01 !!! <<<");
 				System.err.println(e);
 			}
 			
@@ -98,7 +106,6 @@ public class PojoPersonalInformation
 								"Total:\t"      + "780");
 		}
 	}
-	// end -- Constructor
 
 	
 	

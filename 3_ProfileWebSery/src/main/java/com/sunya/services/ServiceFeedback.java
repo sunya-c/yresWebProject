@@ -2,8 +2,11 @@ package com.sunya.services;
 
 import java.io.IOException;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
+import com.sunya.config.InternalConfig;
 import com.sunya.daos.DaoFeedback;
 import com.sunya.managers.SessionManager;
 import com.sunya.restrictions.ErrorMessageSetterFeedback;
@@ -17,22 +20,27 @@ import jakarta.servlet.http.HttpSession;
 @Service
 public class ServiceFeedback
 {
+	@Autowired
+	private HttpSession session;
+	@Autowired
+	private SessionManager sm;
+	@Autowired
+	private DaoFeedback dao;
+	@Autowired
+	private RestrictionsFeedback restriction;
+	
 	public String sFeedback(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
 	{
 		String feedbackTitle = request.getParameter("reportTitle");
 		String feedbackDetail = request.getParameter("reportDetail");
 		String feedbackErrorMessage = request.getParameter("errorMessage");
 		
-		HttpSession session = request.getSession();
-		SessionManager sm = new SessionManager(session);
 		sm.removeFeedbackErr();
 		
-		ErrorMessageSetterFeedback errSetter = new ErrorMessageSetterFeedback(session);  //TODO: try to put this inside restriction class so that this line can be removed.
-		RestrictionsFeedback restriction = new RestrictionsFeedback(errSetter, feedbackTitle, feedbackDetail, feedbackErrorMessage);
+		restriction.setupRestrictionFeedback(feedbackTitle, feedbackDetail, feedbackErrorMessage);
 		
 		if (restriction.checkRestriction())
 		{
-			DaoFeedback dao = new DaoFeedback();
 			String username = (String) session.getAttribute(sm.LOGIN_USERNAME);
 			dao.submitFeedback(username, feedbackTitle, feedbackDetail, feedbackErrorMessage);
 			

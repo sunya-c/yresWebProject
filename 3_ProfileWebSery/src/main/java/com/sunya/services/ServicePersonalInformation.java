@@ -3,8 +3,11 @@ package com.sunya.services;
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import com.sunya.managers.SessionManager;
 import com.sunya.pojos.PojoPersonalInformation;
 
 import jakarta.servlet.ServletException;
@@ -15,16 +18,22 @@ import jakarta.servlet.http.HttpSession;
 @Service
 public class ServicePersonalInformation
 {
+	@Autowired
+	private HttpSession session;
+	@Autowired
+	private SessionManager sm;
+	@Autowired
+	@Qualifier("frontDate")
+	private DateTimeFormatter dateFormat;
+	
 	public void sPersInfo(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
-		PojoPersonalInformation pInfo = new PojoPersonalInformation("sunyapong");
+		PojoPersonalInformation pInfo = new PojoPersonalInformation();
+		pInfo.setupPojoPersonalInformation("sunyapong");
 		
 		request.setAttribute("firstName", 	pInfo.getFirstname());
 		request.setAttribute("lastName", 	pInfo.getLastname());
-		
-		DateTimeFormatter formatDate = DateTimeFormatter.ofPattern("dd MMM yyyy");
-		request.setAttribute("dateOfBirth", pInfo.getDateOfBirth().format(formatDate));
-		
+		request.setAttribute("dateOfBirth", pInfo.getDateOfBirth().format(dateFormat));
 		request.setAttribute("age", 		pInfo.getAge());
 		request.setAttribute("gender", 		pInfo.getGender());
 		request.setAttribute("nationality", pInfo.getNationality());
@@ -51,9 +60,6 @@ public class ServicePersonalInformation
 		request.setAttribute("lineId", 		pInfo.getLineId());
 		request.setAttribute("listEducation", 		pInfo.getListEducation());
 		request.setAttribute("listEnghlishTest", 	pInfo.getListEnglishTest());
-		
-		HttpSession session = request.getSession();
-		session.setAttribute("fromServlet", toString());
 	}
 	
 	@Override
