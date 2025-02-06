@@ -80,7 +80,6 @@ public class SessionManager
 	 * Remove <i>Login State</i> attributes,
 	 * which equivalent to <i>Logout</i>, 
 	 * which include:
-	 * <p>    "preTypedUsername",
 	 * <p>    "username",
 	 * <p>    "loggedIn"
 	 */

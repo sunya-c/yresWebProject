@@ -12,13 +12,13 @@ import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import com.sunya.PrintError;
 
 import jakarta.servlet.ServletException;
 
-@Component
+@Repository
 public class DaoFeedback extends Dao
 {
 	// tableName :
@@ -54,13 +54,13 @@ public class DaoFeedback extends Dao
 	 * @param feedbackErrorMessage ~ Error message for this issue (optional).
 	 * @return <strong>String refNumber</strong> ~ if successfully added to the database.<br>
 	 *         <strong>null</strong> ~ if failed.
-	 * @throws ServletException
+	 * @throws Exception 
 	 */
 	public String submitFeedback(
 			String username,
 			String feedbackTitle,
 			String feedbackDetail,
-			String feedbackErrorMessage) throws ServletException
+			String feedbackErrorMessage) throws Exception
 	{
 		String refNumber = addFeedback(
 				username,
@@ -87,13 +87,15 @@ public class DaoFeedback extends Dao
 	 * @param feedbackErrorMessage
 	 * @return <strong>String refNumber</strong> ~ if successfully added to the database.<br>
 	 *         <strong>null</strong> ~ if failed.
-	 * @throws ServletException
+	 * @throws ServletException 
+	 * @throws SQLException 
+	 * @throws Exception 
 	 */
 	private String addFeedback(
 			String username,
 			String feedbackTitle,
 			String feedbackDetail,
-			String feedbackErrorMessage) throws ServletException
+			String feedbackErrorMessage) throws ServletException, SQLException
 	{
 		String query = "INSERT INTO "+TABLE_NAME
 				+ " ("+COLUMN_REF_NUMBER+", "+COLUMN_DATE+", "+USERNAME+", "+COLUMN_TITLE+", "+COLUMN_DETAIL+", "+COLUMN_ERRORMESSAGE+") "
@@ -134,9 +136,7 @@ public class DaoFeedback extends Dao
 		}
 		catch (SQLException e)
 		{
-			System.err.println(">>> Exception addFeedback-01 !!! <<<");
-			System.err.println(e);
-			throw new ServletException("SQL Exception");
+			throw new SQLException("daofeedback.addfeedback-01: SQL Exception.");
 		}
 		finally
 		{
@@ -145,19 +145,9 @@ public class DaoFeedback extends Dao
 				st.close();
 				con.close();
 			}
-			catch (SQLException e)
+			catch (SQLException | NullPointerException e)
 			{
-				System.err.println(">>> Exception addFeedback-02 !!! <<<");
-				System.err.println("Either 'Statement' or 'Connection' cannot be closed.");
-				System.err.println(e);
-				throw new ServletException("Database connection failed.");
-			}
-			catch (NullPointerException ne)
-			{
-				System.err.println(">>> Exception addFeedback-03 !!! <<<");
-				System.err.println("Either 'Statement' or 'Connection' cannot be closed.");
-				System.err.println(ne);
-				throw new ServletException("Database connection failed.");
+				throw new NullPointerException("daofeedback.addfeedback-02: Database connection failed.");
 			}
 		}
 		return null;
@@ -169,9 +159,10 @@ public class DaoFeedback extends Dao
 	 * @param refNumber
 	 * @return <strong>true</strong> ~ if the given refNumber exists in the database.<br>
 	 *         <strong>false</strong> ~ if the given refNumber does NOT exist in the database.
-	 * @throws ServletException
+	 * @throws ServletException 
+	 * @throws SQLException 
 	 */
-	private boolean isExistingRefNumber(String refNumber) throws ServletException
+	private boolean isExistingRefNumber(String refNumber) throws ServletException, SQLException
 	{
 		String query = "SELECT "+COLUMN_REF_NUMBER+" FROM "+TABLE_NAME+" WHERE "+COLUMN_REF_NUMBER+" = ?";
 		
@@ -198,14 +189,12 @@ public class DaoFeedback extends Dao
 				if (rs.getString(COLUMN_REF_NUMBER).equals(refNumber))
 					return true;
 				else
-					throw new ServletException("Something went wrong. isExistingRefNumber-01 !!!");
+					throw new ServletException("daofeedback.isExistingRefNumber-01: Something went wrong !!!");
 			}
 		}
 		catch (SQLException e)
 		{
-			System.err.println(">>> Exception isExistingRefNumber-02 !!! <<<");
-			System.err.println(e);
-			throw new ServletException("SQL Exception");
+			throw new SQLException("daofeedback.isexistingrefnumber-02: SQL Exception");
 		}
 		// 7: Close the Statement and Connection
 		finally
@@ -215,19 +204,9 @@ public class DaoFeedback extends Dao
 				st.close();
 				con.close();
 			}
-			catch (SQLException e)
+			catch (SQLException | NullPointerException e)
 			{
-				System.err.println(">>> Exception isExistingRefNumber-03 !!! <<<");
-				System.err.println("Either 'Statement' or 'Connection' cannot be closed.");
-				System.err.println(e);
-				throw new ServletException("Database connection failed.");
-			}
-			catch (NullPointerException ne)
-			{
-				System.err.println(">>> Exception isExistingRefNumber-04 !!! <<<");
-				System.err.println("Either 'Statement' or 'Connection' cannot be closed.");
-				System.err.println(ne);
-				throw new ServletException("Database connection failed.");
+				throw new NullPointerException("daofeedback.isexistingrefnumber-03: Database connection failed.");
 			}
 		}
 		return false;

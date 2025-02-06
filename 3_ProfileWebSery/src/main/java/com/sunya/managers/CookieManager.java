@@ -1,7 +1,6 @@
 package com.sunya.managers;
 
 import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpSession;
 
 public class CookieManager
 {

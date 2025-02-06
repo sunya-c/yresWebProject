@@ -1,12 +1,13 @@
 package com.sunya.services;
 
+import java.sql.SQLException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sunya.daos.DaoLoginInfo;
 import com.sunya.managers.SessionManager;
 
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -23,7 +24,7 @@ public class ServiceLogin
 	
 	private String fromPage;
 
-	public String sLogin(HttpServletRequest request, HttpServletResponse response) throws ServletException
+	public String sLogin(HttpServletRequest request, HttpServletResponse response) throws SQLException
 	{
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");

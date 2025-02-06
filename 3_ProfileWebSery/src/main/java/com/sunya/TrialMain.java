@@ -1,6 +1,5 @@
 package com.sunya;
 
-import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -15,9 +14,8 @@ public class TrialMain
 	 * automatic account deletion every specified period of time.
 	 * 
 	 * @param args
-	 * @throws SQLException
 	 */
-	public static void main(String[] args) throws SQLException
+	public static void main(String[] args)
 	{
 		ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 		executor.scheduleAtFixedRate(()->{
@@ -27,7 +25,7 @@ public class TrialMain
 			{
 				daoRemove.autoRemoveTempUser();
 			}
-			catch (SQLException e)
+			catch (Exception e)
 			{
 				e.printStackTrace();
 			}

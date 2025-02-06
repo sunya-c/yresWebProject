@@ -1,5 +1,7 @@
 package com.sunya.services;
 
+import java.sql.SQLException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +30,7 @@ public class ServiceCreateAccount
 	@Autowired
 	private RestrictionsCreateAccount restriction;
 	
-	public String sCreateAccount(HttpServletRequest request, HttpServletResponse response) throws ServletException
+	public String sCreateAccount(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException
 	{
 		String username = request.getParameter("username");
 		String password1 = request.getParameter("password1");

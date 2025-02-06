@@ -1,18 +1,12 @@
 package com.sunya.services;
 
-import java.io.IOException;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
-import com.sunya.config.InternalConfig;
 import com.sunya.daos.DaoFeedback;
 import com.sunya.managers.SessionManager;
-import com.sunya.restrictions.ErrorMessageSetterFeedback;
 import com.sunya.restrictions.RestrictionsFeedback;
 
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -29,7 +23,7 @@ public class ServiceFeedback
 	@Autowired
 	private RestrictionsFeedback restriction;
 	
-	public String sFeedback(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
+	public String sFeedback(HttpServletRequest request, HttpServletResponse response) throws Exception
 	{
 		String feedbackTitle = request.getParameter("reportTitle");
 		String feedbackDetail = request.getParameter("reportDetail");

@@ -7,21 +7,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import com.sunya.managers.SessionManager;
 import com.sunya.pojos.PojoPersonalInformation;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
 @Service
 public class ServicePersonalInformation
 {
-	@Autowired
-	private HttpSession session;
-	@Autowired
-	private SessionManager sm;
 	@Autowired
 	@Qualifier("frontDate")
 	private DateTimeFormatter dateFormat;

@@ -5,13 +5,10 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.Format;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Random;
 import java.util.TimeZone;
-
-import com.sunya.PrintError;
 
 import jakarta.servlet.ServletException;
 
@@ -67,8 +64,9 @@ public class DaoSiteUsage extends Dao
 	 *         database.<br>
 	 *         <strong>null</strong> ~ if failed.
 	 * @throws ServletException
+	 * @throws SQLException 
 	 */
-	public String updateUsage(String refNumber, int[] updatedUsage) throws ServletException
+	public String updateUsage(String refNumber, int[] updatedUsage) throws ServletException, SQLException
 	{
 		String query = "UPDATE "+TABLE_NAME+" SET "+COLUMN_DATE+" = ?, "+COLUMN_PAGE_CREATEACCOUNT+" = ?, "+COLUMN_PAGE_ERROR+" = ?, "
 				+COLUMN_PAGE_FEEDBACK+" = ?, "+COLUMN_PAGE_LOGIN+" = ?, "+COLUMN_PAGE_PERSINFO+" = ?, "
@@ -112,13 +110,11 @@ public class DaoSiteUsage extends Dao
 			if (row == 1)
 				return refNumber;
 			else if (row > 1)
-				throw new ServletException("More than ONE row in the database were updated!!!");
+				throw new ServletException("<br>daositeusage.updateusage-01: If you see this error, please report via \'bug report button\'!!!");
 		}
 		catch (SQLException e)
 		{
-			System.err.println(">>> Exception addFeedback-01 !!! <<<");
-			System.err.println(e);
-			throw new ServletException("SQL Exception");
+			throw new SQLException("daositeusage.updateusage-02: SQL Exception");
 		}
 		finally
 		{
@@ -127,19 +123,9 @@ public class DaoSiteUsage extends Dao
 				st.close();
 				con.close();
 			}
-			catch (SQLException e)
+			catch (SQLException | NullPointerException e)
 			{
-				System.err.println(">>> Exception addFeedback-02 !!! <<<");
-				System.err.println("Either 'Statement' or 'Connection' cannot be closed.");
-				System.err.println(e);
-				throw new ServletException("Database connection failed.");
-			}
-			catch (NullPointerException ne)
-			{
-				System.err.println(">>> Exception addFeedback-03 !!! <<<");
-				System.err.println("Either 'Statement' or 'Connection' cannot be closed.");
-				System.err.println(ne);
-				throw new ServletException("Database connection failed.");
+				throw new NullPointerException("daositeusage.updateusage-03: Database connection failed.");
 			}
 		}
 		return null;
@@ -152,8 +138,9 @@ public class DaoSiteUsage extends Dao
 	 * @return <strong>int[] siteUsage</strong> ~ the site usage retrieved from the database.<br>
 	 *         <strong>null</strong> ~ if the specified refNumber doesn't exist in the database.
 	 * @throws ServletException
+	 * @throws SQLException 
 	 */
-	public int[] getUsage(String refNumber) throws ServletException
+	public int[] getUsage(String refNumber) throws ServletException, SQLException
 	{
 		String query = "SELECT * FROM "+TABLE_NAME+" WHERE "+COLUMN_REF_NUMBER+" = ?;";
 		
@@ -179,9 +166,7 @@ public class DaoSiteUsage extends Dao
 		}
 		catch (SQLException e)
 		{
-			System.err.println(">>> Exception addFeedback-01 !!! <<<");
-			System.err.println(e);
-			throw new ServletException("SQL Exception");
+			throw new SQLException("daositeusage.getusage-01: SQL Exception");
 		}
 		finally
 		{
@@ -190,25 +175,15 @@ public class DaoSiteUsage extends Dao
 				st.close();
 				con.close();
 			}
-			catch (SQLException e)
+			catch (SQLException | NullPointerException e)
 			{
-				System.err.println(">>> Exception addFeedback-02 !!! <<<");
-				System.err.println("Either 'Statement' or 'Connection' cannot be closed.");
-				System.err.println(e);
-				throw new ServletException("Database connection failed.");
-			}
-			catch (NullPointerException ne)
-			{
-				System.err.println(">>> Exception addFeedback-03 !!! <<<");
-				System.err.println("Either 'Statement' or 'Connection' cannot be closed.");
-				System.err.println(ne);
-				throw new ServletException("Database connection failed.");
+				throw new NullPointerException("daositeusage.getusage-02: Database connection failed.");
 			}
 		}
 		return null;
 	}
 	
-	private int[] getUsageArray(ResultSet rs) throws ServletException
+	private int[] getUsageArray(ResultSet rs) throws SQLException
 	{
 		int[] currentUsage = new int[getArraySize()];
 		
@@ -222,7 +197,7 @@ public class DaoSiteUsage extends Dao
 		}
 		catch (SQLException e)
 		{
-			throw new ServletException("SQL Exception");
+			throw new SQLException("daositeusage.getusagearray-01: SQL Exception");
 		}
 	}
 
@@ -232,9 +207,10 @@ public class DaoSiteUsage extends Dao
 	 * @return <strong>String refNumber</strong> ~ if successfully added to the
 	 *         database.<br>
 	 *         <strong>null</strong> ~ if failed.
-	 * @throws ServletException
+	 * @throws ServletException 
+	 * @throws SQLException 
 	 */
-	private String addNewUsageRef() throws ServletException
+	private String addNewUsageRef() throws ServletException, SQLException
 	{
 		String query = "INSERT INTO " + TABLE_NAME + " (" + COLUMN_REF_NUMBER + ") VALUES (?);";
 
@@ -260,9 +236,7 @@ public class DaoSiteUsage extends Dao
 		}
 		catch (SQLException e)
 		{
-			System.err.println(">>> Exception addFeedback-01 !!! <<<");
-			System.err.println(e);
-			throw new ServletException("SQL Exception");
+			throw new SQLException("daositeusage.addnewusageref-01: SQL Exception");
 		}
 		finally
 		{
@@ -271,19 +245,9 @@ public class DaoSiteUsage extends Dao
 				st.close();
 				con.close();
 			}
-			catch (SQLException e)
+			catch (SQLException | NullPointerException e)
 			{
-				System.err.println(">>> Exception addFeedback-02 !!! <<<");
-				System.err.println("Either 'Statement' or 'Connection' cannot be closed.");
-				System.err.println(e);
-				throw new ServletException("Database connection failed.");
-			}
-			catch (NullPointerException ne)
-			{
-				System.err.println(">>> Exception addFeedback-03 !!! <<<");
-				System.err.println("Either 'Statement' or 'Connection' cannot be closed.");
-				System.err.println(ne);
-				throw new ServletException("Database connection failed.");
+				throw new NullPointerException("daositeusage.addnewusageref-02: Database connection failed.");
 			}
 		}
 		return null;
@@ -297,9 +261,9 @@ public class DaoSiteUsage extends Dao
 	 *         database.<br>
 	 *         <strong>false</strong> ~ if the given refNumber does NOT exist in the
 	 *         database.
-	 * @throws ServletException
+	 * @throws SQLException 
 	 */
-	private boolean isExistingRefNumber(String refNumber) throws ServletException
+	private boolean isExistingRefNumber(String refNumber) throws SQLException
 	{
 		String query = "SELECT " + COLUMN_REF_NUMBER + " FROM " + TABLE_NAME + " WHERE " + COLUMN_REF_NUMBER + " = ?";
 
@@ -324,15 +288,11 @@ public class DaoSiteUsage extends Dao
 				// Double check
 				if (rs.getString(COLUMN_REF_NUMBER).equals(refNumber))
 					return true;
-				else
-					throw new ServletException("Something went wrong. isExistingRefNumber-01 !!!");
 			}
 		}
 		catch (SQLException e)
 		{
-			System.err.println(">>> Exception isExistingRefNumber-02 !!! <<<");
-			System.err.println(e);
-			throw new ServletException("SQL Exception");
+			throw new SQLException("daositeusage.isexistingrefnumber-01: SQL Exception");
 		}
 		// 7: Close the Statement and Connection
 		finally
@@ -342,19 +302,10 @@ public class DaoSiteUsage extends Dao
 				st.close();
 				con.close();
 			}
-			catch (SQLException e)
+			catch (SQLException | NullPointerException e)
 			{
-				System.err.println(">>> Exception isExistingRefNumber-03 !!! <<<");
-				System.err.println("Either 'Statement' or 'Connection' cannot be closed.");
-				System.err.println(e);
-				throw new ServletException("Database connection failed.");
-			}
-			catch (NullPointerException ne)
-			{
-				System.err.println(">>> Exception isExistingRefNumber-04 !!! <<<");
-				System.err.println("Either 'Statement' or 'Connection' cannot be closed.");
-				System.err.println(ne);
-				throw new ServletException("Database connection failed.");
+
+				throw new NullPointerException("daositeusage.isexistingrefnumber-02: Database connection failed.");
 			}
 		}
 		return false;
@@ -384,9 +335,10 @@ public class DaoSiteUsage extends Dao
 	 * @param refNumber ~ client's reference number of the IP address.
 	 * @return <strong>String refNumber</strong> ~ reference number of the user (this is the same as the refNumber above, which you pass to this method).<br>
 	 *         <strong>null</strong> ~ Adding IP address failed.
+	 * @throws SQLException 
 	 * @throws ServletException
 	 */
-	public String addIp(String ip, String refNumber) throws ServletException
+	public String addIp(String ip, String refNumber) throws SQLException, ServletException
 	{
 		String query = "UPDATE "+TABLE_NAME+" SET "+COLUMN_IP+" = ? WHERE "+COLUMN_REF_NUMBER+" = ?;";
 		
@@ -396,7 +348,7 @@ public class DaoSiteUsage extends Dao
 		
 		if (isExistingRefNumber(refNumber))
 		{
-			if (getIp(refNumber)==null || getIp(refNumber).equals(ip))
+			if (getIp(refNumber)==null)
 			{
 				try
 				{
@@ -412,13 +364,11 @@ public class DaoSiteUsage extends Dao
 						return refNumber;
 					}
 					else
-						throw new ServletException("daositeusage.addip-01: Something went wrong.");
+						throw new ServletException("<br>daositeusage.addip-01: If you see this error, please report via \'bug report button\'!!!");
 				}
 				catch (SQLException e)
 				{
-					System.err.println(">>> Exception addIp-02 !!! <<<");
-					System.err.println(e);
-					throw new ServletException("daositeusage.addip-02: SQL Exception");
+					throw new SQLException("daositeusage.addip-02: SQL Exception");
 				}
 				finally
 				{
@@ -427,21 +377,15 @@ public class DaoSiteUsage extends Dao
 						st.close();
 						con.close();
 					}
-					catch (SQLException e)
+					catch (SQLException | NullPointerException e)
 					{
-						System.err.println(">>> Exception addIp-03 !!! <<<");
-						System.err.println("Either 'Statement' or 'Connection' cannot be closed.");
-						System.err.println(e);
-						throw new ServletException("daositeusage.addip-03: Database connection failed.");
-					}
-					catch (NullPointerException ne)
-					{
-						System.err.println(">>> Exception addIp-04 !!! <<<");
-						System.err.println("Either 'Statement' or 'Connection' cannot be closed.");
-						System.err.println(ne);
-						throw new ServletException("daositeusage.addip-04: Database connection failed.");
+						throw new NullPointerException("daositeusage.addip-03: Database connection failed.");
 					}
 				}
+			}
+			else if (getIp(refNumber).equals(ip))
+			{
+				return refNumber;
 			}
 			else
 				return null;
@@ -457,8 +401,9 @@ public class DaoSiteUsage extends Dao
 	 * @return <strong>String IP address</strong> ~ of the given reference number.
 	 *         <strong>null</strong> ~ if there's no IP address information.
 	 * @throws ServletException
+	 * @throws SQLException 
 	 */
-	private String getIp(String refNumber) throws ServletException
+	private String getIp(String refNumber) throws ServletException, SQLException
 	{
 		String query = "SELECT "+COLUMN_REF_NUMBER+", "+COLUMN_IP+" FROM "+TABLE_NAME+" WHERE "+COLUMN_REF_NUMBER+" = ?;";
 		
@@ -489,9 +434,7 @@ public class DaoSiteUsage extends Dao
 		}
 		catch (SQLException e)
 		{
-			System.err.println(">>> Exception getIp-02 !!! <<<");
-			System.err.println(e);
-			throw new ServletException("daositeusage.getip-02: SQL Exception");
+			throw new SQLException("daositeusage.getip-02: SQL Exception");
 		}
 		finally
 		{
@@ -500,19 +443,9 @@ public class DaoSiteUsage extends Dao
 				st.close();
 				con.close();
 			}
-			catch (SQLException e)
+			catch (SQLException | NullPointerException e)
 			{
-				System.err.println(">>> Exception getIp-02 !!! <<<");
-				System.err.println("Either 'Statement' or 'Connection' cannot be closed.");
-				System.err.println(e);
-				throw new ServletException("Database connection failed.");
-			}
-			catch (NullPointerException ne)
-			{
-				System.err.println(">>> Exception getIp-03 !!! <<<");
-				System.err.println("Either 'Statement' or 'Connection' cannot be closed.");
-				System.err.println(ne);
-				throw new ServletException("Database connection failed.");
+				throw new NullPointerException("daositeusage.getip-02: Database connection failed.");
 			}
 		}
 	}

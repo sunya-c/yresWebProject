@@ -1,5 +1,7 @@
 package com.sunya.controllers;
 
+import java.sql.SQLException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.sunya.PrintError;
 import com.sunya.daos.DaoWebdatainfo;
 
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
@@ -65,9 +66,9 @@ public class ControllerHome extends Controller1
 	 * Set the Important note at the top the web page.
 	 * 
 	 * @return <strong>true</strong> ~ if retrieve data successfully.
-	 * @throws ServletException
+	 * @throws SQLException
 	 */
-	private void setAnnouncement() throws ServletException
+	private void setAnnouncement() throws SQLException
 	{
 		if (session.getAttribute(sm.WEB_NOTE1) == null || ((String)session.getAttribute(sm.WEB_NOTE1)).isEmpty())
 		{

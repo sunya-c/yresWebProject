@@ -1,6 +1,9 @@
-Converted the project to Spring and fixed a lot of things
+Added a workaround for servlet filters not working correctly on AWS
 
 ----------
 
-Converted the project to Spring and fixed a lot of things:
--Fixed a lot of things so that it runs properly with Spring annotation-based.
+Added a workaround for servlet filters not working correctly on AWS:
+-Annotation-based filter configurations seemed to not work correctly on AWS.
+The cause is expected to be AWS messing up with its own scheduling, which
+causes the server to run filters in an incorrect order. The workaround is to
+configure the filter mapping and its order in the web.xml file.

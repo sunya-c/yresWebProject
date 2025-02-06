@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import jakarta.servlet.http.HttpFilter;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
@@ -45,13 +43,4 @@ public class PrintError
 		session.setAttribute("fromServlet", obj.toString());
 		response.sendRedirect("error");
 	}
-	
-	// to be deleted when conversion to Spring mvc is complete
-	public static void toErrorPage(HttpSession session, HttpServletResponse response, HttpFilter filter, Exception e) throws IOException
-	{
-		session.setAttribute("errorDescription", e);
-		session.setAttribute("fromServlet", filter.getFilterName());
-		response.sendRedirect("error");
-	}
-
 }

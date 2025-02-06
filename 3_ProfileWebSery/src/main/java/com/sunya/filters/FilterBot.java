@@ -1,21 +1,10 @@
 package com.sunya.filters;
 
-import jakarta.annotation.Priority;
-import jakarta.servlet.Filter;
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.FilterConfig;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.ServletRequest;
-import jakarta.servlet.ServletResponse;
-import jakarta.servlet.annotation.WebFilter;
-import jakarta.servlet.http.HttpFilter;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-
 import java.io.IOException;
+import java.sql.SQLException;
 import java.time.Duration;
 
-import org.springframework.core.annotation.Order;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.sunya.PrintError;
 import com.sunya.daos.DaoIPBlacklist;
@@ -25,20 +14,23 @@ import io.ipinfo.api.IPinfo;
 import io.ipinfo.api.cache.SimpleCache;
 import io.ipinfo.api.errors.RateLimitedException;
 import io.ipinfo.api.model.IPResponse;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
-//@WebFilter("/PreHomePage.jsp")
-//@Priority(0)
-public class FilterBot extends HttpFilter implements Filter
+public class FilterBot extends OncePerRequestFilter
 {
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-			throws IOException, ServletException
+	@Override
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+			throws ServletException, IOException
 	{
-		HttpServletRequest req = (HttpServletRequest) request;
-		HttpServletResponse res = (HttpServletResponse) response;
+		System.out.println("Order: 1, in Filter Bot (Home)");
+		String ip = request.getRemoteAddr();
 		
-		String ip = req.getRemoteAddr();
-		
-		IPinfo info = new IPinfo.Builder().setCache(new SimpleCache(Duration.ofDays(7))).build();
+		IPinfo info = new IPinfo.Builder()
+				.setCache(new SimpleCache(Duration.ofDays(30)))
+				.build();
 		IPResponse lookUp = null;
 		
 		try
@@ -47,34 +39,48 @@ public class FilterBot extends HttpFilter implements Filter
 		}
 		catch (RateLimitedException e)
 		{
+			PrintError.toErrorPage(request.getSession(), response, this, new ServletException("filterbot-01: Limit reached."));
 		}
 		
 		String countryCode = lookUp.getCountryCode();
 
 		if (countryCode == null || !countryCode.equals("TH"))
 		{
-			req.setAttribute("filterBot", "failed");
+			request.setAttribute("filterBot", "failed");
 			
 			DaoIPBlacklist dao = new DaoIPBlacklist();
 			
-			if (dao.isBlacklited(ip))
-				dao.increaseCount(ip);
-			else
-				dao.addToBlacklist(ip, countryCode);
+			try
+			{
+				if (dao.isBlacklited(ip))
+					dao.increaseCount(ip);
+				else
+					dao.addToBlacklist(ip, countryCode);
+			}
+			catch (SQLException | ServletException e)
+			{
+				PrintError.toErrorPage(request.getSession(), response, this, e);
+			}
 			
 			try
 			{
 				throw new SuspiciousRequestException("<br>"+ip+"<br>Your request is suspected to be inhuman.<br>If you're a human, "
-						+ "please send your intention to visit our website via \"Give feedback / bug report\" button down below.");
+						+ "please send your intention to visit our website via \'Give feedback / bug report\' button down below.");
 			}
 			catch (SuspiciousRequestException e)
 			{
-				PrintError.toErrorPage(req.getSession(), res, this, e);
+				PrintError.toErrorPage(request.getSession(), response, this, e);
 			}
 		}
 		else
 		{
-			chain.doFilter(request, response);
+			filterChain.doFilter(request, response);
 		}
+	}
+	
+	@Override
+	public String toString()
+	{
+		return this.getClass().getName();
 	}
 }

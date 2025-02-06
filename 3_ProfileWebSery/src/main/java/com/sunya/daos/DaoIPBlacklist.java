@@ -6,8 +6,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.springframework.stereotype.Repository;
+
 import jakarta.servlet.ServletException;
 
+@Repository
 public class DaoIPBlacklist extends Dao
 {
 	// tableName :
@@ -23,7 +26,7 @@ public class DaoIPBlacklist extends Dao
 		setupDbms("sunyadb");
 	}
 	
-	public boolean isBlacklited(String ip) throws ServletException
+	public boolean isBlacklited(String ip) throws SQLException
 	{
 		String query = "SELECT "+COLUMN_IP+" FROM "+TABLE_NAME+" WHERE "+COLUMN_IP+" = ?;";
 		
@@ -49,9 +52,7 @@ public class DaoIPBlacklist extends Dao
 		}
 		catch (SQLException e)
 		{
-			System.err.println(">>> daoipblacklist.isBlacklisted-01: SQL Exception!!! <<<");
-			System.err.println(e);
-			throw new ServletException("<br>daoipblacklist.isBlacklisted-01: SQL Exception");
+			throw new SQLException("daoipblacklist.isblacklisted-01: SQL Exception");
 		}
 		finally
 		{
@@ -60,26 +61,16 @@ public class DaoIPBlacklist extends Dao
 				st.close();
 				con.close();
 			}
-			catch (SQLException e)
+			catch (SQLException | NullPointerException e)
 			{
-				System.err.println(">>> daoipblacklist.isBlacklisted-02 !!! <<<");
-				System.err.println("Either 'Statement' or 'Connection' cannot be closed.");
-				System.err.println(e);
-				throw new ServletException("<br>daoipblacklist.isBlacklisted-01: Database connection failed.");
-			}
-			catch (NullPointerException ne)
-			{
-				System.err.println(">>> daoipblacklist.isBlacklisted-03 !!! <<<");
-				System.err.println("Either 'Statement' or 'Connection' cannot be closed.");
-				System.err.println(ne);
-				throw new ServletException("<br>daoipblacklist.isBlacklisted-03: Database connection failed.");
+				throw new NullPointerException("daoipblacklist.isblacklisted-02: Database connection failed.");
 			}
 		}
 		return false;
 	}
 	
 	
-	public boolean addToBlacklist(String ip, String countryCode) throws ServletException
+	public boolean addToBlacklist(String ip, String countryCode) throws ServletException, SQLException
 	{
 		String query = "INSERT INTO "+TABLE_NAME+" ("+COLUMN_IP+", "+COLUMN_COUNTRY+") VALUES (?, ?);";
 		
@@ -98,13 +89,11 @@ public class DaoIPBlacklist extends Dao
 			if (row == 1)
 				return true;
 			else
-				throw new ServletException("<br>daoipblacklist.addToBlacklist-01: Something went wrong.");
+				throw new ServletException("daoipblacklist.addtoblacklist-01: Something went wrong.");
 		}
 		catch (SQLException e)
 		{
-			System.err.println(">>> daoipblacklist.addToBlacklist-02 !!! <<<");
-			System.err.println(e);
-			throw new ServletException("<br>daoipblacklist.addToBlacklist-02: SQL Exception");
+			throw new SQLException("daoipblacklist.addtoblacklist-02: SQL Exception");
 		}
 		finally
 		{
@@ -113,25 +102,15 @@ public class DaoIPBlacklist extends Dao
 				st.close();
 				con.close();
 			}
-			catch (SQLException e)
+			catch (SQLException | NullPointerException e)
 			{
-				System.err.println(">>> daoipblacklist.addToBlacklist-03 !!! <<<");
-				System.err.println("Either 'Statement' or 'Connection' cannot be closed.");
-				System.err.println(e);
-				throw new ServletException("<br>daoipblacklist.addToBlacklist-03: Database connection failed.");
-			}
-			catch (NullPointerException ne)
-			{
-				System.err.println(">>> daoipblacklist.addToBlacklist-04 !!! <<<");
-				System.err.println("Either 'Statement' or 'Connection' cannot be closed.");
-				System.err.println(ne);
-				throw new ServletException("<br>daoipblacklist.addToBlacklist-04: Database connection failed.");
+				throw new NullPointerException("daoipblacklist.addtoblacklist-03: Database connection failed.");
 			}
 		}
 	}
 	
 	
-	public boolean increaseCount(String ip) throws ServletException
+	public boolean increaseCount(String ip) throws ServletException, SQLException
 	{
 		String query = "UPDATE "+TABLE_NAME+" SET "+COLUMN_COUNT+" = "+COLUMN_COUNT+" + ? WHERE "+COLUMN_IP+" = ?";
 		
@@ -151,13 +130,11 @@ public class DaoIPBlacklist extends Dao
 			if (row == 1)
 				return true;
 			else
-				throw new ServletException("<br>daoipblacklist.increasecount-01: Something went wrong.");
+				throw new ServletException("daoipblacklist.increasecount-01: Something went wrong.");
 		}
 		catch (SQLException e)
 		{
-			System.err.println(">>> daoipblacklist.increasecount-02 !!! <<<");
-			System.err.println(e);
-			throw new ServletException("<br>daoipblacklist.increasecount-02: SQL Exception");
+			throw new SQLException("daoipblacklist.increasecount-02: SQL Exception");
 		}
 		finally
 		{
@@ -166,19 +143,9 @@ public class DaoIPBlacklist extends Dao
 				st.close();
 				con.close();
 			}
-			catch (SQLException e)
+			catch (SQLException | NullPointerException e)
 			{
-				System.err.println(">>> daoipblacklist.increasecount-02 !!! <<<");
-				System.err.println("Either 'Statement' or 'Connection' cannot be closed.");
-				System.err.println(e);
-				throw new ServletException("<br>daoipblacklist.increasecount-02: Database connection failed.");
-			}
-			catch (NullPointerException ne)
-			{
-				System.err.println(">>> daoipblacklist.increasecount-03 !!! <<<");
-				System.err.println("Either 'Statement' or 'Connection' cannot be closed.");
-				System.err.println(ne);
-				throw new ServletException("<br>daoipblacklist.increasecount-03: Database connection failed.");
+				throw new ServletException("daoipblacklist.increasecount-03: Database connection failed.");
 			}
 		}
 	}

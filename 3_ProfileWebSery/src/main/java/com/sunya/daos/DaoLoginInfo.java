@@ -13,13 +13,13 @@ import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import com.sunya.PrintError;
 
 import jakarta.servlet.ServletException;
 
-@Component
+@Repository
 public class DaoLoginInfo extends Dao
 {
 	// Table name :
@@ -50,7 +50,7 @@ public class DaoLoginInfo extends Dao
 	}
 	
 
-	public void getData() throws ServletException
+	public void getData() throws SQLException
 	{
 		String query1 = "SELECT * FROM "+TABLE_NAME+";";
 
@@ -77,9 +77,7 @@ public class DaoLoginInfo extends Dao
 		}
 		catch (SQLException e)
 		{
-			System.err.println(">>> Exception getData-01 !!! <<<");
-			System.err.println(e);
-			throw new ServletException("SQL Exception");
+			throw new SQLException("daologininfo.getdata-01: SQL Exception");
 		}
 		finally
 		{
@@ -89,21 +87,10 @@ public class DaoLoginInfo extends Dao
 				st.close();
 				con.close();
 			}
-			catch (SQLException e)
+			catch (SQLException | NullPointerException e)
 			{
-				System.err.println(">>> Exception getData-02 !!! <<<");
-				System.err.println("Either 'Statement' or 'Connection' cannot be closed.");
-				System.err.println(e);
-				throw new ServletException("Database connection failed.");
+				throw new NullPointerException("daologininfo.getdata-02: Database connection failed.");
 			}
-			catch (NullPointerException ne)
-			{
-				System.err.println(">>> Exception getData-03 !!! <<<");
-				System.err.println("Either 'Statement' or 'Connection' cannot be closed.");
-				System.err.println(ne);
-				throw new ServletException("Database connection failed.");
-			}
-
 		}
 	}
 
@@ -117,9 +104,10 @@ public class DaoLoginInfo extends Dao
 	 * @return true ~ removal succeed.
 	 *         <p>
 	 *         false ~ removal fail.
-	 * @throws ServletException
+	 * @throws SQLException 
+	 * @throws ServletException 
 	 */
-	public boolean removeUser(String username, String password) throws ServletException
+	public boolean removeUser(String username, String password) throws SQLException, ServletException
 	{
 		if (isExistingPasswordCaseSen(username, password))
 		{
@@ -147,13 +135,11 @@ public class DaoLoginInfo extends Dao
 				if (row == 1)
 					return true;
 				else if (row >= 1)
-					throw new ServletException("Something went wrong. More than one account removed.");
+					throw new ServletException("daologininfo.removeuser-01: Something went wrong. More than one account removed.");
 			}
 			catch (SQLException e)
 			{
-				System.err.println(">>> Exception removedUser-01 !!! <<<");
-				System.err.println(e);
-				throw new ServletException("SQL Exception");
+				throw new SQLException("daologininfo.removeuser-02: SQL Exception");
 			}
 			// 7: Close the Statement and Connection
 			finally
@@ -163,19 +149,9 @@ public class DaoLoginInfo extends Dao
 					st.close();
 					con.close();
 				}
-				catch (SQLException e)
+				catch (SQLException | NullPointerException e)
 				{
-					System.err.println(">>> Exception removedUser-02 !!! <<<");
-					System.err.println("Either 'Statement' or 'Connection' cannot be closed.");
-					System.err.println(e);
-					throw new ServletException("Database connection failed.");
-				}
-				catch (NullPointerException ne)
-				{
-					System.err.println(">>> Exception removeUser-03 !!! <<<");
-					System.err.println("Either 'Statement' or 'Connection' cannot be closed.");
-					System.err.println(ne);
-					throw new ServletException("Database connection failed.");
+					throw new NullPointerException("daologininfo.removeduser-03: Database connection failed.");
 				}
 			}
 		}
@@ -193,9 +169,9 @@ public class DaoLoginInfo extends Dao
 	 * @return true ~ if succeed.
 	 *         <p>
 	 *         false ~ if the username is duplicated.
-	 * @throws ServletException
+	 * @throws SQLException 
 	 */
-	public boolean addUser(String username, String password) throws ServletException
+	public boolean addUser(String username, String password) throws SQLException
 	{
 		if (!isExistingUsername(username))
 		{
@@ -232,9 +208,7 @@ public class DaoLoginInfo extends Dao
 			}
 			catch (SQLException e)
 			{
-				System.err.println(">>> Exception addUser-01 !!! <<<");
-				System.err.println(e);
-				throw new ServletException("SQL Exception");
+				throw new SQLException("daologininfo.adduser-01: SQL Exception");
 			}
 			// 7: Close the Statement and Connection
 			finally
@@ -244,19 +218,9 @@ public class DaoLoginInfo extends Dao
 					st.close();
 					con.close();
 				}
-				catch (SQLException e)
+				catch (SQLException | NullPointerException e)
 				{
-					System.err.println(">>> Exception addUser-02 !!! <<<");
-					System.err.println("Either 'Statement' or 'Connection' cannot be closed.");
-					System.err.println(e);
-					throw new ServletException("Database connection failed.");
-				}
-				catch (NullPointerException ne)
-				{
-					System.err.println(">>> Exception addUser-03 !!! <<<");
-					System.err.println("Either 'Statement' or 'Connection' cannot be closed.");
-					System.err.println(ne);
-					throw new ServletException("Database connection failed.");
+					throw new NullPointerException("daologininfo.adduser-02: Database connection failed.");
 				}
 			}
 		}
@@ -277,10 +241,10 @@ public class DaoLoginInfo extends Dao
 	 *                 <p>
 	 * @return true ~ if the username exists regardLESS of upper and lower case.
 	 *         <p>
-	 *         false ~ otherwise
-	 * @throws ServletException
+	 *         false ~ otherwise.
+	 * @throws SQLException 
 	 */
-	private boolean isExistingUsername(String username) throws ServletException
+	private boolean isExistingUsername(String username) throws SQLException
 	{
 		// For username checking
 		String query1 = "SELECT "+COLUMN_USERNAME+" FROM "+TABLE_NAME+" WHERE "+COLUMN_USERNAME+" = ?;";
@@ -307,9 +271,7 @@ public class DaoLoginInfo extends Dao
 		}
 		catch (SQLException e)
 		{
-			System.err.println(">>> Exception existsUsername-01 !!! <<<");
-			System.err.println(e);
-			throw new ServletException("SQL Exception");
+			throw new SQLException("daologininfo.isexistingusername-01: SQL Exception");
 		}
 		finally
 		{
@@ -319,19 +281,9 @@ public class DaoLoginInfo extends Dao
 				st.close();
 				con.close();
 			}
-			catch (SQLException e)
+			catch (SQLException | NullPointerException e)
 			{
-				System.err.println(">>> Exception existsUsername-03 !!! <<<");
-				System.err.println("Either 'Statement' or 'Connection' cannot be closed.");
-				System.err.println(e);
-				throw new ServletException("Exception existsUsername-03");
-			}
-			catch (NullPointerException ne)
-			{
-				System.err.println(">>> Exception existsUsername-04 !!! <<<");
-				System.err.println("Either 'Statement' or 'Connection' cannot be closed.");
-				System.err.println(ne);
-				throw new ServletException("Database connection failed.");
+				throw new NullPointerException("daologininfo.isexistingusername-02: Database connection failed.");
 			}
 		}
 		return false;
@@ -346,9 +298,9 @@ public class DaoLoginInfo extends Dao
 	 * @return true ~ if the username case-sensitively exists.
 	 *         <p>
 	 *         false ~ otherwise.
-	 * @throws ServletException
+	 * @throws SQLException 
 	 */
-	private boolean isExistingUsernameCaseSen(String username) throws ServletException
+	private boolean isExistingUsernameCaseSen(String username) throws SQLException
 	{
 		// For username checking
 		String query1 = "SELECT "+COLUMN_USERNAME+" FROM "+TABLE_NAME+" WHERE "+COLUMN_USERNAME+" = ?;";
@@ -379,9 +331,8 @@ public class DaoLoginInfo extends Dao
 		}
 		catch (SQLException e)
 		{
-			System.err.println(">>> Exception existsUsername-01 !!! <<<");
-			System.err.println(e);
-			throw new ServletException("SQL Exception");
+
+			throw new SQLException("daologininfo.isexistingusernamecasesen-01: SQL Exception");
 		}
 		finally
 		{
@@ -391,19 +342,9 @@ public class DaoLoginInfo extends Dao
 				st.close();
 				con.close();
 			}
-			catch (SQLException e)
+			catch (SQLException | NullPointerException e)
 			{
-				System.err.println(">>> Exception existsUsername-03 !!! <<<");
-				System.err.println("Either 'Statement' or 'Connection' cannot be closed.");
-				System.err.println(e);
-				throw new ServletException("Exception existsUsername-03");
-			}
-			catch (NullPointerException ne)
-			{
-				System.err.println(">>> Exception existsUsername-04 !!! <<<");
-				System.err.println("Either 'Statement' or 'Connection' cannot be closed.");
-				System.err.println(ne);
-				throw new ServletException("Database connection failed.");
+				throw new NullPointerException("daologininfo.isexistingusernamecasesen-02: Database connection failed.");
 			}
 		}
 		return false;
@@ -422,9 +363,9 @@ public class DaoLoginInfo extends Dao
 	 * @return true ~ if BOTH username AND password case-sensitively exist.
 	 *         <p>
 	 *         false ~ otherwise.
-	 * @throws ServletException
+	 * @throws SQLException 
 	 */
-	private boolean isExistingPasswordCaseSen(String username, String password) throws ServletException
+	private boolean isExistingPasswordCaseSen(String username, String password) throws SQLException
 	{
 		// For password checking
 		String query1 = "SELECT "+COLUMN_USERNAME+", "+COLUMN_PASSWORD+" FROM "+TABLE_NAME+" WHERE "+COLUMN_USERNAME+" = ? AND "+COLUMN_PASSWORD+" = ?;";
@@ -456,9 +397,7 @@ public class DaoLoginInfo extends Dao
 		}
 		catch (SQLException e)
 		{
-			System.err.println(">>> Exception existsPassword-01 !!! <<<");
-			System.err.println(e);
-			throw new ServletException("SQL Exception");
+			throw new SQLException("daologininfo.isexistingpasswordcasesen-01: SQL Exception");
 		}
 		finally
 		{
@@ -468,19 +407,9 @@ public class DaoLoginInfo extends Dao
 				st.close();
 				con.close();
 			}
-			catch (SQLException e)
+			catch (SQLException | NullPointerException e)
 			{
-				System.err.println(">>> Exception existsPassword-03 !!! <<<");
-				System.err.println("Either 'Statement' or 'Connection' cannot be closed.");
-				System.err.println(e);
-				throw new ServletException("Database connection failed.");
-			}
-			catch (NullPointerException ne)
-			{
-				System.err.println(">>> Exception existsPassword-04 !!! <<<");
-				System.err.println("Either 'Statement' or 'Connection' cannot be closed.");
-				System.err.println(ne);
-				throw new ServletException("Database connection failed.");
+				throw new NullPointerException("daologininfo.isexistingpasswordcasesen-02: Database connection failed.");
 			}
 		}
 		return false;
@@ -492,9 +421,9 @@ public class DaoLoginInfo extends Dao
 	 * <p>
 	 * @return true ~ if the username exists regardLESS of upper or lower case.
 	 * <p>     false ~ otherwise.
-	 * @throws ServletException
+	 * @throws SQLException 
 	 */
-	public boolean checkUsername(String username) throws ServletException
+	public boolean checkUsername(String username) throws SQLException
 	{
 		if (isExistingUsername(username))
 			return true;
@@ -512,9 +441,9 @@ public class DaoLoginInfo extends Dao
 	 * <p>
 	 * @return true ~ if the username case-sensitively exists.
 	 * <p>     false ~ otherwise.
-	 * @throws ServletException
+	 * @throws SQLException 
 	 */
-	public boolean checkUsernameCaseSen(String username) throws ServletException
+	public boolean checkUsernameCaseSen(String username) throws SQLException
 	{
 		if (isExistingUsernameCaseSen(username))
 			return true;
@@ -526,7 +455,7 @@ public class DaoLoginInfo extends Dao
 		}
 	}
 
-	public boolean checkPasswordCaseSen(String username, String password) throws ServletException
+	public boolean checkPasswordCaseSen(String username, String password) throws SQLException
 	{
 		if (isExistingPasswordCaseSen(username, password))
 			return true;

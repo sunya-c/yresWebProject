@@ -79,7 +79,7 @@
 
 	test Environment variable1 : ${trial1}
 	<br> test Environment variable2 : ${trial2}<br>
-	version : v0.8
+	version : v0.81 ConversionToSpring
 </body>
 </html>
 

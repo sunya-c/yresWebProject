@@ -1,74 +1,31 @@
 package com.sunya.filters.siteUsage;
 
-import jakarta.annotation.Priority;
-import jakarta.servlet.Filter;
+import java.io.IOException;
+
+import org.springframework.web.filter.OncePerRequestFilter;
+
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.ServletRequest;
-import jakarta.servlet.ServletResponse;
-import jakarta.servlet.annotation.WebFilter;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import java.io.IOException;
-
-import org.springframework.core.annotation.Order;
-
-import com.sunya.PrintError;
-import com.sunya.daos.DaoSiteUsage;
-import com.sunya.managers.CookieManager;
-
-//@WebFilter("/CreateAccountPage.jsp")
-//@Priority(3)
-public class FilterSiteUsage0 extends HttpFilter implements Filter
+/**
+ * Filter for CreateAccountPage
+ */
+public class FilterSiteUsage0 extends OncePerRequestFilter
 {
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-			throws IOException, ServletException
+	@Override
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+			throws ServletException, IOException
 	{
-		HttpServletRequest req = (HttpServletRequest) request;
-		HttpServletResponse res = (HttpServletResponse) response;
-
-		DaoSiteUsage dao = new DaoSiteUsage();
-		
-		CookieManager cm = new CookieManager(req.getCookies());
-		String refNumber = cm.getCookieValue(cm.CLIENT_REF);
-		
-		int[] updatedUsage;
-		
-		if (refNumber == null)
-			updatedUsage = new int[dao.getArraySize()];
-		else
-		{
-			updatedUsage = dao.getUsage(refNumber);
-			if (updatedUsage == null)
-			{
-				refNumber = null;
-				updatedUsage = new int[dao.getArraySize()];
-			}
-		}
-
-		updatedUsage[0] += 1;
-		String result = dao.updateUsage(refNumber, updatedUsage);
-		
-		if (result == null)
-		{
-			try
-			{
-				throw new ServletException("SiteUsage update failed.");
-			}
-			catch (ServletException e)
-			{
-				PrintError.toErrorPage(req.getSession(), res, this, e);
-			}
-		}
-		else
-		{
-			Cookie cookie = new Cookie(cm.CLIENT_REF, result);
-			cookie.setMaxAge(7*24*60*60);
-			res.addCookie(cookie);
-			chain.doFilter(req, res);
-		}
+		System.out.println("Order: 4, in Filter Usage 0 (createAccount)");
+		FilterSiteUsage siteUsage = new FilterSiteUsage();
+		siteUsage.doFilterInternal(request, response, filterChain, 0, this);
+	}
+	
+	@Override
+	public String toString()
+	{
+		return this.getClass().getName();
 	}
 }

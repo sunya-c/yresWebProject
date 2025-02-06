@@ -2,11 +2,7 @@ package com.sunya.pojos;
 
 import java.time.LocalDate;
 import java.time.Period;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import com.sunya.exceptions.NegativeAgeException;
 

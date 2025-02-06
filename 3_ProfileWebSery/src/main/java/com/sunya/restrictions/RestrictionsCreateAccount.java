@@ -1,5 +1,7 @@
 package com.sunya.restrictions;
 
+import java.sql.SQLException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -41,9 +43,10 @@ public class RestrictionsCreateAccount
 	 * @return <strong>true</strong> ~ if the given username and password comply with ALL the restriction.<br>
 	 *         <strong>false</strong> ~ if at least one of them doesn't meet the restriction. 
 	 *         							The error messages, containing the detail, will be set to the session by {@code ErrorMessageSetterCreateAccount.java} object
+	 * @throws SQLException 
 	 * @throws ServletException
 	 */
-	public boolean checkRestriction() throws ServletException
+	public boolean checkRestriction() throws SQLException
 	{
 		boolean validInfo = true;
 		
