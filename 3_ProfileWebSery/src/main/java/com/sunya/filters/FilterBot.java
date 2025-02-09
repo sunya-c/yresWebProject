@@ -56,18 +56,12 @@ public class FilterBot extends OncePerRequestFilter
 					dao.increaseCount(ip);
 				else
 					dao.addToBlacklist(ip, countryCode);
-			}
-			catch (SQLException | ServletException e)
-			{
-				PrintError.toErrorPage(request.getSession(), response, this, e);
-			}
-			
-			try
-			{
+				
+
 				throw new SuspiciousRequestException("<br>"+ip+"<br>Your request is suspected to be inhuman.<br>If you're a human, "
 						+ "please send your intention to visit our website via \'Give feedback / bug report\' button down below.");
 			}
-			catch (SuspiciousRequestException e)
+			catch (SQLException | ServletException | SuspiciousRequestException e)
 			{
 				PrintError.toErrorPage(request.getSession(), response, this, e);
 			}

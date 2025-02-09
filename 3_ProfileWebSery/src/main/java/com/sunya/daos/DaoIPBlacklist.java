@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import org.springframework.stereotype.Repository;
 
@@ -148,5 +149,47 @@ public class DaoIPBlacklist extends Dao
 				throw new ServletException("daoipblacklist.increasecount-03: Database connection failed.");
 			}
 		}
+	}
+	
+	public ArrayList<String> getIp() throws SQLException
+	{
+		String query = "SELECT "+COLUMN_IP+" FROM "+TABLE_NAME+";";
+		
+		Connection con = null;
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		try
+		{
+			con = DriverManager.getConnection(url, uname, pass);
+			st = con.prepareStatement(query);
+			
+			rs = st.executeQuery();
+			
+			ArrayList<String> blacklistIPs = new ArrayList<>();
+			while(rs.next())
+			{
+				blacklistIPs.add(rs.getString(COLUMN_IP));
+			}
+			return blacklistIPs;
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+			throw new SQLException("daoipblacklist.getip-01: SQL Exception");
+		}
+		finally
+		{
+			try
+			{
+			st.close();
+			con.close();
+			}
+			catch (SQLException | NullPointerException e)
+			{
+				e.printStackTrace();
+				throw new NullPointerException("daoipblacklist.getip-02: Database connection failed.");
+			}
+		}
+		
 	}
 }

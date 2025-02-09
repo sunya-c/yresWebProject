@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.TimeZone;
 
@@ -448,6 +449,51 @@ public class DaoSiteUsage extends Dao
 				throw new NullPointerException("daositeusage.getip-02: Database connection failed.");
 			}
 		}
+	}
+	
+	/**
+	 * Remove the usage info that has the specified IP address.
+	 * Get an ArrayList of blacklisted IPs from DaoIPBlacklist.getIp().
+	 * 
+	 * @param ipToBeRemoved
+	 * @throws SQLException
+	 */
+	public void removeUsageFromIP(ArrayList<String> ipToBeRemoved) throws SQLException
+	{
+		String query = "DELETE FROM "+TABLE_NAME+" WHERE "+COLUMN_IP+" = ?;";
+		
+		Connection con = null;
+		PreparedStatement st = null;
+		int row = 0;
+		try
+		{
+			con = DriverManager.getConnection(url, uname, pass);
+			
+			for (int i=0; i<ipToBeRemoved.size(); i++)
+			{
+				st = con.prepareStatement(query);
+				st.setString(1, ipToBeRemoved.get(i));
+				row += st.executeUpdate();
+			}
+			System.out.println("row deleted: "+row);
+		}
+		catch (SQLException e)
+		{
+			throw new SQLException("daositeusage.removeusagefromip-01: SQL Exception");
+		}
+		finally
+		{
+			try
+			{
+				st.close();
+				con.close();
+			}
+			catch (SQLException | NullPointerException e)
+			{
+				throw new NullPointerException("daositeusage.removeusagefromip-02: Database connection failed.");
+			}
+		}
+		
 	}
 
 }
