@@ -18,7 +18,7 @@
 	else
 		cssVersion = System.getenv("SERY_CSS_VERSION");
 %>
-<link rel="stylesheet" href="css/PersonalInformationPageCss.css<%= cssVersion %>" />
+<link rel="stylesheet" href="resources/css/PersonalInformationPageCss.css<%= cssVersion %>" />
 <link href="https://fonts.googleapis.com" rel="preconnect">
 <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
 <link
@@ -27,49 +27,15 @@
 </head>
 
 <body id="io13me">
-	<%
-	SessionManager sm = new SessionManager(session);
-	session.setAttribute(sm.LOGIN_FROMPAGE, "PersonalInformationPage.jsp");
-	%>
-
-	<!-- Prevent the back button -->
-	<%
-	response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // http 1.1
-	response.setHeader("Pragma", "no-cache"); // http 1.0
-	response.setHeader("Expires", "0"); // Proxies
-	%>
-
-	<!-- Forcing to access this page by Servlet -->
-	<!-- Check if this page is called by its servlet -->
-	<%
-	FromServlet fs = new FromServlet(application, "ServletPersonalInformation", session);
-
-	if (fs.isFromServlet())
-	{
-		System.out.println("fromServlet and context matched.");
-		session.setAttribute("fromServlet", null);
-	}
-	else
-	{
-		String errText = "fromServlet mismatch";
-		PrintError.println(errText);
-		System.err.println("fromServlet attribute : " + fs.getFromServletAttribute());
-		System.err.println("ServletContext        : " + fs.getFullServletName());
-		session.setAttribute("fromServlet", null);
-
-		RequestDispatcher rd = request.getRequestDispatcher("ServletPersonalInformation");
-		rd.forward(request, response);
-	}
-	%>
 
 	<!-- Page content -->
 	<div id="i1lfxj">
-		<form method="get" id="iop9qh" action="WelcomePage.jsp">
+		<form method="get" id="iop9qh" action="Home">
 			<button type="submit" id="iqm8le">Home</button>
 		</form>
 		<c:if test="${loggedIn == null || loggedIn != true}">
 			<div id="inxnwh">
-				<form method="post" action="ServletLogin" id="ivnm6i">
+				<form method="post" action="sLogin" id="ivnm6i">
 					<div id="isl8bj">
 						<label id="i94q24">Username<br /></label><input type="text"
 							placeholder="Enter your username" name="username"
@@ -82,21 +48,21 @@
 					</div>
 					<button type="submit" id="i2ckyv">Log in</button>
 				</form>
-				<form method="get" action="CreateAccountPage.jsp" id="iwbnu1">
+				<form method="get" action="createAccount" id="iwbnu1">
 					<button type="submit" id="im72si">Create an account</button>
 				</form>
 			</div>
 		</c:if>
 		<c:if test="${loggedIn == true}">
 			<div id="ic3x5g">
-				<form method="post" action="ServletLogout" id="iuj89x">
+				<form method="post" action="sLogout" id="iuj89x">
 					<label id="iv62jr">Welcome ${username},<br /></label><label
 						id="irlj8d">You're logged in<br /></label>
 					<button type="submit" id="i5ywx4">Log out</button>
 				</form>
 			</div>
 		</c:if>
-		<form method="get" action="FeedbackPage.jsp" id="ir5ivx">
+		<form method="get" action="feedback" id="ir5ivx">
 			<button type="submit" id="itoc01">Give feedback / bug report</button>
 		</form>
 	</div>
@@ -208,8 +174,8 @@
 				<div id="iatzbi">${lineId}</div>
 			</div>
 		</div>
-		<img id="i1t2dk" src="pics/Certificate1.png" />
-		<img id="i8tfk1" src="pics/Certificate2.png" />
+		<img id="i1t2dk" src="resources/pics/Certificate1.png" />
+		<img id="i8tfk1" src="resources/pics/Certificate2.png" />
 	</div>
 
 </body>

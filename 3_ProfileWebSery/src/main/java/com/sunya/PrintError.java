@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import jakarta.servlet.http.HttpFilter;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
@@ -22,18 +20,27 @@ public class PrintError
 		System.err.println(errText);
 	}
 	
-	public static void toErrorPage(HttpSession session, HttpServletResponse response, HttpServlet servlet, Exception e) throws IOException
+	// for Spring mvc
+	/**
+	 * 
+	 * @param session ~ the client's session.
+	 * @param obj ~ the object of the class that is calling this method. Just pass {@code this} keyword.
+	 * @param e ~ the error object. The error message belonging to this object will be displayed in the error page.
+	 * @return "error" String.
+	 * @throws IOException
+	 */
+	public static String toErrorPage(HttpSession session, Object obj, Exception e)
 	{
 		session.setAttribute("errorDescription", e);
-		session.setAttribute("fromServlet", servlet.getServletName());
-		response.sendRedirect("ErrorPage.jsp");
+		session.setAttribute("fromServlet", obj.toString());
+		return "error";
 	}
 	
-	public static void toErrorPage(HttpSession session, HttpServletResponse response, HttpFilter filter, Exception e) throws IOException
+	// to be deleted when conversion to Spring mvc is complete
+	public static void toErrorPage(HttpSession session, HttpServletResponse response, Object obj, Exception e) throws IOException
 	{
 		session.setAttribute("errorDescription", e);
-		session.setAttribute("fromServlet", filter.getFilterName());
-		response.sendRedirect("ErrorPage.jsp");
+		session.setAttribute("fromServlet", obj.toString());
+		response.sendRedirect("error");
 	}
-
 }

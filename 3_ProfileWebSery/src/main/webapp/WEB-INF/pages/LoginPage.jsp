@@ -1,3 +1,4 @@
+<%@page import="org.springframework.beans.factory.annotation.Autowired"%>
 <%@page import="com.sunya.daos.DaoWebdatainfo"%>
 <%@page import="com.sunya.managers.SessionManager"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -15,7 +16,7 @@
 	else
 		cssVersion = System.getenv("SERY_CSS_VERSION");
 %>
-<link rel="stylesheet" href="css/LoginPageCss.css<%= cssVersion %>" />
+<link rel="stylesheet" href="resources/css/LoginPageCss.css<%= cssVersion %>" />
 <link href="https://fonts.googleapis.com" rel="preconnect">
 <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
 <link
@@ -25,45 +26,16 @@
 
 <body id="i5xm">
 
-	<%
-	SessionManager sm = new SessionManager(session);
-	session.setAttribute(sm.LOGIN_FROMPAGE, "LoginPage.jsp");
-	%>
-
-	<%
-	DaoWebdatainfo dao = new DaoWebdatainfo();
-	if (session.getAttribute(sm.WEB_NOTE1) == null || ((String)session.getAttribute(sm.WEB_NOTE1)).isEmpty())
-	{
-		session.setAttribute(sm.WEB_NOTE1, dao.getWebinfo(sm.WEB_NOTE1));
-	}
-	%>
-
-	<!--
-	TODO
-	Declarative
-	final String ERR1
-	String errText
-	-->
-
-	<%
-	if ((session.getAttribute("loggedIn") != null) && ((boolean) session.getAttribute("loggedIn") == true))
-	{
-		response.sendRedirect("WelcomePage.jsp");
-	}
-	// try catch ClassCastException e
-	// when loggedIn is not null and not boolean
-	%>
-
 	<div id="ilt5zk">
 		<div id="i99fq4">Important : </div>
 		<div id="i1hupq">${WEB_NOTE1}</div>
 	</div>
 	<div id="i5dg">
-		<form method="get" id="iq2wzk" action="WelcomePage.jsp">
+		<form method="get" id="iq2wzk" action="Home">
 			<button type="submit" id="ix3vku">Home</button>
 		</form>
 		<div id="iao9b">
-			<form method="post" id="iipx" action="ServletLogin">
+			<form method="post" id="iipx" action="sLogin">
 				<div id="i2sh">
 					<label id="i9zl">Username<br /></label><input type="text"
 						id="ikq8l" placeholder="Enter your username" name="username"
@@ -76,20 +48,20 @@
 				</div>
 				<button type="submit" id="ikmqp">Log in</button>
 			</form>
-			<form method="get" id="i8bga" action="CreateAccountPage.jsp">
+			<form method="get" id="i8bga" action="createAccount">
 				<button type="submit" id="i3xat">Create an account</button>
 			</form>
 		</div>
-		<form method="get" action="FeedbackPage.jsp" id="i9ojw1">
+		<form method="get" action="feedback" id="i9ojw1">
 			<button type="submit" id="i9l8gi">Give feedback / bug report</button>
 		</form>
 	</div>
 	<div id="imxfh">
-		<form method="get" id="i0ydh" action="PersonalInformationPage.jsp">
+		<form method="get" id="i0ydh" action="personalInformation">
 			<button type="submit" id="i6m6h">Personal Information</button>
 			<div id="illyu">What are you looking for?</div>
 		</form>
-		<form method="get" id="iuoax" action="ServletDownloadResume">
+		<form method="get" id="iuoax" action="sDownloadResume">
 			<button type="submit" id="i9ami">Download Resume</button>
 		</form>
 		<div id="ip7596">
@@ -107,7 +79,7 @@
 
 	test Environment variable1 : ${trial1}
 	<br> test Environment variable2 : ${trial2}<br>
-	version : v0.8
+	version : v1.0 Spring-based
 </body>
 </html>
 

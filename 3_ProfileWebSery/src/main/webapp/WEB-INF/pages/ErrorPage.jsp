@@ -1,3 +1,4 @@
+<%@page import="org.springframework.beans.factory.annotation.Autowired"%>
 <%@page import="com.sunya.managers.SessionManager"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8" isErrorPage="true"%>
@@ -13,7 +14,7 @@
 	else
 		cssVersion = System.getenv("SERY_CSS_VERSION");
 %>
-<link rel="stylesheet" href="css/ErrorPageCss.css<%= cssVersion %>" />
+<link rel="stylesheet" href="resources/css/ErrorPageCss.css<%= cssVersion %>" />
 <link href="https://fonts.googleapis.com" rel="preconnect">
 <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
 <link
@@ -23,19 +24,12 @@
 
 <body id="i3ptqv">
 
-	<%
-	if (session.getAttribute("fromServlet") == null)
-		response.sendRedirect("WelcomePage.jsp");
-	else
-		session.setAttribute("fromServlet", null);
-	%>
-
 	<div id="i6jq1w">
 		<div id="i3sbnu">
 			----- ERROR -----<br />
 		</div>
 		<div id="iakzlo">>>> ${errorDescription}</div>
-		<form method="get" action="FeedbackPage.jsp" id="ijo1ol">
+		<form method="get" action="feedback" id="ijo1ol">
 			<div id="i3wdhj">If the error persists, please report via bug
 				report button.</div>
 			<button type="submit" id="iwacim">Give feedback / bug report</button>

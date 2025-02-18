@@ -1,9 +1,4 @@
-Added a workaround for servlet filters not working correctly on AWS (Servlet HttpFilter).
+Merged ConversionToSpring (converted from Servlets to Spring) to master.
 
 ----------
 
-Added a workaround for servlet filters not working correctly on AWS (Servlet HttpFilter):
--Annotation-based filter configurations seemed to not work correctly on AWS.
-The cause is expected to be AWS messing up with its own scheduling, which
-causes the server to run filters in an incorrect order. The workaround is to
-configure the filter mapping and its order in the web.xml file.

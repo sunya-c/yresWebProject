@@ -7,26 +7,24 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.TimeZone;
 
-import org.springframework.aop.support.DelegatePerTargetObjectIntroductionInterceptor;
-
-import jakarta.servlet.ServletException;
+import com.sunya.PrintError;
 
 public class DaoAutoRemove extends DaoLoginInfo
 {
 
 	/**
-	 * Delete the the user which usern
+	 * Delete the user which <strong>username</strong> AND <strong>password</strong> AND <strong>time created</strong> match the argument passed into this method. 
 	 * 
 	 * @param username
 	 * @param password
 	 * @param sqlDateTime
 	 * @return
+	 * @throws Exception 
 	 */
-	private boolean removeTempUser(String username, String password, String sqlDateTime)
+	private boolean removeTempUser(String username, String password, String sqlDateTime) throws Exception
 	{
 		String query = "DELETE FROM logininfo WHERE "+COLUMN_TEMPACCOUNT+" = ? AND "+COLUMN_USERNAME+" = ? AND "+COLUMN_PASSWORD+" = ? AND "+COLUMN_TIMECREATED+" = ?";
 
@@ -65,11 +63,12 @@ public class DaoAutoRemove extends DaoLoginInfo
 				st.close();
 				con.close();
 			}
-			catch (SQLException e)
+			catch (SQLException | NullPointerException e)
 			{
-				System.err.println(">>> Exception removedData-02 !!! <<<");
-				System.err.println("Either 'Statement' or 'Connection' cannot be closed.");
-				System.err.println(e);
+				PrintError.println(">>> Exception removedData-02 !!! <<<\n"
+						+ "Either 'Statement' or 'Connection' cannot be closed.\n"
+						+ e);
+				throw e;
 			}
 		}
 
@@ -79,10 +78,9 @@ public class DaoAutoRemove extends DaoLoginInfo
 
 	/**
 	 * Automatically delete the user <i>60</i> minutes after registration
-	 * 
-	 * @throws SQLException
+	 * @throws Exception 
 	 */
-	public void autoRemoveTempUser() throws SQLException
+	public void autoRemoveTempUser() throws Exception
 	{
 		String query1 = "SELECT "+COLUMN_USERNAME+", "+COLUMN_PASSWORD+", "+COLUMN_TIMECREATED+" FROM "+TABLE_NAME+" WHERE "+COLUMN_TEMPACCOUNT+" = ?";
 
@@ -123,8 +121,8 @@ public class DaoAutoRemove extends DaoLoginInfo
 		}
 		catch (SQLException e)
 		{
-			System.err.println(">>> Exception getTimeCreated-01 !!! <<<");
-			System.err.println(e);
+			PrintError.println(">>> Exception autoremovetempuser-01 !!! <<<\n"
+					+ e);
 			throw new SQLException("SQL Exception");
 		}
 		// 7: Close the Statement and Connection

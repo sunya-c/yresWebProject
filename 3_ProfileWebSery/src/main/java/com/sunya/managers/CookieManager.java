@@ -1,11 +1,10 @@
 package com.sunya.managers;
 
 import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpSession;
 
 public class CookieManager
 {
-	Cookie[] cookies;
+	private Cookie[] cookies;
 	
 	// Attribute names Feedback
 	final public String CLIENT_REF = "YRES_clientRef_9123ks7df5ka4dif12339odsf";

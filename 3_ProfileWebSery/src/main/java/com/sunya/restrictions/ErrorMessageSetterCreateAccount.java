@@ -1,23 +1,22 @@
-package com.sunya;
+package com.sunya.restrictions;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.sunya.managers.SessionManager;
 
 import jakarta.servlet.http.HttpSession;
 
+@Component
 public class ErrorMessageSetterCreateAccount
 {
+	@Autowired
 	private HttpSession session;
+	@Autowired
 	private SessionManager sm;
 	
 	
-	// Constructor
-	public ErrorMessageSetterCreateAccount(HttpSession session)
-	{
-		this.session = session;
-		sm = new SessionManager(session);
-	}
-	// end -- Constructor
-
+	
 	
 	public void setUsernameErr(ErrMsg errMessage)
 	{

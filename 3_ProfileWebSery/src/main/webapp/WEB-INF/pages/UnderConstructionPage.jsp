@@ -15,24 +15,17 @@
 	else
 		cssVersion = System.getenv("SERY_CSS_VERSION");
 %>
-<link rel="stylesheet" href="css/UnderConstructionPageCss.css<%= cssVersion %>" />
+<link rel="stylesheet" href="resources/css/UnderConstructionPageCss.css<%= cssVersion %>" />
 <link href="https://fonts.googleapis.com" rel="preconnect">
 <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
 <link href="https://fonts.googleapis.com/css?family=Open+Sans:regular,italic&display=swap" rel="stylesheet" >
 </head>
 
 <body id="ie993">
-
-	<!--
-	TODO
-	Declarative
-	final String ERR1
-	String errText
-	-->
 	
 	<!-- Forcing to access this page by Servlet -->
 	<!-- Check if this page is called by its servlet -->
-	<%
+	<%-- <%
 		FromServlet fs = new FromServlet(application, "UnderConstruction", session);
 	
 		if (fs.isFromServlet())
@@ -48,9 +41,9 @@
 			System.err.println("ServletContext        : " + fs.getFullServletName());
 			session.setAttribute("fromServlet", null);
 			
-			response.sendRedirect("WelcomePage.jsp");
+			response.sendRedirect("Home");
 		}
-	%>
+	%> --%>
 
 	<div id="i3p1i">
 		<div id="ikk4r">

@@ -6,8 +6,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import jakarta.servlet.ServletException;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class DaoWebdatainfo extends Dao
 {
 	// Table name
@@ -21,7 +22,7 @@ public class DaoWebdatainfo extends Dao
 		setupDbms("sunyadb");
 	}
 	
-	public String getWebinfo(String keyName) throws ServletException
+	public String getWebinfo(String keyName) throws SQLException
 	{
 		String query = "SELECT "+COLUMN_VALUE+", "+COLUMN_KEY+" FROM "+TABLE_NAME+" WHERE "+COLUMN_KEY+" = ?";
 		
@@ -47,9 +48,7 @@ public class DaoWebdatainfo extends Dao
 		}
 		catch (SQLException e)
 		{
-			System.err.println(">>> Exception addFeedback-01 !!! <<<");
-			System.err.println(e);
-			throw new ServletException("SQL Exception");
+			throw new SQLException("daowebdatainfo.getwebinfo-01: SQL Exception");
 		}
 		finally
 		{
@@ -58,19 +57,9 @@ public class DaoWebdatainfo extends Dao
 				st.close();
 				con.close();
 			}
-			catch (SQLException e)
+			catch (SQLException | NullPointerException e)
 			{
-				System.err.println(">>> Exception addFeedback-02 !!! <<<");
-				System.err.println("Either 'Statement' or 'Connection' cannot be closed.");
-				System.err.println(e);
-				throw new ServletException("Database connection failed.");
-			}
-			catch (NullPointerException ne)
-			{
-				System.err.println(">>> Exception addFeedback-03 !!! <<<");
-				System.err.println("Either 'Statement' or 'Connection' cannot be closed.");
-				System.err.println(ne);
-				throw new ServletException("Database connection failed.");
+				throw new NullPointerException("daowebdatainfo.getwebinfo-02: Database connection failed.");
 			}
 		}
 		return null;

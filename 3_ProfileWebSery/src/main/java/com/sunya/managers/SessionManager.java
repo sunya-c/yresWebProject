@@ -1,9 +1,14 @@
 package com.sunya.managers;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import jakarta.servlet.http.HttpSession;
 
+@Component
 public class SessionManager
 {
+	@Autowired
 	HttpSession session;
 	
 	
@@ -39,8 +44,15 @@ public class SessionManager
 	// Attribute names ErrorPage
 	final public String ERROR_DESCRIPTION = "errorDescription";
 	
+	// Attribute names others
+	final public String FROM_SERVLET = "fromServlet";
 	
-	// Constructor
+	
+	// Contructor
+	public SessionManager()
+	{
+		
+	}
 	public SessionManager(HttpSession session)
 	{
 		this.session = session;
@@ -68,7 +80,6 @@ public class SessionManager
 	 * Remove <i>Login State</i> attributes,
 	 * which equivalent to <i>Logout</i>, 
 	 * which include:
-	 * <p>    "preTypedUsername",
 	 * <p>    "username",
 	 * <p>    "loggedIn"
 	 */
@@ -84,7 +95,7 @@ public class SessionManager
 	 * which include:
 	 * <p>    "preTypedCreateUsername",
 	 * <p>    "usernameErr",
-	 * <p>    "passwordErr1"
+	 * <p>    "passwordErr1",
 	 * <p>    "passwordErr2"
 	 */
 	public void removeCreateAccountErr()
@@ -119,8 +130,8 @@ public class SessionManager
 	 * Remove <i>ALL</i> attributes related to 
 	 * {@code FeedbackPage.jsp} and {@code ServletFeedback.java}, 
 	 * which include:
-	 * <p>    "preTypeTitle",
-	 * <p>    "preTypeDetail"
+	 * <p>    "preTypedTitle",
+	 * <p>    "preTypedDetail"
 	 */
 	public void removeFeedbackPreTyped()
 	{
@@ -143,6 +154,16 @@ public class SessionManager
 	public void removeErrorPage()
 	{
 		session.removeAttribute(ERROR_DESCRIPTION);
+	}
+	
+	/**
+	 * Remove <strong>fromServlet</strong> attribute
+	 * which include:
+	 * <p>    "fromServlet"
+	 */
+	public void removeFromServlet()
+	{
+		session.removeAttribute(FROM_SERVLET);
 	}
 
 }

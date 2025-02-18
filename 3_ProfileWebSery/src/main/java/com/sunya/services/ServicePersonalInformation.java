@@ -1,35 +1,33 @@
-package com.sunya.servlets;
-
-import jakarta.servlet.RequestDispatcher;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+package com.sunya.services;
 
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 
 import com.sunya.pojos.PojoPersonalInformation;
 
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet("/ServletPersonalInformation")
-public class ServletPersonalInformation extends HttpServlet
+@Service
+public class ServicePersonalInformation
 {
-	private static final long serialVersionUID = 1L;
-
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+	@Autowired
+	@Qualifier("frontDate")
+	private DateTimeFormatter dateFormat;
+	
+	public void sPersInfo(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
-		PojoPersonalInformation pInfo = new PojoPersonalInformation("sunyapong");
+		PojoPersonalInformation pInfo = new PojoPersonalInformation();
+		pInfo.setupPojoPersonalInformation("sunyapong");
 		
 		request.setAttribute("firstName", 	pInfo.getFirstname());
 		request.setAttribute("lastName", 	pInfo.getLastname());
-		
-		DateTimeFormatter formatDate = DateTimeFormatter.ofPattern("dd MMM yyyy");
-		request.setAttribute("dateOfBirth", pInfo.getDateOfBirth().format(formatDate));
-		
+		request.setAttribute("dateOfBirth", pInfo.getDateOfBirth().format(dateFormat));
 		request.setAttribute("age", 		pInfo.getAge());
 		request.setAttribute("gender", 		pInfo.getGender());
 		request.setAttribute("nationality", pInfo.getNationality());
@@ -56,13 +54,12 @@ public class ServletPersonalInformation extends HttpServlet
 		request.setAttribute("lineId", 		pInfo.getLineId());
 		request.setAttribute("listEducation", 		pInfo.getListEducation());
 		request.setAttribute("listEnghlishTest", 	pInfo.getListEnglishTest());
-		
-		HttpSession session = request.getSession();
-		session.setAttribute("fromServlet", getServletName());
-
-		
-		RequestDispatcher rd = request.getRequestDispatcher("PersonalInformationPage.jsp");
-		rd.forward(request, response);
+	}
+	
+	@Override
+	public String toString()
+	{
+		return this.getClass().getName();
 	}
 
 }

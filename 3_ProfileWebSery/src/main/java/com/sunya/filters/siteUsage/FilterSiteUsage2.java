@@ -2,69 +2,30 @@ package com.sunya.filters.siteUsage;
 
 import java.io.IOException;
 
-import com.sunya.PrintError;
-import com.sunya.daos.DaoSiteUsage;
-import com.sunya.managers.CookieManager;
+import org.springframework.web.filter.OncePerRequestFilter;
 
-import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.ServletRequest;
-import jakarta.servlet.ServletResponse;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-
-public class FilterSiteUsage2 extends HttpFilter implements Filter
+/**
+ * Filter for FeedbackPage
+ */
+public class FilterSiteUsage2 extends OncePerRequestFilter
 {
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-			throws IOException, ServletException
+	@Override
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+			throws ServletException, IOException
 	{
-		System.out.println("in Filter Site Usage 2 : Feedback");
-		HttpServletRequest req = (HttpServletRequest) request;
-		HttpServletResponse res = (HttpServletResponse) response;
-
-		DaoSiteUsage dao = new DaoSiteUsage();
-		
-		CookieManager cm = new CookieManager(req.getCookies());
-		String refNumber = cm.getCookieValue(cm.CLIENT_REF);
-		
-		int[] updatedUsage;
-		
-		if (refNumber == null)
-			updatedUsage = new int[dao.getArraySize()];
-		else
-		{
-			updatedUsage = dao.getUsage(refNumber);
-			if (updatedUsage == null)
-			{
-				refNumber = null;
-				updatedUsage = new int[dao.getArraySize()];
-			}
-		}
-		
-		updatedUsage[2] += 1;
-		String result = dao.updateUsage(refNumber, updatedUsage);
-		
-		if (result == null)
-		{
-			try
-			{
-				throw new ServletException("SiteUsage update failed.");
-			}
-			catch (ServletException e)
-			{
-				PrintError.toErrorPage(req.getSession(), res, this, e);
-			}
-		}
-		else
-		{
-			Cookie cookie = new Cookie(cm.CLIENT_REF, result);
-			cookie.setMaxAge(7*24*60*60);
-			res.addCookie(cookie);
-			chain.doFilter(req, res);
-		}
+		System.out.println("Order: 6, in Filter Usage 2 (feedback)");
+		FilterSiteUsage siteUsage = new FilterSiteUsage();
+		siteUsage.doFilterInternal(request, response, filterChain, 2, this);
+	}
+	
+	@Override
+	public String toString()
+	{
+		return this.getClass().getName();
 	}
 }
