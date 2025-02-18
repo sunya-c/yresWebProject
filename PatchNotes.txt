@@ -1,8 +1,9 @@
-1.Added feature that prevents suspicious requests from entering the website
+Added a workaround for servlet filters not working correctly on AWS (Servlet HttpFilter).
 
 ----------
 
-1.Added feature that prevents suspicious requests from entering the website:
--Added FilterBot.java, DaoIPBlacklist.java, and SuspiciousRequestException.java which
-belong to spam request-detection process. I hope this could filter out most of the spam
-requests. Let's see how effective it will be.
+Added a workaround for servlet filters not working correctly on AWS (Servlet HttpFilter):
+-Annotation-based filter configurations seemed to not work correctly on AWS.
+The cause is expected to be AWS messing up with its own scheduling, which
+causes the server to run filters in an incorrect order. The workaround is to
+configure the filter mapping and its order in the web.xml file.

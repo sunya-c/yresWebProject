@@ -1,32 +1,27 @@
 package com.sunya.filters.siteUsage;
 
-import jakarta.annotation.Priority;
+import java.io.IOException;
+
+import com.sunya.daos.DaoSiteUsage;
+import com.sunya.managers.CookieManager;
+
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
-import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import java.io.IOException;
 
-import org.springframework.core.annotation.Order;
-
-import com.sunya.PrintError;
-import com.sunya.daos.DaoSiteUsage;
-import com.sunya.managers.CookieManager;
-
-@WebFilter("/ErrorPage.jsp")
-@Priority(3)
 public class FilterSiteUsage1 extends HttpFilter implements Filter
 {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException
 	{
+		System.out.println("in Filter Site Usage 1 : Error");
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse res = (HttpServletResponse) response;
 

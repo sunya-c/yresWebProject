@@ -40,4 +40,127 @@
 	</context-param>
 
 
+	<!-- Filters -->
+	<!-- 1 Filter Bots -->
+	<filter>
+		<filter-name>filterBot</filter-name>
+		<filter-class>com.sunya.filters.FilterBot</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>filterBot</filter-name>
+		<url-pattern>/LoginPage.jsp</url-pattern>
+	</filter-mapping>
+	<!-- 2 Account Existence -->
+	<filter>
+		<filter-name>filterAccExistence</filter-name>
+		<filter-class>com.sunya.filters.FilterAccountExistence</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>filterAccExistence</filter-name>
+		<url-pattern>/CreateAccountPage.jsp</url-pattern>
+		<!-- <url-pattern>/error</url-pattern> -->
+		<url-pattern>/FeedbackPage.jsp</url-pattern>
+		<url-pattern>/LoginPage.jsp</url-pattern>
+		<url-pattern>/PersonalInformationPage.jsp</url-pattern>
+		<url-pattern>/RedirectingPage.jsp</url-pattern>
+		<!-- <url-pattern>/UnderConstructionPage.jsp</url-pattern> -->
+		<url-pattern>/WelcomePage.jsp</url-pattern>
+		<url-pattern>/ServletCreateAccount</url-pattern>
+		<url-pattern>/ServletDownloadResume</url-pattern>
+		<url-pattern>/ServletFeedback</url-pattern>
+		<url-pattern>/ServletLogin</url-pattern>
+		<url-pattern>/ServletLogout</url-pattern>
+		<url-pattern>/ServletPersonalInformation</url-pattern>
+	</filter-mapping>
+	<!-- 3 Login State -->
+	<filter>
+		<filter-name>filterLoginState</filter-name>
+		<filter-class>com.sunya.filters.FilterLoginState</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>filterLoginState</filter-name>
+		<url-pattern>/WelcomePage.jsp</url-pattern>
+	</filter-mapping>
+	<!-- 4 0-CreateAccountPage -->
+	<filter>
+		<filter-name>filterUsage0</filter-name>
+		<filter-class>com.sunya.filters.siteUsage.FilterSiteUsage0</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>filterUsage0</filter-name>
+		<url-pattern>/CreateAccountPage.jsp</url-pattern>
+	</filter-mapping>
+	<!-- 5 1-ErrorPage -->
+	<filter>
+		<filter-name>filterUsage1</filter-name>
+		<filter-class>com.sunya.filters.siteUsage.FilterSiteUsage1</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>filterUsage1</filter-name>
+		<url-pattern>/ErrorPage.jsp</url-pattern>
+	</filter-mapping>
+	<!-- 6 2-FeedbackPage -->
+	<filter>
+		<filter-name>filterUsage2</filter-name>
+		<filter-class>com.sunya.filters.siteUsage.FilterSiteUsage2</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>filterUsage2</filter-name>
+		<url-pattern>/FeedbackPage.jsp</url-pattern>
+	</filter-mapping>
+	<!-- 7 3-Home/LoginPage -->
+	<filter>
+		<filter-name>filterUsage3</filter-name>
+		<filter-class>com.sunya.filters.siteUsage.FilterSiteUsage3</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>filterUsage3</filter-name>
+		<url-pattern>/LoginPage.jsp</url-pattern>
+	</filter-mapping>
+	<!-- 8 4-PersInfoPage -->
+	<filter>
+		<filter-name>filterUsage4</filter-name>
+		<filter-class>com.sunya.filters.siteUsage.FilterSiteUsage4</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>filterUsage4</filter-name>
+		<url-pattern>/PersonalInformationPage.jsp</url-pattern>
+	</filter-mapping>
+	<!-- 9 5-RedirectingPage -->
+	<filter>
+		<filter-name>filterUsage5</filter-name>
+		<filter-class>com.sunya.filters.siteUsage.FilterSiteUsage5</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>filterUsage5</filter-name>
+		<url-pattern>/RedirectingPage.jsp</url-pattern>
+	</filter-mapping>
+	<!-- 10 6-UnderConstructionPage -->
+	<filter>
+		<filter-name>filterUsage6</filter-name>
+		<filter-class>com.sunya.filters.siteUsage.FilterSiteUsage6</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>filterUsage6</filter-name>
+		<url-pattern></url-pattern>
+	</filter-mapping>
+	<!-- 11 7-WelcomePage -->
+	<filter>
+		<filter-name>filterUsage7</filter-name>
+		<filter-class>com.sunya.filters.siteUsage.FilterSiteUsage7</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>filterUsage7</filter-name>
+		<url-pattern>/WelcomePage.jsp</url-pattern>
+	</filter-mapping>
+	<!-- 12 8-sResumeDownload -->
+	<filter>
+		<filter-name>filterUsage8</filter-name>
+		<filter-class>com.sunya.filters.siteUsage.FilterSiteUsage8</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>filterUsage8</filter-name>
+		<url-pattern>/ServletDownloadResume</url-pattern>
+	</filter-mapping>
+
 </web-app>
