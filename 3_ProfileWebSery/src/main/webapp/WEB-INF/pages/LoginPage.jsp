@@ -9,6 +9,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Yres home</title>
+<link rel="icon" href="resources/pics/Icon.png" type="image/png">
 <%
 	String cssVersion;
 	if (System.getenv("SERY_CSS_VERSION")==null || System.getenv("SERY_CSS_VERSION").isBlank())
@@ -79,7 +80,7 @@
 
 	test Environment variable1 : ${trial1}
 	<br> test Environment variable2 : ${trial2}<br>
-	version : v1.0 Spring-based
+	version : v1.01 Spring-based
 </body>
 </html>
 

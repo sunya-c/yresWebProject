@@ -8,7 +8,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Feedback/Bug report</title>
+<title>Yres - feedback</title>
+<link rel="icon" href="resources/pics/Icon.png" type="image/png">
 <%
 	String cssVersion;
 	if (System.getenv("SERY_CSS_VERSION")==null || System.getenv("SERY_CSS_VERSION").isBlank())

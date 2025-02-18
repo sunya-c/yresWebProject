@@ -8,6 +8,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Yres home</title>
+<link rel="icon" href="resources/pics/Icon.png" type="image/png">
 <%
 	String cssVersion;
 	if (System.getenv("SERY_CSS_VERSION")==null || System.getenv("SERY_CSS_VERSION").isBlank())

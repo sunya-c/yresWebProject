@@ -1,4 +1,6 @@
-Merged ConversionToSpring (converted from Servlets to Spring) to master.
+Added a favicon to the website.
 
 ----------
 
+Added a favicon to the website:
+-Added a favicon, which is an icon that appears on the browser tab.
