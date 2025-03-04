@@ -3,6 +3,7 @@ package com.sunya;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -64,18 +65,20 @@ public class TrialMain
 	 */
 	private void deleteBots() throws SQLException
 	{
-		ApplicationContext context = new AnnotationConfigApplicationContext(LibraryConfig.class);
-		DateTimeFormatter dateTimeFormat = (DateTimeFormatter)context.getBean("frontDateTime");
-		
-		System.out.print(LocalDateTime.now().format(dateTimeFormat));
-		System.out.println(" Deleting bots...");
+		PrintTime.println("Deleting bots...");
 		
 		DaoIPBlacklist daoBlacklist = new DaoIPBlacklist();
 		DaoSiteUsage daoUsage = new DaoSiteUsage();
 		
-		daoUsage.removeUsageFromIP(daoBlacklist.getIp());
+		PrintTime.println("Retrieving IPs from blacklistinfo...");
+		ArrayList<String> blacklistIPs = daoBlacklist.getIp();
 		
-		System.out.print(LocalDateTime.now().format(dateTimeFormat));
-		System.out.println(" Deletion completed.");
+		PrintTime.println("Retrieving IPs from usageinfo...");
+		ArrayList<String> usageIPs = daoUsage.getIp();
+		
+		PrintTime.println("Removing blacklisted IPs from usageinfo...");
+		daoUsage.removeUsageByBlacklist(blacklistIPs, usageIPs);
+		
+		PrintTime.println("Deletion completed.");
 	}
 }

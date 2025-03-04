@@ -80,7 +80,7 @@
 
 	test Environment variable1 : ${trial1}
 	<br> test Environment variable2 : ${trial2}<br>
-	version : v1.01 Spring-based
+	version : v1.02 Spring-based
 </body>
 </html>
 

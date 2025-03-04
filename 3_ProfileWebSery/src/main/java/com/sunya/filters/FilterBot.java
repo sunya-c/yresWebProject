@@ -39,7 +39,8 @@ public class FilterBot extends OncePerRequestFilter
 		}
 		catch (RateLimitedException e)
 		{
-			PrintError.toErrorPage(request.getSession(), response, this, new ServletException("filterbot-01: Limit reached."));
+			//TODO: Send a counter iteration to the database.
+//			PrintError.toErrorPage(request.getSession(), response, this, new ServletException("filterbot-01: Limit reached."));
 		}
 		
 		String countryCode = lookUp.getCountryCode();

@@ -453,12 +453,12 @@ public class DaoSiteUsage extends Dao
 	
 	/**
 	 * Remove the usage info that has the specified IP address.
-	 * Get an ArrayList of blacklisted IPs from DaoIPBlacklist.getIp().
 	 * 
-	 * @param ipToBeRemoved
+	 * @param blacklistedIPs Get these IPs from DaoIPBlacklist.getIp().
+	 * @param usageIPs Get these IPs from DaoSiteUsage.getIp();
 	 * @throws SQLException
 	 */
-	public void removeUsageFromIP(ArrayList<String> ipToBeRemoved) throws SQLException
+	public void removeUsageByBlacklist(ArrayList<String> blacklistedIPs, ArrayList<String> usageIPs) throws SQLException
 	{
 		String query = "DELETE FROM "+TABLE_NAME+" WHERE "+COLUMN_IP+" = ?;";
 		
@@ -468,12 +468,15 @@ public class DaoSiteUsage extends Dao
 		try
 		{
 			con = DriverManager.getConnection(url, uname, pass);
+			st = con.prepareStatement(query);  // TODO: check if this has to in the for loop below???
 			
-			for (int i=0; i<ipToBeRemoved.size(); i++)
+			for (int i=0; i<blacklistedIPs.size(); i++)
 			{
-				st = con.prepareStatement(query);
-				st.setString(1, ipToBeRemoved.get(i));
-				row += st.executeUpdate();
+				if (usageIPs.contains(blacklistedIPs.get(i)))
+				{
+					st.setString(1, blacklistedIPs.get(i));
+					row += st.executeUpdate();
+				}
 			}
 			System.out.println("row deleted: "+row);
 		}
@@ -493,7 +496,46 @@ public class DaoSiteUsage extends Dao
 				throw new NullPointerException("daositeusage.removeusagefromip-02: Database connection failed.");
 			}
 		}
+	}
+
+	public ArrayList<String> getIp() throws SQLException
+	{
+		ArrayList<String> usageIPs = new ArrayList<>();
 		
+		String query = "SELECT ip_address FROM usageinfo;";
+		
+		Connection con = null;
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		try
+		{
+			con = DriverManager.getConnection(url, uname, pass);
+			st = con.prepareStatement(query);
+			
+			rs = st.executeQuery();
+			
+			while (rs.next())
+			{
+				usageIPs.add(rs.getString(COLUMN_IP));
+			}
+			return usageIPs;
+		}
+		catch (SQLException e)
+		{
+			throw new SQLException("daositeusage.getip-01: SQL Exception");
+		}
+		finally
+		{
+			try
+			{
+				st.close();
+				con.close();
+			}
+			catch (SQLException | NullPointerException e)
+			{
+				throw new NullPointerException("daositeusage.getip-02: Database connection failed.");
+			}
+		}
 	}
 
 }

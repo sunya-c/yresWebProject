@@ -1,6 +1,7 @@
-Added a favicon to the website.
+Optimized JDBC connection.
 
 ----------
 
-Added a favicon to the website:
--Added a favicon, which is an icon that appears on the browser tab.
+Optimized JDBC connection:
+-Removed an unnecessary process of JDBC for removeUsageByBlacklist which reduces
+the processing time by around 90% (a 50-second process is now finished within 5 seconds).
