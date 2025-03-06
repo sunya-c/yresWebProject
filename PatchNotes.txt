@@ -1,6 +1,3 @@
-Changed the project name to 'yresWebProject'.
+Converted the project from Spring to Spring Boot.
 
 ----------
-
-Changed the project name:
--Changed the project name from '3_ProfileWebSery' to 'yresWebProject'.
