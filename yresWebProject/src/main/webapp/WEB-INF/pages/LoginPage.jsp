@@ -1,6 +1,3 @@
-<%@page import="org.springframework.beans.factory.annotation.Autowired"%>
-<%@page import="com.sunya.daos.DaoWebdatainfo"%>
-<%@page import="com.sunya.managers.SessionManager"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
@@ -76,6 +73,12 @@
 			!(System.getProperty("SERY_DB_URL") == null || System.getProperty("SERY_DB_URL").isBlank()));
 	session.setAttribute("trial2",
 			!(System.getProperty("SERY_DB_UNAME") == null || System.getProperty("SERY_DB_UNAME").isBlank()));
+	%>
+	<%
+	session.setAttribute("trial1",
+			!(System.getenv("SERY_DB_URL") == null || System.getenv("SERY_DB_URL").isBlank()));
+	session.setAttribute("trial2",
+			!(System.getenv("SERY_DB_UNAME") == null || System.getenv("SERY_DB_UNAME").isBlank()));
 	%>
 
 	test Environment variable1 : ${trial1}

@@ -56,7 +56,7 @@
 
 	<!-- Filters -->
 	<!-- 1 Filter Bots -->
-	<filter>
+	<!-- <filter>
 		<filter-name>filterBot</filter-name>
 		<filter-class>com.sunya.filters.FilterBot</filter-class>
 	</filter>
@@ -64,7 +64,7 @@
 		<filter-name>filterBot</filter-name>
 		<url-pattern>/Home</url-pattern>
 	</filter-mapping>
-	<!-- 2 Account Existence -->
+	2 Account Existence
 	<filter>
 		<filter-name>filterAccExistence</filter-name>
 		<filter-class>com.sunya.filters.FilterAccountExistence</filter-class>
@@ -72,12 +72,12 @@
 	<filter-mapping>
 		<filter-name>filterAccExistence</filter-name>
 		<url-pattern>/createAccount</url-pattern>
-		<!-- <url-pattern>/error</url-pattern> -->
+		<url-pattern>/error</url-pattern>
 		<url-pattern>/feedback</url-pattern>
 		<url-pattern>/Home</url-pattern>
 		<url-pattern>/personalInformation</url-pattern>
 		<url-pattern>/redirecting</url-pattern>
-		<!-- <url-pattern>/UnderConstructionPage.jsp</url-pattern> -->
+		<url-pattern>/UnderConstructionPage.jsp</url-pattern>
 		<url-pattern>/welcome</url-pattern>
 		<url-pattern>/sCreateAccount</url-pattern>
 		<url-pattern>/sDownloadResume</url-pattern>
@@ -86,7 +86,7 @@
 		<url-pattern>/sLogout</url-pattern>
 		<url-pattern>/sPersonalInformation</url-pattern>
 	</filter-mapping>
-	<!-- 3 Login State -->
+	3 Login State
 	<filter>
 		<filter-name>filterLoginState</filter-name>
 		<filter-class>com.sunya.filters.FilterLoginState</filter-class>
@@ -95,7 +95,7 @@
 		<filter-name>filterLoginState</filter-name>
 		<url-pattern>/welcome</url-pattern>
 	</filter-mapping>
-	<!-- 4 0-CreateAccountPage -->
+	4 0-CreateAccountPage
 	<filter>
 		<filter-name>filterUsage0</filter-name>
 		<filter-class>com.sunya.filters.siteUsage.FilterSiteUsage0</filter-class>
@@ -104,7 +104,7 @@
 		<filter-name>filterUsage0</filter-name>
 		<url-pattern>/createAccount</url-pattern>
 	</filter-mapping>
-	<!-- 5 1-ErrorPage -->
+	5 1-ErrorPage
 	<filter>
 		<filter-name>filterUsage1</filter-name>
 		<filter-class>com.sunya.filters.siteUsage.FilterSiteUsage1</filter-class>
@@ -113,7 +113,7 @@
 		<filter-name>filterUsage1</filter-name>
 		<url-pattern>/error</url-pattern>
 	</filter-mapping>
-	<!-- 6 2-FeedbackPage -->
+	6 2-FeedbackPage
 	<filter>
 		<filter-name>filterUsage2</filter-name>
 		<filter-class>com.sunya.filters.siteUsage.FilterSiteUsage2</filter-class>
@@ -122,7 +122,7 @@
 		<filter-name>filterUsage2</filter-name>
 		<url-pattern>/feedback</url-pattern>
 	</filter-mapping>
-	<!-- 7 3-Home/LoginPage -->
+	7 3-Home/LoginPage
 	<filter>
 		<filter-name>filterUsage3</filter-name>
 		<filter-class>com.sunya.filters.siteUsage.FilterSiteUsage3</filter-class>
@@ -131,7 +131,7 @@
 		<filter-name>filterUsage3</filter-name>
 		<url-pattern>/Home</url-pattern>
 	</filter-mapping>
-	<!-- 8 4-PersInfoPage -->
+	8 4-PersInfoPage
 	<filter>
 		<filter-name>filterUsage4</filter-name>
 		<filter-class>com.sunya.filters.siteUsage.FilterSiteUsage4</filter-class>
@@ -140,7 +140,7 @@
 		<filter-name>filterUsage4</filter-name>
 		<url-pattern>/personalInformation</url-pattern>
 	</filter-mapping>
-	<!-- 9 5-RedirectingPage -->
+	9 5-RedirectingPage
 	<filter>
 		<filter-name>filterUsage5</filter-name>
 		<filter-class>com.sunya.filters.siteUsage.FilterSiteUsage5</filter-class>
@@ -149,7 +149,7 @@
 		<filter-name>filterUsage5</filter-name>
 		<url-pattern>/redirecting</url-pattern>
 	</filter-mapping>
-	<!-- 10 6-UnderConstructionPage -->
+	10 6-UnderConstructionPage
 	<filter>
 		<filter-name>filterUsage6</filter-name>
 		<filter-class>com.sunya.filters.siteUsage.FilterSiteUsage6</filter-class>
@@ -158,7 +158,7 @@
 		<filter-name>filterUsage6</filter-name>
 		<url-pattern></url-pattern>
 	</filter-mapping>
-	<!-- 11 7-WelcomePage -->
+	11 7-WelcomePage
 	<filter>
 		<filter-name>filterUsage7</filter-name>
 		<filter-class>com.sunya.filters.siteUsage.FilterSiteUsage7</filter-class>
@@ -167,7 +167,7 @@
 		<filter-name>filterUsage7</filter-name>
 		<url-pattern>/welcome</url-pattern>
 	</filter-mapping>
-	<!-- 12 8-sResumeDownload -->
+	12 8-sResumeDownload
 	<filter>
 		<filter-name>filterUsage8</filter-name>
 		<filter-class>com.sunya.filters.siteUsage.FilterSiteUsage8</filter-class>
@@ -175,7 +175,7 @@
 	<filter-mapping>
 		<filter-name>filterUsage8</filter-name>
 		<url-pattern>/sDownloadResume</url-pattern>
-	</filter-mapping>
+	</filter-mapping> -->
 
 </web-app>
 

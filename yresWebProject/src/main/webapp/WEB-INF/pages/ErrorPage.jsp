@@ -1,5 +1,4 @@
-<%@page import="org.springframework.beans.factory.annotation.Autowired"%>
-<%@page import="com.sunya.managers.SessionManager"%>
+<%@page import="com.sunya.yresWebProject.managers.SessionManager"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8" isErrorPage="true"%>
 <!DOCTYPE html>
@@ -39,7 +38,7 @@
 	</div>
 	<%
 	SessionManager sm = new SessionManager(session);
-	sm.removeErrorPage();
+	sm.removeErrorPage(); //TODO: pass errorDescription by request and remove SessionManager here.
 	%>
 </body>
 </html>

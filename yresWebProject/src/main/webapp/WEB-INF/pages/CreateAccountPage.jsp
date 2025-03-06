@@ -1,7 +1,3 @@
-<%@page import="org.springframework.beans.factory.annotation.Autowired"%>
-<%@page import="com.sunya.managers.SessionManager"%>
-<%@page import="com.sunya.PrintError"%>
-<%@page import="com.sunya.FromServlet"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -64,5 +60,6 @@
 			so other than just<br />for fun. XD<br />
 		</label>
 	</div>
+	<%= cssVersion %>
 </body>
 </html>
