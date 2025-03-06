@@ -1,7 +1,6 @@
-Optimized JDBC connection.
+Changed the project name to 'yresWebProject'.
 
 ----------
 
-Optimized JDBC connection:
--Removed an unnecessary process of JDBC for removeUsageByBlacklist which reduces
-the processing time by around 90% (a 50-second process is now finished within 5 seconds).
+Changed the project name:
+-Changed the project name from '3_ProfileWebSery' to 'yresWebProject'.
