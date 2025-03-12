@@ -1,27 +1,27 @@
 package com.sunya.yresWebProject.services;
 
-import java.io.IOException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sunya.yresWebProject.managers.SessionManager;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @Service
 public class ServiceLogout
 {
 	@Autowired
 	private SessionManager sm;
+	@Autowired
+	private HttpSession session;
 	
-	public String sLogout(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+	public String sLogout()
 	{
 		sm.removeLoginState();
-		System.out.println(toString());
-		return "Home";
+		if (session.getAttribute(sm.LOGIN_FROMPAGE)==null)
+			return "Home";
+		else
+			return (String)session.getAttribute(sm.LOGIN_FROMPAGE);
 	}
 	
 	@Override

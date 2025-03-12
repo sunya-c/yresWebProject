@@ -1,78 +1,71 @@
 package com.sunya.yresWebProject.daos;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.TimeZone;
 
-import com.sunya.yresWebProject.PrintError;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.PreparedStatementSetter;
+import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.stereotype.Repository;
 
+import com.sunya.yresWebProject.exceptions.YresDataAccessException;
+import com.sunya.yresWebProject.models.ModelLoginInfo;
+
+@Repository
 public class DaoAutoRemove extends DaoLoginInfo
 {
+	@Autowired
+	@Qualifier("backDateTime")
+	DateTimeFormatter dateTimeFormat;
 
 	/**
 	 * Delete the user which <strong>username</strong> AND <strong>password</strong> AND <strong>time created</strong> match the argument passed into this method. 
 	 * 
 	 * @param username
 	 * @param password
-	 * @param sqlDateTime
+	 * @param timeCreated
 	 * @return
 	 * @throws Exception 
 	 */
-	private boolean removeTempUser(String username, String password, String sqlDateTime) throws Exception
+	private void removeTempUser(ModelLoginInfo model)
 	{
-		String query = "DELETE FROM logininfo WHERE "+COLUMN_TEMPACCOUNT+" = ? AND "+COLUMN_USERNAME+" = ? AND "+COLUMN_PASSWORD+" = ? AND "+COLUMN_TIMECREATED+" = ?";
-
-		Connection con = null;
-		PreparedStatement st = null;
-		int row = 0;
+		String query = "DELETE FROM "+TABLE_NAME+" WHERE "+COLUMN_TEMPACCOUNT+" = ? AND "+COLUMN_USERNAME+" = ? AND "+COLUMN_PASSWORD+" = ? AND "+COLUMN_TIMECREATED+" = ?";
+		
+		model.setTempaccount("1");
+		
+		PreparedStatementSetter pss = new PreparedStatementSetter() {
+			
+			@Override
+			public void setValues(PreparedStatement ps) throws SQLException
+			{
+				ps.setString(1, model.getTempaccount());
+				ps.setString(2, model.getUsername());
+				ps.setString(3, model.getPassword());
+				ps.setString(4, model.getTimecreated());
+			}
+		};
+		
+		int row;
 		try
 		{
-			// 3: Create Connection
-			con = DriverManager.getConnection(url, uname, pass);
-
-			// 4: Create Statement
-			st = con.prepareStatement(query);
-			st.setString(1, "1");
-			st.setString(2, username);
-			st.setString(3, password);
-			st.setString(4, sqlDateTime);
-
-			// 5: Execute the query
-			row = st.executeUpdate();
-
-			// 6: Get the results
-			System.out.println("Data removed!!! Rows affected: " + row);
-			return true;
+			row = template.update(query, pss);
 		}
-		catch (SQLException e)
+		catch (DataAccessException e)
 		{
-			System.err.println(">>> Exception removedData-01 !!! <<<");
-			System.err.println(e);
+			throw new YresDataAccessException("daoautoremove.removetempuser-01");
 		}
-		// 7: Close the Statement and Connection
-		finally
-		{
-			try
-			{
-				st.close();
-				con.close();
-			}
-			catch (SQLException | NullPointerException e)
-			{
-				PrintError.println(">>> Exception removedData-02 !!! <<<\n"
-						+ "Either 'Statement' or 'Connection' cannot be closed.\n"
-						+ e);
-				throw e;
-			}
-		}
-
-		return false;
+		
+		if (row!=1)
+			throw new YresDataAccessException("daoautoremove.removetempuser-02");
 	}
 	
 
@@ -80,74 +73,68 @@ public class DaoAutoRemove extends DaoLoginInfo
 	 * Automatically delete the user <i>60</i> minutes after registration
 	 * @throws Exception 
 	 */
-	public void autoRemoveTempUser() throws Exception
+	public void autoRemoveTempUser()
 	{
-		String query1 = "SELECT "+COLUMN_USERNAME+", "+COLUMN_PASSWORD+", "+COLUMN_TIMECREATED+" FROM "+TABLE_NAME+" WHERE "+COLUMN_TEMPACCOUNT+" = ?";
-
-		Connection con = null;
-		PreparedStatement st = null;
-		ResultSet rs = null;
-		try
-		{
-			// 3: Create Connection
-			con = DriverManager.getConnection(url, uname, pass);
-
-			// 4: Create Statement
-			st = con.prepareStatement(query1);
-			st.setString(1, "1");
-
-			// 5: Execute the query
-			rs = st.executeQuery();
-
-			TimeZone tzone = TimeZone.getDefault();
-			int timeOffset = -tzone.getRawOffset();
-			int gmtPlus7 = (timeOffset/(1000*60*60))+7;  // an offset for converting local machine's time to GMT+7
-			LocalDateTime timeNow = LocalDateTime.now().plusHours(gmtPlus7);  // converting local machine's time to GMT+7
+		String query = "SELECT "+COLUMN_USERNAME+", "+COLUMN_PASSWORD+", "+COLUMN_TIMECREATED+" FROM "+TABLE_NAME+" WHERE "+COLUMN_TEMPACCOUNT+" = ?";
+		
+		ResultSetExtractor<ArrayList<ModelLoginInfo>> extractor = new ResultSetExtractor<>() {
 			
-			// 6: Get the results
-			while (rs.next())
+			@Override
+			public ArrayList<ModelLoginInfo> extractData(ResultSet rs) throws SQLException, DataAccessException
 			{
-				DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-				LocalDateTime timeCreated = LocalDateTime.parse(rs.getString(COLUMN_TIMECREATED), timeFormat);
+				ArrayList<ModelLoginInfo> models = null;
+				
+				if (rs.next())
+				{
+					models = new ArrayList<>();
+					
+					do
+					{
+						if (rs.getString(COLUMN_TEMPACCOUNT).equals("1"))
+						{
+							ModelLoginInfo model = new ModelLoginInfo();
+							model.setUsername(rs.getString(COLUMN_USERNAME));
+							model.setPassword(rs.getString(COLUMN_PASSWORD));
+							model.setTimecreated(rs.getString(COLUMN_TIMECREATED));
+							models.add(model);
+						}
+					}
+					while (rs.next());
+				}
+				
+				return models;
+			}
+		};
+		
+		ArrayList<ModelLoginInfo> models = template.query(query, extractor);
+		
+		
+		TimeZone timeZone = TimeZone.getDefault();
+		
+		LocalDateTime timeNow = LocalDateTime.now()
+									.minus(timeZone.getRawOffset(), ChronoUnit.MILLIS)  // converting local machine's time to GMT+0
+									.plusHours(7);  // converting GMT+0 to GMT+7
+		
+		if (models!=null)
+		{
+			for (var i=0; i<models.size(); i++)
+			{
+				LocalDateTime timeCreated = LocalDateTime.parse(models.get(i).getTimecreated(), dateTimeFormat);
 				Duration duration = Duration.between(timeCreated, timeNow);
+				
 				if (duration.toMinutes() >= 60)
 				{
-					removeTempUser(rs.getString(COLUMN_USERNAME), rs.getString(COLUMN_PASSWORD), rs.getString(COLUMN_TIMECREATED));
-					System.out.println(timeCreated);
-					System.out.println(timeNow);
-					System.out.println(duration.toDays());
+					if (isExistingPasswordCaseSen(models.get(i)))
+					{
+						removeTempUser(models.get(i));
+						
+						System.out.println(timeCreated);
+						System.out.println(timeNow);
+						System.out.println(duration.toMinutes());
+					}
 				}
 			}
 		}
-		catch (SQLException e)
-		{
-			PrintError.println(">>> Exception autoremovetempuser-01 !!! <<<\n"
-					+ e);
-			throw new SQLException("SQL Exception");
-		}
-		// 7: Close the Statement and Connection
-		finally
-		{
-			try
-			{
-				st.close();
-				con.close();
-			}
-			catch (SQLException e)
-			{
-				System.err.println(">>> Exception getTimeCreated-02 !!! <<<");
-				System.err.println("Either 'Statement' or 'Connection' cannot be closed.");
-				System.err.println(e);
-				throw new NullPointerException("Database connection failed.");
-			}
-			catch (NullPointerException ne)
-			{
-				System.err.println(">>> Exception removeUser-03 !!! <<<");
-				System.err.println("Either 'Statement' or 'Connection' cannot be closed.");
-				System.err.println(ne);
-				throw new NullPointerException("Database connection failed.");
-			}
-		}
+		
 	}
-
 }

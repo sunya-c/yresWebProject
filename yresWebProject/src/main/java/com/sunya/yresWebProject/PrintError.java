@@ -15,7 +15,7 @@ public class PrintError
 		DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm:ss");
 		String formattedTime = time.format(timeFormat);
 		
-		System.err.print("\n" + formattedTime);
+		System.err.print(formattedTime);
 		System.err.print(" ----> ");
 		System.err.println(errText);
 	}
@@ -31,6 +31,7 @@ public class PrintError
 	 */
 	public static String toErrorPage(HttpSession session, Object obj, Exception e)
 	{
+		System.out.println("PrintError: "+e);
 		session.setAttribute("errorDescription", e);
 		session.setAttribute("fromServlet", obj.toString());
 		return "error";
@@ -39,6 +40,7 @@ public class PrintError
 	// to be deleted when conversion to Spring mvc is complete
 	public static void toErrorPage(HttpSession session, HttpServletResponse response, Object obj, Exception e) throws IOException
 	{
+		System.out.println("PrintError: "+e);
 		session.setAttribute("errorDescription", e);
 		session.setAttribute("fromServlet", obj.toString());
 		response.sendRedirect("error");

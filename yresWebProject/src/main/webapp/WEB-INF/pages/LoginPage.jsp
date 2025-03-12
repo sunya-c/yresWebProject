@@ -26,7 +26,7 @@
 
 	<div id="ilt5zk">
 		<div id="i99fq4">Important : </div>
-		<div id="i1hupq">${WEB_NOTE1}</div>
+		<div id="i1hupq">${WEB_NOTE1.value}</div>
 	</div>
 	<div id="i5dg">
 		<form method="get" id="iq2wzk" action="Home">
@@ -69,21 +69,13 @@
 	</div>
 
 	<%
-	session.setAttribute("trial1",
-			!(System.getProperty("SERY_DB_URL") == null || System.getProperty("SERY_DB_URL").isBlank()));
-	session.setAttribute("trial2",
-			!(System.getProperty("SERY_DB_UNAME") == null || System.getProperty("SERY_DB_UNAME").isBlank()));
-	%>
-	<%
-	session.setAttribute("trial1",
-			!(System.getenv("SERY_DB_URL") == null || System.getenv("SERY_DB_URL").isBlank()));
-	session.setAttribute("trial2",
-			!(System.getenv("SERY_DB_UNAME") == null || System.getenv("SERY_DB_UNAME").isBlank()));
+	
 	%>
 
-	test Environment variable1 : ${trial1}
-	<br> test Environment variable2 : ${trial2}<br>
-	version : v1.02 Spring-based
+
+	test Environment variable(getenv) : ${trial1}<br>
+	test Environment variable(getProp) : ${trial2}<br>
+	version : ${WEB_VERSION}
 </body>
 </html>
 

@@ -78,8 +78,6 @@ public class FromServlet
 		}
 		
 		fromServletAttribute = (String)session.getAttribute(sm.FROM_SERVLET);
-		System.out.println(fromServletAttribute);
-		System.out.println(fullServletName);
 	}
 	
 	

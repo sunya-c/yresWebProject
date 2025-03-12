@@ -1,14 +1,15 @@
 package com.sunya.yresWebProject.filters;
 
 import java.io.IOException;
-import java.sql.SQLException;
 
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.sunya.yresWebProject.PrintError;
+import com.sunya.yresWebProject.YresWebProjectApplication;
 import com.sunya.yresWebProject.daos.DaoLoginInfo;
 import com.sunya.yresWebProject.exceptions.WebUnameException;
 import com.sunya.yresWebProject.managers.SessionManager;
+import com.sunya.yresWebProject.models.ModelLoginInfo;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -27,14 +28,16 @@ public class FilterAccountExistence extends OncePerRequestFilter
 	{
 		System.out.println("Order: 2, in Filter AccExist. (all pages)");
 		HttpSession session = request.getSession();
-		SessionManager sm = new SessionManager(session);
-
+		SessionManager sm = YresWebProjectApplication.context.getBean(SessionManager.class);
+		DaoLoginInfo dao = YresWebProjectApplication.context.getBean(DaoLoginInfo.class);
+		
+		ModelLoginInfo modelLogin = new ModelLoginInfo();
+		modelLogin.setUsername((String)session.getAttribute(sm.LOGIN_USERNAME));
+		
 		try
 		{
-			DaoLoginInfo dao = new DaoLoginInfo();
-
 			if ((session.getAttribute(sm.LOGIN_LOGGED_IN) != null) && ((boolean)session.getAttribute(sm.LOGIN_LOGGED_IN) == true)
-					&& !dao.checkUsername((String) session.getAttribute(sm.LOGIN_USERNAME)))
+					&& !dao.checkUsernameCaseSen(modelLogin))
 			{
 				sm.removeLoginState();
 				errText = ERR1;
@@ -47,10 +50,15 @@ public class FilterAccountExistence extends OncePerRequestFilter
 				filterChain.doFilter(request, response);
 			}
 		}
-		catch (SQLException | ServletException | WebUnameException e)
+		catch (Exception e)
 		{
 			PrintError.toErrorPage(session, response, this, e);
 		}
 	}
 
+	@Override
+	public String toString()
+	{
+		return this.getClass().getName();
+	}
 }

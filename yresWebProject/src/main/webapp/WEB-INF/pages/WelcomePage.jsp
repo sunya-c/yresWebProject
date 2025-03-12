@@ -27,7 +27,7 @@
 	<div id="iy0w9r">
 		<div id="i4j7hg">Important : </div>
 		<div id="i7vw6u">
-			${WEB_NOTE1}<br />
+			${WEB_NOTE1.value}<br />
 		</div>
 	</div>
 	<div id="ij1hw">

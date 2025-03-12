@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.sunya.yresWebProject.PrintError;
+import com.sunya.yresWebProject.YresWebProjectApplication;
 import com.sunya.yresWebProject.managers.SessionManager;
 
 import jakarta.servlet.FilterChain;
@@ -25,11 +26,11 @@ public class FilterLoginState extends OncePerRequestFilter
 		System.out.println("Order: 3, in Filter Login State (welcome)");
 		
 		HttpSession session = request.getSession();
-		SessionManager sm = new SessionManager(session);
+		SessionManager sm = YresWebProjectApplication.context.getBean(SessionManager.class);
 		
 		if (
 				(session.getAttribute(sm.LOGIN_LOGGED_IN) != null) &&
-				((boolean) session.getAttribute(sm.LOGIN_LOGGED_IN) == true)
+				((boolean)session.getAttribute(sm.LOGIN_LOGGED_IN) == true)
 				)
 		{
 			System.out.println("Filter Login State passed");

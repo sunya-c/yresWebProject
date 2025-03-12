@@ -4,6 +4,8 @@ import java.io.IOException;
 
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.sunya.yresWebProject.daos.PageUsageinfo;
+
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,9 +22,11 @@ public class FilterSiteUsage2 extends OncePerRequestFilter
 	{
 		System.out.println("Order: 6, in Filter Usage 2 (feedback)");
 		FilterSiteUsage siteUsage = new FilterSiteUsage();
-		siteUsage.doFilterInternal(request, response, filterChain, 2, this);
+		siteUsage.doFilterInternal(request, response, filterChain, PageUsageinfo.PAGE_FEEDBACK, this);
 	}
-	
+
+
+
 	@Override
 	public String toString()
 	{

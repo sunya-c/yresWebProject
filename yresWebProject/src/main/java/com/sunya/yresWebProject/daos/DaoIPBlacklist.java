@@ -1,195 +1,101 @@
 package com.sunya.yresWebProject.daos;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import jakarta.servlet.ServletException;
+import com.sunya.yresWebProject.exceptions.YresDataAccessException;
 
 @Repository
 public class DaoIPBlacklist extends Dao
 {
 	// tableName :
 	private final String TABLE_NAME = "ipblacklistinfo";
-	
+
 	// columnName :
-	private final String COLUMN_IP = "ip_address";
+	private final String COLUMN_IP = "ip_address"; // Primary key
 	private final String COLUMN_COUNTRY = "country_code";
 	private final String COLUMN_COUNT = "block_count";
-	
-	
-	{
-		setupDbms("sunyadb");
-	}
-	
-	public boolean isBlacklited(String ip) throws SQLException
+
+	@Autowired
+	private JdbcTemplate template;
+
+
+
+	public boolean isBlacklisted(String ip)
 	{
 		String query = "SELECT "+COLUMN_IP+" FROM "+TABLE_NAME+" WHERE "+COLUMN_IP+" = ?;";
-		
-		Connection con = null;
-		PreparedStatement st = null;
-		ResultSet rs = null;
+
+		ResultSetExtractor<Boolean> extractor = rs -> {
+			if (rs.next() && rs.getString(COLUMN_IP).equals(ip))
+				return true;
+			else
+				return false;
+		};
 		
 		try
 		{
-			con = DriverManager.getConnection(url, uname, pass);
-			st = con.prepareStatement(query);
-			st.setString(1, ip);
-			rs = st.executeQuery();
-			
-			if (rs.next())
-			{
-				// Double check for case sensitive
-				if (rs.getString(COLUMN_IP).equals(ip))
-				{
-					return true;
-				}
-			}
+			return template.query(query, extractor, ip);
 		}
-		catch (SQLException e)
+		catch (DataAccessException e)
 		{
-			throw new SQLException("daoipblacklist.isblacklisted-01: SQL Exception");
+			throw new YresDataAccessException("daoipblacklist.isblacklisted-01");
 		}
-		finally
-		{
-			try
-			{
-				st.close();
-				con.close();
-			}
-			catch (SQLException | NullPointerException e)
-			{
-				throw new NullPointerException("daoipblacklist.isblacklisted-02: Database connection failed.");
-			}
-		}
-		return false;
 	}
-	
-	
-	public boolean addToBlacklist(String ip, String countryCode) throws ServletException, SQLException
+
+
+
+	public void addToBlacklist(String ip, String countryCode)
 	{
 		String query = "INSERT INTO "+TABLE_NAME+" ("+COLUMN_IP+", "+COLUMN_COUNTRY+") VALUES (?, ?);";
-		
-		Connection con = null;
-		PreparedStatement st = null;
-		int row = 0;
-		
+
+		int row;
 		try
 		{
-			con = DriverManager.getConnection(url, uname, pass);
-			st = con.prepareStatement(query);
-			st.setString(1, ip);
-			st.setString(2, countryCode);
-			row = st.executeUpdate();
-			
-			if (row == 1)
-				return true;
-			else
-				throw new ServletException("daoipblacklist.addtoblacklist-01: Something went wrong.");
+			row = template.update(query, ip, countryCode);
 		}
-		catch (SQLException e)
+		catch (DataAccessException e)
 		{
-			throw new SQLException("daoipblacklist.addtoblacklist-02: SQL Exception");
+			throw new YresDataAccessException("daoipblacklist.addtoblacklist-01");
 		}
-		finally
-		{
-			try
-			{
-				st.close();
-				con.close();
-			}
-			catch (SQLException | NullPointerException e)
-			{
-				throw new NullPointerException("daoipblacklist.addtoblacklist-03: Database connection failed.");
-			}
-		}
+
+		if (row!=1)
+			throw new YresDataAccessException("daoipblacklist.addtoblacklist-02");
 	}
-	
-	
-	public boolean increaseCount(String ip) throws ServletException, SQLException
+
+
+
+	public void increaseCounter(String ip)
 	{
-		String query = "UPDATE "+TABLE_NAME+" SET "+COLUMN_COUNT+" = "+COLUMN_COUNT+" + ? WHERE "+COLUMN_IP+" = ?";
-		
-		Connection con = null;
-		PreparedStatement st = null;
-		int row = 0;
-		
+		String query = "UPDATE "+TABLE_NAME+" SET "+COLUMN_COUNT+" = "+COLUMN_COUNT+" + ? WHERE "+COLUMN_IP+" = ?;";
+
+		int row;
 		try
 		{
-			con = DriverManager.getConnection(url, uname, pass);
-			st = con.prepareStatement(query);
-			st.setInt(1, 1);
-			st.setString(2, ip);
-			
-			row = st.executeUpdate();
-			
-			if (row == 1)
-				return true;
-			else
-				throw new ServletException("daoipblacklist.increasecount-01: Something went wrong.");
+			row = template.update(query, 1, ip); // increase the counter by 1
 		}
-		catch (SQLException e)
+		catch (DataAccessException e)
 		{
-			throw new SQLException("daoipblacklist.increasecount-02: SQL Exception");
+			throw new YresDataAccessException("daoipblacklist.increasecounter-01");
 		}
-		finally
-		{
-			try
-			{
-				st.close();
-				con.close();
-			}
-			catch (SQLException | NullPointerException e)
-			{
-				throw new ServletException("daoipblacklist.increasecount-03: Database connection failed.");
-			}
-		}
+
+		if (row!=1)
+			throw new YresDataAccessException("daoipblacklist.increasecounter-02");
 	}
-	
-	public ArrayList<String> getIp() throws SQLException
+
+
+
+	public ArrayList<String> getIp()
 	{
 		String query = "SELECT "+COLUMN_IP+" FROM "+TABLE_NAME+";";
-		
-		Connection con = null;
-		PreparedStatement st = null;
-		ResultSet rs = null;
-		try
-		{
-			con = DriverManager.getConnection(url, uname, pass);
-			st = con.prepareStatement(query);
-			
-			rs = st.executeQuery();
-			
-			ArrayList<String> blacklistIPs = new ArrayList<>();
-			while(rs.next())
-			{
-				blacklistIPs.add(rs.getString(COLUMN_IP));
-			}
-			return blacklistIPs;
-		}
-		catch (SQLException e)
-		{
-			e.printStackTrace();
-			throw new SQLException("daoipblacklist.getip-01: SQL Exception");
-		}
-		finally
-		{
-			try
-			{
-			st.close();
-			con.close();
-			}
-			catch (SQLException | NullPointerException e)
-			{
-				e.printStackTrace();
-				throw new NullPointerException("daoipblacklist.getip-02: Database connection failed.");
-			}
-		}
-		
+
+		RowMapper<String> rowMapper = (rs, rowNum) -> rs.getString(COLUMN_IP);
+
+		return (ArrayList<String>)template.query(query, rowMapper);
 	}
 }

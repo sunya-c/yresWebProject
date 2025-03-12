@@ -1,17 +1,13 @@
 package com.sunya.yresWebProject.services;
 
-import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import com.sunya.yresWebProject.models.DataPersInfo;
 import com.sunya.yresWebProject.pojos.PojoPersonalInformation;
-
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 
 @Service
 public class ServicePersonalInformation
@@ -20,40 +16,44 @@ public class ServicePersonalInformation
 	@Qualifier("frontDate")
 	private DateTimeFormatter dateFormat;
 	
-	public void sPersInfo(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+	public DataPersInfo sPersInfo()
 	{
 		PojoPersonalInformation pInfo = new PojoPersonalInformation();
 		pInfo.setupPojoPersonalInformation("sunyapong");
 		
-		request.setAttribute("firstName", 	pInfo.getFirstname());
-		request.setAttribute("lastName", 	pInfo.getLastname());
-		request.setAttribute("dateOfBirth", pInfo.getDateOfBirth().format(dateFormat));
-		request.setAttribute("age", 		pInfo.getAge());
-		request.setAttribute("gender", 		pInfo.getGender());
-		request.setAttribute("nationality", pInfo.getNationality());
+		DataPersInfo myInfo = new DataPersInfo();
+		
+		myInfo.setFirstname(pInfo.getFirstname());
+		myInfo.setLastname(pInfo.getLastname());
+		myInfo.setDateOfBirth(pInfo.getDateOfBirth().format(dateFormat));
+		myInfo.setAge(pInfo.getAge());
+		myInfo.setGender(pInfo.getGender());
+		myInfo.setNationality(pInfo.getNationality());
 		
 		String tempYesNo = null;
 		if (pInfo.getDrivingLicense())
 			tempYesNo = "Yes";
 		else
 			tempYesNo = "No";
-		request.setAttribute("drivingLicense",		tempYesNo);
+		myInfo.setDrivingLicense(tempYesNo);
 		
 		tempYesNo = null;
 		if (pInfo.getEngineeringLicense())
 			tempYesNo = "Yes";
 		else
 			tempYesNo = "No";
-		request.setAttribute("engineeringLicense",  tempYesNo);
+		myInfo.setEngineeringLicense(tempYesNo);
 		
-		request.setAttribute("listLanguage",		pInfo.getListLanguage());
-		request.setAttribute("listProgrammingLanguage", pInfo.getListProgrammingLanguage());
-		request.setAttribute("address", 	pInfo.getAddress()); // Skipped. Confidential info.
-		request.setAttribute("phoneNumber", pInfo.getPhoneNumber());
-		request.setAttribute("email", 		pInfo.getEmail());
-		request.setAttribute("lineId", 		pInfo.getLineId());
-		request.setAttribute("listEducation", 		pInfo.getListEducation());
-		request.setAttribute("listEnghlishTest", 	pInfo.getListEnglishTest());
+		myInfo.setListLanguage(pInfo.getListLanguage());
+		myInfo.setListProgrammingLanguage(pInfo.getListProgrammingLanguage());
+		myInfo.setAddress(pInfo.getAddress()); // Skipped. Confidential info.
+		myInfo.setPhoneNumber(pInfo.getPhoneNumber());
+		myInfo.setEmail(pInfo.getEmail());
+		myInfo.setLineId(pInfo.getLineId());
+		myInfo.setListEducation(pInfo.getListEducation());
+		myInfo.setListEnglishTest(pInfo.getListEnglishTest());
+		
+		return myInfo;
 	}
 	
 	@Override

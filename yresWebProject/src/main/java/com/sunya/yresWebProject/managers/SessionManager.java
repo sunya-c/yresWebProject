@@ -5,6 +5,18 @@ import org.springframework.stereotype.Component;
 
 import jakarta.servlet.http.HttpSession;
 
+/**
+ * The idea of SessionManager is to manage session attributes efficiently. 
+ * This class provides you session attribute names in String type, 
+ * so you can call those fields and don't have to worry about typos. 
+ * It also provides quality of life methods which remove the values of particular 
+ * attributes which belong to some specific group at once, such as 
+ * {@code removeLoginState()} will basically remove all attributes which define 
+ * the client's login state.
+ * 
+ * 
+ * 
+ */
 @Component
 public class SessionManager
 {
@@ -40,6 +52,7 @@ public class SessionManager
 	
 	// Attribute names LoginPage, WelcomePage
 	final public String WEB_NOTE1 = "WEB_NOTE1";
+	final public String WEB_VERSION = "WEB_VERSION";
 	
 	// Attribute names ErrorPage
 	final public String ERROR_DESCRIPTION = "errorDescription";
@@ -64,6 +77,7 @@ public class SessionManager
 	 * Remove <i>ERROR</i> attributes related to 
 	 * {@code ServletLogin.java}, 
 	 * which include:
+	 * <p>    "preTypedUsername",
 	 * <p>    "fromPage",
 	 * <p>    "wrongUsername",
 	 * <p>    "wrongPassword"

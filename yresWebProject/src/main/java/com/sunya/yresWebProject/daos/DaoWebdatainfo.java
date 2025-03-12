@@ -1,68 +1,52 @@
 package com.sunya.yresWebProject.daos;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.stereotype.Repository;
+
+import com.sunya.yresWebProject.exceptions.YresDataAccessException;
+import com.sunya.yresWebProject.models.ModelWebdatainfo;
 
 @Repository
 public class DaoWebdatainfo extends Dao
 {
 	// Table name
 	private final String TABLE_NAME = "webdatainfo";
-	
+
 	// columnName
 	private final String COLUMN_KEY = "key_webinfo";
 	private final String COLUMN_VALUE = "value_webinfo";
+
+	@Autowired
+	private JdbcTemplate template;
 	
-	{
-		setupDbms("sunyadb");
-	}
 	
-	public String getWebinfo(String keyName) throws SQLException
+	
+	public ModelWebdatainfo getWebinfo(String keyName)
 	{
-		String query = "SELECT "+COLUMN_VALUE+", "+COLUMN_KEY+" FROM "+TABLE_NAME+" WHERE "+COLUMN_KEY+" = ?";
-		
-		Connection con = null;
-		PreparedStatement st = null;
-		ResultSet rs = null;
+		String query = "SELECT "+COLUMN_VALUE+", "+COLUMN_KEY+" FROM "+TABLE_NAME+" WHERE "
+				+COLUMN_KEY+" = ?";
+
+		ResultSetExtractor<ModelWebdatainfo> extractor = rs -> {
+			if (rs.next() && rs.getString(COLUMN_KEY).equals(keyName))
+			{
+				ModelWebdatainfo model = new ModelWebdatainfo();
+				model.setValue(rs.getString(COLUMN_VALUE));
+				return model;
+			}
+			else
+				return null;
+		};
 		
 		try
 		{
-			con = DriverManager.getConnection(url, uname, pass);
-			st = con.prepareStatement(query);
-			st.setString(1, keyName);
-			rs = st.executeQuery();
-			
-			if (rs.next())
-			{
-				// Double check for case sensitive
-				if (rs.getString(COLUMN_KEY).equals(keyName))
-				{
-					return rs.getString(COLUMN_VALUE);
-				}
-			}
+			return template.query(query, extractor, keyName);
 		}
-		catch (SQLException e)
+		catch (DataAccessException e)
 		{
-			throw new SQLException("daowebdatainfo.getwebinfo-01: SQL Exception");
+			throw new YresDataAccessException("daowebdatainfo.getwebinfo-01");
 		}
-		finally
-		{
-			try
-			{
-				st.close();
-				con.close();
-			}
-			catch (SQLException | NullPointerException e)
-			{
-				throw new NullPointerException("daowebdatainfo.getwebinfo-02: Database connection failed.");
-			}
-		}
-		return null;
 	}
-
 }

@@ -11,14 +11,14 @@ public class ControllerRedirecting extends Controller1
 	{
 		if (session.getAttribute(sm.FROM_SERVLET) != null)
 		{
-			System.out.println("fromServlet matched.");
+			System.out.println("fromServlet matched. Redirecting...");
 			sm.removeFromServlet();
 			
 			return "RedirectingPage";
 		}
 		else
 		{
-			System.err.println("fromServlet mismatched");
+			System.err.println("fromServlet mismatched. Redirect rejected.");
 			sm.removeFromServlet();
 
 			return redirect+"Home";

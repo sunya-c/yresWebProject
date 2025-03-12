@@ -1,7 +1,10 @@
 package com.sunya.yresWebProject.restrictions;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+
+import com.sunya.yresWebProject.models.FormFeedback;
 
 import jakarta.servlet.ServletException;
 
@@ -9,6 +12,7 @@ import jakarta.servlet.ServletException;
  * Call {@code setupRestrictionFeedback(title, detail, errorMessage)} first before {@code checkRestriction()}
  */
 @Component
+@Scope("prototype")
 public class RestrictionsFeedback
 {
 	@Autowired
@@ -20,14 +24,11 @@ public class RestrictionsFeedback
 	
 	
 	
-	public void setupRestrictionFeedback(
-			String feedbackTitle,
-			String feedbackDetail,
-			String feedbackErrorMessage)
+	private void setupRestrictionFeedback(FormFeedback formFb)
 	{
-		this.feedbackTitle = feedbackTitle;
-		this.feedbackDetail = feedbackDetail;
-		this.feedbackErrorMessage = feedbackErrorMessage;
+		this.feedbackTitle = formFb.getFeedbackTitle();
+		this.feedbackDetail = formFb.getFeedbackDetail();
+		this.feedbackErrorMessage = formFb.getFeedbackErrorMessage();
 	}
 	
 	
@@ -42,9 +43,12 @@ public class RestrictionsFeedback
 	 *         							The error messages, containing the detail, will be set to the session by {@code ErrorMessageSetterFeedback.java} object
 	 * @throws ServletException
 	 */
-	public boolean checkRestriction()
+	public boolean checkRestriction(FormFeedback formFb)
 	{
+		setupRestrictionFeedback(formFb);
+		
 		boolean validInfo = true;
+		
 		if (!feedbackTitle.isBlank())
 		{
 			if ( !(feedbackTitle.length() <= 200) )
@@ -79,16 +83,6 @@ public class RestrictionsFeedback
 			validInfo = false;
 		}
 		
-		clearVariables();
-		
 		return validInfo;
 	}
-	
-	private void clearVariables()
-	{
-		feedbackTitle = null;
-		feedbackDetail = null;
-		feedbackErrorMessage = null;
-	}
-
 }

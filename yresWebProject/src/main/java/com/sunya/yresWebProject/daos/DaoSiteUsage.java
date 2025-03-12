@@ -1,18 +1,26 @@
 package com.sunya.yresWebProject.daos;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.TimeZone;
 
-import jakarta.servlet.ServletException;
+import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 
+import com.sunya.yresWebProject.exceptions.YresDataAccessException;
+import com.sunya.yresWebProject.models.ModelSiteUsage;
+
+@Repository
 public class DaoSiteUsage extends Dao
 {
 	// tableName :
@@ -20,9 +28,10 @@ public class DaoSiteUsage extends Dao
 	// end -- tableName
 
 	// columnName :
-	private final String COLUMN_REF_NUMBER = "reference_number";
+	private final String COLUMN_REF_NUMBER = "reference_number"; // Primary key
 	private final String COLUMN_IP = "ip_address";
 	private final String COLUMN_DATE = "latest_interaction_date";
+	
 	private final String COLUMN_PAGE_CREATEACCOUNT = "page_createaccount";
 	private final String COLUMN_PAGE_ERROR = "page_error";
 	private final String COLUMN_PAGE_FEEDBACK = "page_feedback";
@@ -33,226 +42,143 @@ public class DaoSiteUsage extends Dao
 	private final String COLUMN_PAGE_WELCOME = "page_welcome";
 	private final String COLUMN_RESUME_DOWNLOAD = "resume_download";
 	// end -- columnName
-	
-	//columnName in Array :
-	private final String[] pageNames = {
-			COLUMN_PAGE_CREATEACCOUNT,
-			COLUMN_PAGE_ERROR,
-			COLUMN_PAGE_FEEDBACK,
-			COLUMN_PAGE_LOGIN,
-			COLUMN_PAGE_PERSINFO,
-			COLUMN_PAGE_REDIRECTING,
-			COLUMN_PAGE_UNDERCONSTRUCTION,
-			COLUMN_PAGE_WELCOME,
-			COLUMN_RESUME_DOWNLOAD};
-	// end -- columnName in Array
 
-	{
-		setupDbms("sunyadb");
-	}
-	
-	public int getArraySize()
-	{
-		return pageNames.length;
-	}
+	@Autowired
+	@Qualifier("backDateTime")
+	private DateTimeFormatter dateTimeFormat;
+
+	@Autowired
+	private JdbcTemplate template;
+
+
 
 	/**
 	 * Update usage data of the given refNumber on the database.
 	 * 
-	 * @param refNumber ~ enter {@code null} to create new refNumber.
-	 * @param updatedUsage ~ the updated usage data for overwriting the existing one on the database.
+	 * @param refNumber    ~ enter {@code null} to create new refNumber.
+	 * @param updatedUsage ~ the updated usage data for overwriting the existing one
+	 *                     on the database.
 	 * @return <strong>String refNumber</strong> ~ if successfully updated the
 	 *         database.<br>
-	 *         <strong>null</strong> ~ if failed.
-	 * @throws ServletException
-	 * @throws SQLException 
 	 */
-	public String updateUsage(String refNumber, int[] updatedUsage) throws ServletException, SQLException
+	@NotNull
+	public String increaseCounter(String refNumber, @NotNull PageUsageinfo whichPage)
 	{
-		String query = "UPDATE "+TABLE_NAME+" SET "+COLUMN_DATE+" = ?, "+COLUMN_PAGE_CREATEACCOUNT+" = ?, "+COLUMN_PAGE_ERROR+" = ?, "
-				+COLUMN_PAGE_FEEDBACK+" = ?, "+COLUMN_PAGE_LOGIN+" = ?, "+COLUMN_PAGE_PERSINFO+" = ?, "
-				+COLUMN_PAGE_REDIRECTING+" = ?, "+COLUMN_PAGE_UNDERCONSTRUCTION+" = ?, "+COLUMN_PAGE_WELCOME
-				+" = ?, "+COLUMN_RESUME_DOWNLOAD+" = ? WHERE "+COLUMN_REF_NUMBER+" = ?;";
+		String query = "UPDATE "+TABLE_NAME+" SET "+COLUMN_DATE+" = ?, "+whichPage.getColumnName()+" = "
+									+whichPage.getColumnName()+" + ? "+"WHERE "+COLUMN_REF_NUMBER+" = ?;";
 
-		if (refNumber == null)
-			refNumber = addNewUsageRef();
+		if (refNumber==null)
+		{
+			do
+			{
+				refNumber = generateRefNumber();
+			}
+			while (isExistingRefNumber(refNumber));
 
-		Connection con = null;
-		PreparedStatement st = null;
-		int row = 0;
+			addRefNumber(refNumber);
+		}
+
+		ModelSiteUsage model = new ModelSiteUsage();
+
+		TimeZone timeZone = TimeZone.getDefault();
+		LocalDateTime dateTime = LocalDateTime.now().minus(timeZone.getRawOffset(), ChronoUnit.MILLIS).plusHours(7);
+		String updatedDateTime = dateTime.format(dateTimeFormat);
+
+		model.setDateTime(updatedDateTime);
+		model.setUsageValue(1, whichPage); // Add 1 to the existing value.
+		model.setRefNumber(refNumber);
+
+		int row;
 		try
 		{
-			con = DriverManager.getConnection(url, uname, pass);
-			st = con.prepareStatement(query);
-			// values
-			
-			TimeZone tzone = TimeZone.getDefault();
-			int timeOffset = -tzone.getRawOffset();
-			int gmtPlus7 = (timeOffset/(1000*60*60))+7;  // an offset for converting local machine's time to GMT+7
-			
-			LocalDateTime time = LocalDateTime.now().plusHours(gmtPlus7);  // converting local machine's time to GMT+7
-			DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-			String addedDate = time.format(format);
-			st.setString(1, addedDate);
-			
-			st.setInt(2, updatedUsage[0]);
-			st.setInt(3, updatedUsage[1]);
-			st.setInt(4, updatedUsage[2]);
-			st.setInt(5, updatedUsage[3]);
-			st.setInt(6, updatedUsage[4]);
-			st.setInt(7, updatedUsage[5]);
-			st.setInt(8, updatedUsage[6]);
-			st.setInt(9, updatedUsage[7]);
-			st.setInt(10, updatedUsage[8]);
-			st.setString(11, refNumber);
-
-			row = st.executeUpdate();
-
-			if (row == 1)
-				return refNumber;
-			else if (row > 1)
-				throw new ServletException("<br>daositeusage.updateusage-01: If you see this error, please report via \'bug report button\'!!!");
+			row = template.update(query, model.getDateTime(), model.getUsageValue(whichPage), model.getRefNumber());
 		}
-		catch (SQLException e)
+		catch (DataAccessException e)
 		{
-			throw new SQLException("daositeusage.updateusage-02: SQL Exception");
+			throw new YresDataAccessException("daositeusage.increasecounter-01");
 		}
-		finally
-		{
-			try
-			{
-				st.close();
-				con.close();
-			}
-			catch (SQLException | NullPointerException e)
-			{
-				throw new NullPointerException("daositeusage.updateusage-03: Database connection failed.");
-			}
-		}
-		return null;
+
+		if (row==1)
+			return refNumber;
+		else
+			throw new YresDataAccessException("daositeusage.increasecounter-02");
+
 	}
-	
+
+
+
 	/**
-	 * Retrieve the site usage from the database and return it in an array format.
+	 * Retrieve the site usage from the database and return it in a ModelSiteUsage
+	 * format.
 	 * 
 	 * @param refNumber
-	 * @return <strong>int[] siteUsage</strong> ~ the site usage retrieved from the database.<br>
-	 *         <strong>null</strong> ~ if the specified refNumber doesn't exist in the database.
-	 * @throws ServletException
-	 * @throws SQLException 
+	 * @return <strong>ModelSiteUsage model</strong> ~ ONLY the site usage retrieved
+	 *         from the database are set to the model.<br>
+	 *         <strong>null</strong> ~ if the specified refNumber doesn't exist in
+	 *         the database.
 	 */
-	public int[] getUsage(String refNumber) throws ServletException, SQLException
+	public ModelSiteUsage getUsage(String refNumber)
 	{
 		String query = "SELECT * FROM "+TABLE_NAME+" WHERE "+COLUMN_REF_NUMBER+" = ?;";
-		
-		Connection con = null;
-		PreparedStatement st = null;
-		ResultSet rs = null;
-		try
-		{
-			con = DriverManager.getConnection(url, uname, pass);
-			st = con.prepareStatement(query);
-			
-			// values
-			st.setString(1, refNumber);
 
-			rs = st.executeQuery();
-
+		ResultSetExtractor<ModelSiteUsage> extractor = rs -> {
 			if (rs.next())
-				// Double check
-				if (rs.getString(COLUMN_REF_NUMBER).equals(refNumber))
-				{
-					return getUsageArray(rs);
-				}
-		}
-		catch (SQLException e)
-		{
-			throw new SQLException("daositeusage.getusage-01: SQL Exception");
-		}
-		finally
-		{
-			try
 			{
-				st.close();
-				con.close();
+				ModelSiteUsage model = new ModelSiteUsage();
+				model.setUsageValue(rs.getInt(COLUMN_PAGE_CREATEACCOUNT), PageUsageinfo.PAGE_CREATEACCOUNT);
+				model.setUsageValue(rs.getInt(COLUMN_PAGE_ERROR), PageUsageinfo.PAGE_ERROR);
+				model.setUsageValue(rs.getInt(COLUMN_PAGE_FEEDBACK), PageUsageinfo.PAGE_FEEDBACK);
+				model.setUsageValue(rs.getInt(COLUMN_PAGE_LOGIN), PageUsageinfo.PAGE_LOGIN);
+				model.setUsageValue(rs.getInt(COLUMN_PAGE_PERSINFO), PageUsageinfo.PAGE_PERSINFO);
+				model.setUsageValue(rs.getInt(COLUMN_PAGE_REDIRECTING), PageUsageinfo.PAGE_REDIRECTING);
+				model.setUsageValue(rs.getInt(COLUMN_PAGE_UNDERCONSTRUCTION), PageUsageinfo.PAGE_UNDERCONSTRUCTION);
+				model.setUsageValue(rs.getInt(COLUMN_PAGE_WELCOME), PageUsageinfo.PAGE_WELCOME);
+				model.setUsageValue(rs.getInt(COLUMN_RESUME_DOWNLOAD), PageUsageinfo.RESUME_DOWNLOAD);
+				return model;
 			}
-			catch (SQLException | NullPointerException e)
-			{
-				throw new NullPointerException("daositeusage.getusage-02: Database connection failed.");
-			}
-		}
-		return null;
-	}
-	
-	private int[] getUsageArray(ResultSet rs) throws SQLException
-	{
-		int[] currentUsage = new int[getArraySize()];
-		
+			else
+				return null;
+		};
+
 		try
 		{
-			for (int i=0; i<getArraySize(); i++)
-			{
-				currentUsage[i] = rs.getInt(pageNames[i]);
-			}
-			return currentUsage;
+			return template.query(query, extractor, refNumber);
 		}
-		catch (SQLException e)
+		catch (DataAccessException e)
 		{
-			throw new SQLException("daositeusage.getusagearray-01: SQL Exception");
+			throw new YresDataAccessException("daositeusage.getusage-01");
 		}
 	}
+
+
 
 	/**
-	 * Add feedback to the database.
+	 * Add a ref number to the database.
 	 * 
+	 * @param refNumber ~ ref number.
 	 * @return <strong>String refNumber</strong> ~ if successfully added to the
 	 *         database.<br>
 	 *         <strong>null</strong> ~ if failed.
-	 * @throws ServletException 
-	 * @throws SQLException 
 	 */
-	private String addNewUsageRef() throws ServletException, SQLException
+	private void addRefNumber(String refNumber)
 	{
-		String query = "INSERT INTO " + TABLE_NAME + " (" + COLUMN_REF_NUMBER + ") VALUES (?);";
-
-		String refNumber;
-
-		Connection con = null;
-		PreparedStatement st = null;
-		int row = 0;
+		String query = "INSERT INTO "+TABLE_NAME+" ("+COLUMN_REF_NUMBER+") VALUES (?);";
+		
+		int row;
 		try
 		{
-			con = DriverManager.getConnection(url, uname, pass);
-			st = con.prepareStatement(query);
-			// values
-			do
-				refNumber = generateRefNumber();
-			while (isExistingRefNumber(refNumber));
-			st.setString(1, refNumber);
-
-			row = st.executeUpdate();
-
-			if (row == 1)
-				return refNumber;
+			row = template.update(query, refNumber);
 		}
-		catch (SQLException e)
+		catch (DataAccessException e)
 		{
-			throw new SQLException("daositeusage.addnewusageref-01: SQL Exception");
+			throw new YresDataAccessException("daositeusage.addrefnumber-01");
 		}
-		finally
-		{
-			try
-			{
-				st.close();
-				con.close();
-			}
-			catch (SQLException | NullPointerException e)
-			{
-				throw new NullPointerException("daositeusage.addnewusageref-02: Database connection failed.");
-			}
-		}
-		return null;
+
+		if (row!=1)
+			throw new YresDataAccessException("daositeusage.addrefnumber-02");
 	}
+
+
 
 	/**
 	 * Check in the database if the given refNumber already exists.
@@ -262,55 +188,29 @@ public class DaoSiteUsage extends Dao
 	 *         database.<br>
 	 *         <strong>false</strong> ~ if the given refNumber does NOT exist in the
 	 *         database.
-	 * @throws SQLException 
 	 */
-	private boolean isExistingRefNumber(String refNumber) throws SQLException
+	public boolean isExistingRefNumber(String refNumber)
 	{
-		String query = "SELECT " + COLUMN_REF_NUMBER + " FROM " + TABLE_NAME + " WHERE " + COLUMN_REF_NUMBER + " = ?";
-
-		Connection con = null;
-		PreparedStatement st = null;
-		ResultSet rs = null;
+		String query = "SELECT "+COLUMN_REF_NUMBER+" FROM "+TABLE_NAME+" WHERE "+COLUMN_REF_NUMBER+" = ?;";
+		
+		ResultSetExtractor<Boolean> extractor = (ResultSet rs) -> {
+			if (rs.next() && rs.getString(COLUMN_REF_NUMBER).equals(refNumber))
+				return true;
+			else
+				return false;
+		};
+		
 		try
 		{
-			// 3: Create Connection
-			con = DriverManager.getConnection(url, uname, pass);
-
-			// 4: Create Statement
-			st = con.prepareStatement(query);
-			st.setString(1, refNumber);
-
-			// 5: Execute the query
-			rs = st.executeQuery();
-
-			// 6: Get the results
-			if (rs.next())
-			{
-				// Double check
-				if (rs.getString(COLUMN_REF_NUMBER).equals(refNumber))
-					return true;
-			}
+			return template.query(query, extractor, refNumber);
 		}
-		catch (SQLException e)
+		catch (DataAccessException e)
 		{
-			throw new SQLException("daositeusage.isexistingrefnumber-01: SQL Exception");
+			throw new YresDataAccessException("daositeusage.isexistingrefnumber-01");
 		}
-		// 7: Close the Statement and Connection
-		finally
-		{
-			try
-			{
-				st.close();
-				con.close();
-			}
-			catch (SQLException | NullPointerException e)
-			{
-
-				throw new NullPointerException("daositeusage.isexistingrefnumber-02: Database connection failed.");
-			}
-		}
-		return false;
 	}
+
+
 
 	/**
 	 * Generate a 10-digit hash, for reference in <i>usageinfo</i> table.
@@ -320,221 +220,123 @@ public class DaoSiteUsage extends Dao
 	private String generateRefNumber()
 	{
 		Random random = new Random();
-		String refNumber = String.valueOf(random.nextInt(1, 10));
+		String newRefNumber = String.valueOf(random.nextInt(1, 10));
 
-		for (int i = 0; i < 9; i++)
-			refNumber += String.valueOf(random.nextInt(0, 10));
+		for (int i = 0; i<9; i++)
+			newRefNumber += String.valueOf(random.nextInt(0, 10));
 
-		return refNumber;
+		return newRefNumber;
 	}
 	
 	
 	/**
 	 * Add client's IP address to the database.
 	 * 
-	 * @param ip ~ client's IP address to be added.
+	 * @param ip        ~ client's IP address to be added.
 	 * @param refNumber ~ client's reference number of the IP address.
-	 * @return <strong>String refNumber</strong> ~ reference number of the user (this is the same as the refNumber above, which you pass to this method).<br>
+	 * @return <strong>String refNumber</strong> ~ reference number of the user
+	 *         (this is the same as the refNumber above, which you pass to this
+	 *         method).<br>
 	 *         <strong>null</strong> ~ Adding IP address failed.
-	 * @throws SQLException 
-	 * @throws ServletException
 	 */
-	public String addIp(String ip, String refNumber) throws SQLException, ServletException
+	public void addIP(String ip, String refNumber)
 	{
 		String query = "UPDATE "+TABLE_NAME+" SET "+COLUMN_IP+" = ? WHERE "+COLUMN_REF_NUMBER+" = ?;";
 		
-		Connection con = null;
-		PreparedStatement st = null;
-		int row = 0;
+		ModelSiteUsage model = new ModelSiteUsage();
+		model.setIp(ip);
+		model.setRefNumber(refNumber);
 		
-		if (isExistingRefNumber(refNumber))
-		{
-			if (getIp(refNumber)==null)
-			{
-				try
-				{
-					con = DriverManager.getConnection(url, uname, pass);
-					st = con.prepareStatement(query);
-					st.setString(1, ip);
-					st.setString(2, refNumber);
-					
-					row = st.executeUpdate();
-					
-					if (row==1)
-					{
-						return refNumber;
-					}
-					else
-						throw new ServletException("<br>daositeusage.addip-01: If you see this error, please report via \'bug report button\'!!!");
-				}
-				catch (SQLException e)
-				{
-					throw new SQLException("daositeusage.addip-02: SQL Exception");
-				}
-				finally
-				{
-					try
-					{
-						st.close();
-						con.close();
-					}
-					catch (SQLException | NullPointerException e)
-					{
-						throw new NullPointerException("daositeusage.addip-03: Database connection failed.");
-					}
-				}
-			}
-			else if (getIp(refNumber).equals(ip))
-			{
-				return refNumber;
-			}
-			else
-				return null;
-		}
-		else
-			return null;
-	}
-	
-	/**
-	 * Return IP address in the database. Return null if there's no IP address information.
-	 * 
-	 * @param refNumber ~ the method returns the IP address of this reference number.
-	 * @return <strong>String IP address</strong> ~ of the given reference number.
-	 *         <strong>null</strong> ~ if there's no IP address information.
-	 * @throws ServletException
-	 * @throws SQLException 
-	 */
-	private String getIp(String refNumber) throws ServletException, SQLException
-	{
-		String query = "SELECT "+COLUMN_REF_NUMBER+", "+COLUMN_IP+" FROM "+TABLE_NAME+" WHERE "+COLUMN_REF_NUMBER+" = ?;";
-		
-		Connection con = null;
-		PreparedStatement st = null;
-		ResultSet rs = null;
+		int row;
 		try
 		{
-			con = DriverManager.getConnection(url, uname, pass);
-			st = con.prepareStatement(query);
-			st.setString(1, refNumber);
-			
-			rs = st.executeQuery();
-			
-			if (rs.next())
-			{
-				// Double check
-				if (rs.getString(COLUMN_REF_NUMBER).equals(refNumber))
-				{
-					return rs.getString(COLUMN_IP);
-				}
-				else
-					throw new ServletException("daositeusage.getip-01: refNumber not found.");
-			}
+			row = template.update(query, model.getIp(), model.getRefNumber());
+		}
+		catch (DataAccessException e)
+		{
+			throw new YresDataAccessException("daositeusage.addip-01");
+		}
+
+		if (row!=1)
+			throw new YresDataAccessException("daositeusage.addip-02");
+	}
+
+
+
+	/**
+	 * Return IP address in the database. Return null if there's no IP address
+	 * information.
+	 * 
+	 * @param refNumber ~ the method returns the IP address of this reference
+	 *                  number.
+	 * @return <strong>String IP address</strong> ~ of the given reference number.
+	 *         <strong>null</strong> ~ if there's no IP address information.
+	 */
+	public String getIP(String refNumber)
+	{
+		String query = "SELECT "+COLUMN_REF_NUMBER+", "+COLUMN_IP+" FROM "+TABLE_NAME+" WHERE "+COLUMN_REF_NUMBER
+									+" = ?;";
+		
+		ResultSetExtractor<String> extractor = rs -> {
+			if (rs.next() && rs.getString(COLUMN_REF_NUMBER).equals(refNumber))
+				return rs.getString(COLUMN_IP);
 			else
-				throw new ServletException("daositeusage.getip-01: refNumber not found.");
-			
-		}
-		catch (SQLException e)
+				return null;
+		};
+		
+		try
 		{
-			throw new SQLException("daositeusage.getip-02: SQL Exception");
+			return template.query(query, extractor, refNumber);
 		}
-		finally
+		catch (DataAccessException e)
 		{
-			try
-			{
-				st.close();
-				con.close();
-			}
-			catch (SQLException | NullPointerException e)
-			{
-				throw new NullPointerException("daositeusage.getip-02: Database connection failed.");
-			}
+			throw new YresDataAccessException("daositeusage.getip-01");
 		}
 	}
-	
+
+
+
 	/**
 	 * Remove the usage info that has the specified IP address.
 	 * 
 	 * @param blacklistedIPs Get these IPs from DaoIPBlacklist.getIp().
-	 * @param usageIPs Get these IPs from DaoSiteUsage.getIp();
-	 * @throws SQLException
+	 * @param usageIPs       Get these IPs from DaoSiteUsage.getIp();
 	 */
-	public void removeUsageByBlacklist(ArrayList<String> blacklistedIPs, ArrayList<String> usageIPs) throws SQLException
+	public void removeUsageByBlacklist(ArrayList<String> blacklistedIPs, ArrayList<String> usageIPs)
 	{
 		String query = "DELETE FROM "+TABLE_NAME+" WHERE "+COLUMN_IP+" = ?;";
 		
-		Connection con = null;
-		PreparedStatement st = null;
-		int row = 0;
 		try
 		{
-			con = DriverManager.getConnection(url, uname, pass);
-			st = con.prepareStatement(query);  // TODO: check if this has to in the for loop below???
-			
-			for (int i=0; i<blacklistedIPs.size(); i++)
+			int row = 0;
+			for (int i = 0; i<blacklistedIPs.size(); i++)
 			{
 				if (usageIPs.contains(blacklistedIPs.get(i)))
-				{
-					st.setString(1, blacklistedIPs.get(i));
-					row += st.executeUpdate();
-				}
+					row += template.update(query, blacklistedIPs.get(i));
 			}
 			System.out.println("row deleted: "+row);
 		}
-		catch (SQLException e)
+		catch (DataAccessException e)
 		{
-			throw new SQLException("daositeusage.removeusagefromip-01: SQL Exception");
-		}
-		finally
-		{
-			try
-			{
-				st.close();
-				con.close();
-			}
-			catch (SQLException | NullPointerException e)
-			{
-				throw new NullPointerException("daositeusage.removeusagefromip-02: Database connection failed.");
-			}
+			throw new YresDataAccessException("daositeusage.removeusagebyblacklist-01");
 		}
 	}
 
-	public ArrayList<String> getIp() throws SQLException
+
+
+	public ArrayList<String> getIPs()
 	{
-		ArrayList<String> usageIPs = new ArrayList<>();
-		
-		String query = "SELECT ip_address FROM usageinfo;";
-		
-		Connection con = null;
-		PreparedStatement st = null;
-		ResultSet rs = null;
+		String query = "SELECT "+COLUMN_IP+" FROM "+TABLE_NAME+";";
+
+		RowMapper<String> rowMapper = (ResultSet rs, int rowNum) -> rs.getString(COLUMN_IP);
+
 		try
 		{
-			con = DriverManager.getConnection(url, uname, pass);
-			st = con.prepareStatement(query);
-			
-			rs = st.executeQuery();
-			
-			while (rs.next())
-			{
-				usageIPs.add(rs.getString(COLUMN_IP));
-			}
-			return usageIPs;
+			return (ArrayList<String>)template.query(query, rowMapper);
 		}
-		catch (SQLException e)
+		catch (DataAccessException e)
 		{
-			throw new SQLException("daositeusage.getip-01: SQL Exception");
-		}
-		finally
-		{
-			try
-			{
-				st.close();
-				con.close();
-			}
-			catch (SQLException | NullPointerException e)
-			{
-				throw new NullPointerException("daositeusage.getip-02: Database connection failed.");
-			}
+			throw new YresDataAccessException("daositeusage.getips-01");
 		}
 	}
 

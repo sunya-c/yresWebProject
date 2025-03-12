@@ -1,3 +1,7 @@
-Just made Spring Boot work (Filters are still not working).
+Just made it work on Spring Boot (Filters and JDBC are now working properly).
 
 ----------
+
+Just made it work on Spring Boot (Filters and JDBC):
+-Filters are now working properly with Spring boot configuration.
+Traditional JDBC connections are now converted to use JdbcTemplate.

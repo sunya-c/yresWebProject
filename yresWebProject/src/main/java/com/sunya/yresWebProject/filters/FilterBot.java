@@ -1,12 +1,13 @@
 package com.sunya.yresWebProject.filters;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.time.Duration;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.sunya.yresWebProject.PrintError;
+import com.sunya.yresWebProject.YresWebProjectApplication;
 import com.sunya.yresWebProject.daos.DaoIPBlacklist;
 import com.sunya.yresWebProject.exceptions.SuspiciousRequestException;
 
@@ -40,35 +41,33 @@ public class FilterBot extends OncePerRequestFilter
 		catch (RateLimitedException e)
 		{
 			//TODO: Send a counter iteration to the database.
-//			PrintError.toErrorPage(request.getSession(), response, this, new ServletException("filterbot-01: Limit reached."));
+			PrintError.toErrorPage(request.getSession(), response, this, new ServletException("filterbot-01: Limit reached."));
 		}
 		
 		String countryCode = lookUp.getCountryCode();
 
 		if (countryCode == null || !countryCode.equals("TH"))
 		{
-			request.setAttribute("filterBot", "failed");
-			
-			DaoIPBlacklist dao = new DaoIPBlacklist();
+			DaoIPBlacklist dao = YresWebProjectApplication.context.getBean(DaoIPBlacklist.class);
 			
 			try
 			{
-				if (dao.isBlacklited(ip))
-					dao.increaseCount(ip);
+				if (dao.isBlacklisted(ip))
+					dao.increaseCounter(ip);
 				else
 					dao.addToBlacklist(ip, countryCode);
 				
-
 				throw new SuspiciousRequestException("<br>"+ip+"<br>Your request is suspected to be inhuman.<br>If you're a human, "
 						+ "please send your intention to visit our website via \'Give feedback / bug report\' button down below.");
 			}
-			catch (SQLException | ServletException | SuspiciousRequestException e)
+			catch (Exception e)
 			{
 				PrintError.toErrorPage(request.getSession(), response, this, e);
 			}
 		}
 		else
 		{
+			System.out.println("filter Bot passed");
 			filterChain.doFilter(request, response);
 		}
 	}

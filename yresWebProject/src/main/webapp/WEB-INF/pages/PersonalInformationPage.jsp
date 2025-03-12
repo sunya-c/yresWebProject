@@ -77,13 +77,13 @@
 				<div id="itln1x">Engineering license  :</div>
 			</div>
 			<div id="izyktm">
-				<div id="is526e">${firstName}&nbsp;${lastName}</div>
-				<div id="i7gimj">${dateOfBirth}</div>
-				<div id="imbwyx">${age}</div>
-				<div id="itmcmf">${gender}</div>
-				<div id="inlbga">${nationality}</div>
-				<div id="ifh8ea">${drivingLicense}</div>
-				<div id="i213kh">${engineeringLicense}</div>
+				<div id="is526e">${dataPersInfo.firstname}&nbsp;${dataPersInfo.lastname}</div>
+				<div id="i7gimj">${dataPersInfo.dateOfBirth}</div>
+				<div id="imbwyx">${dataPersInfo.age}</div>
+				<div id="itmcmf">${dataPersInfo.gender}</div>
+				<div id="inlbga">${dataPersInfo.nationality}</div>
+				<div id="ifh8ea">${dataPersInfo.drivingLicense}</div>
+				<div id="i213kh">${dataPersInfo.engineeringLicense}</div>
 			</div>
 		</div>
 		<div id="iyz0zi">
@@ -96,7 +96,7 @@
 					<%
 					request.setAttribute("counter", 0);
 					%>
-					<c:forEach items="${listLanguage}" var="language">
+					<c:forEach items="${dataPersInfo.listLanguage}" var="language">
 						<c:forEach items="${language}" var="langAndProf">
 							<c:if test="${counter % 2 == 0}">
 								${langAndProf}
@@ -132,7 +132,7 @@
 			<div id="isa74l">
 				<div id="ix2psb">
 					<!-- Programming Language -->
-					<c:forEach items="${listProgrammingLanguage}"
+					<c:forEach items="${dataPersInfo.listProgrammingLanguage}"
 						var="programmingLanguage">
 						<c:forEach items="${programmingLanguage}" var="langAndProf">
 							<c:if test="${counter % 2 == 0}">
@@ -167,9 +167,9 @@
 				<div id="iwgisy">Line ID  :</div>
 			</div>
 			<div id="inroda">
-				<div id="i40kx2">${phoneNumber}</div>
-				<div id="i8nard">${email}</div>
-				<div id="iatzbi">${lineId}</div>
+				<div id="i40kx2">${dataPersInfo.phoneNumber}</div>
+				<div id="i8nard">${dataPersInfo.email}</div>
+				<div id="iatzbi">${dataPersInfo.lineId}</div>
 			</div>
 		</div>
 		<img id="i1t2dk" src="resources/pics/Certificate1.png" />

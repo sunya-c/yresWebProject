@@ -5,11 +5,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.sunya.yresWebProject.PrintError;
+import com.sunya.yresWebProject.models.FormLogin;
 import com.sunya.yresWebProject.services.ServiceLogin;
 import com.sunya.yresWebProject.services.ServiceLogout;
-
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
 public class ControllerLogin extends Controller1
@@ -18,11 +16,11 @@ public class ControllerLogin extends Controller1
 	private ServiceLogin sli;
 	
 	@PostMapping("/sLogin")
-	public String sLogin(HttpServletRequest request, HttpServletResponse response)
+	public String sLogin(FormLogin formL)
 	{
 		try
 		{
-			return redirect+sli.sLogin(request, response);
+			return redirect+sli.sLogin(formL);
 		}
 		catch (Exception e)
 		{
@@ -34,11 +32,11 @@ public class ControllerLogin extends Controller1
 	private ServiceLogout slo;
 	
 	@PostMapping("/sLogout")
-	public String sLogout(HttpServletRequest request, HttpServletResponse response)
+	public String sLogout()
 	{
 		try
 		{
-			return redirect+slo.sLogout(request, response);
+			return redirect+slo.sLogout();
 		}
 		catch (Exception e)
 		{

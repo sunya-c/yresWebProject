@@ -6,10 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.sunya.yresWebProject.PrintError;
+import com.sunya.yresWebProject.models.FormFeedback;
 import com.sunya.yresWebProject.services.ServiceFeedback;
-
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
 public class ControllerFeedback extends Controller1
@@ -43,11 +41,11 @@ public class ControllerFeedback extends Controller1
 	private ServiceFeedback sf;
 	
 	@PostMapping("/sFeedback")
-	public String sFeedback(HttpServletRequest request, HttpServletResponse response)
+	public String sFeedback(FormFeedback formFb)
 	{		
 		try
 		{
-			return redirect+sf.sFeedback(request, response);
+			return redirect+sf.sFeedback(formFb);
 		}
 		catch (Exception e)
 		{

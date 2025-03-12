@@ -5,15 +5,17 @@ import java.sql.SQLException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.sunya.yresWebProject.YresWebProjectApplication;
 import com.sunya.yresWebProject.daos.DaoLoginInfo;
+import com.sunya.yresWebProject.exceptions.SomethingWentWrongException;
 import com.sunya.yresWebProject.managers.SessionManager;
+import com.sunya.yresWebProject.models.FormCreateAccount;
+import com.sunya.yresWebProject.models.ModelLoginInfo;
 import com.sunya.yresWebProject.restrictions.ErrMsg;
 import com.sunya.yresWebProject.restrictions.ErrorMessageSetterCreateAccount;
 import com.sunya.yresWebProject.restrictions.RestrictionsCreateAccount;
 
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 @Service
@@ -24,48 +26,51 @@ public class ServiceCreateAccount
 	@Autowired
 	private SessionManager sm;
 	@Autowired
-	private ErrorMessageSetterCreateAccount errSetter;
-	@Autowired
 	private DaoLoginInfo dao;
-	@Autowired
-	private RestrictionsCreateAccount restriction;
 	
-	public String sCreateAccount(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException
+	
+	
+	public String sCreateAccount(FormCreateAccount formCA) throws SQLException, ServletException
 	{
-		String username = request.getParameter("username");
-		String password1 = request.getParameter("password1");
-		String password2 = request.getParameter("password2");
-
 		sm.removeCreateAccountErr();
-		session.setAttribute(sm.CREATEACCOUNT_UNAME_PRETYPED, username);
+		session.setAttribute(sm.CREATEACCOUNT_UNAME_PRETYPED, formCA.getUsername());
 		
-		restriction.setupRestrictionCreateAccount(username, password1, password2);
+		RestrictionsCreateAccount restriction = YresWebProjectApplication.context
+									.getBean(RestrictionsCreateAccount.class);
 		
-		if (restriction.checkRestriction())
+		if (restriction.checkRestriction(formCA))
 		{
-			if (dao.addUser(username, password1))
+			ModelLoginInfo model = new ModelLoginInfo();
+			model.setUsername(formCA.getUsername());
+			model.setPassword(formCA.getPassword1());
+			
+			try
 			{
-				session.setAttribute(sm.REDIRECT_MESSAGE, "Done!");
-				session.setAttribute(sm.REDIRECT_DESTINATION, "Home page");
-				session.setAttribute("fromServlet", toString());
-				session.setAttribute(sm.LOGIN_UNAME_PRETYPED, username);
-				
-				return "redirecting";
+				dao.addUser(model);
 			}
-			else
+			catch (SomethingWentWrongException e)
 			{
-				ErrMsg CUSTOM_ERR = ErrMsg.CREATEACCOUNT_UNAME_DUPLICATE;
-				CUSTOM_ERR.setCustomErrMessage("Something's wrong, please try again.");
-				
-				errSetter.setUsernameErr(CUSTOM_ERR);
-				
-				session.setAttribute("fromServlet", toString());
+				ErrorMessageSetterCreateAccount errSetter = YresWebProjectApplication.context
+											.getBean(ErrorMessageSetterCreateAccount.class);
+				ErrMsg errMessage = ErrMsg.CREATEACCOUNT_UNAME_LENGTH;
+				errMessage.setCustomErrMessage("Something's wrong, pls try again.");
+				errSetter.setUsernameErr(errMessage);
+				session.setAttribute(sm.FROM_SERVLET, toString());
 				return "createAccount";
 			}
+			
+			session.setAttribute(sm.REDIRECT_MESSAGE, "Done!");
+			session.setAttribute(sm.REDIRECT_DESTINATION, "Home page");
+			session.setAttribute(sm.FROM_SERVLET, toString());
+			session.setAttribute(sm.LOGIN_UNAME_PRETYPED, formCA.getUsername());
+			
+			return "redirecting";
 		}
 		else
-			session.setAttribute("fromServlet", toString());
+		{
+			session.setAttribute(sm.FROM_SERVLET, toString());
 			return "createAccount";
+		}
 	}
 	
 	@Override

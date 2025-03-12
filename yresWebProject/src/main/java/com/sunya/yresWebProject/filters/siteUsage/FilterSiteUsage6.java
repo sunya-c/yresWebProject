@@ -4,6 +4,8 @@ import java.io.IOException;
 
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.sunya.yresWebProject.daos.PageUsageinfo;
+
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,11 +20,13 @@ public class FilterSiteUsage6 extends OncePerRequestFilter
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException
 	{
-		System.out.println("Order: 10, in Filter Usage 6 (UnderConstructionPage)"); //TODO
+		System.out.println("Order: 10, in Filter Usage 6 (UnderConstructionPage)"); // TODO
 		FilterSiteUsage siteUsage = new FilterSiteUsage();
-		siteUsage.doFilterInternal(request, response, filterChain, 6, this);
+		siteUsage.doFilterInternal(request, response, filterChain, PageUsageinfo.PAGE_UNDERCONSTRUCTION, this);
 	}
-	
+
+
+
 	@Override
 	public String toString()
 	{

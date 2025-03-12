@@ -1,5 +1,7 @@
 package com.sunya.yresWebProject.services;
 
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -13,7 +15,7 @@ public class ServiceDownloadResume
 	@Autowired
 	private ResourceLoader loader;
 
-	public ResponseEntity<Resource> sDownloadResume()
+	public ResponseEntity<Resource> sDownloadResume() throws IOException
 	{
 		try
 		{

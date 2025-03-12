@@ -1,22 +1,24 @@
 package com.sunya.yresWebProject.daos;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Random;
 import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.stereotype.Repository;
 
 import com.sunya.yresWebProject.PrintError;
-
-import jakarta.servlet.ServletException;
+import com.sunya.yresWebProject.exceptions.SomethingWentWrongException;
+import com.sunya.yresWebProject.exceptions.YresDataAccessException;
+import com.sunya.yresWebProject.models.ModelFeedback;
 
 @Repository
 public class DaoFeedback extends Dao
@@ -28,7 +30,7 @@ public class DaoFeedback extends Dao
 	// columnName :
 	private final String COLUMN_REF_NUMBER = "reference_number";
 	private final String COLUMN_DATE = "report_date";
-	private final String USERNAME = "webuname";
+	private final String COLUMN_USERNAME = "webuname";
 	private final String COLUMN_TITLE = "title";
 	private final String COLUMN_DETAIL = "detail";
 	private final String COLUMN_ERRORMESSAGE = "error_message";
@@ -41,10 +43,11 @@ public class DaoFeedback extends Dao
 	@Qualifier("backDateTime")
 	private DateTimeFormatter dateTimeFormat;
 	
-	{
-		setupDbms("sunyadb");
-	}
-
+	@Autowired
+	private JdbcTemplate template;
+	
+	
+	
 	/**
 	 * Submit feedback/bug report.
 	 * 
@@ -54,19 +57,12 @@ public class DaoFeedback extends Dao
 	 * @param feedbackErrorMessage ~ Error message for this issue (optional).
 	 * @return <strong>String refNumber</strong> ~ if successfully added to the database.<br>
 	 *         <strong>null</strong> ~ if failed.
+	 * @throws SomethingWentWrongException 
 	 * @throws Exception 
 	 */
-	public String submitFeedback(
-			String username,
-			String feedbackTitle,
-			String feedbackDetail,
-			String feedbackErrorMessage) throws Exception
+	public String submitFeedback(ModelFeedback model) throws SomethingWentWrongException
 	{
-		String refNumber = addFeedback(
-				username,
-				feedbackTitle,
-				feedbackDetail,
-				feedbackErrorMessage);
+		String refNumber = addFeedback(model);
 		if (refNumber == null)
 		{
 			errText = ERR1;
@@ -79,7 +75,7 @@ public class DaoFeedback extends Dao
 
 	
 	/**
-	 * Add feedback to the database.
+	 * Add feedback/bug report to the database.
 	 * 
 	 * @param username
 	 * @param feedbackTitle
@@ -87,70 +83,59 @@ public class DaoFeedback extends Dao
 	 * @param feedbackErrorMessage
 	 * @return <strong>String refNumber</strong> ~ if successfully added to the database.<br>
 	 *         <strong>null</strong> ~ if failed.
-	 * @throws ServletException 
-	 * @throws SQLException 
-	 * @throws Exception 
+	 * @throws SomethingWentWrongException 
 	 */
-	private String addFeedback(
-			String username,
-			String feedbackTitle,
-			String feedbackDetail,
-			String feedbackErrorMessage) throws ServletException, SQLException
+	private String addFeedback(ModelFeedback model) throws SomethingWentWrongException
 	{
 		String query = "INSERT INTO "+TABLE_NAME
-				+ " ("+COLUMN_REF_NUMBER+", "+COLUMN_DATE+", "+USERNAME+", "+COLUMN_TITLE+", "+COLUMN_DETAIL+", "+COLUMN_ERRORMESSAGE+") "
+				+ " ("+COLUMN_REF_NUMBER+", "+COLUMN_DATE+", "+COLUMN_USERNAME+", "+COLUMN_TITLE+", "+COLUMN_DETAIL+", "+COLUMN_ERRORMESSAGE+") "
 						+ "VALUES (?, ?, ?, ?, ?, ?);";
 		
 		String refNumber;
+		do
+		{
+			refNumber = generateRefNumber();
+		}
+		while (isExistingRefNumber(refNumber));
 		
-		Connection con = null;
-		PreparedStatement st = null;
-		int row = 0;
+		//Prepare the model
+		model.setRefNumber(refNumber);
+		TimeZone timeZone = TimeZone.getDefault();
+		LocalDateTime dateTime = LocalDateTime.now()
+				.minus(timeZone.getRawOffset(), ChronoUnit.MILLIS) // minus an offset (time zone of this local machine) to make it GMT+0.
+				.plusHours(7);                                     // converting local machine's time to GMT+7
+		String reportDate = dateTime.format(dateTimeFormat);
+		model.setReportDate(reportDate);
+		
+		//Set model to prepared statement
+		PreparedStatementCreator psc = con -> {
+			PreparedStatement st = con.prepareStatement(query);
+			st.setString(1, model.getRefNumber());
+			st.setString(2, model.getReportDate());
+			st.setString(3, model.getUsername());
+			st.setString(4, model.getFeedbackTitile());
+			st.setString(5, model.getFeedbackDetail());
+			st.setString(6, model.getFeedbackErrorMessage());
+			return st;
+		};
+			
+		int row;
 		try
 		{
-			con = DriverManager.getConnection(url, uname, pass);
-			st = con.prepareStatement(query);
-			// values
-			do
-				refNumber = generateRefNumber();
-			while (isExistingRefNumber(refNumber));
-			st.setString(1, refNumber);
-			
-			TimeZone tzone = TimeZone.getDefault();
-			int timeOffset = -tzone.getRawOffset();
-			int gmtPlus7 = (timeOffset/(1000*60*60))+7;  // an offset for converting local machine's time to GMT+7
-			
-			LocalDateTime time = LocalDateTime.now().plusHours(gmtPlus7);  // converting local machine's time to GMT+7
-			String reportDate = time.format(dateTimeFormat);
-			st.setString(2, reportDate);
-			
-			st.setString(3, username);
-			st.setString(4, feedbackTitle);
-			st.setString(5, feedbackDetail);
-			st.setString(6, feedbackErrorMessage);
-			
-			row = st.executeUpdate();
-			
-			if (row == 1)
-				return refNumber;
+			row = template.update(psc);
 		}
-		catch (SQLException e)
+		catch (DataAccessException e)
 		{
-			throw new SQLException("daofeedback.addfeedback-01: SQL Exception.");
+			if (isExistingRefNumber(refNumber))
+				throw new SomethingWentWrongException("daofeedback.addfeedback-01: Something went wrong.");
+			else
+				throw new YresDataAccessException("daofeedback.addfeedback-01");
 		}
-		finally
-		{
-			try
-			{
-				st.close();
-				con.close();
-			}
-			catch (SQLException | NullPointerException e)
-			{
-				throw new NullPointerException("daofeedback.addfeedback-02: Database connection failed.");
-			}
-		}
-		return null;
+		
+		if (row != 1)
+			throw new YresDataAccessException("daofeedback.addfeedback-02");
+		
+		return refNumber;
 	}
 	
 	/**
@@ -159,58 +144,28 @@ public class DaoFeedback extends Dao
 	 * @param refNumber
 	 * @return <strong>true</strong> ~ if the given refNumber exists in the database.<br>
 	 *         <strong>false</strong> ~ if the given refNumber does NOT exist in the database.
-	 * @throws ServletException 
-	 * @throws SQLException 
 	 */
-	private boolean isExistingRefNumber(String refNumber) throws ServletException, SQLException
+	private boolean isExistingRefNumber(String refNumber)
 	{
 		String query = "SELECT "+COLUMN_REF_NUMBER+" FROM "+TABLE_NAME+" WHERE "+COLUMN_REF_NUMBER+" = ?";
 		
-
-		Connection con = null;
-		PreparedStatement st = null;
-		ResultSet rs = null;
+		ResultSetExtractor<Boolean> extractor = rs -> {
+			if (rs.next() && rs.getString(COLUMN_REF_NUMBER).equals(refNumber))
+				return true;
+			else
+				return false;
+		};
+		
 		try
 		{
-			// 3: Create Connection
-			con = DriverManager.getConnection(url, uname, pass);
-
-			// 4: Create Statement
-			st = con.prepareStatement(query);
-			st.setString(1, refNumber);
-
-			// 5: Execute the query
-			rs = st.executeQuery();
-
-			// 6: Get the results
-			if (rs.next())
-			{
-				// Double check
-				if (rs.getString(COLUMN_REF_NUMBER).equals(refNumber))
-					return true;
-				else
-					throw new ServletException("daofeedback.isExistingRefNumber-01: Something went wrong !!!");
-			}
+			return template.query(query, extractor, refNumber);
 		}
-		catch (SQLException e)
+		catch (DataAccessException e)
 		{
-			throw new SQLException("daofeedback.isexistingrefnumber-02: SQL Exception");
+			throw new YresDataAccessException("daofeedback.isexistingrefnumber-01");
 		}
-		// 7: Close the Statement and Connection
-		finally
-		{
-			try
-			{
-				st.close();
-				con.close();
-			}
-			catch (SQLException | NullPointerException e)
-			{
-				throw new NullPointerException("daofeedback.isexistingrefnumber-03: Database connection failed.");
-			}
-		}
-		return false;
 	}
+	
 	
 	/**
 	 * Generate a 7-digit hash, for reference in <i>feedbackinfo</i> table.
@@ -220,7 +175,9 @@ public class DaoFeedback extends Dao
 	private String generateRefNumber()
 	{
 		Random random = new Random();
-		String refNumber = String.valueOf(random.nextInt(1, 10));
+		String refNumber;
+		
+		refNumber = String.valueOf(random.nextInt(1, 10));
 		
 		for (int i=0; i<6; i++)
 			refNumber += String.valueOf(random.nextInt(0, 10));

@@ -1,10 +1,14 @@
 package com.sunya.yresWebProject.filters.siteUsage;
 
 import java.io.IOException;
-import java.sql.SQLException;
+import java.time.Duration;
+
+import org.springframework.dao.DataAccessException;
 
 import com.sunya.yresWebProject.PrintError;
+import com.sunya.yresWebProject.YresWebProjectApplication;
 import com.sunya.yresWebProject.daos.DaoSiteUsage;
+import com.sunya.yresWebProject.daos.PageUsageinfo;
 import com.sunya.yresWebProject.managers.CookieManager;
 
 import jakarta.servlet.FilterChain;
@@ -17,124 +21,82 @@ public class FilterSiteUsage
 {
 	private HttpServletRequest request;
 	private HttpServletResponse response;
-	private int filterNumber;
+	private PageUsageinfo whichPage;
 	private DaoSiteUsage dao;
 	private String refNumber;
-	private int[] updatedUsage;
-	
-	public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain, int filterNumber, Object obj)
-			throws ServletException, IOException
+	private String ip;
+
+
+
+	public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain,
+								PageUsageinfo whichPage, Object obj) throws ServletException, IOException
 	{
 		this.request = request;
 		this.response = response;
-		this.filterNumber = filterNumber;
+		this.whichPage = whichPage;
+		this.ip = request.getRemoteAddr();
 		
-		dao = new DaoSiteUsage();
+		dao = YresWebProjectApplication.context.getBean(DaoSiteUsage.class);
 		
 		CookieManager cm = new CookieManager(request.getCookies());
 		refNumber = cm.getCookieValue(cm.CLIENT_REF);
 		
 		try
 		{
-			setUpdatedUsage();
-			String result = dao.updateUsage(refNumber, updatedUsage);
-			
-			if (filterNumber == 1 || filterNumber == 3)
-				checkOutcome(result, cm, filterChain, request.getRemoteAddr());
+			if (refNumber!=null && dao.isExistingRefNumber(refNumber))
+			{
+				String usageIP = dao.getIP(refNumber);
+				
+				if (ip!=null && usageIP!=null && !ip.equals(usageIP))
+					refNumber = null; // refNumber = null to create new refNumber
+			}
 			else
-				checkOutcome(result, cm, filterChain);
+				refNumber = null;
+			
+			String resultRefNumber = dao.increaseCounter(refNumber, whichPage);
+			
+			checkOutcome(resultRefNumber, cm, filterChain);
 		}
-		catch (IOException | ServletException | SQLException e)
+		catch (Exception e)
 		{
 			PrintError.toErrorPage(request.getSession(), response, obj, e);
 		}
 	}
-	
-	
-	private void setUpdatedUsage() throws ServletException, SQLException
-	{
-		if (refNumber == null)
-			updatedUsage = new int[dao.getArraySize()];
-		else
-		{
-			updatedUsage = dao.getUsage(refNumber);
-			if (updatedUsage == null)
-			{
-				refNumber = null;
-				updatedUsage = new int[dao.getArraySize()];
-			}
-		}
-		
-		updatedUsage[filterNumber] += 1;
-	}
-	
+
+
+
 	/**
-	 * For FeedbackPage (filterNumber 2)
+	 * For HomePage (filterNumber 3) and ErrorPage (filterNumber 1), add IP address
+	 * to usageinfo table
 	 * 
-	 * @param result
-	 * @param cm
-	 * @param filterChain
-	 * @throws IOException
-	 * @throws ServletException
-	 */
-	private void checkOutcome(String result, CookieManager cm, FilterChain filterChain) throws IOException, ServletException
-	{
-		if (result != null)
-		{
-			setupRefInCookie(cm, result);
-			filterChain.doFilter(request, response);
-		}
-		else
-		{
-			throw new ServletException("filtersiteusage.checkoutcome-01: SiteUsage update failed.");
-		}
-	}
-	
-	/**
-	 * For HomePage (filterNumber 3) and ErrorPage (filterNumber 1)
-	 * 
-	 * @param result
+	 * @param resultRefNumber
 	 * @param cm
 	 * @param filterChain
 	 * @param ip
 	 * @throws IOException
 	 * @throws ServletException
-	 * @throws SQLException 
 	 */
-	private void checkOutcome(String result, CookieManager cm, FilterChain filterChain, String ip) throws IOException, ServletException, SQLException
+	private void checkOutcome(String resultRefNumber, CookieManager cm, FilterChain filterChain) throws IOException, ServletException
 	{
-		if (filterNumber == 1)
+		if (whichPage.getColumnOrder()==1 || whichPage.getColumnOrder()==3)
 		{
-			dao.addIp(ip, result);
-			
-			setupRefInCookie(cm, result);
-			filterChain.doFilter(request, response);
-		}
-		else if (result != null)
-		{
-			if ( dao.addIp(ip, result) == null )
+			if (ip!=null)
 			{
-				refNumber = null;
-				setUpdatedUsage();
-				result = dao.updateUsage(refNumber, updatedUsage);
-				checkOutcome(result, cm, filterChain, ip);
-			}
-			else
-			{
-				setupRefInCookie(cm, result);
-				filterChain.doFilter(request, response);
+				if (dao.getIP(resultRefNumber)==null)
+					dao.addIP(ip, resultRefNumber);
 			}
 		}
-		else
-		{
-			throw new ServletException("filtersiteusage.checkoutcome-02: SiteUsage update failed.");
-		}
+
+		setupRefInCookie(cm, resultRefNumber);
+		filterChain.doFilter(request, response);
 	}
-	
-	private void setupRefInCookie(CookieManager cm, String result)
+
+
+
+	private void setupRefInCookie(CookieManager cm, String resultRefNumber)
 	{
-		Cookie cookie = new Cookie(cm.CLIENT_REF, result);
-		cookie.setMaxAge(7*24*60*60);
+		Cookie cookie = new Cookie(cm.CLIENT_REF, resultRefNumber);
+		cookie.setMaxAge((int)Duration.ofDays(7).getSeconds());
 		response.addCookie(cookie);
 	}
 }
