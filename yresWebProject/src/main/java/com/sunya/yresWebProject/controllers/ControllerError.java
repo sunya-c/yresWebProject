@@ -9,6 +9,21 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class ControllerError extends Controller1 implements ErrorController
 {
 	@GetMapping("/error")
+	public String errorDefaultGet()
+	{
+		sm.removeFromServlet();
+		session.setAttribute(sm.ERROR_DESCRIPTION, "Something went wrong!");
+		return "ErrorPage";
+	}
+	@PostMapping("/error")
+	public String errorDefaultPost()
+	{
+		return errorDefaultGet();
+	}
+	
+	
+	
+	@GetMapping("/yresError")
 	public String toErrorPageGet()
 	{
 		if (session.getAttribute(sm.FROM_SERVLET) == null)
@@ -19,7 +34,7 @@ public class ControllerError extends Controller1 implements ErrorController
 			return "ErrorPage";
 		}
 	}
-	@PostMapping("/error")
+	@PostMapping("/yresError")
 	public String toErrorPagePost()
 	{
 		return toErrorPageGet();

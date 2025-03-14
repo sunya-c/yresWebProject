@@ -1,7 +1,9 @@
-Just made it work on Spring Boot (Filters and JDBC are now working properly).
+Changed the packaging from JAR to WAR (.jsp somehow only works with WAR).
 
 ----------
 
-Just made it work on Spring Boot (Filters and JDBC):
--Filters are now working properly with Spring boot configuration.
-Traditional JDBC connections are now converted to use JdbcTemplate.
+Changed the packaging from JAR to WAR (.jsp somehow only works with WAR):
+-I don't know why it throws 404 page not found (only for .jsp, .html works fine) when
+packaging as JAR. Took me 3 whole days to figure this out. JAR somehow doesn't support
+.jsp file no matter what. The only approach is to go for WAR, the embedded tomcat is
+still available, though.

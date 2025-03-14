@@ -3,7 +3,6 @@ package com.sunya.yresWebProject.filters;
 import java.io.IOException;
 import java.time.Duration;
 
-import org.springframework.dao.DataAccessException;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.sunya.yresWebProject.PrintError;
@@ -13,7 +12,6 @@ import com.sunya.yresWebProject.exceptions.SuspiciousRequestException;
 
 import io.ipinfo.api.IPinfo;
 import io.ipinfo.api.cache.SimpleCache;
-import io.ipinfo.api.errors.RateLimitedException;
 import io.ipinfo.api.model.IPResponse;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -27,7 +25,7 @@ public class FilterBot extends OncePerRequestFilter
 			throws ServletException, IOException
 	{
 		System.out.println("Order: 1, in Filter Bot (Home)");
-		String ip = request.getRemoteAddr();
+		String ip = getIP(request);
 		
 		IPinfo info = new IPinfo.Builder()
 				.setCache(new SimpleCache(Duration.ofDays(30)))
@@ -38,14 +36,16 @@ public class FilterBot extends OncePerRequestFilter
 		{
 			lookUp = info.lookupIP(ip);
 		}
-		catch (RateLimitedException e)
+		catch (Exception e)
 		{
 			//TODO: Send a counter iteration to the database.
 			PrintError.toErrorPage(request.getSession(), response, this, new ServletException("filterbot-01: Limit reached."));
 		}
 		
 		String countryCode = lookUp.getCountryCode();
-
+		System.out.println("ip: "+ip);
+		System.out.println("code: "+countryCode);
+		
 		if (countryCode == null || !countryCode.equals("TH"))
 		{
 			DaoIPBlacklist dao = YresWebProjectApplication.context.getBean(DaoIPBlacklist.class);
@@ -70,6 +70,16 @@ public class FilterBot extends OncePerRequestFilter
 			System.out.println("filter Bot passed");
 			filterChain.doFilter(request, response);
 		}
+	}
+	
+	private String getIP(HttpServletRequest request)
+	{
+		String ip = request.getHeader("X-Forwarded-For");
+		System.out.println("x-formwarded-for: "+ip);
+		System.out.println("getRemoteAdr    : "+request.getRemoteAddr());
+		if (ip == null || ip.isBlank())
+			ip = request.getRemoteAddr();
+		return ip;
 	}
 	
 	@Override
