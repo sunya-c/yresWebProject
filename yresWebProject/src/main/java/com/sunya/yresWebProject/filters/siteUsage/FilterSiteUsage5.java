@@ -16,12 +16,20 @@ import jakarta.servlet.http.HttpServletResponse;
  */
 public class FilterSiteUsage5 extends OncePerRequestFilter
 {
+	FilterSiteUsage siteUsage;
+	
+	public FilterSiteUsage5(FilterSiteUsage siteUsage)
+	{
+		this.siteUsage = siteUsage;
+	}
+
+
+
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException
 	{
 		System.out.println("Order: 9, in Filter Usage 5 (redirecting)");
-		FilterSiteUsage siteUsage = new FilterSiteUsage();
 		siteUsage.doFilterInternal(request, response, filterChain, PageUsageinfo.PAGE_REDIRECTING, this);
 	}
 

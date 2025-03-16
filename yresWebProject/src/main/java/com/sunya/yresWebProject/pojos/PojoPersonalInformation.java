@@ -4,8 +4,13 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import com.sunya.yresWebProject.exceptions.NegativeAgeException;
 
+@Component
+@Scope("prototype")
 public class PojoPersonalInformation
 {
 	private String firstname;

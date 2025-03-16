@@ -16,12 +16,20 @@ import jakarta.servlet.http.HttpServletResponse;
  */
 public class FilterSiteUsage8 extends OncePerRequestFilter
 {
+	FilterSiteUsage siteUsage;
+	
+	public FilterSiteUsage8(FilterSiteUsage siteUsage)
+	{
+		this.siteUsage = siteUsage;
+	}
+
+
+
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException
 	{
 		System.out.println("Order: 12, in Filter Usage 8 (sDownloadResume)");
-		FilterSiteUsage siteUsage = new FilterSiteUsage();
 		siteUsage.doFilterInternal(request, response, filterChain, PageUsageinfo.RESUME_DOWNLOAD, this);
 	}
 

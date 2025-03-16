@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import com.sunya.yresWebProject.YresWebProjectApplication;
 import com.sunya.yresWebProject.models.DataPersInfo;
 import com.sunya.yresWebProject.pojos.PojoPersonalInformation;
 
@@ -18,7 +19,7 @@ public class ServicePersonalInformation
 	
 	public DataPersInfo sPersInfo()
 	{
-		PojoPersonalInformation pInfo = new PojoPersonalInformation();
+		PojoPersonalInformation pInfo = YresWebProjectApplication.context.getBean(PojoPersonalInformation.class);
 		pInfo.setupPojoPersonalInformation("sunyapong");
 		
 		DataPersInfo myInfo = new DataPersInfo();

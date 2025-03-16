@@ -1,9 +1,10 @@
-Changed the packaging from JAR to WAR (.jsp somehow only works with WAR).
+Converted more reusable classes to Spring beans.
 
 ----------
 
-Changed the packaging from JAR to WAR (.jsp somehow only works with WAR):
--I don't know why it throws 404 page not found (only for .jsp, .html works fine) when
-packaging as JAR. Took me 3 whole days to figure this out. JAR somehow doesn't support
-.jsp file no matter what. The only approach is to go for WAR, the embedded tomcat is
-still available, though.
+Converted more reusable classes to Spring beans:
+-Converted 'FilterSiteUsage' and 'PojoPersonalInformation' to Spring bean
+classes. These two classes are reused infinitely over the application's life
+but still aren't managed by Spring. As Spring boot has just been 100% implemented
+into this project in the previous commit, this should be a good time to convert
+these two leftover classes to Spring bean classes.
