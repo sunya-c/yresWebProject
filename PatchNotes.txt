@@ -1,7 +1,10 @@
-Optimized JDBC connection.
+Converted more reusable classes to Spring beans.
 
 ----------
 
-Optimized JDBC connection:
--Removed an unnecessary process of JDBC for removeUsageByBlacklist which reduces
-the processing time by around 90% (a 50-second process is now finished within 5 seconds).
+Converted more reusable classes to Spring beans:
+-Converted 'FilterSiteUsage' and 'PojoPersonalInformation' to Spring bean
+classes. These two classes are reused infinitely over the application's life
+but still aren't managed by Spring. As Spring boot has just been 100% implemented
+into this project in the previous commit, this should be a good time to convert
+these two leftover classes to Spring bean classes.

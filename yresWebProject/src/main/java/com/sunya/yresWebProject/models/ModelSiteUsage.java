@@ -1,0 +1,58 @@
+package com.sunya.yresWebProject.models;
+
+import com.sunya.yresWebProject.daos.PageUsageinfo;
+
+public class ModelSiteUsage
+{
+	private String refNumber;
+	private String ip;
+	private String dateTime;
+	
+	/**
+	 * #0 usageCreateAccount<br>
+	 * #1 usageError<br>
+	 * #2 usageFeedback<br>
+	 * #3 usageLogin<br>
+	 * #4 usagePersInfo<br>
+	 * #5 usageRedirecting<br>
+	 * #6 usageUnderConstruction<br>
+	 * #7 usageWelcome<br>
+	 * #8 usageResumeDownload
+	 */
+	private int[] usages = new int[9];
+	
+	
+	public String getRefNumber() {
+		return refNumber;
+	}
+	public void setRefNumber(String refNumber) {
+		this.refNumber = refNumber;
+	}
+	public String getIp() {
+		return ip;
+	}
+	public void setIp(String ip) {
+		this.ip = ip;
+	}
+	public String getDateTime() {
+		return dateTime;
+	}
+	public void setDateTime(String dateTime) {
+		this.dateTime = dateTime;
+	}
+	
+	public int getUsageValue(PageUsageinfo whichPage) {
+		return usages[whichPage.getColumnOrder()];
+	}
+	public void setUsageValue(int usageValue, PageUsageinfo whichPage) {
+		this.usages[whichPage.getColumnOrder()] = usageValue;
+	}
+	
+	public int[] getUsages() {
+		return usages;
+	}
+	public void setUsages(int[] usages) {
+		this.usages = usages;
+	}
+	
+}

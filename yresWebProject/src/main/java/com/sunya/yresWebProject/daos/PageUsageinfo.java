@@ -1,0 +1,35 @@
+package com.sunya.yresWebProject.daos;
+
+public enum PageUsageinfo
+{
+	PAGE_CREATEACCOUNT		(0, "page_createaccount"),
+	PAGE_ERROR				(1, "page_error"),
+	PAGE_FEEDBACK			(2, "page_feedback"),
+	PAGE_LOGIN				(3, "page_login"),
+	PAGE_PERSINFO			(4, "page_persinfo"),
+	PAGE_REDIRECTING		(5, "page_redirecting"),
+	PAGE_UNDERCONSTRUCTION	(6, "page_underconstruction"),
+	PAGE_WELCOME			(7, "page_welcome"),
+	RESUME_DOWNLOAD			(8, "resume_download");
+	
+	public final static int numberOfPages = 9;
+	
+	private int columnOrder;
+	private String columnName;
+	
+	private PageUsageinfo(int columnOrder, String columnName)
+	{
+		this.columnOrder = columnOrder;
+		this.columnName = columnName;
+	}
+	
+	public int getColumnOrder()
+	{
+		return columnOrder;
+	}
+	
+	public String getColumnName()
+	{
+		return columnName;
+	}
+}
