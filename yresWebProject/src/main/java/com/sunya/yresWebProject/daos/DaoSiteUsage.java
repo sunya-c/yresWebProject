@@ -55,7 +55,7 @@ public class DaoSiteUsage extends Dao
 	/**
 	 * Update usage data of the given refNumber on the database.
 	 * 
-	 * @param refNumber    ~ enter {@code null} to create new refNumber.
+	 * @param refNumber    ~ refNumber to increase the counter, enter {@code null} to create new refNumber.
 	 * @param updatedUsage ~ the updated usage data for overwriting the existing one
 	 *                     on the database.
 	 * @return <strong>String refNumber</strong> ~ if successfully updated the

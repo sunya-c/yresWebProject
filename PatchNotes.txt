@@ -1,10 +1,25 @@
-Converted more reusable classes to Spring beans.
+1. Fixed the improperly-written code which could lead to race condition.
+2. Added checking if the request's IP address is in blacklist.
 
 ----------
 
-Converted more reusable classes to Spring beans:
--Converted 'FilterSiteUsage' and 'PojoPersonalInformation' to Spring bean
-classes. These two classes are reused infinitely over the application's life
-but still aren't managed by Spring. As Spring boot has just been 100% implemented
-into this project in the previous commit, this should be a good time to convert
-these two leftover classes to Spring bean classes.
+1. Fixed the improperly-written code which could lead to race condition:
+
+-Classes affected: FromServlet, RestrictionsCreateAccount, RestrictionFeedback, DaoLogin, DaoFeedback,
+ServiceCreateAccount, ServiceFeedback, ServiceLogin, FilterAccountExistence, FilterBot, FilterLoginState,
+SessionManager (see detail in the next bullet point), CookieManager.
+
+-Redesigned session data and SessionManager class, changing the data stored in session to be in object
+format (used to be in data's orginal format like boolean or String), which encapsulates those data, making
+data more readable and well-structured.
+
+-Moved unneccessary data, which is basically one-time-use data for viewing purpose, to be stored in Model/ModelAndView
+instead of session. Classes/Pages affected: CreateAccount, Feedback, Error, Login (Home), Redirecting, and Welcome.
+
+
+
+2. Added checking if the request's IP address is in blacklist:
+
+-As we've been collecting BOT IP addresses for a while, we now have a decent amount of BOT IP addresses.
+Those IP addresses can be used as a mini blacklist for preliminary filtering before it entering the core API
+for BOT filtering which has a limited number of usage for free tier.

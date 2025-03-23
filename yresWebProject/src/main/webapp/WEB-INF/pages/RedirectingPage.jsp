@@ -29,8 +29,8 @@
 <body id="ieu1zk">
 	
 	<div id="ifn70r">
-		<div id="i20y3j">${message}</div>
-		<div id="iz2qet">Moving you back to <i>${destinationPage}</i> . . .</div>
+		<div id="i20y3j">${dataRedirecting.message}</div>
+		<div id="iz2qet">Moving you back to <i>${dataRedirecting.destinationPage}</i> . . .</div>
 	</div>
 </body>
 </html>

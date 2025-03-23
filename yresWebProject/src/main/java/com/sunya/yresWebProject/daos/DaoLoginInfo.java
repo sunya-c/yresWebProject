@@ -34,15 +34,14 @@ public class DaoLoginInfo extends Dao
 	// end -- columnName
 	
 	// Error report :
-	final String ERR1 = "Username already exists";
-	final String ERR2 = "Invalid username";
-	final String ERR3 = "Incorrect password";
-	String errText = null;
+	private final String ERR1 = "Username already exists";
+	private final String ERR2 = "Invalid username";
+	private final String ERR3 = "Incorrect password";
 	// end -- Error report
 	
 	@Autowired
 	@Qualifier("backDateTime")
-	protected DateTimeFormatter dateTimeFormat;
+	private DateTimeFormatter dateTimeFormat;
 	
 	@Autowired
 	protected JdbcTemplate template;
@@ -237,8 +236,7 @@ public class DaoLoginInfo extends Dao
 			return true;
 		else
 		{
-			errText = ERR2; // Invalid username
-			PrintError.println(errText);
+			PrintError.println(ERR2); // Invalid username
 			return false;
 		}
 	}
@@ -256,8 +254,7 @@ public class DaoLoginInfo extends Dao
 			return true;
 		else
 		{
-			errText = ERR2; // Invalid username
-			PrintError.println(errText);
+			PrintError.println(ERR2); // Invalid username
 			return false;
 		}
 	}
@@ -268,8 +265,7 @@ public class DaoLoginInfo extends Dao
 			return true;
 		else
 		{
-			errText = ERR3; // Incorrect password
-			PrintError.println(errText);
+			PrintError.println(ERR3); // Incorrect password
 			return false;
 		}
 	}

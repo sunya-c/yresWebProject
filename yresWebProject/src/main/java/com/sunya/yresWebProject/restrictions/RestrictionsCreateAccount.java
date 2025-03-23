@@ -1,36 +1,21 @@
 package com.sunya.yresWebProject.restrictions;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.sunya.yresWebProject.daos.DaoLoginInfo;
+import com.sunya.yresWebProject.models.DataCreateAccount;
 import com.sunya.yresWebProject.models.FormCreateAccount;
 import com.sunya.yresWebProject.models.ModelLoginInfo;
 
-/**
- * Call {@code setupRestrictionCreateAccount(username, password1, password2)}
- * first before {@code checkRestriction()}
- */
+
 @Component
-@Scope("prototype")
 public class RestrictionsCreateAccount
 {
 	@Autowired
 	private DaoLoginInfo dao;
-	@Autowired
-	private ErrorMessageSetterCreateAccount errSetter;
-	FormCreateAccount formCA;
 	
 	
-	
-	private void setupRestrictionCreateAccount(FormCreateAccount formCA)
-	{
-		this.formCA = formCA;
-	}
-
-
-
 	/**
 	 * Check whether the given username and password comply with the restriction.
 	 * Set up the username, password1, and password2 before calling this method.
@@ -41,57 +26,55 @@ public class RestrictionsCreateAccount
 	 *         restriction. The error messages, containing the detail, will be set
 	 *         to the session by {@code ErrorMessageSetterCreateAccount.java} object
 	 */
-	public boolean checkRestriction(FormCreateAccount formCA)
+	public boolean checkRestriction(FormCreateAccount formCA, DataCreateAccount dataCreateAccount)
 	{
-		setupRestrictionCreateAccount(formCA);
-		
 		boolean validInfo = true;
 
 		// username check
-		if (checkLengthUsername())
+		if (checkLengthUsername(formCA))
 		{
-			if (checkSpaceUsername())
+			if (checkSpaceUsername(formCA))
 			{
 				ModelLoginInfo model = new ModelLoginInfo();
 				model.setUsername(formCA.getUsername());
 				
 				if (dao.checkUsername(model))
 				{
-					errSetter.setUsernameErr(ErrMsg.CREATEACCOUNT_UNAME_DUPLICATE); // pass error message enum here.
+					dataCreateAccount.setUsernameErr(ErrMsg.CREATEACCOUNT_UNAME_DUPLICATE.toString());   // pass error message enum here.
 					validInfo = false;
 				}
 			}
 			else
 			{
-				errSetter.setUsernameErr(ErrMsg.CREATEACCOUNT_UNAME_SPACE); // pass error message enum here.
+				dataCreateAccount.setUsernameErr(ErrMsg.CREATEACCOUNT_UNAME_SPACE.toString());   // pass error message enum here.
 				validInfo = false;
 			}
 		}
 		else
 		{
-			errSetter.setUsernameErr(ErrMsg.CREATEACCOUNT_UNAME_LENGTH);
+			dataCreateAccount.setUsernameErr(ErrMsg.CREATEACCOUNT_UNAME_LENGTH.toString());
 			validInfo = false;
 		}
 
 		// password check
-		if (checkLengthPassword())
+		if (checkLengthPassword(formCA))
 		{
-			if (!checkSpacePassword())
+			if (!checkSpacePassword(formCA))
 			{
-				errSetter.setPasswordErr1(ErrMsg.CREATEACCOUNT_PASS_SPACE); // pass error message here.
+				dataCreateAccount.setPasswordErr1(ErrMsg.CREATEACCOUNT_PASS_SPACE.toString());   // pass error message here.
 				validInfo = false;
 			}
 		}
 		else
 		{
-			errSetter.setPasswordErr1(ErrMsg.CREATEACCOUNT_PASS_LENGTH); // pass error message enum here.
+			dataCreateAccount.setPasswordErr1(ErrMsg.CREATEACCOUNT_PASS_LENGTH.toString());   // pass error message enum here.
 			validInfo = false;
 		}
 
 		// confirm password check
-		if (!confirmPassword())
+		if (!confirmPassword(formCA))
 		{
-			errSetter.setPasswordErr2(ErrMsg.CREATEACCOUNT_PASS_CONFIRM); // pass error message enum here.
+			dataCreateAccount.setPasswordErr2(ErrMsg.CREATEACCOUNT_PASS_CONFIRM.toString());// pass error message enum here.
 			validInfo = false;
 		}
 		
@@ -101,35 +84,35 @@ public class RestrictionsCreateAccount
 
 
 
-	private boolean confirmPassword()
+	private boolean confirmPassword(FormCreateAccount formCA)
 	{
 		return (formCA.getPassword1().equals(formCA.getPassword2()));
 	}
 
 
 
-	private boolean checkLengthUsername()
+	private boolean checkLengthUsername(FormCreateAccount formCA)
 	{
 		return (formCA.getUsername().length()>=4 && formCA.getUsername().length()<=10);
 	}
 
 
 
-	private boolean checkLengthPassword()
+	private boolean checkLengthPassword(FormCreateAccount formCA)
 	{
 		return (formCA.getPassword1().length()>=4 && formCA.getPassword1().length()<=20);
 	}
 
 
 
-	private boolean checkSpaceUsername()
+	private boolean checkSpaceUsername(FormCreateAccount formCA)
 	{
 		return !(formCA.getUsername().contains(" "));
 	}
 
 
 
-	private boolean checkSpacePassword()
+	private boolean checkSpacePassword(FormCreateAccount formCA)
 	{
 		return !(formCA.getPassword1().contains(" "));
 	}

@@ -27,7 +27,7 @@
 	<div id="iy0w9r">
 		<div id="i4j7hg">Important : </div>
 		<div id="i7vw6u">
-			${WEB_NOTE1.value}<br />
+			${sessionWeb.webNote1}<br />
 		</div>
 	</div>
 	<div id="ij1hw">
@@ -36,7 +36,7 @@
 		</form>
 		<div id="iqzgf4">
 			<form method="post" action="sLogout" id="i6yg8g">
-				<label id="iplzo3">Welcome ${username},<br /></label><label
+				<label id="iplzo3">Welcome ${sessionLogin.username},<br /></label><label
 					id="iv9349">You're logged in<br /></label>
 				<button type="submit" id="i8e392">Log out</button>
 			</form>

@@ -1,39 +1,16 @@
 package com.sunya.yresWebProject.restrictions;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.sunya.yresWebProject.models.DataFeedback;
 import com.sunya.yresWebProject.models.FormFeedback;
 
 import jakarta.servlet.ServletException;
 
-/**
- * Call {@code setupRestrictionFeedback(title, detail, errorMessage)} first before {@code checkRestriction()}
- */
+
 @Component
-@Scope("prototype")
 public class RestrictionsFeedback
 {
-	@Autowired
-	private ErrorMessageSetterFeedback errSetter;
-	private String feedbackTitle;
-	private String feedbackDetail;
-	private String feedbackErrorMessage;
-	
-	
-	
-	
-	private void setupRestrictionFeedback(FormFeedback formFb)
-	{
-		this.feedbackTitle = formFb.getFeedbackTitle();
-		this.feedbackDetail = formFb.getFeedbackDetail();
-		this.feedbackErrorMessage = formFb.getFeedbackErrorMessage();
-	}
-	
-	
-	
-	
 	/**
 	 * Check whether the given feedback information comply with the restriction.
 	 * Set up the feedbackTitle, feedbackDetail, and feedbackErrorMessage before calling this method.
@@ -43,43 +20,41 @@ public class RestrictionsFeedback
 	 *         							The error messages, containing the detail, will be set to the session by {@code ErrorMessageSetterFeedback.java} object
 	 * @throws ServletException
 	 */
-	public boolean checkRestriction(FormFeedback formFb)
+	public boolean checkRestriction(FormFeedback formFb, DataFeedback dataFeedback)
 	{
-		setupRestrictionFeedback(formFb);
-		
 		boolean validInfo = true;
 		
-		if (!feedbackTitle.isBlank())
+		if (!formFb.getFeedbackTitle().isBlank())
 		{
-			if ( !(feedbackTitle.length() <= 200) )
+			if ( !(formFb.getFeedbackTitle().length() <= 200) )
 			{
-				errSetter.setFeedbackTitleErr(ErrMsg.FEEDBACK_TITLE_LENGTH);
+				dataFeedback.setTitleErr(ErrMsg.FEEDBACK_TITLE_LENGTH.toString());
 				validInfo = false;
 			}
 		}
 		else
 		{
-			errSetter.setFeedbackTitleErr(ErrMsg.FEEDBACK_FIELD_EMPTY);
+			dataFeedback.setTitleErr(ErrMsg.FEEDBACK_FIELD_EMPTY.toString());
 			validInfo = false;
 		}
 		
-		if (!feedbackDetail.isBlank())
+		if (!formFb.getFeedbackDetail().isBlank())
 		{
-			if ( !(feedbackDetail.length() <= 4000) )
+			if ( !(formFb.getFeedbackDetail().length() <= 4000) )
 			{
-				errSetter.setFeedbackDetailErr(ErrMsg.FEEDBACK_DETAIL_LENGTH);
+				dataFeedback.setDetailErr(ErrMsg.FEEDBACK_DETAIL_LENGTH.toString());
 				validInfo = false;
 			}
 		}
 		else
 		{
-			errSetter.setFeedbackDetailErr(ErrMsg.FEEDBACK_FIELD_EMPTY);
+			dataFeedback.setDetailErr(ErrMsg.FEEDBACK_FIELD_EMPTY.toString());
 			validInfo = false;
 		}
 
-		if ( !(feedbackErrorMessage.length() <= 2000) )
+		if ( !(formFb.getFeedbackErrorMessage().length() <= 2000) )
 		{
-			errSetter.setFeedbackErrorMessageErr(ErrMsg.FEEDBACK_ERRORMESSAGE_LENGTH);
+			dataFeedback.setErrorMessageErr(ErrMsg.FEEDBACK_ERRORMESSAGE_LENGTH.toString());
 			validInfo = false;
 		}
 		

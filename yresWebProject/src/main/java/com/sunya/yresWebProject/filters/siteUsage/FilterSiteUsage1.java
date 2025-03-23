@@ -16,7 +16,7 @@ import jakarta.servlet.http.HttpServletResponse;
  */
 public class FilterSiteUsage1 extends OncePerRequestFilter
 {
-	FilterSiteUsage siteUsage;
+	private FilterSiteUsage siteUsage;
 	
 	public FilterSiteUsage1(FilterSiteUsage siteUsage)
 	{

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.sunya.yresWebProject.PrintError;
+import com.sunya.yresWebProject.exceptions.SomethingWentWrongException;
 import com.sunya.yresWebProject.models.FormLogin;
 import com.sunya.yresWebProject.services.ServiceLogin;
 import com.sunya.yresWebProject.services.ServiceLogout;
@@ -20,11 +21,18 @@ public class ControllerLogin extends Controller1
 	{
 		try
 		{
-			return redirect+sli.sLogin(formL);
+			synchronized (sm.getKeyHolder().getKeyLogin())
+			{
+				if (sm.getSessionLogin().isLoggedIn())
+					throw new SomethingWentWrongException("<br>You're already logged in as '<i>"+sm.getSessionLogin().getUsername()+"</i>', "
+												+ "please log out first before logging in to a different account.");
+				else
+					return redirect+sli.sLogin(formL);
+			}
 		}
 		catch (Exception e)
 		{
-			return redirect+PrintError.toErrorPage(session, this, e);
+			return redirect+PrintError.toErrorPage(e);
 		}
 	}
 	
@@ -36,11 +44,14 @@ public class ControllerLogin extends Controller1
 	{
 		try
 		{
-			return redirect+slo.sLogout();
+			synchronized (sm.getKeyHolder().getKeyLogin())
+			{
+				return redirect+slo.sLogout();
+			}
 		}
 		catch (Exception e)
 		{
-			return redirect+PrintError.toErrorPage(session, this, e);
+			return redirect+PrintError.toErrorPage(e);
 		}
 	}
 }

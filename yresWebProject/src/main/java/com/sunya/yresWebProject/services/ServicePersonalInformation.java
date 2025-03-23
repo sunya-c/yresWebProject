@@ -22,39 +22,39 @@ public class ServicePersonalInformation
 		PojoPersonalInformation pInfo = YresWebProjectApplication.context.getBean(PojoPersonalInformation.class);
 		pInfo.setupPojoPersonalInformation("sunyapong");
 		
-		DataPersInfo myInfo = new DataPersInfo();
+		DataPersInfo dataPersInfo = new DataPersInfo();
 		
-		myInfo.setFirstname(pInfo.getFirstname());
-		myInfo.setLastname(pInfo.getLastname());
-		myInfo.setDateOfBirth(pInfo.getDateOfBirth().format(dateFormat));
-		myInfo.setAge(pInfo.getAge());
-		myInfo.setGender(pInfo.getGender());
-		myInfo.setNationality(pInfo.getNationality());
+		dataPersInfo.setFirstname(pInfo.getFirstname());
+		dataPersInfo.setLastname(pInfo.getLastname());
+		dataPersInfo.setDateOfBirth(pInfo.getDateOfBirth().format(dateFormat));
+		dataPersInfo.setAge(pInfo.getAge());
+		dataPersInfo.setGender(pInfo.getGender());
+		dataPersInfo.setNationality(pInfo.getNationality());
 		
 		String tempYesNo = null;
 		if (pInfo.getDrivingLicense())
 			tempYesNo = "Yes";
 		else
 			tempYesNo = "No";
-		myInfo.setDrivingLicense(tempYesNo);
+		dataPersInfo.setDrivingLicense(tempYesNo);
 		
 		tempYesNo = null;
 		if (pInfo.getEngineeringLicense())
 			tempYesNo = "Yes";
 		else
 			tempYesNo = "No";
-		myInfo.setEngineeringLicense(tempYesNo);
+		dataPersInfo.setEngineeringLicense(tempYesNo);
 		
-		myInfo.setListLanguage(pInfo.getListLanguage());
-		myInfo.setListProgrammingLanguage(pInfo.getListProgrammingLanguage());
-		myInfo.setAddress(pInfo.getAddress()); // Skipped. Confidential info.
-		myInfo.setPhoneNumber(pInfo.getPhoneNumber());
-		myInfo.setEmail(pInfo.getEmail());
-		myInfo.setLineId(pInfo.getLineId());
-		myInfo.setListEducation(pInfo.getListEducation());
-		myInfo.setListEnglishTest(pInfo.getListEnglishTest());
+		dataPersInfo.setListLanguage(pInfo.getListLanguage());
+		dataPersInfo.setListProgrammingLanguage(pInfo.getListProgrammingLanguage());
+		dataPersInfo.setAddress(pInfo.getAddress()); // Skipped. Confidential info.
+		dataPersInfo.setPhoneNumber(pInfo.getPhoneNumber());
+		dataPersInfo.setEmail(pInfo.getEmail());
+		dataPersInfo.setLineId(pInfo.getLineId());
+		dataPersInfo.setListEducation(pInfo.getListEducation());
+		dataPersInfo.setListEnglishTest(pInfo.getListEnglishTest());
 		
-		return myInfo;
+		return dataPersInfo;
 	}
 	
 	@Override

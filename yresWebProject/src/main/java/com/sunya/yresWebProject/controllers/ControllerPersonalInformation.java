@@ -2,9 +2,10 @@ package com.sunya.yresWebProject.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.servlet.ModelAndView;
 
+import com.sunya.yresWebProject.Page;
 import com.sunya.yresWebProject.PrintError;
 import com.sunya.yresWebProject.models.DataPersInfo;
 import com.sunya.yresWebProject.services.ServicePersonalInformation;
@@ -18,27 +19,22 @@ public class ControllerPersonalInformation extends Controller1
 	private ServicePersonalInformation spinfo;
 	
 	@GetMapping("/personalInformation")
-	public ModelAndView persInfoPage(HttpServletResponse response)
+	public String persInfoPage(HttpServletResponse response, Model model)
 	{
-		session.setAttribute(sm.LOGIN_FROMPAGE, "personalInformation");
-		
-		ModelAndView mv = new ModelAndView();
-		mv.setViewName("PersonalInformationPage");
-		
+		sm.getSessionLogin().setFromPage("personalInformation");
 		
 		try
 		{
 			DataPersInfo myInfo = spinfo.sPersInfo();
-			mv.addObject(myInfo);
+			model.addAttribute(myInfo);
+			
+			preventBackButton(response);
+			
+			return Page.persInfo;
 		}
 		catch (Exception e)
 		{
-			mv.setViewName(redirect+PrintError.toErrorPage(session, this, e));
-			return mv;
+			return redirect+PrintError.toErrorPage(e);
 		}
-		
-		preventBackButton(response);
-		
-		return mv;
 	}
 }

@@ -1,5 +1,6 @@
 package com.sunya.yresWebProject.daos;
 
+@Deprecated
 public class Dao
 {
 	protected String url;

@@ -7,7 +7,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.TimeZone;
 
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
 public class PrintError
 {
@@ -33,20 +32,18 @@ public class PrintError
 	 * @return "error" String.
 	 * @throws IOException
 	 */
-	public static String toErrorPage(HttpSession session, Object obj, Exception e)
+	public static String toErrorPage(Exception e)
 	{
 		System.out.println("PrintError: "+e);
-		session.setAttribute("errorDescription", e);
-		session.setAttribute("fromServlet", obj.toString());
-		return "yresError";
+		
+		return Url.yresError+"?errorDescription="+e.toString();
 	}
 	
 	// to be deleted when conversion to Spring mvc is complete
-	public static void toErrorPage(HttpSession session, HttpServletResponse response, Object obj, Exception e) throws IOException
+	public static void toErrorPage(HttpServletResponse response, Exception e) throws IOException
 	{
 		System.out.println("PrintError: "+e);
-		session.setAttribute("errorDescription", e);
-		session.setAttribute("fromServlet", obj.toString());
-		response.sendRedirect("yresError");
+		
+		response.sendRedirect(Url.yresError+"?errorDescription="+e.toString());
 	}
 }

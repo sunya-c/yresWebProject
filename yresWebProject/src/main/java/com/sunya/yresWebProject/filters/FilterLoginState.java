@@ -5,44 +5,48 @@ import java.io.IOException;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.sunya.yresWebProject.PrintError;
-import com.sunya.yresWebProject.YresWebProjectApplication;
+import com.sunya.yresWebProject.Url;
 import com.sunya.yresWebProject.managers.SessionManager;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
 public class FilterLoginState extends OncePerRequestFilter
 {
-	final private String ERR1 = "Filter LoginState failed";
-	private String errText = "";
-
+	private final String ERR1 = "Filter LoginState failed";
+	
+	private SessionManager sm;
+	
+	
+	
+	public FilterLoginState(SessionManager sm)
+	{
+		this.sm = sm;
+	}
+	
+	
+	
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException
 	{
 		System.out.println("Order: 3, in Filter Login State (welcome)");
 		
-		HttpSession session = request.getSession();
-		SessionManager sm = YresWebProjectApplication.context.getBean(SessionManager.class);
-		
-		if (
-				(session.getAttribute(sm.LOGIN_LOGGED_IN) != null) &&
-				((boolean)session.getAttribute(sm.LOGIN_LOGGED_IN) == true)
-				)
+		synchronized (sm.getKeyHolder().getKeyLogin())
 		{
-			System.out.println("Filter Login State passed");
-			filterChain.doFilter(request, response);
+			if (sm.getSessionLogin().isLoggedIn())
+			{
+				System.out.println("Filter Login State passed");
+				filterChain.doFilter(request, response);
+			}
+			else
+			{
+				PrintError.println(ERR1);
+				response.sendRedirect(Url.home);
+			}
 		}
-		else
-		{
-			errText = ERR1;
-			PrintError.println(errText);
-			response.sendRedirect("Home");
-		}
-
 	}
 	
 	@Override

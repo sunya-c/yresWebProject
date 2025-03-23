@@ -7,6 +7,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Random;
 import java.util.TimeZone;
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataAccessException;
@@ -37,7 +38,6 @@ public class DaoFeedback extends Dao
 	// end -- columnName
 	
 	private final String ERR1 = "Failed to submit feedback/bug report.";
-	private String errText = "";
 	
 	@Autowired
 	@Qualifier("backDateTime")
@@ -65,9 +65,8 @@ public class DaoFeedback extends Dao
 		String refNumber = addFeedback(model);
 		if (refNumber == null)
 		{
-			errText = ERR1;
-			PrintError.println(errText);
-			return null;
+			PrintError.println(ERR1);
+			throw new SomethingWentWrongException("daofeedback.submitfeedback-01");
 		}
 		else
 			return refNumber;
@@ -85,6 +84,7 @@ public class DaoFeedback extends Dao
 	 *         <strong>null</strong> ~ if failed.
 	 * @throws SomethingWentWrongException 
 	 */
+	@NotNull
 	private String addFeedback(ModelFeedback model) throws SomethingWentWrongException
 	{
 		String query = "INSERT INTO "+TABLE_NAME

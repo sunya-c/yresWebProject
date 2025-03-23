@@ -2,41 +2,52 @@ package com.sunya.yresWebProject.controllers;
 
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import com.sunya.yresWebProject.Page;
+import com.sunya.yresWebProject.Url;
+import com.sunya.yresWebProject.models.DataError;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 public class ControllerError extends Controller1 implements ErrorController
 {
 	@GetMapping("/error")
-	public String errorDefaultGet()
+	public String errorDefaultGet(Model model)
 	{
-		sm.removeFromServlet();
-		session.setAttribute(sm.ERROR_DESCRIPTION, "Something went wrong!");
-		return "ErrorPage";
+		DataError dataError = new DataError();
+		dataError.setErrorDescription("Something went wrong!");
+		
+		model.addAttribute(dataError);
+		
+		return Page.error;
 	}
 	@PostMapping("/error")
-	public String errorDefaultPost()
+	public String errorDefaultPost(Model model)
 	{
-		return errorDefaultGet();
+		return errorDefaultGet(model);
 	}
 	
 	
 	
 	@GetMapping("/yresError")
-	public String toErrorPageGet()
+	public String toErrorPage(Model model, HttpServletRequest request)
 	{
-		if (session.getAttribute(sm.FROM_SERVLET) == null)
-			return redirect+"Home";
-		else
+		String errorDescription = request.getParameter("errorDescription");
+		
+		if (errorDescription!=null)
 		{
-			sm.removeFromServlet();
-			return "ErrorPage";
+			DataError dataError = new DataError();
+			dataError.setErrorDescription(errorDescription);
+			
+			model.addAttribute(dataError);
+			
+			return Page.error;
 		}
-	}
-	@PostMapping("/yresError")
-	public String toErrorPagePost()
-	{
-		return toErrorPageGet();
+		else
+			return redirect+Url.feedback;
 	}
 }

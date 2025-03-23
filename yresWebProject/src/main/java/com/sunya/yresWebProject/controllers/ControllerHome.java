@@ -4,11 +4,12 @@ import java.sql.SQLException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.sunya.yresWebProject.Page;
 import com.sunya.yresWebProject.PrintError;
+import com.sunya.yresWebProject.Url;
 import com.sunya.yresWebProject.daos.DaoWebdatainfo;
 import com.sunya.yresWebProject.models.ModelWebdatainfo;
 
@@ -20,16 +21,18 @@ public class ControllerHome extends Controller1
 	@GetMapping("/")
 	public String firstPage()
 	{
-		return "PreHomePage";
+		System.out.println(sm.getSession().getId()+"---"+sm.getKeyHolder());
+		
+		return Page.preHome;
 	}
 	
 	@Autowired
-	Environment env;
+	private Environment env;
 	
 	@GetMapping("/Home")
 	public String homePage()
 	{
-		session.setAttribute(sm.LOGIN_FROMPAGE, "Home");
+		sm.getSessionLogin().setFromPage("Home");
 		
 		session.setAttribute("trial1",
 									!(System.getenv("SERY_DB_URL") == null || System.getenv("SERY_DB_URL").isBlank()));
@@ -44,15 +47,15 @@ public class ControllerHome extends Controller1
 		}
 		catch (Exception e)
 		{
-			return redirect+PrintError.toErrorPage(session, this, e);
+			return redirect+PrintError.toErrorPage(e);
 		}
 		
-		if ((session.getAttribute("loggedIn") != null) && ((boolean) session.getAttribute("loggedIn") == true))
+		if (sm.getSessionLogin().isLoggedIn()==true)
 		{
-			return redirect+"welcome";
+			return redirect+Url.welcome;
 		}
 		
-		return "LoginPage";
+		return Page.home;
 	}
 	
 	@GetMapping("/welcome")
@@ -64,17 +67,20 @@ public class ControllerHome extends Controller1
 		}
 		catch (Exception e)
 		{
-			return redirect+PrintError.toErrorPage(session, this, e);
+			return redirect+PrintError.toErrorPage(e);
 		}
 		
-		if (session.getAttribute(sm.LOGIN_LOGGED_IN)!=null && ((boolean)session.getAttribute(sm.LOGIN_LOGGED_IN))==true)
+		synchronized (sm.getKeyHolder().getKeyLogin())
 		{
-			preventBackButton(response);
-			
-			return "WelcomePage";
+			if (sm.getSessionLogin().isLoggedIn())
+			{
+				preventBackButton(response);
+				
+				return Page.welcome;
+			}
+			else
+				return redirect+Url.home;
 		}
-		else
-			return redirect+"Home";
 	}
 	
 	@Autowired
@@ -88,17 +94,16 @@ public class ControllerHome extends Controller1
 	 */
 	private void setAnnouncement()
 	{
-		if (session.getAttribute(sm.WEB_NOTE1) == null || ((ModelWebdatainfo)session.getAttribute(sm.WEB_NOTE1)).getValue().isEmpty())
+		if (sm.getSessionWeb().getWebNote1()==null || sm.getSessionWeb().getWebNote1().isEmpty())
 		{
-			session.setAttribute(sm.WEB_NOTE1, dao.getWebinfo(sm.WEB_NOTE1));
+			ModelWebdatainfo model = dao.getWebinfo(DaoWebdatainfo.WEB_NOTE1);
+			sm.getSessionWeb().setWebNote1(model.getValue());
 		}
 	}
 	
 	private void setWebVersion()
 	{
-		if (session.getAttribute(sm.WEB_VERSION) == null || ((String)session.getAttribute(sm.WEB_VERSION)).isEmpty())
-		{
-			session.setAttribute(sm.WEB_VERSION, env.getProperty("yres.version"));
-		}
+		if (sm.getSessionWeb().getWebVersion()==null || sm.getSessionWeb().getWebVersion().isEmpty())
+			sm.getSessionWeb().setWebVersion(env.getProperty("yres.version"));
 	}
 }

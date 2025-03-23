@@ -1,28 +1,43 @@
 package com.sunya.yresWebProject.controllers;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.sunya.yresWebProject.Page;
+import com.sunya.yresWebProject.models.DataRedirecting;
 
 @Controller
 public class ControllerRedirecting extends Controller1
 {
 	@GetMapping("/redirecting")
-	public String redirectingPage()
+	public String redirectingPage(Model md, @RequestParam String message, @RequestParam String destinationPage, @RequestParam String code)
 	{
-		if (session.getAttribute(sm.FROM_SERVLET) != null)
+		synchronized (sm.getKeyHolder().getKeyRedirecting())
 		{
-			System.out.println("fromServlet matched. Redirecting...");
-			sm.removeFromServlet();
-			
-			return "RedirectingPage";
+			if (sm.getSessionRedirecting().consumeCode(code))
+			{
+				System.out.println("Redirect code matched. Redirecting...");
+				
+				// Content on Redirecting Page
+				DataRedirecting dataRedirecting = new DataRedirecting();
+				dataRedirecting.setMessage(message);
+				dataRedirecting.setDestinationPage(destinationPage);
+				
+				md.addAttribute(dataRedirecting);
+				
+				return Page.redirecting;
+			}
+			else
+			{
+				System.err.println("Redirect code mismatched. Redirect rejected.");
+				
+				return redirect+"error";
+			}
 		}
-		else
-		{
-			System.err.println("fromServlet mismatched. Redirect rejected.");
-			sm.removeFromServlet();
-
-			return redirect+"Home";
-		}
-		
 	}
+	
+	
+	
 }

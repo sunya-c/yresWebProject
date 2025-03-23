@@ -2,39 +2,47 @@ package com.sunya.yresWebProject.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.sunya.yresWebProject.Page;
 import com.sunya.yresWebProject.PrintError;
+import com.sunya.yresWebProject.Url;
+import com.sunya.yresWebProject.models.DataCreateAccount;
 import com.sunya.yresWebProject.models.FormCreateAccount;
 import com.sunya.yresWebProject.services.ServiceCreateAccount;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 public class ControllerCreateAccount extends Controller1
 {
 	@GetMapping("/createAccount")
-	public String createAccountPage()
+	public String createAccountPageGet(Model md, HttpServletRequest request)
 	{
 		try
 		{
-			if (fs.isFromServlet("ServletCreateAccount"))
+			String code = request.getParameter("code");
+			
+			if (code!=null)
 			{
-				System.out.println("fromServlet and context matched.");
-			}
-			else
-			{
-				System.err.println("fromServlet mismatch");
+				DataCreateAccount dataCreateAccount = sm.getSessionCreateAccount().consumeCode(code);
 				
-				sm.removeCreateAccountErr();
+				if (dataCreateAccount!=null)
+					md.addAttribute(dataCreateAccount);
+				else
+					return redirect+Url.createAccount;
 			}
-			sm.removeFromServlet();
-			return "CreateAccountPage";
+			
+			return Page.createAccount;
 		}
 		catch (Exception e)
 		{
-			return redirect+PrintError.toErrorPage(session, this, e);
+			return redirect+PrintError.toErrorPage(e);
 		}
 	}
+	
 	
 	@Autowired
 	private ServiceCreateAccount sca;
@@ -44,11 +52,18 @@ public class ControllerCreateAccount extends Controller1
 	{
 		try
 		{
-			return redirect+sca.sCreateAccount(formCA);
+			DataCreateAccount dataCreateAccount = new DataCreateAccount();
+			
+			String codeCreateAccount = sm.getSessionCreateAccount().generateCode(dataCreateAccount);
+			
+			synchronized (sm.getKeyHolder().getKeyLogin())
+			{
+				return redirect+sca.sCreateAccount(formCA, dataCreateAccount, codeCreateAccount);
+			}
 		}
 		catch (Exception e)
 		{
-			return redirect+PrintError.toErrorPage(session, this, e);
+			return redirect+PrintError.toErrorPage(e);
 		}
 	}
 	

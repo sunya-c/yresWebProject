@@ -26,7 +26,7 @@
 
 	<div id="ilt5zk">
 		<div id="i99fq4">Important : </div>
-		<div id="i1hupq">${WEB_NOTE1.value}</div>
+		<div id="i1hupq">${sessionWeb.webNote1}</div>
 	</div>
 	<div id="i5dg">
 		<form method="get" id="iq2wzk" action="Home">
@@ -37,12 +37,12 @@
 				<div id="i2sh">
 					<label id="i9zl">Username<br /></label><input type="text"
 						id="ikq8l" placeholder="Enter your username" name="username"
-						value="${preTypedUsername}" /><label id="irep4"><br>${wrongUsername}<br /></label>
+						value="${sessionLogin.usernamePreTyped}" /><label id="irep4"><br>${sessionLogin.usernameErr}<br /></label>
 				</div>
 				<div id="i1uz3">
 					<label id="ianeo">Password<br /></label><input type="password"
 						id="in4rx" placeholder="Enter your password" name="password" /><label
-						id="igiel"><br>${wrongPassword}<br /></label>
+						id="igiel"><br>${sessionLogin.passwordErr}<br /></label>
 				</div>
 				<button type="submit" id="ikmqp">Log in</button>
 			</form>
@@ -67,15 +67,10 @@
 				href="https://github.com/sunya-c/yresWebProject">https://github.com/sunya-c/yresWebProject</a>
 		</div>
 	</div>
-
-	<%
 	
-	%>
-
-
 	test Environment variable(getenv) : ${trial1}<br>
 	test Environment variable(getProp) : ${trial2}<br>
-	version : ${WEB_VERSION}
+	version : ${sessionWeb.webVersion}
 </body>
 </html>
 

@@ -31,18 +31,18 @@
 		<form method="get" id="iop9qh" action="Home">
 			<button type="submit" id="iqm8le">Home</button>
 		</form>
-		<c:if test="${loggedIn == null || loggedIn != true}">
+		<c:if test="${sessionLogin.loggedIn == false}">
 			<div id="inxnwh">
 				<form method="post" action="sLogin" id="ivnm6i">
 					<div id="isl8bj">
 						<label id="i94q24">Username<br /></label><input type="text"
 							placeholder="Enter your username" name="username"
-							value="${preTypedUsername}" id="i7vzyb" /><label id="i1bciw"><br>${wrongUsername}<br /></label>
+							value="${sessionLogin.usernamePreTyped}" id="i7vzyb" /><label id="i1bciw"><br>${sessionLogin.usernameErr}<br /></label>
 					</div>
 					<div id="i7ri3j">
 						<label id="i10bjd">Password<br /></label><input type="password"
 							placeholder="Enter your password" name="password" id="i1tpzs" /><label
-							id="ibl3w1"><br>${wrongPassword}<br /></label>
+							id="ibl3w1"><br>${sessionLogin.passwordErr}<br /></label>
 					</div>
 					<button type="submit" id="i2ckyv">Log in</button>
 				</form>
@@ -51,10 +51,10 @@
 				</form>
 			</div>
 		</c:if>
-		<c:if test="${loggedIn == true}">
+		<c:if test="${sessionLogin.loggedIn == true}">
 			<div id="ic3x5g">
 				<form method="post" action="sLogout" id="iuj89x">
-					<label id="iv62jr">Welcome ${username},<br /></label><label
+					<label id="iv62jr">Welcome ${sessionLogin.username},<br /></label><label
 						id="irlj8d">You're logged in<br /></label>
 					<button type="submit" id="i5ywx4">Log out</button>
 				</form>

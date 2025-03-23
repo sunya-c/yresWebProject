@@ -1,4 +1,3 @@
-<%@page import="com.sunya.yresWebProject.managers.SessionManager"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8" isErrorPage="true"%>
 <!DOCTYPE html>
@@ -28,7 +27,7 @@
 		<div id="i3sbnu">
 			----- ERROR -----<br />
 		</div>
-		<div id="iakzlo">>>> ${errorDescription}</div>
+		<div id="iakzlo">>>> ${dataError.errorDescription}</div>
 		<form method="get" action="feedback" id="ijo1ol">
 			<div id="i3wdhj">If the error persists, please report via bug
 				report button.</div>
@@ -36,9 +35,5 @@
 			<input type="hidden" name="preTypedFeedbackErrorMessage" value="${errorDescription}">
 		</form>
 	</div>
-	<%
-	SessionManager sm = new SessionManager(session);
-	sm.removeErrorPage(); //TODO: pass errorDescription by request and remove SessionManager here.
-	%>
 </body>
 </html>

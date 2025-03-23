@@ -25,25 +25,29 @@ public class DaoAutoRemove extends DaoLoginInfo
 {
 	@Autowired
 	@Qualifier("backDateTime")
-	DateTimeFormatter dateTimeFormat;
+	private DateTimeFormatter dateTimeFormat;
+
+
 
 	/**
-	 * Delete the user which <strong>username</strong> AND <strong>password</strong> AND <strong>time created</strong> match the argument passed into this method. 
+	 * Delete the user which <strong>username</strong> AND <strong>password</strong>
+	 * AND <strong>time created</strong> match the argument passed into this method.
 	 * 
 	 * @param username
 	 * @param password
 	 * @param timeCreated
 	 * @return
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	private void removeTempUser(ModelLoginInfo model)
 	{
-		String query = "DELETE FROM "+TABLE_NAME+" WHERE "+COLUMN_TEMPACCOUNT+" = ? AND "+COLUMN_USERNAME+" = ? AND "+COLUMN_PASSWORD+" = ? AND "+COLUMN_TIMECREATED+" = ?";
-		
+		String query = "DELETE FROM "+TABLE_NAME+" WHERE "+COLUMN_TEMPACCOUNT+" = ? AND "+COLUMN_USERNAME+" = ? AND "
+									+COLUMN_PASSWORD+" = ? AND "+COLUMN_TIMECREATED+" = ?";
+
 		model.setTempaccount("1");
-		
+
 		PreparedStatementSetter pss = new PreparedStatementSetter() {
-			
+
 			@Override
 			public void setValues(PreparedStatement ps) throws SQLException
 			{
@@ -53,7 +57,7 @@ public class DaoAutoRemove extends DaoLoginInfo
 				ps.setString(4, model.getTimecreated());
 			}
 		};
-		
+
 		int row;
 		try
 		{
@@ -63,31 +67,34 @@ public class DaoAutoRemove extends DaoLoginInfo
 		{
 			throw new YresDataAccessException("daoautoremove.removetempuser-01");
 		}
-		
+
 		if (row!=1)
 			throw new YresDataAccessException("daoautoremove.removetempuser-02");
 	}
-	
+
+
 
 	/**
 	 * Automatically delete the user <i>60</i> minutes after registration
-	 * @throws Exception 
+	 * 
+	 * @throws Exception
 	 */
 	public void autoRemoveTempUser()
 	{
-		String query = "SELECT "+COLUMN_USERNAME+", "+COLUMN_PASSWORD+", "+COLUMN_TIMECREATED+" FROM "+TABLE_NAME+" WHERE "+COLUMN_TEMPACCOUNT+" = ?";
-		
+		String query = "SELECT "+COLUMN_USERNAME+", "+COLUMN_PASSWORD+", "+COLUMN_TIMECREATED+" FROM "+TABLE_NAME
+									+" WHERE "+COLUMN_TEMPACCOUNT+" = ?";
+
 		ResultSetExtractor<ArrayList<ModelLoginInfo>> extractor = new ResultSetExtractor<>() {
-			
+
 			@Override
 			public ArrayList<ModelLoginInfo> extractData(ResultSet rs) throws SQLException, DataAccessException
 			{
 				ArrayList<ModelLoginInfo> models = null;
-				
+
 				if (rs.next())
 				{
 					models = new ArrayList<>();
-					
+
 					do
 					{
 						if (rs.getString(COLUMN_TEMPACCOUNT).equals("1"))
@@ -101,33 +108,34 @@ public class DaoAutoRemove extends DaoLoginInfo
 					}
 					while (rs.next());
 				}
-				
+
 				return models;
 			}
 		};
-		
+
 		ArrayList<ModelLoginInfo> models = template.query(query, extractor);
-		
-		
+
 		TimeZone timeZone = TimeZone.getDefault();
-		
-		LocalDateTime timeNow = LocalDateTime.now()
-									.minus(timeZone.getRawOffset(), ChronoUnit.MILLIS)  // converting local machine's time to GMT+0
-									.plusHours(7);  // converting GMT+0 to GMT+7
-		
+
+		LocalDateTime timeNow = LocalDateTime.now().minus(timeZone.getRawOffset(), ChronoUnit.MILLIS) // converting
+																										// local
+																										// machine's
+																										// time to GMT+0
+									.plusHours(7); // converting GMT+0 to GMT+7
+
 		if (models!=null)
 		{
-			for (var i=0; i<models.size(); i++)
+			for (var i = 0; i<models.size(); i++)
 			{
 				LocalDateTime timeCreated = LocalDateTime.parse(models.get(i).getTimecreated(), dateTimeFormat);
 				Duration duration = Duration.between(timeCreated, timeNow);
-				
-				if (duration.toMinutes() >= 60)
+
+				if (duration.toMinutes()>=60)
 				{
 					if (isExistingPasswordCaseSen(models.get(i)))
 					{
 						removeTempUser(models.get(i));
-						
+
 						System.out.println(timeCreated);
 						System.out.println(timeNow);
 						System.out.println(duration.toMinutes());
@@ -135,6 +143,6 @@ public class DaoAutoRemove extends DaoLoginInfo
 				}
 			}
 		}
-		
+
 	}
 }

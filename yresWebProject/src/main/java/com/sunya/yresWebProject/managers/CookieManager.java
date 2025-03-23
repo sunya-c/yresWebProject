@@ -1,21 +1,15 @@
 package com.sunya.yresWebProject.managers;
 
+import org.springframework.stereotype.Component;
+
 import jakarta.servlet.http.Cookie;
 
+@Component
 public class CookieManager
 {
-	private Cookie[] cookies;
-	
 	// Attribute names Feedback
-	final public String CLIENT_REF = "YRES_clientRef_9123ks7df5ka4dif12339odsf";
+	public final String CLIENT_REF = "YRES_clientRef_9123ks7df5ka4dif12339odsf";
 	
-	
-	// Constructor
-	public CookieManager(Cookie[] cookies)
-	{
-		this.cookies = cookies;
-	}
-	// end -- Constructor
 	
 	
 	/**
@@ -25,7 +19,7 @@ public class CookieManager
 	 * @return <strong>String cookieValue</strong> ~ the value of the specified cookie.<br>
 	 *         <strong>null</strong> ~ if either the cookie name doesn't exist or the cookie contains nothing.
 	 */
-	public String getCookieValue(String cookieName)
+	public String getCookieValue(Cookie[] cookies, String cookieName)
 	{
 		if (cookies != null)
 		{
@@ -37,7 +31,4 @@ public class CookieManager
 		}
 		return null;
 	}
-	
-	
-
 }

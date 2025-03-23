@@ -2,42 +2,41 @@ package com.sunya.yresWebProject.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
+import com.sunya.yresWebProject.Url;
 import com.sunya.yresWebProject.YresWebProjectApplication;
+import com.sunya.yresWebProject.controllers.ControllerRedirecting;
 import com.sunya.yresWebProject.daos.DaoFeedback;
 import com.sunya.yresWebProject.exceptions.SomethingWentWrongException;
 import com.sunya.yresWebProject.managers.SessionManager;
+import com.sunya.yresWebProject.models.DataFeedback;
 import com.sunya.yresWebProject.models.FormFeedback;
 import com.sunya.yresWebProject.models.ModelFeedback;
 import com.sunya.yresWebProject.restrictions.RestrictionsFeedback;
-
-import jakarta.servlet.http.HttpSession;
 
 @Service
 public class ServiceFeedback
 {
 	@Autowired
-	private HttpSession session;
-	@Autowired
 	private SessionManager sm;
 	@Autowired
 	private DaoFeedback dao;
+	@Autowired
+	private RestrictionsFeedback restriction;
 	
-	public String sFeedback(FormFeedback formFb) throws Exception
+	public String sFeedback(FormFeedback formFb, DataFeedback dataFeedback, String codeFeedback) throws Exception
 	{
-		sm.removeFeedbackErr();
-		sm.removeFeedbackPreTyped();
+		dataFeedback.setTitlePreTyped(formFb.getFeedbackTitle());
+		dataFeedback.setDetailPreTyped(formFb.getFeedbackDetail());
 		
-		session.setAttribute(sm.FEEDBACK_TITLE_PRETYPED, formFb.getFeedbackTitle());
-		session.setAttribute(sm.FEEDBACK_DETAIL_PRETYPED, formFb.getFeedbackDetail());
-		
-		RestrictionsFeedback restriction = YresWebProjectApplication.context
-									.getBean(RestrictionsFeedback.class);
-		
-		if (restriction.checkRestriction(formFb))
+		if (restriction.checkRestriction(formFb, dataFeedback))
 		{
-			
-			String username = (String)session.getAttribute(sm.LOGIN_USERNAME);
+			String username;
+			synchronized (sm.getKeyHolder().getKeyLogin())
+			{
+				username = sm.getSessionLogin().getUsername();
+			}
 			
 			ModelFeedback model = new ModelFeedback();
 			model.setUsername(username);
@@ -51,22 +50,21 @@ public class ServiceFeedback
 			}
 			catch (SomethingWentWrongException e)
 			{
-				session.setAttribute(sm.FROM_SERVLET, toString());
-				return "feedback?"+sm.FEEDBACK_ERRORMESSAGE_PRETYPED+"="+formFb.getFeedbackErrorMessage();
+				return Url.feedback+"?"
+			+((formFb.getFeedbackErrorMessage().isBlank()) ? "" : sm.FEEDBACK_ERRORMESSAGE_PRETYPED+"="+formFb.getFeedbackErrorMessage()+"&")
+			+"code="+codeFeedback;
 			}
 			
-			session.setAttribute(sm.REDIRECT_MESSAGE, "Thank you for reaching out!");
-			session.setAttribute(sm.REDIRECT_DESTINATION, "Home page");
 			
-			sm.removeFeedbackPreTyped();
+			String code = sm.getSessionRedirecting().generateCode();
 			
-			session.setAttribute(sm.FROM_SERVLET, toString());
-			return "redirecting";
+			return Url.redirecting+"?message=Thank you for reaching out!&destinationPage=Home page&code="+code;
 		}
 		else
 		{
-			session.setAttribute(sm.FROM_SERVLET, toString());
-			return "feedback?"+sm.FEEDBACK_ERRORMESSAGE_PRETYPED+"="+formFb.getFeedbackErrorMessage();
+			return Url.feedback+"?"
+		+((formFb.getFeedbackErrorMessage().isBlank()) ? "" : sm.FEEDBACK_ERRORMESSAGE_PRETYPED+"="+formFb.getFeedbackErrorMessage()+"&")
+		+"code="+codeFeedback;
 		}
 	}
 	

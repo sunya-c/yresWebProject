@@ -5,8 +5,11 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.sunya.yresWebProject.daos.DaoIPBlacklist;
+import com.sunya.yresWebProject.daos.DaoLoginInfo;
 import com.sunya.yresWebProject.filters.FilterAccountExistence;
 import com.sunya.yresWebProject.filters.FilterBot;
+import com.sunya.yresWebProject.filters.FilterInitializeSession;
 import com.sunya.yresWebProject.filters.FilterLoginState;
 import com.sunya.yresWebProject.filters.siteUsage.FilterSiteUsage;
 import com.sunya.yresWebProject.filters.siteUsage.FilterSiteUsage0;
@@ -18,15 +21,31 @@ import com.sunya.yresWebProject.filters.siteUsage.FilterSiteUsage5;
 import com.sunya.yresWebProject.filters.siteUsage.FilterSiteUsage6;
 import com.sunya.yresWebProject.filters.siteUsage.FilterSiteUsage7;
 import com.sunya.yresWebProject.filters.siteUsage.FilterSiteUsage8;
+import com.sunya.yresWebProject.managers.SessionManager;
 
 @Configuration
 public class FilterConfig
 {
+	@Autowired
+	private SessionManager sm;
+	
+	
 	@Bean
-	public FilterRegistrationBean<FilterBot> filterBot()
+	public FilterRegistrationBean<FilterInitializeSession> filterInitializeSession()
+	{
+		FilterRegistrationBean<FilterInitializeSession> bean = new FilterRegistrationBean<>();
+		bean.setFilter(new FilterInitializeSession(sm));
+		bean.addUrlPatterns("/*");
+		bean.setOrder(0);
+		
+		return bean;
+	}
+	
+	@Bean
+	public FilterRegistrationBean<FilterBot> filterBot(DaoIPBlacklist dao)
 	{
 		FilterRegistrationBean<FilterBot> bean = new FilterRegistrationBean<>();
-		bean.setFilter(new FilterBot());
+		bean.setFilter(new FilterBot(dao));
 		bean.addUrlPatterns("/Home");
 		bean.setOrder(1);
 		
@@ -34,13 +53,13 @@ public class FilterConfig
 	}
 	
 	@Bean
-	public FilterRegistrationBean<FilterAccountExistence> filterAccExistence()
+	public FilterRegistrationBean<FilterAccountExistence> filterAccExistence(DaoLoginInfo dao)
 	{
 		FilterRegistrationBean<FilterAccountExistence> bean = new FilterRegistrationBean<>();
-		bean.setFilter(new FilterAccountExistence());
+		bean.setFilter(new FilterAccountExistence(sm, dao));
 		bean.addUrlPatterns(
 				"/createAccount",
-				"/yresError",
+				"/error",
 				"/feedback",
 				"/Home",
 				"/personalInformation",
@@ -62,7 +81,7 @@ public class FilterConfig
 	public FilterRegistrationBean<FilterLoginState> filterLoginState()
 	{
 		FilterRegistrationBean<FilterLoginState> bean = new FilterRegistrationBean<>();
-		bean.setFilter(new FilterLoginState());
+		bean.setFilter(new FilterLoginState(sm));
 		bean.addUrlPatterns("/welcome");
 		bean.setOrder(3);
 		
@@ -72,7 +91,7 @@ public class FilterConfig
 	
 	
 	@Autowired
-	FilterSiteUsage siteUsage;
+	private FilterSiteUsage siteUsage;
 	
 	@Bean
 	public FilterRegistrationBean<FilterSiteUsage0> filterUsage0()  // Filter CreateAccount
@@ -90,7 +109,7 @@ public class FilterConfig
 	{
 		FilterRegistrationBean<FilterSiteUsage1> bean = new FilterRegistrationBean<>();
 		bean.setFilter(new FilterSiteUsage1(siteUsage));
-		bean.addUrlPatterns("/yresError");
+		bean.addUrlPatterns("/error");
 		bean.setOrder(5);
 		
 		return bean;

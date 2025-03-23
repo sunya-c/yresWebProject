@@ -21,6 +21,8 @@ import jakarta.servlet.http.HttpServletResponse;
 public class FilterSiteUsage
 {
 	@Autowired
+	private CookieManager cm;
+	@Autowired
 	private DaoSiteUsage dao;
 	
 	public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain,
@@ -28,28 +30,30 @@ public class FilterSiteUsage
 	{
 		String ip = getIP(request);
 		
-		CookieManager cm = new CookieManager(request.getCookies());
-		String refNumber = cm.getCookieValue(cm.CLIENT_REF);
-
+		String refNumber = cm.getCookieValue(request.getCookies(), cm.CLIENT_REF);
+		
 		try
 		{
-			if (refNumber!=null && dao.isExistingRefNumber(refNumber))
+			if (refNumber!=null)
 			{
-				String usageIP = dao.getIP(refNumber);
-
-				if (ip!=null && usageIP!=null && !ip.equals(usageIP))
-					refNumber = null; // refNumber = null to create new refNumber
+				if (!dao.isExistingRefNumber(refNumber))
+					refNumber = null;
+				else
+				{
+					String usageIP = dao.getIP(refNumber);
+					
+					if (ip!=null && usageIP!=null && !ip.equals(usageIP))
+						refNumber = null;
+				}
 			}
-			else
-				refNumber = null;
-
-			String resultRefNumber = dao.increaseCounter(refNumber, whichPage);
-
+			
+			String resultRefNumber = dao.increaseCounter(refNumber, whichPage);   // refNumber = null to create new refNumber
+			
 			checkOutcome(resultRefNumber, ip, cm, whichPage, request, response, filterChain);
 		}
 		catch (Exception e)
 		{
-			PrintError.toErrorPage(request.getSession(), response, obj, e);
+			PrintError.toErrorPage(response, e);
 		}
 	}
 

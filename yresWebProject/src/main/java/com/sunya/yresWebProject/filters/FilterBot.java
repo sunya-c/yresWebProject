@@ -6,8 +6,8 @@ import java.time.Duration;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.sunya.yresWebProject.PrintError;
-import com.sunya.yresWebProject.YresWebProjectApplication;
 import com.sunya.yresWebProject.daos.DaoIPBlacklist;
+import com.sunya.yresWebProject.exceptions.SomethingWentWrongException;
 import com.sunya.yresWebProject.exceptions.SuspiciousRequestException;
 
 import io.ipinfo.api.IPinfo;
@@ -20,55 +20,74 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class FilterBot extends OncePerRequestFilter
 {
+	private DaoIPBlacklist dao;
+	
+	
+	
+	public FilterBot(DaoIPBlacklist dao)
+	{
+		this.dao = dao;
+	}
+	
+	
+	
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException
 	{
 		System.out.println("Order: 1, in Filter Bot (Home)");
+		
 		String ip = getIP(request);
 		
-		IPinfo info = new IPinfo.Builder()
-				.setCache(new SimpleCache(Duration.ofDays(30)))
-				.build();
-		IPResponse lookUp = null;
+		String errText = "<br>"+ip+"<br>Your request is suspected to be inhuman.<br>If you're a human, "
+									+ "please send your intention to visit our website via \'Give feedback / bug report\' button down below.";
 		
 		try
 		{
-			lookUp = info.lookupIP(ip);
+			boolean isBlacklisted = dao.isBlacklisted(ip);
+			
+			if (isBlacklisted)   // If it's already in the blacklist.
+			{
+				dao.increaseCounter(ip);
+				throw new SuspiciousRequestException(errText);
+			}
+			else   // If NOT in the blacklist.
+			{
+				IPinfo info = new IPinfo.Builder()
+						.setCache(new SimpleCache(Duration.ofDays(30)))
+						.build();
+				IPResponse lookUp = null;
+				
+				try
+				{
+					lookUp = info.lookupIP(ip);
+				}
+				catch (Exception e)
+				{
+					//TODO: Send a counter iteration to the database.
+					throw new SomethingWentWrongException("filterbot-01: Limit reached.");
+				}
+				
+				String countryCode = lookUp.getCountryCode();   // Look for the country.
+				System.out.println("ip: "+ip);
+				System.out.println("code: "+countryCode);
+				
+				if (countryCode == null || !countryCode.equals("TH"))   // If the country is NOT Thailand (assume it's a bot).
+				{
+					dao.addToBlacklist(ip, countryCode);   // Add the IP to blacklist
+					
+					throw new SuspiciousRequestException(errText);
+				}
+				else   // If from Thailand.
+				{
+					System.out.println("filter Bot passed");
+					filterChain.doFilter(request, response);
+				}
+			}
 		}
 		catch (Exception e)
 		{
-			//TODO: Send a counter iteration to the database.
-			PrintError.toErrorPage(request.getSession(), response, this, new ServletException("filterbot-01: Limit reached."));
-		}
-		
-		String countryCode = lookUp.getCountryCode();
-		System.out.println("ip: "+ip);
-		System.out.println("code: "+countryCode);
-		
-		if (countryCode == null || !countryCode.equals("TH"))
-		{
-			DaoIPBlacklist dao = YresWebProjectApplication.context.getBean(DaoIPBlacklist.class);
-			
-			try
-			{
-				if (dao.isBlacklisted(ip))
-					dao.increaseCounter(ip);
-				else
-					dao.addToBlacklist(ip, countryCode);
-				
-				throw new SuspiciousRequestException("<br>"+ip+"<br>Your request is suspected to be inhuman.<br>If you're a human, "
-						+ "please send your intention to visit our website via \'Give feedback / bug report\' button down below.");
-			}
-			catch (Exception e)
-			{
-				PrintError.toErrorPage(request.getSession(), response, this, e);
-			}
-		}
-		else
-		{
-			System.out.println("filter Bot passed");
-			filterChain.doFilter(request, response);
+			PrintError.toErrorPage(response, e);
 		}
 	}
 	

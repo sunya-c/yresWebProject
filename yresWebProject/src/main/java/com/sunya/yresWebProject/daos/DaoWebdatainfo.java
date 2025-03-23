@@ -18,6 +18,8 @@ public class DaoWebdatainfo extends Dao
 	// columnName
 	private final String COLUMN_KEY = "key_webinfo";
 	private final String COLUMN_VALUE = "value_webinfo";
+	
+	public static final String WEB_NOTE1 = "WEB_NOTE1";
 
 	@Autowired
 	private JdbcTemplate template;
