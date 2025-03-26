@@ -59,7 +59,7 @@ public class FilterConfig
 		bean.setFilter(new FilterAccountExistence(sm, dao));
 		bean.addUrlPatterns(
 				"/createAccount",
-				"/error",
+				"/yresError",
 				"/feedback",
 				"/Home",
 				"/personalInformation",
@@ -109,7 +109,7 @@ public class FilterConfig
 	{
 		FilterRegistrationBean<FilterSiteUsage1> bean = new FilterRegistrationBean<>();
 		bean.setFilter(new FilterSiteUsage1(siteUsage));
-		bean.addUrlPatterns("/error");
+		bean.addUrlPatterns("/yresError");
 		bean.setOrder(5);
 		
 		return bean;

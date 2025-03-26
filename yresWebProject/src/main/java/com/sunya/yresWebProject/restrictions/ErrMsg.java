@@ -1,7 +1,7 @@
 package com.sunya.yresWebProject.restrictions;
 
 /**
- * Presets of error message.
+ * Presets of err messages.
  */
 public enum ErrMsg
 {

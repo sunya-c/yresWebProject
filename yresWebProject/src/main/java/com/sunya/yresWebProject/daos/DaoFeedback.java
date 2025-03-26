@@ -15,6 +15,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.Assert;
 
 import com.sunya.yresWebProject.PrintError;
 import com.sunya.yresWebProject.exceptions.SomethingWentWrongException;
@@ -51,41 +52,31 @@ public class DaoFeedback extends Dao
 	/**
 	 * Submit feedback/bug report.
 	 * 
-	 * @param username ~ username of the reporter if available.
-	 * @param feedbackTitle ~ Title of the report.
-	 * @param feedbackDetail ~ Detail of the report.
-	 * @param feedbackErrorMessage ~ Error message for this issue (optional).
-	 * @return <strong>String refNumber</strong> ~ if successfully added to the database.<br>
-	 *         <strong>null</strong> ~ if failed.
-	 * @throws SomethingWentWrongException 
-	 * @throws Exception 
+	 * @param model ~ A model that contains feedback detail to be added to the database.
+	 * @return <strong>String refNumber</strong> ~ if successfully added to the database.
+	 * @throws SomethingWentWrongException ~ if otherwise.
 	 */
-	public String submitFeedback(ModelFeedback model) throws SomethingWentWrongException
-	{
-		String refNumber = addFeedback(model);
-		if (refNumber == null)
-		{
-			PrintError.println(ERR1);
-			throw new SomethingWentWrongException("daofeedback.submitfeedback-01");
-		}
-		else
-			return refNumber;
-	}
+//	public String addFeedback(ModelFeedback model) throws SomethingWentWrongException
+//	{
+//		String refNumber = addFeedback(model);
+//		if (refNumber == null)
+//		{
+//			PrintError.println(ERR1);
+//			throw new SomethingWentWrongException("daofeedback.submitfeedback-01");
+//		}
+//		else
+//			return refNumber;
+//	}
 
 	
 	/**
-	 * Add feedback/bug report to the database.
+	 * Submit feedback/bug report.
 	 * 
-	 * @param username
-	 * @param feedbackTitle
-	 * @param feedbackDetail
-	 * @param feedbackErrorMessage
-	 * @return <strong>String refNumber</strong> ~ if successfully added to the database.<br>
-	 *         <strong>null</strong> ~ if failed.
-	 * @throws SomethingWentWrongException 
+	 * @param model ~ A model that contains feedback detail to be added to the database.
+	 * @return <strong>String refNumber</strong> ~ if successfully added to the database.
+	 * @throws SomethingWentWrongException ~ if otherwise.
 	 */
-	@NotNull
-	private String addFeedback(ModelFeedback model) throws SomethingWentWrongException
+	public String addFeedback(ModelFeedback model) throws SomethingWentWrongException
 	{
 		String query = "INSERT INTO "+TABLE_NAME
 				+ " ("+COLUMN_REF_NUMBER+", "+COLUMN_DATE+", "+COLUMN_USERNAME+", "+COLUMN_TITLE+", "+COLUMN_DETAIL+", "+COLUMN_ERRORMESSAGE+") "
@@ -96,7 +87,7 @@ public class DaoFeedback extends Dao
 		{
 			refNumber = generateRefNumber();
 		}
-		while (isExistingRefNumber(refNumber));
+		while (doesExistRefNumber(refNumber));
 		
 		//Prepare the model
 		model.setRefNumber(refNumber);
@@ -118,7 +109,7 @@ public class DaoFeedback extends Dao
 			st.setString(6, model.getFeedbackErrorMessage());
 			return st;
 		};
-			
+		
 		int row;
 		try
 		{
@@ -126,7 +117,7 @@ public class DaoFeedback extends Dao
 		}
 		catch (DataAccessException e)
 		{
-			if (isExistingRefNumber(refNumber))
+			if (doesExistRefNumber(refNumber))
 				throw new SomethingWentWrongException("daofeedback.addfeedback-01: Something went wrong.");
 			else
 				throw new YresDataAccessException("daofeedback.addfeedback-01");
@@ -139,13 +130,13 @@ public class DaoFeedback extends Dao
 	}
 	
 	/**
-	 * Check in the database if the given refNumber already exists.
+	 * Check in the database if the given <strong>refNumber</strong> exists.
 	 * 
-	 * @param refNumber
+	 * @param refNumber ~ The refNumber to be checked.
 	 * @return <strong>true</strong> ~ if the given refNumber exists in the database.<br>
-	 *         <strong>false</strong> ~ if the given refNumber does NOT exist in the database.
+	 *         <strong>false</strong> ~ if otherwise.
 	 */
-	private boolean isExistingRefNumber(String refNumber)
+	private boolean doesExistRefNumber(String refNumber)
 	{
 		String query = "SELECT "+COLUMN_REF_NUMBER+" FROM "+TABLE_NAME+" WHERE "+COLUMN_REF_NUMBER+" = ?";
 		
@@ -168,9 +159,9 @@ public class DaoFeedback extends Dao
 	
 	
 	/**
-	 * Generate a 7-digit hash, for reference in <i>feedbackinfo</i> table.
+	 * Generate a 7-digit hash, for reference in <strong>feedbackinfo</strong> table.
 	 * 
-	 * @return <strong>a string of 7-digit reference number</strong>
+	 * @return <strong>String of 7-digit reference number</strong>.
 	 */
 	private String generateRefNumber()
 	{

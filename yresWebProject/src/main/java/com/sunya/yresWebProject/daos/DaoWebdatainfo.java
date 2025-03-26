@@ -18,18 +18,23 @@ public class DaoWebdatainfo extends Dao
 	// columnName
 	private final String COLUMN_KEY = "key_webinfo";
 	private final String COLUMN_VALUE = "value_webinfo";
-	
+
 	public static final String WEB_NOTE1 = "WEB_NOTE1";
 
 	@Autowired
 	private JdbcTemplate template;
-	
-	
-	
+
+
+	/**
+	 * Fetch the value of the given keyName from webdatainfo table.
+	 * 
+	 * @param keyName ~ The key of the value to be fetched.
+	 * @return <strong>ModelWebdatainfo model</strong> ~ The model that contains the
+	 *         result (included data: value).
+	 */
 	public ModelWebdatainfo getWebinfo(String keyName)
 	{
-		String query = "SELECT "+COLUMN_VALUE+", "+COLUMN_KEY+" FROM "+TABLE_NAME+" WHERE "
-				+COLUMN_KEY+" = ?";
+		String query = "SELECT "+COLUMN_VALUE+", "+COLUMN_KEY+" FROM "+TABLE_NAME+" WHERE "+COLUMN_KEY+" = ?";
 
 		ResultSetExtractor<ModelWebdatainfo> extractor = rs -> {
 			if (rs.next() && rs.getString(COLUMN_KEY).equals(keyName))
@@ -41,7 +46,7 @@ public class DaoWebdatainfo extends Dao
 			else
 				return null;
 		};
-		
+
 		try
 		{
 			return template.query(query, extractor, keyName);

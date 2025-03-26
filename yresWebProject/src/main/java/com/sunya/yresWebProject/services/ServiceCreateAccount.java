@@ -1,7 +1,5 @@
 package com.sunya.yresWebProject.services;
 
-import java.sql.SQLException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +13,6 @@ import com.sunya.yresWebProject.models.ModelLoginInfo;
 import com.sunya.yresWebProject.restrictions.ErrMsg;
 import com.sunya.yresWebProject.restrictions.RestrictionsCreateAccount;
 
-import jakarta.servlet.ServletException;
-
 @Service
 public class ServiceCreateAccount
 {
@@ -26,52 +22,63 @@ public class ServiceCreateAccount
 	private DaoLoginInfo dao;
 	@Autowired
 	private RestrictionsCreateAccount restriction;
-	
-	
-	public String sCreateAccount(FormCreateAccount formCA, DataCreateAccount dataCreateAccount, String codeCreateAccount) throws SQLException, ServletException
+
+
+	/**
+	 * What this method does:<br>
+	 * <br>
+	 * 1. Validate the data from <strong>CreateAccount form</strong>.<br>
+	 * <br>
+	 * 2. If the data is valid, add the data to <strong>logininfo</strong> table
+	 * (create new account).<br>
+	 * <br>
+	 * 3. If data is added successfully, generate a code for accessing
+	 * <strong>Redirecting page</strong>. This code will be appended to the end of
+	 * the URL.
+	 * 
+	 * @param formCA
+	 * @param dataCreateAccount
+	 * @param codeCreateAccount
+	 * @return <strong>String of Redirecting page URL</strong> ~ if data is
+	 *         added successfully.<br>
+	 *         <strong>String of CreateAccount page URL</strong> ~ if
+	 *         otherwise.
+	 */
+	public String sCreateAccount(FormCreateAccount formCA, DataCreateAccount dataCreateAccount,
+								String codeCreateAccount)
 	{
-//		sm.removeCreateAccountErr();
-//		sm.getSessionCreateAccount().setUsernamePreTyped();
 		dataCreateAccount.setUsernamePreTyped(formCA.getUsername());
-		
+
 		if (restriction.checkRestriction(formCA, dataCreateAccount))
 		{
 			ModelLoginInfo model = new ModelLoginInfo();
 			model.setUsername(formCA.getUsername());
 			model.setPassword(formCA.getPassword1());
-			
+
 			try
 			{
 				dao.addUser(model);
 			}
 			catch (SomethingWentWrongException e)
 			{
-//				ErrorMessageSetterCreateAccount errSetter = YresWebProjectApplication.context
-//											.getBean(ErrorMessageSetterCreateAccount.class);
 				ErrMsg errMessage = ErrMsg.CREATEACCOUNT_UNAME_LENGTH;
 				errMessage.setCustomErrMessage("Something's wrong, pls try again.");
-//				errSetter.setUsernameErr(errMessage);
 				dataCreateAccount.setUsernameErr(errMessage.toString());
-//				sm.getSessionFromServlet().setFromServlet(toString());
 				return Url.createAccount+"?code="+codeCreateAccount;
 			}
-			
-//			sm.getSessionFromServlet().setFromServlet(toString());
 			sm.getSessionLogin().setUsernamePreTyped(formCA.getUsername());
-			
+
 			String codeRedirecting = sm.getSessionRedirecting().generateCode();
-			
+
 			return Url.redirecting+"?message=Done!&destinationPage=Home page&code="+codeRedirecting;
 		}
 		else
 		{
-//			sm.getSessionFromServlet().setFromServlet(toString());
 			return Url.createAccount+"?code="+codeCreateAccount;
 		}
 	}
-	
-	
-	
+
+
 	@Override
 	public String toString()
 	{

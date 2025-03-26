@@ -15,6 +15,12 @@ public class ServiceDownloadResume
 	@Autowired
 	private ResourceLoader loader;
 
+
+	/**
+	 * @return <strong>ResponseEntity&lt;Resource&gt;</strong> which contains the
+	 *         RESUME file.
+	 * @throws IOException
+	 */
 	public ResponseEntity<Resource> sDownloadResume() throws IOException
 	{
 		try
@@ -25,9 +31,8 @@ public class ServiceDownloadResume
 			// Set headers for the response
 			if (resource.exists())
 			{
-				return ResponseEntity.ok()
-						.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"ResumeC.pdf\"")
-						.body(resource);
+				return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
+											"attachment; filename=\"ResumeC.pdf\"").body(resource);
 			}
 			else
 			{

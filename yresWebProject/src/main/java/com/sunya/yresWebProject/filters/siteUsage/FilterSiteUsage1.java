@@ -12,7 +12,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 /**
- * Filter for ErrorPage
+ * Filter for <strong>ErrorPage</strong>.<br>
+ * <br>
+ * This filter is for incrementing the number of usage in the database.
  */
 public class FilterSiteUsage1 extends OncePerRequestFilter
 {
@@ -30,7 +32,7 @@ public class FilterSiteUsage1 extends OncePerRequestFilter
 								throws ServletException, IOException
 	{
 		System.out.println("Order: 5, in Filter Usage 1 (error)");
-		siteUsage.doFilterInternal(request, response, filterChain, PageUsageinfo.PAGE_ERROR, this);
+		siteUsage.doFilterInternal(request, response, filterChain, PageUsageinfo.PAGE_ERROR);
 	}
 
 

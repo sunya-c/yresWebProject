@@ -13,144 +13,159 @@ import com.sunya.yresWebProject.synchronizedKeys.KeyHolder;
 import jakarta.servlet.http.HttpSession;
 
 /**
- * The idea of SessionManager is to manage session attributes efficiently. 
- * This class provides you session attribute names in String type, 
- * so you can call those fields and don't have to worry about typos. 
- * It also provides quality of life methods which remove the values of particular 
- * attributes which belong to some specific group at once, such as 
- * {@code removeLoginState()} will basically remove all attributes which define 
- * the client's login state.
- * 
- * 
- * 
+ * The idea of SessionManager is to manage session attributes efficiently. This
+ * class provides you objects stored in session, which means you can get those
+ * objects by <strong>Getters</strong> and don't have to worry about session
+ * attribute names. It also provides quality-of-life methods which clear the
+ * values of particular objects which belong to some specific group at once,
+ * such as {@code removeLoginState()}, which basically removes all values that
+ * define the client's login state.
  */
 @Component
 public class SessionManager
 {
 	@Autowired
 	private HttpSession session;
-	
-	
+
 	// Attribute names Feedback
-	public final String FEEDBACK_ERRORMESSAGE_PRETYPED = "preTypedFeedbackErrorMessage";   // param key name
-	
-	
-	
+	public static final String FEEDBACK_ERRORMESSAGE_PRETYPED = "preTypedFeedbackErrorMessage"; // param key name
+
+
 	// Contructor
 	public SessionManager()
 	{
 	}
+
+
 	public SessionManager(HttpSession session)
 	{
 		this.session = session;
 	}
 	// end -- Constructor
-	
-	
-	
+
+
 	public HttpSession getSession()
 	{
 		return session;
 	}
-	
-	
+
+
 	// Attribute objects
 	public String getInitializeString()
 	{
 		return (String)session.getAttribute("yresSessionInitializeString");
 	}
+
+
 	public void setSessionInitialized()
 	{
 		session.setAttribute("yresSessionInitializeString", "Session-initialized!!!");
 	}
-	
-	
+
+
 	public KeyHolder getKeyHolder()
 	{
 		return (KeyHolder)session.getAttribute("keyHolder");
 	}
+
+
 	public void createKeyHolder()
 	{
 		session.setAttribute("keyHolder", new KeyHolder());
 	}
-	
-	
+
+
 	public SessionFeedback getSessionFeedback()
 	{
 		return (SessionFeedback)session.getAttribute("sessionFeedback");
 	}
+
+
 	public void createSessionFeedback()
 	{
 		session.setAttribute("sessionFeedback", new SessionFeedback());
 	}
-	
-	
+
+
 	public SessionCreateAccount getSessionCreateAccount()
 	{
 		return (SessionCreateAccount)session.getAttribute("sessionCreateAccount");
 	}
+
+
 	public void createSessionCreateAccount()
 	{
 		session.setAttribute("sessionCreateAccount", new SessionCreateAccount());
 	}
-	
-	
+
+
 	public SessionLogin getSessionLogin()
 	{
 		return (SessionLogin)session.getAttribute("sessionLogin");
 	}
+
+
 	public void createSessionLogin()
 	{
 		session.setAttribute("sessionLogin", new SessionLogin());
 	}
-	
-	
+
+
 	public SessionWeb getSessionWeb()
 	{
 		return (SessionWeb)session.getAttribute("sessionWeb");
 	}
+
+
 	public void createSessionWeb()
 	{
 		session.setAttribute("sessionWeb", new SessionWeb());
 	}
-	
-	
+
+
 	public SessionRedirecting getSessionRedirecting()
 	{
 		return (SessionRedirecting)session.getAttribute("sessionRedirecting");
 	}
+
+
 	public void createSessionRedirecting()
 	{
 		session.setAttribute("sessionRedirecting", new SessionRedirecting());
 	}
 	// end -- Attribute objects
-	
-	
+
+
 	/**
-	 * Remove <i>ERROR</i> attributes related to 
-	 * {@code ServletLogin.java}, 
-	 * which include:
-	 * <p>    "preTypedUsername",
-	 * <p>    "fromPage",
-	 * <p>    "wrongUsername",
-	 * <p>    "wrongPassword"
+	 * Clear ALL values related to <strong>Login form</strong> in
+	 * {@code SessionLogin} object including:<br>
+	 * <br>
+	 * 1. usernamePreTyped <br>
+	 * <br>
+	 * 2. fromPage <br>
+	 * <br>
+	 * 3. usernameErr <br>
+	 * <br>
+	 * 4. passwordErr
 	 */
-	public void removeLoginErr()
+	public void clearLoginForm()
 	{
 		getSessionLogin().setUsernamePreTyped(null);
 		getSessionLogin().setFromPage(null);
 		getSessionLogin().setUsernameErr(null);
 		getSessionLogin().setPasswordErr(null);
 	}
-	
+
+
 	/**
-	 * Remove <i>Login State</i> attributes,
-	 * which equivalent to <i>Logout</i>, 
-	 * which include:
-	 * <p>    "username",
-	 * <p>    "loggedIn"
+	 * Clear <i>Login State</i> values in {@code SessionLogin} object, which is
+	 * equivalent to <strong>Logout</strong>, including:<br>
+	 * <br>
+	 * 1. username <br>
+	 * <br>
+	 * 2. loggedIn
 	 */
-	public void removeLoginState()
+	public void clearLoginState()
 	{
 		getSessionLogin().setUsername(null);
 		getSessionLogin().setLoggedIn(false);

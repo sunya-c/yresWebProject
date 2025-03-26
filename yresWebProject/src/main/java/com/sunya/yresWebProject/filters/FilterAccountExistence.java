@@ -47,7 +47,7 @@ public class FilterAccountExistence extends OncePerRequestFilter
 			{
 				if (sm.getSessionLogin().isLoggedIn() && !dao.checkUsernameCaseSen(model))
 				{
-					sm.removeLoginState();
+					sm.clearLoginState();
 					PrintError.println(ERR1);
 					throw new WebUnameException("This account doesn't exist");
 				}

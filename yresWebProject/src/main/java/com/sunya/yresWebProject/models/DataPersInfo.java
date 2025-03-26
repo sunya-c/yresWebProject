@@ -2,6 +2,10 @@ package com.sunya.yresWebProject.models;
 
 import java.util.ArrayList;
 
+/**
+ * A class created for viewing purpose. Use this class to display dynamic data
+ * on <strong>PersonalInformation page</strong>.
+ */
 public class DataPersInfo
 {
 	private String firstname;

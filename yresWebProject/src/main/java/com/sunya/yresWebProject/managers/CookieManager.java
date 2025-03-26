@@ -7,16 +7,16 @@ import jakarta.servlet.http.Cookie;
 @Component
 public class CookieManager
 {
-	// Attribute names Feedback
-	public final String CLIENT_REF = "YRES_clientRef_9123ks7df5ka4dif12339odsf";
+	public static final String CLIENT_REF = "YRES_clientRef_9123ks7df5ka4dif12339odsf";
 	
 	
 	
 	/**
-	 * Get the <strong>value</strong> of the specified cookie name.
+	 * Get the <strong>value</strong> of the given cookieName.
 	 * 
+	 * @param cookies ~ Get this by {@code request.getCookies()}.
 	 * @param cookieName ~ the name of the interested cookie.
-	 * @return <strong>String cookieValue</strong> ~ the value of the specified cookie.<br>
+	 * @return <strong>String of cookieValue</strong> ~ the value of the specified cookie.<br>
 	 *         <strong>null</strong> ~ if either the cookie name doesn't exist or the cookie contains nothing.
 	 */
 	public String getCookieValue(Cookie[] cookies, String cookieName)

@@ -1,5 +1,9 @@
 package com.sunya.yresWebProject.models;
 
+/**
+ * A class created for viewing purpose. Use this class to display dynamic data
+ * on <strong>Feedback page</strong>.
+ */
 public class DataFeedback
 {
 	private String titleErr = null;

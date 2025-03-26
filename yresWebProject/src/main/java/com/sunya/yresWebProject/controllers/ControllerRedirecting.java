@@ -11,33 +11,47 @@ import com.sunya.yresWebProject.models.DataRedirecting;
 @Controller
 public class ControllerRedirecting extends Controller1
 {
+	/**
+	 * The Controller for URL pattern 'redirecting'.<br>
+	 * <br>
+	 * This page was designed to be reached by internal requests. User manually
+	 * entering the URL will end up in <strong>Error page</strong>
+	 * 
+	 * @param md
+	 * @param message
+	 * @param destinationPage
+	 * @param code
+	 * @return Request dispatcher to <strong>RedirectingPage.jsp</strong> if the
+	 *         code exists.<br>
+	 *         Redirecting to <strong>Error page</strong> if the code does NOT
+	 *         exists (client manually enters the URL).
+	 */
 	@GetMapping("/redirecting")
-	public String redirectingPage(Model md, @RequestParam String message, @RequestParam String destinationPage, @RequestParam String code)
+	public String redirectingPage(Model md, @RequestParam String message, @RequestParam String destinationPage,
+								@RequestParam String code)
 	{
 		synchronized (sm.getKeyHolder().getKeyRedirecting())
 		{
 			if (sm.getSessionRedirecting().consumeCode(code))
 			{
 				System.out.println("Redirect code matched. Redirecting...");
-				
+
 				// Content on Redirecting Page
 				DataRedirecting dataRedirecting = new DataRedirecting();
 				dataRedirecting.setMessage(message);
 				dataRedirecting.setDestinationPage(destinationPage);
-				
+
 				md.addAttribute(dataRedirecting);
-				
+
 				return Page.redirecting;
 			}
 			else
 			{
 				System.err.println("Redirect code mismatched. Redirect rejected.");
-				
+
 				return redirect+"error";
 			}
 		}
 	}
-	
-	
-	
+
 }

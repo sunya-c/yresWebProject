@@ -18,53 +18,75 @@ import jakarta.servlet.http.HttpServletRequest;
 @Controller
 public class ControllerCreateAccount extends Controller1
 {
+	/**
+	 * The Controller for URL pattern 'createAccount'.
+	 * 
+	 * @param md
+	 * @param request
+	 * @return Request dispatcher to <strong>CreateAccountPage.jsp</strong>.
+	 */
 	@GetMapping("/createAccount")
 	public String createAccountPageGet(Model md, HttpServletRequest request)
 	{
 		try
 		{
-			String code = request.getParameter("code");
-			
+			String code = request.getParameter("code"); // The reference code for retrieving data from the session.
+
 			if (code!=null)
 			{
-				DataCreateAccount dataCreateAccount = sm.getSessionCreateAccount().consumeCode(code);
-				
+				DataCreateAccount dataCreateAccount = sm.getSessionCreateAccount().consumeCode(code); // The data stored
+																										// in the
+																										// session is
+																										// DataCreateAccount
+																										// type.
+
 				if (dataCreateAccount!=null)
-					md.addAttribute(dataCreateAccount);
+					md.addAttribute(dataCreateAccount); // It's used for viewing purpose.
 				else
-					return redirect+Url.createAccount;
+					return redirect + Url.createAccount;
 			}
-			
+
 			return Page.createAccount;
 		}
 		catch (Exception e)
 		{
-			return redirect+PrintError.toErrorPage(e);
+			return redirect + PrintError.toErrorPage(e);
 		}
 	}
-	
-	
+
+
 	@Autowired
 	private ServiceCreateAccount sca;
-	
+
+
+	/**
+	 * The Controller for URL pattern 'sCreateAccount'. This is for 'Create Account'
+	 * button in the CreateAccount page.
+	 * 
+	 * @param formCA
+	 * @return Redirect to <strong>Redirecting page</strong> if succeeded.<br>
+	 *         Redirect to <strong>CreateAccount page</strong> if the input detail
+	 *         is not satisfied.<br>
+	 *         Redirect to <strong>Error page</strong> if an Exception is thrown.
+	 */
 	@PostMapping("/sCreateAccount")
 	public String sCreateAccount(FormCreateAccount formCA)
 	{
 		try
 		{
 			DataCreateAccount dataCreateAccount = new DataCreateAccount();
-			
+
 			String codeCreateAccount = sm.getSessionCreateAccount().generateCode(dataCreateAccount);
-			
+
 			synchronized (sm.getKeyHolder().getKeyLogin())
 			{
-				return redirect+sca.sCreateAccount(formCA, dataCreateAccount, codeCreateAccount);
+				return redirect + sca.sCreateAccount(formCA, dataCreateAccount, codeCreateAccount);
 			}
 		}
 		catch (Exception e)
 		{
-			return redirect+PrintError.toErrorPage(e);
+			return redirect + PrintError.toErrorPage(e);
 		}
 	}
-	
+
 }

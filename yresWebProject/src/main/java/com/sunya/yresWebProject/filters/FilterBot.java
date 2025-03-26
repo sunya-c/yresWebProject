@@ -48,7 +48,7 @@ public class FilterBot extends OncePerRequestFilter
 			
 			if (isBlacklisted)   // If it's already in the blacklist.
 			{
-				dao.increaseCounter(ip);
+				dao.incrementCounter(ip);
 				throw new SuspiciousRequestException(errText);
 			}
 			else   // If NOT in the blacklist.

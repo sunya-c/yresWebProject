@@ -2,11 +2,8 @@ package com.sunya.yresWebProject.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 
 import com.sunya.yresWebProject.Url;
-import com.sunya.yresWebProject.YresWebProjectApplication;
-import com.sunya.yresWebProject.controllers.ControllerRedirecting;
 import com.sunya.yresWebProject.daos.DaoFeedback;
 import com.sunya.yresWebProject.exceptions.SomethingWentWrongException;
 import com.sunya.yresWebProject.managers.SessionManager;
@@ -24,12 +21,33 @@ public class ServiceFeedback
 	private DaoFeedback dao;
 	@Autowired
 	private RestrictionsFeedback restriction;
-	
-	public String sFeedback(FormFeedback formFb, DataFeedback dataFeedback, String codeFeedback) throws Exception
+
+
+	/**
+	 * What this method does:<br>
+	 * <br>
+	 * 1. Validate the data from <strong>Feedback form</strong>.<br>
+	 * <br>
+	 * 2. If the data is valid, add the data to <strong>feedbackinfo</strong>
+	 * table.<br>
+	 * <br>
+	 * 3. If data is added successfully, generate a code for accessing
+	 * <strong>Redirecting page</strong>. This code will be appended to the end of
+	 * the URL.
+	 * 
+	 * @param formFb
+	 * @param dataFeedback
+	 * @param codeFeedback
+	 * @return <strong>String of Redirecting page URL</strong> ~ if data is
+	 *         added successfully.<br>
+	 *         <strong>String of Feedback page URL</strong> ~ if
+	 *         otherwise.
+	 */
+	public String sFeedback(FormFeedback formFb, DataFeedback dataFeedback, String codeFeedback)
 	{
 		dataFeedback.setTitlePreTyped(formFb.getFeedbackTitle());
 		dataFeedback.setDetailPreTyped(formFb.getFeedbackDetail());
-		
+
 		if (restriction.checkRestriction(formFb, dataFeedback))
 		{
 			String username;
@@ -37,37 +55,37 @@ public class ServiceFeedback
 			{
 				username = sm.getSessionLogin().getUsername();
 			}
-			
+
 			ModelFeedback model = new ModelFeedback();
 			model.setUsername(username);
 			model.setFeedbackTitile(formFb.getFeedbackTitle());
 			model.setFeedbackDetail(formFb.getFeedbackDetail());
 			model.setFeedbackErrorMessage(formFb.getFeedbackErrorMessage());
-			
+
 			try
 			{
-				String refNumber = dao.submitFeedback(model);
+				String refNumber = dao.addFeedback(model);
 			}
 			catch (SomethingWentWrongException e)
 			{
-				return Url.feedback+"?"
-			+((formFb.getFeedbackErrorMessage().isBlank()) ? "" : sm.FEEDBACK_ERRORMESSAGE_PRETYPED+"="+formFb.getFeedbackErrorMessage()+"&")
-			+"code="+codeFeedback;
+				return Url.feedback+"?"+((formFb.getFeedbackErrorMessage().isBlank()) ? ""
+											: SessionManager.FEEDBACK_ERRORMESSAGE_PRETYPED+"="+formFb.getFeedbackErrorMessage()+"&")
+											+"code="+codeFeedback;
 			}
-			
-			
-			String code = sm.getSessionRedirecting().generateCode();
-			
-			return Url.redirecting+"?message=Thank you for reaching out!&destinationPage=Home page&code="+code;
+
+			String codeRedirecting = sm.getSessionRedirecting().generateCode();
+
+			return Url.redirecting+"?message=Thank you for reaching out!&destinationPage=Home page&code="+codeRedirecting;
 		}
 		else
 		{
-			return Url.feedback+"?"
-		+((formFb.getFeedbackErrorMessage().isBlank()) ? "" : sm.FEEDBACK_ERRORMESSAGE_PRETYPED+"="+formFb.getFeedbackErrorMessage()+"&")
-		+"code="+codeFeedback;
+			return Url.feedback+"?"+((formFb.getFeedbackErrorMessage().isBlank()) ? ""
+										: SessionManager.FEEDBACK_ERRORMESSAGE_PRETYPED+"="+formFb.getFeedbackErrorMessage()+"&")
+										+"code="+codeFeedback;
 		}
 	}
-	
+
+
 	@Override
 	public String toString()
 	{

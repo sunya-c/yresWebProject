@@ -16,6 +16,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.Assert;
 
 import com.sunya.yresWebProject.exceptions.YresDataAccessException;
 import com.sunya.yresWebProject.models.ModelSiteUsage;
@@ -31,7 +32,7 @@ public class DaoSiteUsage extends Dao
 	private final String COLUMN_REF_NUMBER = "reference_number"; // Primary key
 	private final String COLUMN_IP = "ip_address";
 	private final String COLUMN_DATE = "latest_interaction_date";
-	
+
 	private final String COLUMN_PAGE_CREATEACCOUNT = "page_createaccount";
 	private final String COLUMN_PAGE_ERROR = "page_error";
 	private final String COLUMN_PAGE_FEEDBACK = "page_feedback";
@@ -51,19 +52,24 @@ public class DaoSiteUsage extends Dao
 	private JdbcTemplate template;
 
 
-
 	/**
-	 * Update usage data of the given refNumber on the database.
+	 * Increment the <strong>whichPage</strong>'s usage counter of the given
+	 * refNumber on the database by 1.<br>
+	 * <br>
+	 * If refNumber is null, this method will create a new refNumber on the
+	 * database.
 	 * 
-	 * @param refNumber    ~ refNumber to increase the counter, enter {@code null} to create new refNumber.
-	 * @param updatedUsage ~ the updated usage data for overwriting the existing one
-	 *                     on the database.
-	 * @return <strong>String refNumber</strong> ~ if successfully updated the
-	 *         database.<br>
+	 * @param refNumber ~ refNumber to increment the counter, enter {@code null} to
+	 *                  create new refNumber.
+	 * @param whichPage ~ The page to increment the counter.
+	 * @return <strong>String refNumber</strong>. It's the same refNumber as the
+	 *         parameter refNumber. If the parameter refNumber is null, it returns a
+	 *         newly-created refNumber.
 	 */
-	@NotNull
-	public String increaseCounter(String refNumber, @NotNull PageUsageinfo whichPage)
+	public String incrementCounter(String refNumber, PageUsageinfo whichPage)
 	{
+		Assert.notNull(whichPage, "whichPage must not be null.");
+
 		String query = "UPDATE "+TABLE_NAME+" SET "+COLUMN_DATE+" = ?, "+whichPage.getColumnName()+" = "
 									+whichPage.getColumnName()+" + ? "+"WHERE "+COLUMN_REF_NUMBER+" = ?;";
 
@@ -73,7 +79,7 @@ public class DaoSiteUsage extends Dao
 			{
 				refNumber = generateRefNumber();
 			}
-			while (isExistingRefNumber(refNumber));
+			while (doesExistRefNumber(refNumber));
 
 			addRefNumber(refNumber);
 		}
@@ -106,16 +112,16 @@ public class DaoSiteUsage extends Dao
 	}
 
 
-
 	/**
-	 * Retrieve the site usage from the database and return it in a ModelSiteUsage
-	 * format.
+	 * Fetch the site usage counter of all pages from the database and return it in
+	 * a ModelSiteUsage format.
 	 * 
-	 * @param refNumber
-	 * @return <strong>ModelSiteUsage model</strong> ~ ONLY the site usage retrieved
-	 *         from the database are set to the model.<br>
-	 *         <strong>null</strong> ~ if the specified refNumber doesn't exist in
-	 *         the database.
+	 * @param refNumber ~ This method fetches usage counter of this refNumber.
+	 * @return <strong>ModelSiteUsage model</strong> ~ The model that contains the
+	 *         results (included data: page_createaccount, page_error,
+	 *         page_feedback, page_login, page_persinfo, page_redirecting,
+	 *         page_underconstruction, page_welcome, resume_download).<br>
+	 *         <strong>null</strong> ~ if refNumber doesn't exist in the database.
 	 */
 	public ModelSiteUsage getUsage(String refNumber)
 	{
@@ -151,19 +157,15 @@ public class DaoSiteUsage extends Dao
 	}
 
 
-
 	/**
-	 * Add a ref number to the database.
+	 * Add a refNumber to the database.
 	 * 
-	 * @param refNumber ~ ref number.
-	 * @return <strong>String refNumber</strong> ~ if successfully added to the
-	 *         database.<br>
-	 *         <strong>null</strong> ~ if failed.
+	 * @param refNumber ~ refNumber to be added.
 	 */
 	private void addRefNumber(String refNumber)
 	{
 		String query = "INSERT INTO "+TABLE_NAME+" ("+COLUMN_REF_NUMBER+") VALUES (?);";
-		
+
 		int row;
 		try
 		{
@@ -179,27 +181,25 @@ public class DaoSiteUsage extends Dao
 	}
 
 
-
 	/**
-	 * Check in the database if the given refNumber already exists.
+	 * Check in the database if the given refNumber exists.
 	 * 
-	 * @param refNumber
+	 * @param refNumber ~ refNumber to be checked.
 	 * @return <strong>true</strong> ~ if the given refNumber exists in the
 	 *         database.<br>
-	 *         <strong>false</strong> ~ if the given refNumber does NOT exist in the
-	 *         database.
+	 *         <strong>false</strong> ~ if otherwise.
 	 */
-	public boolean isExistingRefNumber(String refNumber)
+	public boolean doesExistRefNumber(String refNumber)
 	{
 		String query = "SELECT "+COLUMN_REF_NUMBER+" FROM "+TABLE_NAME+" WHERE "+COLUMN_REF_NUMBER+" = ?;";
-		
+
 		ResultSetExtractor<Boolean> extractor = (ResultSet rs) -> {
 			if (rs.next() && rs.getString(COLUMN_REF_NUMBER).equals(refNumber))
 				return true;
 			else
 				return false;
 		};
-		
+
 		try
 		{
 			return template.query(query, extractor, refNumber);
@@ -211,11 +211,10 @@ public class DaoSiteUsage extends Dao
 	}
 
 
-
 	/**
-	 * Generate a 10-digit hash, for reference in <i>usageinfo</i> table.
+	 * Generate a 10-digit hash, for reference in <strong>usageinfo</strong> table.
 	 * 
-	 * @return <strong>a string of 10-digit reference number</strong>
+	 * @return <strong>String of 10-digit reference number</strong>
 	 */
 	private String generateRefNumber()
 	{
@@ -227,26 +226,22 @@ public class DaoSiteUsage extends Dao
 
 		return newRefNumber;
 	}
-	
-	
+
+
 	/**
-	 * Add client's IP address to the database.
+	 * Add a client's IP address to the database.
 	 * 
-	 * @param ip        ~ client's IP address to be added.
-	 * @param refNumber ~ client's reference number of the IP address.
-	 * @return <strong>String refNumber</strong> ~ reference number of the user
-	 *         (this is the same as the refNumber above, which you pass to this
-	 *         method).<br>
-	 *         <strong>null</strong> ~ Adding IP address failed.
+	 * @param ip        ~ The client's IP address to be added.
+	 * @param refNumber ~ The client's reference number to add the IP address to.
 	 */
 	public void addIP(String ip, String refNumber)
 	{
 		String query = "UPDATE "+TABLE_NAME+" SET "+COLUMN_IP+" = ? WHERE "+COLUMN_REF_NUMBER+" = ?;";
-		
+
 		ModelSiteUsage model = new ModelSiteUsage();
 		model.setIp(ip);
 		model.setRefNumber(refNumber);
-		
+
 		int row;
 		try
 		{
@@ -262,28 +257,29 @@ public class DaoSiteUsage extends Dao
 	}
 
 
-
 	/**
-	 * Return IP address in the database. Return null if there's no IP address
-	 * information.
+	 * Return an IP address of a refNumber. Return null if there's no IP address
+	 * information for this refNumber or refNumber doesn't exist.
 	 * 
-	 * @param refNumber ~ the method returns the IP address of this reference
+	 * @param refNumber ~ This method returns the IP address of this reference
 	 *                  number.
-	 * @return <strong>String IP address</strong> ~ of the given reference number.
-	 *         <strong>null</strong> ~ if there's no IP address information.
+	 * @return <strong>String IP address</strong> ~ of the given reference
+	 *         number.<br>
+	 *         <strong>null</strong> ~ if there's no IP address information for this
+	 *         refNumber or refNumber doesn't exist.
 	 */
 	public String getIP(String refNumber)
 	{
 		String query = "SELECT "+COLUMN_REF_NUMBER+", "+COLUMN_IP+" FROM "+TABLE_NAME+" WHERE "+COLUMN_REF_NUMBER
 									+" = ?;";
-		
+
 		ResultSetExtractor<String> extractor = rs -> {
 			if (rs.next() && rs.getString(COLUMN_REF_NUMBER).equals(refNumber))
 				return rs.getString(COLUMN_IP);
 			else
 				return null;
 		};
-		
+
 		try
 		{
 			return template.query(query, extractor, refNumber);
@@ -295,17 +291,16 @@ public class DaoSiteUsage extends Dao
 	}
 
 
-
 	/**
-	 * Remove the usage info that has the specified IP address.
+	 * Remove rows from usageinfo table where IP address is in blacklist.
 	 * 
-	 * @param blacklistedIPs Get these IPs from DaoIPBlacklist.getIp().
-	 * @param usageIPs       Get these IPs from DaoSiteUsage.getIp();
+	 * @param blacklistedIPs ~ Get these IPs from DaoIPBlacklist.getIPs().
+	 * @param usageIPs       ~ Get these IPs from DaoSiteUsage.getIPs();
 	 */
 	public void removeUsageByBlacklist(ArrayList<String> blacklistedIPs, ArrayList<String> usageIPs)
 	{
 		String query = "DELETE FROM "+TABLE_NAME+" WHERE "+COLUMN_IP+" = ?;";
-		
+
 		try
 		{
 			int row = 0;
@@ -323,7 +318,11 @@ public class DaoSiteUsage extends Dao
 	}
 
 
-
+	/**
+	 * Get all <strong>IP addresses</strong> from the database.
+	 * 
+	 * @return <strong>ArrayList&lt;String&gt; of all IP addresses</strong> in the usageinfo table.
+	 */
 	public ArrayList<String> getIPs()
 	{
 		String query = "SELECT "+COLUMN_IP+" FROM "+TABLE_NAME+";";

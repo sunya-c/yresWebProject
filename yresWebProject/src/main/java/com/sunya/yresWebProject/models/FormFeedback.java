@@ -1,5 +1,9 @@
 package com.sunya.yresWebProject.models;
 
+/**
+ * A class created for mapping values come with the request object. Use this
+ * class to map <strong>Feedback</strong>-form values.
+ */
 public class FormFeedback
 {
 	private String feedbackTitle;

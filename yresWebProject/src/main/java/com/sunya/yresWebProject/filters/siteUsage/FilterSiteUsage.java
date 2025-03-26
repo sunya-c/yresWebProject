@@ -24,32 +24,67 @@ public class FilterSiteUsage
 	private CookieManager cm;
 	@Autowired
 	private DaoSiteUsage dao;
-	
+
+
+	/**
+	 * The logic operation for filter site usage. Since all FilterSiteUsage share a
+	 * common logic operation, their common part are combined into one, which is
+	 * this method.<br>
+	 * <br>
+	 * What this method does:<br>
+	 * <br>
+	 * 1. Retrieves refNumber from the client's cookie, if not available, create new
+	 * refNumber. If refNumber from the client's cookie is available but does NOT
+	 * exist in the database, create new refNumber.<br>
+	 * <br>
+	 * 2. If refNumber is valid, AND the client's IP address AND IP address in the
+	 * database are NOT null, it checks if the client's IP address matches IP
+	 * address in the database, if NOT, create new refNumber. This is done to
+	 * prevent stolen cookie (hacked) from being used in a different IP address.<br>
+	 * <br>
+	 * 3. Increments the number of usage in the database of the page specified in
+	 * {@code whichPage}.<br>
+	 * <br>
+	 * 4. Prepares cookie and adds it to the response object.<br>
+	 * <br>
+	 * 5. doFilter().
+	 * 
+	 * @param request
+	 * @param response
+	 * @param filterChain
+	 * @param whichPage
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain,
-								PageUsageinfo whichPage, Object obj) throws ServletException, IOException
+								PageUsageinfo whichPage) throws ServletException, IOException
 	{
 		String ip = getIP(request);
-		
-		String refNumber = cm.getCookieValue(request.getCookies(), cm.CLIENT_REF);
-		
+
+		String refNumber = cm.getCookieValue(request.getCookies(), CookieManager.CLIENT_REF);
+
 		try
 		{
 			if (refNumber!=null)
 			{
-				if (!dao.isExistingRefNumber(refNumber))
+				if (!dao.doesExistRefNumber(refNumber))
 					refNumber = null;
 				else
 				{
 					String usageIP = dao.getIP(refNumber);
-					
+
 					if (ip!=null && usageIP!=null && !ip.equals(usageIP))
 						refNumber = null;
 				}
 			}
-			
-			String resultRefNumber = dao.increaseCounter(refNumber, whichPage);   // refNumber = null to create new refNumber
-			
-			checkOutcome(resultRefNumber, ip, cm, whichPage, request, response, filterChain);
+
+			// refNumber == null to create new refNumber
+			String resultRefNumber = dao.incrementCounter(refNumber, whichPage);
+
+			checkOutcome(resultRefNumber, ip, whichPage);
+
+			setupRefInCookie(resultRefNumber, response);
+			filterChain.doFilter(request, response);
 		}
 		catch (Exception e)
 		{
@@ -58,21 +93,15 @@ public class FilterSiteUsage
 	}
 
 
-
 	/**
 	 * For HomePage (filterNumber 3) and ErrorPage (filterNumber 1), add IP address
-	 * to usageinfo table
+	 * to usageinfo table.
 	 * 
 	 * @param resultRefNumber
-	 * @param cm
-	 * @param filterChain
 	 * @param ip
-	 * @throws IOException
-	 * @throws ServletException
+	 * @param whichPage
 	 */
-	private void checkOutcome(String resultRefNumber, String ip, CookieManager cm, PageUsageinfo whichPage,
-								HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-								throws IOException, ServletException
+	private void checkOutcome(String resultRefNumber, String ip, PageUsageinfo whichPage)
 	{
 		if (whichPage.getColumnOrder()==1 || whichPage.getColumnOrder()==3)
 		{
@@ -82,26 +111,21 @@ public class FilterSiteUsage
 					dao.addIP(ip, resultRefNumber);
 			}
 		}
-
-		setupRefInCookie(cm, resultRefNumber, response);
-		filterChain.doFilter(request, response);
 	}
 
 
-
-	private void setupRefInCookie(CookieManager cm, String resultRefNumber, HttpServletResponse response)
+	private void setupRefInCookie(String resultRefNumber, HttpServletResponse response)
 	{
-		Cookie cookie = new Cookie(cm.CLIENT_REF, resultRefNumber);
+		Cookie cookie = new Cookie(CookieManager.CLIENT_REF, resultRefNumber);
 		cookie.setMaxAge((int)Duration.ofDays(7).getSeconds());
 		response.addCookie(cookie);
 	}
 
 
-
 	private String getIP(HttpServletRequest request)
 	{
 		String ip = request.getHeader("X-Forwarded-For");
-		
+
 		if (ip==null || ip.isBlank())
 			ip = request.getRemoteAddr();
 		return ip;

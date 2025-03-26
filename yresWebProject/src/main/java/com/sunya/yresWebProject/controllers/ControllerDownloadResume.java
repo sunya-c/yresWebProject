@@ -18,6 +18,13 @@ public class ControllerDownloadResume extends Controller1
 	@Autowired
 	private ServiceDownloadResume sdr;
 	
+	/**
+	 * The Controller for 'sDownloadResume'. This is for 'Download Resume' button.
+	 * 
+	 * @param response
+	 * @return The RESUME file.
+	 * @throws IOException
+	 */
 	@GetMapping("/sDownloadResume")
 	public ResponseEntity<Resource> sDownloadResume(HttpServletResponse response) throws IOException
 	{

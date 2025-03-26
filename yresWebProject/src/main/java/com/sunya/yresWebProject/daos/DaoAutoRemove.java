@@ -28,10 +28,10 @@ public class DaoAutoRemove extends DaoLoginInfo
 	private DateTimeFormatter dateTimeFormat;
 
 
-
 	/**
 	 * Delete the user which <strong>username</strong> AND <strong>password</strong>
-	 * AND <strong>time created</strong> match the argument passed into this method.
+	 * AND <strong>time created</strong> match the argument passed into this method
+	 * AND <strong>temp account</strong> == "1".
 	 * 
 	 * @param username
 	 * @param password
@@ -73,11 +73,10 @@ public class DaoAutoRemove extends DaoLoginInfo
 	}
 
 
-
 	/**
-	 * Automatically delete the user <i>60</i> minutes after registration
-	 * 
-	 * @throws Exception
+	 * Fetch all users where <strong>temp account</strong> == "1", check if the age
+	 * of the accounts exceeds the limit, and remove the older-than-limit accounts
+	 * from the database.
 	 */
 	public void autoRemoveTempUser()
 	{
@@ -113,14 +112,12 @@ public class DaoAutoRemove extends DaoLoginInfo
 			}
 		};
 
-		ArrayList<ModelLoginInfo> models = template.query(query, extractor);
+		ArrayList<ModelLoginInfo> models = template.query(query, extractor, "1");
 
 		TimeZone timeZone = TimeZone.getDefault();
-
-		LocalDateTime timeNow = LocalDateTime.now().minus(timeZone.getRawOffset(), ChronoUnit.MILLIS) // converting
-																										// local
-																										// machine's
-																										// time to GMT+0
+		
+		LocalDateTime timeNow = LocalDateTime.now()
+									.minus(timeZone.getRawOffset(), ChronoUnit.MILLIS) // converting local machine's time to GMT+0
 									.plusHours(7); // converting GMT+0 to GMT+7
 
 		if (models!=null)
@@ -130,9 +127,9 @@ public class DaoAutoRemove extends DaoLoginInfo
 				LocalDateTime timeCreated = LocalDateTime.parse(models.get(i).getTimecreated(), dateTimeFormat);
 				Duration duration = Duration.between(timeCreated, timeNow);
 
-				if (duration.toMinutes()>=60)
+				if (duration.toMinutes()>=60) // the age limit
 				{
-					if (isExistingPasswordCaseSen(models.get(i)))
+					if (doesExistPasswordCaseSen(models.get(i)))
 					{
 						removeTempUser(models.get(i));
 

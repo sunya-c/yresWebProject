@@ -26,7 +26,13 @@ public class DaoIPBlacklist extends Dao
 	private JdbcTemplate template;
 
 
-
+	/**
+	 * Check in the database if the given <strong>IP address</strong> exists.
+	 * 
+	 * @param ip ~ The IP address to be checked.
+	 * @return <strong>true</strong> ~ if the given IP address exists in the database (in blacklist).<br>
+	 *         <strong>false</strong> ~ if otherwise.
+	 */
 	public boolean isBlacklisted(String ip)
 	{
 		String query = "SELECT "+COLUMN_IP+" FROM "+TABLE_NAME+" WHERE "+COLUMN_IP+" = ?;";
@@ -49,7 +55,12 @@ public class DaoIPBlacklist extends Dao
 	}
 
 
-
+	/**
+	 * Add <strong>IP address</strong> and <strong>country code</strong> to the database.
+	 * 
+	 * @param ip ~ The IP address to be added.
+	 * @param countryCode ~ The country code to be added.
+	 */
 	public void addToBlacklist(String ip, String countryCode)
 	{
 		String query = "INSERT INTO "+TABLE_NAME+" ("+COLUMN_IP+", "+COLUMN_COUNTRY+") VALUES (?, ?);";
@@ -69,11 +80,15 @@ public class DaoIPBlacklist extends Dao
 	}
 
 
-
-	public void increaseCounter(String ip)
+	/**
+	 * Increment the counter of the given <strong>IP address</strong> by 1.
+	 * 
+	 * @param ip ~ The IP address to increment the counter.
+	 */
+	public void incrementCounter(String ip)
 	{
 		String query = "UPDATE "+TABLE_NAME+" SET "+COLUMN_COUNT+" = "+COLUMN_COUNT+" + ? WHERE "+COLUMN_IP+" = ?;";
-
+		
 		int row;
 		try
 		{
@@ -89,8 +104,12 @@ public class DaoIPBlacklist extends Dao
 	}
 
 
-
-	public ArrayList<String> getIp()
+	/**
+	 * Get all <strong>IP addresses</strong> from the database.
+	 * 
+	 * @return <strong>ArrayList&lt;String&gt; of all IP addresses</strong> in the blacklist.
+	 */
+	public ArrayList<String> getIPs()
 	{
 		String query = "SELECT "+COLUMN_IP+" FROM "+TABLE_NAME+";";
 

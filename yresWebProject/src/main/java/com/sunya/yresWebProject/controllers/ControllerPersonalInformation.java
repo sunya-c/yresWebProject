@@ -18,6 +18,13 @@ public class ControllerPersonalInformation extends Controller1
 	@Autowired
 	private ServicePersonalInformation spinfo;
 	
+	/**
+	 * The Controller for URL pattern 'personalInformation'.
+	 * 
+	 * @param response
+	 * @param model
+	 * @return Request dispatcher to <strong>PersonalInformationPage.jsp</strong>.
+	 */
 	@GetMapping("/personalInformation")
 	public String persInfoPage(HttpServletResponse response, Model model)
 	{
@@ -25,8 +32,10 @@ public class ControllerPersonalInformation extends Controller1
 		
 		try
 		{
-			DataPersInfo myInfo = spinfo.sPersInfo();
-			model.addAttribute(myInfo);
+			DataPersInfo dataPersInfo = new DataPersInfo();
+			spinfo.sPersInfo(dataPersInfo);
+			
+			model.addAttribute(dataPersInfo);
 			
 			preventBackButton(response);
 			

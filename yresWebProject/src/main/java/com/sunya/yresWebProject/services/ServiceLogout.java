@@ -13,10 +13,14 @@ public class ServiceLogout
 	private SessionManager sm;
 	
 	
-	
+	/**
+	 * Clear the Login-state-related values in the session.
+	 * 
+	 * @return <strong>String of the page URL</strong> that the user clicked 'Log out'.
+	 */
 	public String sLogout()
 	{
-		sm.removeLoginState();
+		sm.clearLoginState();
 		
 		if (sm.getSessionLogin().getFromPage()==null)
 			return Url.home;

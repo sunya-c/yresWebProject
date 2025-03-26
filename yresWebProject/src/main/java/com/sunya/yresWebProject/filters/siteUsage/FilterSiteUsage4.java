@@ -12,7 +12,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 /**
- * Filter for PersInfoPage
+ * Filter for <strong>PersInfoPage</strong>.<br>
+ * <br>
+ * This filter is for incrementing the number of usage in the database.
  */
 public class FilterSiteUsage4 extends OncePerRequestFilter
 {
@@ -30,7 +32,7 @@ public class FilterSiteUsage4 extends OncePerRequestFilter
 			throws ServletException, IOException
 	{
 		System.out.println("Order: 8, in Filter Usage 4 (personalInformation)");
-		siteUsage.doFilterInternal(request, response, filterChain, PageUsageinfo.PAGE_PERSINFO, this);
+		siteUsage.doFilterInternal(request, response, filterChain, PageUsageinfo.PAGE_PERSINFO);
 	}
 
 

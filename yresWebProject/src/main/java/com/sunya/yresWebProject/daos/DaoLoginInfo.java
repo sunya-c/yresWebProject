@@ -24,87 +24,79 @@ public class DaoLoginInfo extends Dao
 {
 	// Table name :
 	protected final String TABLE_NAME = "logininfo";
-	
-	
+
 	// columnName :
-	protected final String COLUMN_USERNAME = "webuname";  //Primary key
+	protected final String COLUMN_USERNAME = "webuname"; // Primary key
 	protected final String COLUMN_PASSWORD = "webpass";
 	protected final String COLUMN_TEMPACCOUNT = "tempaccount";
 	protected final String COLUMN_TIMECREATED = "timecreated";
 	// end -- columnName
-	
+
 	// Error report :
 	private final String ERR1 = "Username already exists";
 	private final String ERR2 = "Invalid username";
 	private final String ERR3 = "Incorrect password";
 	// end -- Error report
-	
+
 	@Autowired
 	@Qualifier("backDateTime")
 	private DateTimeFormatter dateTimeFormat;
-	
+
 	@Autowired
 	protected JdbcTemplate template;
-	
-	//TODO: Just removed the isExistingUsername part, have to do that in the upper layer
+
+
+	// TODO: Just removed the isExistingUsername part, have to do that in the upper
+	// layer
 	/**
 	 * Remove all data of a particular username from the database (password
-	 * required). The removed username MUST NOT be admin privileged accounts
-	 * <p>
+	 * required). The removed username MUST NOT be admin-privileged accounts
 	 * 
-	 * @param username ~ username to be removed.
-	 * @param password ~ password of the username that is going to be removed.
-	 * @return true ~ removal succeed.
-	 *         <p>
-	 *         false ~ removal fail.
-	 * @throws SomethingWentWrongException 
+	 * @param model ~ A model that contains the account to be removed (requires:
+	 *              username and password).
+	 * @throws SomethingWentWrongException
 	 */
 	public void removeUser(ModelLoginInfo model) throws SomethingWentWrongException
 	{
-		String query = "DELETE FROM "+TABLE_NAME+" WHERE "+COLUMN_USERNAME+" = ? AND "+COLUMN_PASSWORD+" = ? AND "+COLUMN_TEMPACCOUNT+" = ?";
-		
-		model.setTempaccount("1");
-		
+		String query = "DELETE FROM "+TABLE_NAME+" WHERE "+COLUMN_USERNAME+" = ? AND "+COLUMN_PASSWORD+" = ? AND "
+									+COLUMN_TEMPACCOUNT+" = ?";
+
+		model.setTempaccount("1"); // 1==non-admin account. Admin account cannot be removed.
+
 		int row;
 		try
 		{
-			row = template.update(query, model.getUsername(), model.getPassword(), model.getTempaccount());  // 1==non-admin account. Admin account cannot be removed.
+			row = template.update(query, model.getUsername(), model.getPassword(), model.getTempaccount());
 		}
 		catch (DataAccessException e)
 		{
-			if (isExistingUsername(model))
+			if (doesExistUsername(model))
 				throw new SomethingWentWrongException("daologininfo.removeuser-01: Username not found");
 			else
 				throw new YresDataAccessException("daologininfo.removeuser-02");
 		}
-		
-		if (row != 1)
+
+		if (row!=1)
 			throw new YresDataAccessException("daologininfo.removeuser-03");
 	}
 
+
 	/**
-	 * Add the username and password to the database.
-	 * <p>
+	 * Add the new username and password to the database.
 	 * 
-	 * @param username ~ the username to be added.
-	 *                 <p>
-	 * @param password ~ the password to be added.
-	 *                 <p>
-	 * @return true ~ if succeed.
-	 *         <p>
-	 *         false ~ if the username is duplicated.
-	 * @throws SomethingWentWrongException 
+	 * @param model ~ A model that contains the account detail to be added
+	 *              (requires: username and password).
+	 * @throws SomethingWentWrongException
 	 */
 	public void addUser(ModelLoginInfo model) throws SomethingWentWrongException
 	{
-		String query = "INSERT INTO "+TABLE_NAME+" ("+COLUMN_USERNAME+", "+COLUMN_PASSWORD+", "+COLUMN_TIMECREATED+") VALUES (?, ?, ?);";
-		
+		String query = "INSERT INTO "+TABLE_NAME+" ("+COLUMN_USERNAME+", "+COLUMN_PASSWORD+", "+COLUMN_TIMECREATED
+									+") VALUES (?, ?, ?);";
+
 		TimeZone timeZone = TimeZone.getDefault();
-		LocalDateTime dateTime = LocalDateTime.now()
-				.minus(timeZone.getRawOffset(), ChronoUnit.MILLIS) // minus an offset (time zone of this local machine) to make it GMT+0.
-				.plusHours(7);                                     // converting local machine's time to GMT+7
+		LocalDateTime dateTime = LocalDateTime.now().minus(timeZone.getRawOffset(), ChronoUnit.MILLIS).plusHours(7);
 		String createTime = dateTime.format(dateTimeFormat);
-		
+
 		int row;
 		try
 		{
@@ -112,38 +104,38 @@ public class DaoLoginInfo extends Dao
 		}
 		catch (DataAccessException e)
 		{
-			if (isExistingUsername(model))
+			if (doesExistUsername(model))
 				throw new SomethingWentWrongException("daologininfo.adduser-01");
 			else
 				throw new YresDataAccessException("daologininfo.adduser-02");
 		}
-		
-		if (row != 1)
+
+		if (row!=1)
 			throw new YresDataAccessException("daologininfo.adduser-03");
 	}
-	
+
+
 	/**
-	 * Check if the input username exists (NOT case-sensitive).
-	 * <p>
+	 * Check in the database if the given username exists (NOT case-sensitive).
 	 * 
-	 * @param username ~ input username to be check.
-	 *                 <p>
-	 * @return true ~ if the username exists regardLESS of upper and lower case.
-	 *         <p>
-	 *         false ~ otherwise.
+	 * @param model ~ The model that contains the username to be checked (requires:
+	 *              username).
+	 * @return <strong>true</strong> ~ if the username exists
+	 *         <strong>regardless</strong> of upper and lower cases.<br>
+	 *         <strong>false</strong> ~ if otherwise.
 	 */
-	public boolean isExistingUsername(ModelLoginInfo model)
+	public boolean doesExistUsername(ModelLoginInfo model)
 	{
 		// For username checking
 		String query = "SELECT "+COLUMN_USERNAME+" FROM "+TABLE_NAME+" WHERE "+COLUMN_USERNAME+" = ?;";
-		
+
 		ResultSetExtractor<Boolean> extractor = rs -> {
-			if (rs.next())  // NOT case-sensitive
+			if (rs.next()) // NOT case-sensitive
 				return true;
 			else
 				return false;
 		};
-		
+
 		try
 		{
 			return template.query(query, extractor, model.getUsername());
@@ -154,28 +146,27 @@ public class DaoLoginInfo extends Dao
 		}
 	}
 
+
 	/**
 	 * Check if the input username exists (case-sensitive)
-	 * <p>
 	 * 
-	 * @param username ~ input username to be check.
-	 *                 <p>
-	 * @return true ~ if the username case-sensitively exists.
-	 *         <p>
-	 *         false ~ otherwise.
+	 * @param model ~ A model that contains the username to be checked (requires:
+	 *              username).
+	 * @return <strong>true</strong> ~ if the username case-sensitively exists.<br>
+	 *         <strong>false</strong> ~ if otherwise.
 	 */
-	public boolean isExistingUsernameCaseSen(ModelLoginInfo model)
+	public boolean doesExistUsernameCaseSen(ModelLoginInfo model)
 	{
 		// For username checking
 		String query = "SELECT "+COLUMN_USERNAME+" FROM "+TABLE_NAME+" WHERE "+COLUMN_USERNAME+" = ?;";
-		
+
 		ResultSetExtractor<Boolean> extractor = rs -> {
-			if (rs.next() && rs.getString(COLUMN_USERNAME).equals(model.getUsername()))  // case-sensitive
+			if (rs.next() && rs.getString(COLUMN_USERNAME).equals(model.getUsername())) // case-sensitive
 				return true;
 			else
 				return false;
 		};
-		
+
 		try
 		{
 			return template.query(query, extractor, model.getUsername());
@@ -184,35 +175,39 @@ public class DaoLoginInfo extends Dao
 		{
 			throw new YresDataAccessException("daologininfo.isexistingusernamecasesen-01");
 		}
-		
+
 	}
 
+
 	/**
-	 * Check if the password for the particular username exists (case-sensitive for
-	 * both username and password). Recommend calling isExistingUsernameCaseSen()
-	 * first to check the existence of the username before calling this method, as
-	 * this method will return false right away if the username doesn't exist.
+	 * Check if the given username and password exist (case-sensitive for both
+	 * username and password).<br>
+	 * <br>
+	 * It's Recommended to call {@code doesExistUsernameCaseSen()} first to check the existence of
+	 * the username before calling this method, as this method will return false
+	 * if the username doesn't exist, and you won't know whether that false is from username or password.
 	 * <p>
 	 * 
-	 * @param username ~ input username to be check.
-	 * @param password ~ input password for the particular username.
-	 *                 <p>
-	 * @return true ~ if BOTH username AND password case-sensitively exist.
-	 *         <p>
-	 *         false ~ otherwise.
+	 * @param model ~ A model that contains the detail to be checked (requires:
+	 *              username and password).
+	 * @return <strong>true</strong> ~ if BOTH username AND password
+	 *         case-sensitively exist.<br>
+	 *         <strong>false</strong> ~ if otherwise.
 	 */
-	public boolean isExistingPasswordCaseSen(ModelLoginInfo model)
+	public boolean doesExistPasswordCaseSen(ModelLoginInfo model)
 	{
 		// For password checking
-		String query = "SELECT "+COLUMN_USERNAME+", "+COLUMN_PASSWORD+" FROM "+TABLE_NAME+" WHERE "+COLUMN_USERNAME+" = ? AND "+COLUMN_PASSWORD+" = ?;";
-		
+		String query = "SELECT "+COLUMN_USERNAME+", "+COLUMN_PASSWORD+" FROM "+TABLE_NAME+" WHERE "+COLUMN_USERNAME
+									+" = ? AND "+COLUMN_PASSWORD+" = ?;";
+
 		ResultSetExtractor<Boolean> extractor = rs -> {
-			if (rs.next() && rs.getString(COLUMN_USERNAME).equals(model.getUsername()) && rs.getString(COLUMN_PASSWORD).equals(model.getPassword()))
+			if (rs.next() && rs.getString(COLUMN_USERNAME).equals(model.getUsername())
+										&& rs.getString(COLUMN_PASSWORD).equals(model.getPassword()))
 				return true;
 			else
 				return false;
 		};
-		
+
 		try
 		{
 			return template.query(query, extractor, model.getUsername(), model.getPassword());
@@ -223,34 +218,16 @@ public class DaoLoginInfo extends Dao
 		}
 	}
 
+
 	/**
+	 * This method calls {@code doesExistUsername()}.
 	 * 
-	 * @param username
-	 * <p>
-	 * @return true ~ if the username exists regardLESS of upper or lower case.
-	 * <p>     false ~ otherwise.
+	 * @param model
+	 * @return <strong>The result from</strong> {@code doesExistUsername()}.
 	 */
 	public boolean checkUsername(ModelLoginInfo model)
 	{
-		if (isExistingUsername(model))
-			return true;
-		else
-		{
-			PrintError.println(ERR2); // Invalid username
-			return false;
-		}
-	}
-	
-	/**
-	 * 
-	 * @param username
-	 * <p>
-	 * @return true ~ if the username case-sensitively exists.
-	 * <p>     false ~ otherwise.
-	 */
-	public boolean checkUsernameCaseSen(ModelLoginInfo model)
-	{
-		if (isExistingUsernameCaseSen(model))
+		if (doesExistUsername(model))
 			return true;
 		else
 		{
@@ -259,9 +236,34 @@ public class DaoLoginInfo extends Dao
 		}
 	}
 
+
+	/**
+	 * This method calls {@code doesExistUsernameCaseSen()}.
+	 * 
+	 * @param model
+	 * @return <strong>The result from</strong> {@code doesExistUsernameCaseSen()}.
+	 */
+	public boolean checkUsernameCaseSen(ModelLoginInfo model)
+	{
+		if (doesExistUsernameCaseSen(model))
+			return true;
+		else
+		{
+			PrintError.println(ERR2); // Invalid username
+			return false;
+		}
+	}
+
+
+	/**
+	 * This method calls {@code doesExistPasswordCaseSen()}.
+	 * 
+	 * @param model
+	 * @return <strong>The result from</strong> {@code doesExistPasswordCaseSen()}.
+	 */
 	public boolean checkPasswordCaseSen(ModelLoginInfo model)
 	{
-		if (isExistingPasswordCaseSen(model))
+		if (doesExistPasswordCaseSen(model))
 			return true;
 		else
 		{

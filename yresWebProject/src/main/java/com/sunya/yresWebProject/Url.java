@@ -1,5 +1,8 @@
 package com.sunya.yresWebProject;
 
+/**
+ * A class containing all valid URL patterns in one place.
+ */
 public class Url
 {
 	public static final String createAccount = "createAccount";

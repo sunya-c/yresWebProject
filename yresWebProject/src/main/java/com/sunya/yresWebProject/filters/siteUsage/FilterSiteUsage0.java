@@ -12,27 +12,28 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 /**
- * Filter for CreateAccountPage
+ * Filter for <strong>CreateAccountPage</strong>.<br>
+ * <br>
+ * This filter is for incrementing the number of usage in the database.
  */
 public class FilterSiteUsage0 extends OncePerRequestFilter
 {
 	private FilterSiteUsage siteUsage;
-	
+
+
 	public FilterSiteUsage0(FilterSiteUsage siteUsage)
 	{
 		this.siteUsage = siteUsage;
 	}
 
 
-
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-			throws ServletException, IOException
+								throws ServletException, IOException
 	{
 		System.out.println("Order: 4, in Filter Usage 0 (createAccount)");
-		siteUsage.doFilterInternal(request, response, filterChain, PageUsageinfo.PAGE_CREATEACCOUNT, this);
+		siteUsage.doFilterInternal(request, response, filterChain, PageUsageinfo.PAGE_CREATEACCOUNT);
 	}
-
 
 
 	@Override

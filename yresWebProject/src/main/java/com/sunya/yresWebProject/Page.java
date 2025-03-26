@@ -1,5 +1,8 @@
 package com.sunya.yresWebProject;
 
+/**
+ * A class containing all JSP page names in one place.
+ */
 public class Page
 {
 	public static final String createAccount = "CreateAccountPage";

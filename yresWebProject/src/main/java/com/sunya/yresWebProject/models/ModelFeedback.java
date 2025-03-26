@@ -1,5 +1,9 @@
 package com.sunya.yresWebProject.models;
 
+/**
+ * This class is a model for database. This class can be use when interacting
+ * with <strong>feedbackinfo</strong> table.
+ */
 public class ModelFeedback
 {
 	private String refNumber;
@@ -10,12 +14,10 @@ public class ModelFeedback
 	private String feedbackErrorMessage;
 
 
-
 	public String getRefNumber()
 	{
 		return refNumber;
 	}
-
 
 
 	public void setRefNumber(String refNumber)
@@ -24,12 +26,10 @@ public class ModelFeedback
 	}
 
 
-
 	public String getReportDate()
 	{
 		return reportDate;
 	}
-
 
 
 	public void setReportDate(String reportDate)
@@ -38,12 +38,10 @@ public class ModelFeedback
 	}
 
 
-
 	public String getUsername()
 	{
 		return username;
 	}
-
 
 
 	public void setUsername(String username)
@@ -52,12 +50,10 @@ public class ModelFeedback
 	}
 
 
-
 	public String getFeedbackTitile()
 	{
 		return feedbackTitile;
 	}
-
 
 
 	public void setFeedbackTitile(String feedbackTitile)
@@ -66,12 +62,10 @@ public class ModelFeedback
 	}
 
 
-
 	public String getFeedbackDetail()
 	{
 		return feedbackDetail;
 	}
-
 
 
 	public void setFeedbackDetail(String feedbackDetail)
@@ -80,12 +74,10 @@ public class ModelFeedback
 	}
 
 
-
 	public String getFeedbackErrorMessage()
 	{
 		return feedbackErrorMessage;
 	}
-
 
 
 	public void setFeedbackErrorMessage(String feedbackErrorMessage)

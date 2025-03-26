@@ -12,7 +12,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 /**
- * Filter for RedirectingPage
+ * Filter for <strong>RedirectingPage</strong>.<br>
+ * <br>
+ * This filter is for incrementing the number of usage in the database.
  */
 public class FilterSiteUsage5 extends OncePerRequestFilter
 {
@@ -30,7 +32,7 @@ public class FilterSiteUsage5 extends OncePerRequestFilter
 			throws ServletException, IOException
 	{
 		System.out.println("Order: 9, in Filter Usage 5 (redirecting)");
-		siteUsage.doFilterInternal(request, response, filterChain, PageUsageinfo.PAGE_REDIRECTING, this);
+		siteUsage.doFilterInternal(request, response, filterChain, PageUsageinfo.PAGE_REDIRECTING);
 	}
 
 

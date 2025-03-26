@@ -12,7 +12,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 /**
- * Filter for UnderConstructionPage
+ * Filter for <strong>UnderConstructionPage</strong>.<br>
+ * <br>
+ * This filter is for incrementing the number of usage in the database.
  */
 public class FilterSiteUsage6 extends OncePerRequestFilter
 {
@@ -30,7 +32,7 @@ public class FilterSiteUsage6 extends OncePerRequestFilter
 			throws ServletException, IOException
 	{
 		System.out.println("Order: 10, in Filter Usage 6 (UnderConstructionPage)"); // TODO
-		siteUsage.doFilterInternal(request, response, filterChain, PageUsageinfo.PAGE_UNDERCONSTRUCTION, this);
+		siteUsage.doFilterInternal(request, response, filterChain, PageUsageinfo.PAGE_UNDERCONSTRUCTION);
 	}
 
 

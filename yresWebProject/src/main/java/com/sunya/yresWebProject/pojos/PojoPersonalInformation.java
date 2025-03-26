@@ -9,6 +9,9 @@ import org.springframework.stereotype.Component;
 
 import com.sunya.yresWebProject.exceptions.NegativeAgeException;
 
+/**
+ * TODO: Move this information to database.
+ */
 @Component
 @Scope("prototype")
 public class PojoPersonalInformation

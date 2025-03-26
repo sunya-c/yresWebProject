@@ -12,7 +12,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 /**
- * Filter for sDownloadResume
+ * Filter for <strong>sDownloadResume</strong>.<br>
+ * <br>
+ * This filter is for incrementing the number of usage in the database.
  */
 public class FilterSiteUsage8 extends OncePerRequestFilter
 {
@@ -30,7 +32,7 @@ public class FilterSiteUsage8 extends OncePerRequestFilter
 			throws ServletException, IOException
 	{
 		System.out.println("Order: 12, in Filter Usage 8 (sDownloadResume)");
-		siteUsage.doFilterInternal(request, response, filterChain, PageUsageinfo.RESUME_DOWNLOAD, this);
+		siteUsage.doFilterInternal(request, response, filterChain, PageUsageinfo.RESUME_DOWNLOAD);
 	}
 
 

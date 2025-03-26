@@ -2,6 +2,10 @@ package com.sunya.yresWebProject.models;
 
 import com.sunya.yresWebProject.daos.PageUsageinfo;
 
+/**
+ * This class is a model for database. This class can be use when interacting
+ * with <strong>usageinfo</strong> table.
+ */
 public class ModelSiteUsage
 {
 	private String refNumber;
