@@ -7,7 +7,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.Random;
 import java.util.TimeZone;
 
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataAccessException;
@@ -15,15 +14,13 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.Assert;
 
-import com.sunya.yresWebProject.PrintError;
 import com.sunya.yresWebProject.exceptions.SomethingWentWrongException;
 import com.sunya.yresWebProject.exceptions.YresDataAccessException;
 import com.sunya.yresWebProject.models.ModelFeedback;
 
 @Repository
-public class DaoFeedback extends Dao
+public class DaoFeedback
 {
 	// tableName :
 	private final String TABLE_NAME = "feedbackinfo";
@@ -38,7 +35,7 @@ public class DaoFeedback extends Dao
 	private final String COLUMN_ERRORMESSAGE = "error_message";
 	// end -- columnName
 	
-	private final String ERR1 = "Failed to submit feedback/bug report.";
+//	private final String ERR1 = "Failed to submit feedback/bug report.";
 	
 	@Autowired
 	@Qualifier("backDateTime")
@@ -47,27 +44,6 @@ public class DaoFeedback extends Dao
 	@Autowired
 	private JdbcTemplate template;
 	
-	
-	
-	/**
-	 * Submit feedback/bug report.
-	 * 
-	 * @param model ~ A model that contains feedback detail to be added to the database.
-	 * @return <strong>String refNumber</strong> ~ if successfully added to the database.
-	 * @throws SomethingWentWrongException ~ if otherwise.
-	 */
-//	public String addFeedback(ModelFeedback model) throws SomethingWentWrongException
-//	{
-//		String refNumber = addFeedback(model);
-//		if (refNumber == null)
-//		{
-//			PrintError.println(ERR1);
-//			throw new SomethingWentWrongException("daofeedback.submitfeedback-01");
-//		}
-//		else
-//			return refNumber;
-//	}
-
 	
 	/**
 	 * Submit feedback/bug report.

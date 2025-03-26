@@ -32,7 +32,7 @@
 			<div id="i3wdhj">If the error persists, please report via bug
 				report button.</div>
 			<button type="submit" id="iwacim">Give feedback / bug report</button>
-			<input type="hidden" name="preTypedFeedbackErrorMessage" value="${errorDescription}">
+			<input type="hidden" name="preTypedFeedbackErrorMessage" value="${dataError.errorDescription}">
 		</form>
 	</div>
 </body>

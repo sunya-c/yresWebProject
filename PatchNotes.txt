@@ -1,8 +1,6 @@
-Updated Javadoc.
+Fixed when accessing FeedbackPage by the button on ErrorPage, error message isn't pre-typed on FeedbackPage.
 
 ----------
 
-Updated Javadoc:
--Javadoc hasn't been updated for a long time, as I've been changing the
-code structure so often. Recently, I just kind of found a sweet spot for the
-code structure, so this should be a good time to make Javadoc functional.
+Fixed when accessing FeedbackPage by the button on ErrorPage, error message isn't pre-typed on FeedbackPage:
+-In ErrorPage.jsp, changed variable 'errorDescription' to 'dataError.errorDescription'. This should've been done in v1.4 when overhauling the session data structure, but I somehow missed this one.

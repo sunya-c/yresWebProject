@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 import com.sunya.yresWebProject.exceptions.YresDataAccessException;
 
 @Repository
-public class DaoIPBlacklist extends Dao
+public class DaoIPBlacklist
 {
 	// tableName :
 	private final String TABLE_NAME = "ipblacklistinfo";

@@ -20,7 +20,7 @@ import com.sunya.yresWebProject.models.ModelLoginInfo;
 
 @Repository
 @Primary
-public class DaoLoginInfo extends Dao
+public class DaoLoginInfo
 {
 	// Table name :
 	protected final String TABLE_NAME = "logininfo";
@@ -33,7 +33,7 @@ public class DaoLoginInfo extends Dao
 	// end -- columnName
 
 	// Error report :
-	private final String ERR1 = "Username already exists";
+//	private final String ERR1 = "Username already exists";
 	private final String ERR2 = "Invalid username";
 	private final String ERR3 = "Incorrect password";
 	// end -- Error report

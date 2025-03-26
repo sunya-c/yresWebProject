@@ -1,7 +1,5 @@
 package com.sunya.yresWebProject.controllers;
 
-import java.sql.SQLException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
@@ -26,8 +24,6 @@ public class ControllerHome extends Controller1
 	@GetMapping("/")
 	public String firstPage()
 	{
-		System.out.println(sm.getSession().getId()+"---"+sm.getKeyHolder());
-
 		return Page.preHome;
 	}
 
@@ -46,6 +42,7 @@ public class ControllerHome extends Controller1
 	@GetMapping("/Home")
 	public String homePage()
 	{
+		System.out.println(sm.getSession().getId()+"---"+sm.getKeyHolder());
 		sm.getSessionLogin().setFromPage("Home");
 
 		session.setAttribute("trial1", !(System.getenv("SERY_DB_URL")==null || System.getenv("SERY_DB_URL").isBlank()));

@@ -10,7 +10,7 @@ import com.sunya.yresWebProject.exceptions.YresDataAccessException;
 import com.sunya.yresWebProject.models.ModelWebdatainfo;
 
 @Repository
-public class DaoWebdatainfo extends Dao
+public class DaoWebdatainfo
 {
 	// Table name
 	private final String TABLE_NAME = "webdatainfo";

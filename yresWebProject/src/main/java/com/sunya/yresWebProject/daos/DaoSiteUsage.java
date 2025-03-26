@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.TimeZone;
 
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataAccessException;
@@ -22,7 +21,7 @@ import com.sunya.yresWebProject.exceptions.YresDataAccessException;
 import com.sunya.yresWebProject.models.ModelSiteUsage;
 
 @Repository
-public class DaoSiteUsage extends Dao
+public class DaoSiteUsage
 {
 	// tableName :
 	private final String TABLE_NAME = "usageinfo";
