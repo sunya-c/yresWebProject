@@ -63,8 +63,11 @@ public class ControllerError extends Controller1 implements ErrorController
 	@GetMapping("/yresError")
 	public String toErrorPage(Model model, HttpServletRequest request)
 	{
+		System.out.println(
+				sm.getSession().getId().substring(0, 5)+"-"+sm.getSession().getId().substring(sm.getSession().getId().length()-5)
+				+"---"+sm.getKeyHolder().toString().substring(sm.getKeyHolder().toString().indexOf("KeyHolder@")));
 		String errorDescription = request.getParameter("errorDescription");
-
+		
 		if (errorDescription!=null)
 		{
 			DataError dataError = new DataError();

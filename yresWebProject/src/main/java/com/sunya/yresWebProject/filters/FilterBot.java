@@ -35,7 +35,7 @@ public class FilterBot extends OncePerRequestFilter
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException
 	{
-		System.out.println("Order: 1, in Filter Bot (Home)");
+		System.out.println("Order: 0, in Filter Bot (Home)");
 		
 		String ip = getIP(request);
 		

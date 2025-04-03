@@ -14,7 +14,7 @@ public class Controller1
 	 * Controllers to <strong>redirect</strong> instead of the default request
 	 * dispatcher.
 	 */
-	protected static final String redirect = "redirect:";
+	protected static final String redirect = "redirect:/";
 
 	@Autowired
 	protected HttpSession session;

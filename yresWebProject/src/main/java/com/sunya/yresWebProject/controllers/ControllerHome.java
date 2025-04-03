@@ -42,7 +42,9 @@ public class ControllerHome extends Controller1
 	@GetMapping("/Home")
 	public String homePage()
 	{
-		System.out.println(sm.getSession().getId()+"---"+sm.getKeyHolder());
+		System.out.println(
+				sm.getSession().getId().substring(0, 5)+"-"+sm.getSession().getId().substring(sm.getSession().getId().length()-5)
+				+"---"+sm.getKeyHolder().toString().substring(sm.getKeyHolder().toString().indexOf("KeyHolder@")));
 		sm.getSessionLogin().setFromPage("Home");
 
 		session.setAttribute("trial1", !(System.getenv("SERY_DB_URL")==null || System.getenv("SERY_DB_URL").isBlank()));

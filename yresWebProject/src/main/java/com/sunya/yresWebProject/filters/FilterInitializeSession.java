@@ -1,6 +1,9 @@
 package com.sunya.yresWebProject.filters;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Predicate;
 
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -24,12 +27,19 @@ public class FilterInitializeSession extends OncePerRequestFilter
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 								throws ServletException, IOException
 	{
+		System.out.println("Order: 1, in Filter Initialize (ALL)");
+		
+		System.out.print(
+				sm.getSession().getId().substring(0, 5)+"-"+sm.getSession().getId().substring(sm.getSession().getId().length()-5)
+				+"---"+((sm.getKeyHolder()==null)? null : sm.getKeyHolder().toString().substring(sm.getKeyHolder().toString().indexOf("KeyHolder@")))+", ");
+		System.out.println("URL : "+request.getRequestURI());
+		
 		synchronized (sm.getSession())
 		{
 			if (sm.getInitializeString()==null)
 			{
 				System.out.println("in Filter Initizlize. Should be run once at the beginning of each session.--------------------------------------------------once");
-				System.out.println(sm.getSession().getId()+"---"+sm.getKeyHolder());
+				
 				sm.createKeyHolder();
 				sm.createSessionFeedback();
 				sm.createSessionCreateAccount();
@@ -38,11 +48,12 @@ public class FilterInitializeSession extends OncePerRequestFilter
 				sm.createSessionRedirecting();
 				
 				sm.setSessionInitialized();
+				
+				System.out.println(
+						sm.getSession().getId().substring(0, 5)+"-"+sm.getSession().getId().substring(sm.getSession().getId().length()-5)
+						+"---"+((sm.getKeyHolder()==null)? null : sm.getKeyHolder().toString().substring(sm.getKeyHolder().toString().indexOf("KeyHolder@"))));
 			}
 		}
-		
 		filterChain.doFilter(request, response);
 	}
-	
-	
 }

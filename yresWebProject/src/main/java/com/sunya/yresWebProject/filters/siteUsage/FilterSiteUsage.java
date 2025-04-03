@@ -81,7 +81,7 @@ public class FilterSiteUsage
 			// refNumber == null to create new refNumber
 			String resultRefNumber = dao.incrementCounter(refNumber, whichPage);
 
-			checkOutcome(resultRefNumber, ip, whichPage);
+			addIPToUsageinfo(resultRefNumber, ip, whichPage);
 
 			setupRefInCookie(resultRefNumber, response);
 			filterChain.doFilter(request, response);
@@ -101,7 +101,7 @@ public class FilterSiteUsage
 	 * @param ip
 	 * @param whichPage
 	 */
-	private void checkOutcome(String resultRefNumber, String ip, PageUsageinfo whichPage)
+	private void addIPToUsageinfo(String resultRefNumber, String ip, PageUsageinfo whichPage)
 	{
 		if (whichPage.getColumnOrder()==1 || whichPage.getColumnOrder()==3)
 		{

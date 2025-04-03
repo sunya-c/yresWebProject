@@ -1,6 +1,11 @@
-Fixed when accessing FeedbackPage by the button on ErrorPage, error message isn't pre-typed on FeedbackPage.
+Added @ControllerAdvice class to handle 404 error.
 
 ----------
 
-Fixed when accessing FeedbackPage by the button on ErrorPage, error message isn't pre-typed on FeedbackPage:
--In ErrorPage.jsp, changed variable 'errorDescription' to 'dataError.errorDescription'. This should've been done in v1.4 when overhauling the session data structure, but I somehow missed this one.
+Added @ControllerAdvice class to handle 404 error:
+
+-The class I'm talking about is 'ControllerErrorCenter'. Generally,
+@ControllerAdvice class is meant to be the center for error handling.
+For now, it can handle only 404 error, as I don't want to rush into
+other error codes which I'm not yet familiar with. More error code
+handling will be added to this class in the future as neccessary.

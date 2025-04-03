@@ -31,22 +31,35 @@ public class FilterConfig
 	
 	
 	@Bean
-	public FilterRegistrationBean<FilterInitializeSession> filterInitializeSession()
+	public FilterRegistrationBean<FilterBot> filterBot(DaoIPBlacklist dao)
 	{
-		FilterRegistrationBean<FilterInitializeSession> bean = new FilterRegistrationBean<>();
-		bean.setFilter(new FilterInitializeSession(sm));
-		bean.addUrlPatterns("/*");
+		FilterRegistrationBean<FilterBot> bean = new FilterRegistrationBean<>();
+		bean.setFilter(new FilterBot(dao));
+		bean.addUrlPatterns("/Home");
 		bean.setOrder(0);
 		
 		return bean;
 	}
 	
 	@Bean
-	public FilterRegistrationBean<FilterBot> filterBot(DaoIPBlacklist dao)
+	public FilterRegistrationBean<FilterInitializeSession> filterInitializeSession()
 	{
-		FilterRegistrationBean<FilterBot> bean = new FilterRegistrationBean<>();
-		bean.setFilter(new FilterBot(dao));
-		bean.addUrlPatterns("/Home");
+		FilterRegistrationBean<FilterInitializeSession> bean = new FilterRegistrationBean<>();
+		bean.setFilter(new FilterInitializeSession(sm));
+		bean.addUrlPatterns(
+							"/createAccount",
+							"/yresError",
+							"/feedback",
+							"/Home",
+							"/personalInformation",
+							"/redirecting",
+//							"/UnderConstructionPage.jsp",
+							"/welcome",
+							"/sCreateAccount",
+							"/sDownloadResume",
+							"/sFeedback",
+							"/sLogin",
+							"/sLogout");
 		bean.setOrder(1);
 		
 		return bean;
@@ -58,20 +71,19 @@ public class FilterConfig
 		FilterRegistrationBean<FilterAccountExistence> bean = new FilterRegistrationBean<>();
 		bean.setFilter(new FilterAccountExistence(sm, dao));
 		bean.addUrlPatterns(
-				"/createAccount",
-				"/yresError",
-				"/feedback",
-				"/Home",
-				"/personalInformation",
-				"/redirecting",
-//				"/UnderConstructionPage.jsp",
-				"/welcome",
-				"/sCreateAccount",
-				"/sDownloadResume",
-				"/sFeedback",
-				"/sLogin",
-				"/sLogout",
-				"/sPersonalInformation");
+							"/createAccount",
+							"/yresError",
+							"/feedback",
+							"/Home",
+							"/personalInformation",
+							"/redirecting",
+//							"/UnderConstructionPage.jsp",
+							"/welcome",
+							"/sCreateAccount",
+							"/sDownloadResume",
+							"/sFeedback",
+							"/sLogin",
+							"/sLogout");
 		bean.setOrder(2);
 		
 		return bean;
@@ -110,7 +122,7 @@ public class FilterConfig
 		FilterRegistrationBean<FilterSiteUsage1> bean = new FilterRegistrationBean<>();
 		bean.setFilter(new FilterSiteUsage1(siteUsage));
 		bean.addUrlPatterns("/yresError");
-		bean.setOrder(5);
+		bean.setOrder(4);
 		
 		return bean;
 	}
@@ -121,7 +133,7 @@ public class FilterConfig
 		FilterRegistrationBean<FilterSiteUsage2> bean = new FilterRegistrationBean<>();
 		bean.setFilter(new FilterSiteUsage2(siteUsage));
 		bean.addUrlPatterns("/feedback");
-		bean.setOrder(6);
+		bean.setOrder(4);
 		
 		return bean;
 	}
@@ -132,7 +144,7 @@ public class FilterConfig
 		FilterRegistrationBean<FilterSiteUsage3> bean = new FilterRegistrationBean<>();
 		bean.setFilter(new FilterSiteUsage3(siteUsage));
 		bean.addUrlPatterns("/Home");
-		bean.setOrder(7);
+		bean.setOrder(4);
 		
 		return bean;
 	}
@@ -143,7 +155,7 @@ public class FilterConfig
 		FilterRegistrationBean<FilterSiteUsage4> bean = new FilterRegistrationBean<>();
 		bean.setFilter(new FilterSiteUsage4(siteUsage));
 		bean.addUrlPatterns("/personalInformation");
-		bean.setOrder(8);
+		bean.setOrder(4);
 		
 		return bean;
 	}
@@ -154,7 +166,7 @@ public class FilterConfig
 		FilterRegistrationBean<FilterSiteUsage5> bean = new FilterRegistrationBean<>();
 		bean.setFilter(new FilterSiteUsage5(siteUsage));
 		bean.addUrlPatterns("/redirecting");
-		bean.setOrder(9);
+		bean.setOrder(4);
 		
 		return bean;
 	}
@@ -165,7 +177,7 @@ public class FilterConfig
 		FilterRegistrationBean<FilterSiteUsage6> bean = new FilterRegistrationBean<>();
 		bean.setFilter(new FilterSiteUsage6(siteUsage));
 //		bean.addUrlPatterns("/~~~");
-		bean.setOrder(10);
+		bean.setOrder(4);
 		bean.setEnabled(false);
 		
 		return bean;
@@ -177,7 +189,7 @@ public class FilterConfig
 		FilterRegistrationBean<FilterSiteUsage7> bean = new FilterRegistrationBean<>();
 		bean.setFilter(new FilterSiteUsage7(siteUsage));
 		bean.addUrlPatterns("/welcome");
-		bean.setOrder(11);
+		bean.setOrder(4);
 		
 		return bean;
 	}
@@ -188,7 +200,7 @@ public class FilterConfig
 		FilterRegistrationBean<FilterSiteUsage8> bean = new FilterRegistrationBean<>();
 		bean.setFilter(new FilterSiteUsage8(siteUsage));
 		bean.addUrlPatterns("/sDownloadResume");
-		bean.setOrder(12);
+		bean.setOrder(4);
 		
 		return bean;
 	}

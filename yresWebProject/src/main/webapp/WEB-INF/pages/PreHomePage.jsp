@@ -20,6 +20,12 @@
 <link
 	href="https://fonts.googleapis.com/css?family=Open+Sans:regular,italic&display=swap"
 	rel="stylesheet">
+<script type="text/javascript">
+	// Redirect to ServletRedirecting after a delay
+	setTimeout(function() {
+		window.location.href = "Home"; <!-- TODO: change to el for dynamic redirecting -->
+	}, 2000); // 2000 milliseconds = 2.0 seconds
+</script>
 </head>
 <body id="i0wps4">
 	<div id="ij9j5j">
@@ -27,8 +33,5 @@
 			Loading. . .
 		</div>
 	</div>
-	<%
-	response.sendRedirect("Home");
-	%>
 </body>
 </html>
