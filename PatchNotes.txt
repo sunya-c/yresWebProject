@@ -1,11 +1,13 @@
-Added @ControllerAdvice class to handle 404 error.
+Fixed a bug where site logging doesn't work properly for BOT requests.
 
 ----------
 
-Added @ControllerAdvice class to handle 404 error:
+Fixed a bug where site logging doesn't work properly for BOT requests:
 
--The class I'm talking about is 'ControllerErrorCenter'. Generally,
-@ControllerAdvice class is meant to be the center for error handling.
-For now, it can handle only 404 error, as I don't want to rush into
-other error codes which I'm not yet familiar with. More error code
-handling will be added to this class in the future as neccessary.
+-Site logging, or being called in this project as 'SiteUsage', is a feature
+collecting number of page requested by each user. This feature was initially designed
+to work perfectly with normal human behavior. However, this website has been overwhelmed
+by spam BOTs which have inhuman behavior. As a result, it broke the site logging system
+in some certain circumstances, such as when a BOT accesses a page with a different cookie
+but within the same session which results in null data in the database, and when a BOT
+requests for unexpected URL which results in BOT detection filter not being triggered.

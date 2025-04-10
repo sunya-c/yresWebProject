@@ -2,7 +2,10 @@ package com.sunya.yresWebProject.filters;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.springframework.core.env.Environment;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.sunya.yresWebProject.PrintError;
@@ -21,12 +24,15 @@ import jakarta.servlet.http.HttpServletResponse;
 public class FilterBot extends OncePerRequestFilter
 {
 	private DaoIPBlacklist dao;
+	private Environment env;
+	
+	private List<String> allowedUrl = List.of("/error", "/yresError", "/feedback", "/resources/css", "/resources/outBox", "/resources/pics");
 	
 	
-	
-	public FilterBot(DaoIPBlacklist dao)
+	public FilterBot(DaoIPBlacklist dao, Environment env)
 	{
 		this.dao = dao;
+		this.env = env;
 	}
 	
 	
@@ -37,6 +43,18 @@ public class FilterBot extends OncePerRequestFilter
 	{
 		System.out.println("Order: 0, in Filter Bot (Home)");
 		
+		String requestedUrl = request.getRequestURL().toString();
+		System.out.println(requestedUrl);
+		
+		String requestedUri = request.getRequestURI();
+		
+		if (requestedUri.equals("/") || allowedUrl.stream().anyMatch(requestedUri::startsWith))
+		{
+			System.out.println("filter Bot skipped - Allowed URI");
+			filterChain.doFilter(request, response);
+			return;
+		}
+		
 		String ip = getIP(request);
 		
 		String errText = "<br>"+ip+"<br>Your request is suspected to be inhuman.<br>If you're a human, "
@@ -45,6 +63,13 @@ public class FilterBot extends OncePerRequestFilter
 		try
 		{
 			boolean isBlacklisted = dao.isBlacklisted(ip);
+			
+			if (requestedUrl.contains(env.getProperty("yres.domain")) && !isBlacklisted)
+			{
+				System.out.println("filter Bot skipped - expected domain name");
+				filterChain.doFilter(request, response);
+				return;
+			}
 			
 			if (isBlacklisted)   // If it's already in the blacklist.
 			{

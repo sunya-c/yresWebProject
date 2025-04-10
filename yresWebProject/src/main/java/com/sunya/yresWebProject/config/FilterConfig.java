@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 
 import com.sunya.yresWebProject.daos.DaoIPBlacklist;
 import com.sunya.yresWebProject.daos.DaoLoginInfo;
@@ -31,11 +32,11 @@ public class FilterConfig
 	
 	
 	@Bean
-	public FilterRegistrationBean<FilterBot> filterBot(DaoIPBlacklist dao)
+	public FilterRegistrationBean<FilterBot> filterBot(DaoIPBlacklist dao, Environment env)
 	{
 		FilterRegistrationBean<FilterBot> bean = new FilterRegistrationBean<>();
-		bean.setFilter(new FilterBot(dao));
-		bean.addUrlPatterns("/Home");
+		bean.setFilter(new FilterBot(dao, env));
+		bean.addUrlPatterns("/*");
 		bean.setOrder(0);
 		
 		return bean;

@@ -62,6 +62,7 @@ public class FilterSiteUsage
 		String ip = getIP(request);
 
 		String refNumber = cm.getCookieValue(request.getCookies(), CookieManager.CLIENT_REF);
+		System.out.println("refNumber1 : "+refNumber);
 
 		try
 		{
@@ -77,9 +78,10 @@ public class FilterSiteUsage
 						refNumber = null;
 				}
 			}
-
+			System.out.println("refNumber2 : "+refNumber);
 			// refNumber == null to create new refNumber
 			String resultRefNumber = dao.incrementCounter(refNumber, whichPage);
+			System.out.println("refNumber3 : "+resultRefNumber);
 
 			addIPToUsageinfo(resultRefNumber, ip, whichPage);
 
@@ -94,8 +96,8 @@ public class FilterSiteUsage
 
 
 	/**
-	 * For HomePage (filterNumber 3) and ErrorPage (filterNumber 1), add IP address
-	 * to usageinfo table.
+	 * For HomePage (filterNumber 3) and ErrorPage (filterNumber 1) and FeedbackPage (filterNumber 2),
+	 * add IP address to usageinfo table.
 	 * 
 	 * @param resultRefNumber
 	 * @param ip
@@ -103,12 +105,22 @@ public class FilterSiteUsage
 	 */
 	private void addIPToUsageinfo(String resultRefNumber, String ip, PageUsageinfo whichPage)
 	{
-		if (whichPage.getColumnOrder()==1 || whichPage.getColumnOrder()==3)
+		System.out.println("addIPToUsageinfo - whichPage : "+whichPage.getColumnName()+" : "+whichPage.getColumnOrder());
+		System.out.println("addIPToUsageinfo - IP : "+ip);
+		
+		if (whichPage.getColumnOrder()==1 || whichPage.getColumnOrder()==2 || whichPage.getColumnOrder()==3)
 		{
+			System.out.println("addIPToUsageinfo - inside first if : ");
 			if (ip!=null)
 			{
-				if (dao.getIP(resultRefNumber)==null)
+				String dbIP = dao.getIP(resultRefNumber);
+				System.out.println("addIPToUsageinfo - dao.getIP() : "+dbIP);
+//				if (dao.getIP(resultRefNumber)==null)
+				if (dbIP==null)
+				{
 					dao.addIP(ip, resultRefNumber);
+					System.out.println("addIPToUsageinfo - ooo : Added IP to usageinfo");
+				}
 			}
 		}
 	}
