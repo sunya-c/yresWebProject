@@ -51,6 +51,7 @@ public class FilterConfig
 							"/createAccount",
 							"/yresError",
 							"/feedback",
+							"/feedback/summary",
 							"/Home",
 							"/personalInformation",
 							"/redirecting",
@@ -75,6 +76,7 @@ public class FilterConfig
 							"/createAccount",
 							"/yresError",
 							"/feedback",
+							"/feedback/summary",
 							"/Home",
 							"/personalInformation",
 							"/redirecting",
@@ -133,7 +135,7 @@ public class FilterConfig
 	{
 		FilterRegistrationBean<FilterSiteUsage2> bean = new FilterRegistrationBean<>();
 		bean.setFilter(new FilterSiteUsage2(siteUsage));
-		bean.addUrlPatterns("/feedback");
+		bean.addUrlPatterns("/feedback", "/feedback/summary");
 		bean.setOrder(4);
 		
 		return bean;

@@ -1,1 +1,326 @@
-* { box-sizing: border-box; } body {margin: 0;}#ij1hw{background-color:#dba5a5;position:static;width:350px;height:600px;}#io9tx{position:relative;top:90px;left:20px;width:175px;height:30px;font-family:"Open Sans", sans-serif;font-size:15px;border-radius:7px;border:0.5px solid #737373;box-shadow:2px 2px 5px 0 rgba(168,168,168,0.5) ;background-color:#efefef;color:#000000;}#i6t9u{position:relative;font-family:"Open Sans", sans-serif;font-size:20px;font-weight:700;text-shadow:2px 2px 5px rgba(115,115,115,0.72);left:20px;top:20px;}#ijk4nn{min-height:130px;}#itj0iw{position:relative;width:175px;height:30px;font-family:"Open Sans", sans-serif;font-size:15px;border-radius:7px;border:0.5px solid #737373;box-shadow:2px 2px 5px 0 rgba(168,168,168,0.5) ;left:20px;top:5px;background-color:#efefef;color:#000000;}#i4s965{min-height:40px;}#ihdmp2{position:relative;left:350px;top:-600px;height:600px;}#icnopa{background-color:#ffe6e6;}#ifffxi{position:relative;width:250px;height:70px;font-family:Arial, Helvetica, sans-serif;font-size:40px;border-radius:7px;border:0px solid #737373;box-shadow:2px 2px 5px 0 rgba(168,168,168,0.5) ;left:45px;top:35px;font-weight:700;color:#8a4545;background-color:#efefef;}#ikz7hf{height:130px;}#iplzo3{position:relative;left:25px;font-family:"Open Sans", sans-serif;font-size:18px;color:#000000;}#iv9349{position:relative;left:25px;font-family:"Open Sans", sans-serif;font-size:18px;color:#000000;top:5px;}#i8e392{position:relative;top:35px;left:25px;width:200px;height:35px;border:0px none;border-radius:7px;background-color:#8a4545;text-align:center;color:#fdfdfd;font-family:"Open Sans", sans-serif;font-size:16px;font-weight:400;letter-spacing:1px;}#i6yg8g{position:relative;top:15px;height:205px;}#iqzgf4{background-color:#fff8f8;height:270px;width:250px;border-radius:20px 20px 20px 20px;box-shadow:unset;position:relative;top:15px;left:45px;}#i71s98{position:relative;left:60px;width:220px;height:35px;border-radius:7px;background-color:#6f1d1d;text-align:center;font-family:"Open Sans", sans-serif;font-size:14px;color:#fdfdfd;border:0px none rgba(0,0,0,0);box-shadow:0 0 5px 0px rgba(0,0,0,0.5) ;}#ixkbtg{position:relative;top:75px;height:50px;}#i4j7hg{padding:10px;position:relative;left:10px;font-family:Arial, Helvetica, sans-serif;font-size:20px;font-weight:700;color:#9a3e3e;top:2px;max-width:140px;}#i7vw6u{padding:10px;position:relative;left:130px;font-family:Arial, Helvetica, sans-serif;font-size:17px;font-weight:700;color:#9a3e3e;top:-38px;max-width:955px;text-shadow:0px 0px 15px rgba(0,0,0,0.4);}#iy0w9r{border:10px solid rgba(147,75,75,0.85);max-width:1145px;position:relative;height:165px;}#iff0ag{font-weight:normal;}#ig39tr{padding:10px;font-family:"Open Sans", sans-serif;font-size:15px;position:relative;left:13px;text-shadow:0 0 15px rgba(0,0,0,0.2);}
+* {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+}
+
+#ij1hw {
+	background-color: #dba5a5;
+	position: static;
+	width: 350px;
+	height: 600px;
+}
+
+#icnopa {
+	background-color: #ffe6e6;
+}
+
+#ifffxi {
+	position: relative;
+	width: 250px;
+	height: 70px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 40px;
+	border-radius: 7px;
+	border: 0px solid #737373;
+	box-shadow: 2px 2px 5px 0 rgba(168, 168, 168, 0.5);
+	left: 45px;
+	top: 35px;
+	font-weight: 700;
+	color: #8a4545;
+	background-color: #efefef;
+}
+
+#ikz7hf {
+	height: 130px;
+}
+
+#iplzo3 {
+	position: relative;
+	left: 25px;
+	font-family: "Open Sans", sans-serif;
+	font-size: 18px;
+	color: #000000;
+}
+
+#iv9349 {
+	position: relative;
+	left: 25px;
+	font-family: "Open Sans", sans-serif;
+	font-size: 18px;
+	color: #000000;
+	top: 5px;
+}
+
+#i8e392 {
+	position: relative;
+	top: 35px;
+	left: 25px;
+	width: 200px;
+	height: 35px;
+	border: 0px none;
+	border-radius: 7px;
+	background-color: #8a4545;
+	text-align: center;
+	color: #fdfdfd;
+	font-family: "Open Sans", sans-serif;
+	font-size: 16px;
+	font-weight: 400;
+	letter-spacing: 1px;
+}
+
+#i6yg8g {
+	position: relative;
+	top: 15px;
+	height: 205px;
+}
+
+#iqzgf4 {
+	background-color: #fff8f8;
+	height: 270px;
+	width: 250px;
+	border-radius: 20px 20px 20px 20px;
+	box-shadow: unset;
+	position: relative;
+	top: 15px;
+	left: 45px;
+}
+
+#i71s98 {
+	position: relative;
+	left: 60px;
+	width: 220px;
+	height: 35px;
+	border-radius: 7px;
+	background-color: #6f1d1d;
+	text-align: center;
+	font-family: "Open Sans", sans-serif;
+	font-size: 14px;
+	color: #fdfdfd;
+	border: 0px none rgba(0, 0, 0, 0);
+	box-shadow: 0 0 5px 0px rgba(0, 0, 0, 0.5);
+}
+
+#ixkbtg {
+	position: relative;
+	top: 75px;
+	height: 50px;
+}
+
+#i4j7hg {
+	padding: 10px;
+	position: relative;
+	left: 10px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 20px;
+	font-weight: 700;
+	color: #9a3e3e;
+	top: 2px;
+	max-width: 140px;
+}
+
+#i7vw6u {
+	padding: 10px;
+	position: relative;
+	left: 130px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 17px;
+	font-weight: 700;
+	color: #9a3e3e;
+	top: -38px;
+	max-width: 955px;
+	text-shadow: 0px 0px 15px rgba(0, 0, 0, 0.4);
+}
+
+#iy0w9r {
+	border: 10px solid rgba(147, 75, 75, 0.85);
+	max-width: 1145px;
+	position: relative;
+	height: 165px;
+}
+
+#iybpdh {
+	position: relative;
+	font-family: "Open Sans", sans-serif;
+	font-size: 20px;
+	font-weight: 700;
+	text-shadow: 2px 2px 5px rgba(115, 115, 115, 0.72);
+	left: 20px;
+	top: 55px;
+	max-width: 775px;
+}
+
+#iitwbc {
+	position: relative;
+	width: 175px;
+	height: 30px;
+	font-family: "Open Sans", sans-serif;
+	font-size: 15px;
+	border-radius: 7px;
+	border: 0.5px solid #737373;
+	box-shadow: 2px 2px 5px 0 rgba(168, 168, 168, 0.5);
+	left: 20px;
+	top: 5px;
+	background-color: #efefef;
+	color: #000000;
+}
+
+#i7xlhl {
+	height: 45px;
+	position: relative;
+}
+
+#ib81jz {
+	position: relative;
+	width: 175px;
+	height: 30px;
+	font-family: "Open Sans", sans-serif;
+	font-size: 15px;
+	border-radius: 7px;
+	border: 0.5px solid #737373;
+	box-shadow: 2px 2px 5px 0 rgba(168, 168, 168, 0.5);
+	left: 20px;
+	top: 5px;
+	background-color: #efefef;
+	color: #000000;
+}
+
+#idkq7h {
+	padding: 10px;
+	font-family: "Open Sans", sans-serif;
+	font-size: 14px;
+	position: relative;
+	left: 200px;
+	top: -29px;
+	max-width: 595px;
+	color: #000000;
+}
+
+#i3po9k {
+	height: 45px;
+	position: relative;
+}
+
+#i5fj2f {
+	position: relative;
+	width: 175px;
+	height: 30px;
+	font-family: "Open Sans", sans-serif;
+	font-size: 15px;
+	border-radius: 7px;
+	border: 0.5px solid #737373;
+	box-shadow: 2px 2px 5px 0 rgba(168, 168, 168, 0.5);
+	left: 20px;
+	top: 5px;
+	background-color: #efefef;
+	color: #000000;
+}
+
+#i7yq1c {
+	height: 45px;
+	position: relative;
+}
+
+#idu7vx {
+	position: relative;
+	width: 175px;
+	height: 30px;
+	font-family: "Open Sans", sans-serif;
+	font-size: 15px;
+	border-radius: 7px;
+	border: 0.5px solid #737373;
+	box-shadow: 2px 2px 5px 0 rgba(168, 168, 168, 0.5);
+	left: 20px;
+	top: 5px;
+	background-color: #efefef;
+	color: #000000;
+}
+
+#iwwaxj {
+	height: 45px;
+	position: relative;
+}
+
+#inqnnz {
+	font-weight: normal;
+}
+
+#iiawfa {
+	padding: 10px;
+	font-family: "Open Sans", sans-serif;
+	font-size: 15px;
+	position: relative;
+	left: 13px;
+	text-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+	color: #000000;
+}
+
+#i9w8ag {
+	position: relative;
+	left: 350px;
+	top: -600px;
+	height: 600px;
+	max-width: 795px;
+	border-bottom: 5px solid rgba(147, 75, 75, 0.6);
+	border-right: 5px solid rgba(147, 75, 75, 0.6);
+	border-left: 5px solid rgba(147, 75, 75, 0.6);
+}
+
+#ia0qth {
+	position: relative;
+	width: 175px;
+	height: 30px;
+	font-family: "Open Sans", sans-serif;
+	font-size: 15px;
+	border-radius: 7px;
+	border: 0.5px solid rgba(147, 75, 75, 0.85);
+	box-shadow: 2px 2px 5px 0 rgba(168, 168, 168, 0.5);
+	left: 20px;
+	top: 5px;
+	background-color: rgba(227, 179, 179, 0.5);
+	color: #000000;
+}
+
+#i2vuok {
+	height: 45px;
+	position: relative;
+	top: 25px;
+}
+
+#i32dz7 {
+	padding: 10px;
+	font-family: "Open Sans", sans-serif;
+	font-size: 14px;
+	position: relative;
+	left: 200px;
+	top: -29px;
+	max-width: 595px;
+	color: #d60000;
+}
+
+#ifuk9u {
+	position: relative;
+	width: 175px;
+	height: 30px;
+	font-family: "Open Sans", sans-serif;
+	font-size: 15px;
+	border-radius: 7px;
+	border: 0.5px solid #737373;
+	box-shadow: 2px 2px 5px 0 rgba(168, 168, 168, 0.5);
+	left: 20px;
+	top: 5px;
+	background-color: #efefef;
+	color: #000000;
+}
+
+#ithezd {
+	height: 45px;
+	position: relative;
+	top: 25px;
+}
+
+#i9lqo2 {
+	min-height: 100px;
+}

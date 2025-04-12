@@ -20,6 +20,7 @@ public class ControllerRedirecting extends Controller1
 	 * @param md
 	 * @param message
 	 * @param destinationPage
+	 * @param destinationUrl
 	 * @param code
 	 * @return Request dispatcher to <strong>RedirectingPage.jsp</strong> if the
 	 *         code exists.<br>
@@ -28,7 +29,7 @@ public class ControllerRedirecting extends Controller1
 	 */
 	@GetMapping("/redirecting")
 	public String redirectingPage(Model md, @RequestParam String message, @RequestParam String destinationPage,
-								@RequestParam String code)
+								@RequestParam String destinationUrl, @RequestParam String code)
 	{
 		synchronized (sm.getKeyHolder().getKeyRedirecting())
 		{
@@ -40,6 +41,7 @@ public class ControllerRedirecting extends Controller1
 				DataRedirecting dataRedirecting = new DataRedirecting();
 				dataRedirecting.setMessage(message);
 				dataRedirecting.setDestinationPage(destinationPage);
+				dataRedirecting.setDestinationUrl(destinationUrl);
 
 				md.addAttribute(dataRedirecting);
 

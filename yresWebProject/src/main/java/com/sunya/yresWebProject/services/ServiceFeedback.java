@@ -65,6 +65,7 @@ public class ServiceFeedback
 			try
 			{
 				String refNumber = dao.addFeedback(model);
+				dataFeedback.setRefNumber(refNumber);
 			}
 			catch (SomethingWentWrongException e)
 			{
@@ -74,8 +75,11 @@ public class ServiceFeedback
 			}
 
 			String codeRedirecting = sm.getSessionRedirecting().generateCode();
-
-			return Url.redirecting+"?message=Thank you for reaching out!&destinationPage=Home page&code="+codeRedirecting;
+			
+			return Url.redirecting+"?message=Thank you for reaching out!"
+										+ "&destinationPage=Feedback summary page"
+										+ "&destinationUrl=/feedback/summary?codeSummary="+codeFeedback
+										+ "&code="+codeRedirecting;
 		}
 		else
 		{

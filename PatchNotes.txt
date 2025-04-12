@@ -1,13 +1,15 @@
-Fixed a bug where site logging doesn't work properly for BOT requests.
+1. Added new buttons to home page and welcome page (for upcoming features).
+2. Added a summary page after submitting feedback report (for upcoming features).
 
 ----------
 
-Fixed a bug where site logging doesn't work properly for BOT requests:
+1. Added new buttons to home page and welcome page (for upcoming features):
 
--Site logging, or being called in this project as 'SiteUsage', is a feature
-collecting number of page requested by each user. This feature was initially designed
-to work perfectly with normal human behavior. However, this website has been overwhelmed
-by spam BOTs which have inhuman behavior. As a result, it broke the site logging system
-in some certain circumstances, such as when a BOT accesses a page with a different cookie
-but within the same session which results in null data in the database, and when a BOT
-requests for unexpected URL which results in BOT detection filter not being triggered.
+-Added new buttons, updated HTML and CSS code, and added support to those code changes
+(the new URL patterns are not ready yet, so they are currently mapped to UnderConstruction page).
+
+2. Added a summary page after submitting feedback report (for upcoming features):
+
+-Added a summary page that shows the reference number of the submitted issue. This is the
+preparation for the upcoming feature which will allow users to request for the information
+of the submitted issues by reference number.

@@ -70,7 +70,7 @@ public class ServiceCreateAccount
 
 			String codeRedirecting = sm.getSessionRedirecting().generateCode();
 
-			return Url.redirecting+"?message=Done!&destinationPage=Home page&code="+codeRedirecting;
+			return Url.redirecting+"?message=Done!&destinationPage=Home&destinationUrl=Home&code="+codeRedirecting;
 		}
 		else
 		{

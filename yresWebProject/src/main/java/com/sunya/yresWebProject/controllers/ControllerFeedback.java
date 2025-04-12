@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.sunya.yresWebProject.Page;
 import com.sunya.yresWebProject.PrintError;
 import com.sunya.yresWebProject.Url;
+import com.sunya.yresWebProject.daos.DaoFeedback;
 import com.sunya.yresWebProject.managers.SessionManager;
 import com.sunya.yresWebProject.models.DataFeedback;
 import com.sunya.yresWebProject.models.FormFeedback;
@@ -29,6 +30,10 @@ public class ControllerFeedback extends Controller1
 	@GetMapping("/feedback")
 	public String feedbackPage(Model md, HttpServletRequest request)
 	{
+		DataFeedback dataFeedback = new DataFeedback();
+		dataFeedback.setSubmittedFeedback(false);
+		md.addAttribute(dataFeedback);
+		
 		try
 		{
 			String code = request.getParameter("code"); // The reference code for retrieving data from the session.
@@ -37,15 +42,18 @@ public class ControllerFeedback extends Controller1
 			if (code!=null)
 			{
 				// The data stored in the session is DataFeedback type.
-				DataFeedback dataFeedback = sm.getSessionFeedback().consumeCode(code);
+				dataFeedback = sm.getSessionFeedback().consumeCode(code);
 
 				if (dataFeedback!=null)
+				{
+					dataFeedback.setSubmittedFeedback(false);
 					md.addAttribute(dataFeedback); // It's used for viewing purpose.
+				}
 				else
 					return redirect+Url.feedback+"?"+((errorMessage==null || errorMessage.isBlank()) ? ""
 												: SessionManager.FEEDBACK_ERRORMESSAGE_PRETYPED+"="+errorMessage);
 			}
-
+			
 			return Page.feedback;
 		}
 		catch (Exception e)
@@ -53,8 +61,37 @@ public class ControllerFeedback extends Controller1
 			return redirect + PrintError.toErrorPage(e);
 		}
 	}
-
-
+	
+	@GetMapping("/feedback/summary")
+	public String feedbackSummaryPage(Model md, DaoFeedback dao, HttpServletRequest request)
+	{
+		try
+		{
+			String codeSummary = request.getParameter("codeSummary");
+			
+			if (codeSummary!=null)
+			{
+				DataFeedback dataFeedback = sm.getSessionFeedback().consumeCode(codeSummary);
+				
+				if (dataFeedback != null && dataFeedback.getRefNumber()!=null)
+				{
+					dataFeedback.setSubmittedFeedback(true);
+					md.addAttribute(dataFeedback);
+					return Page.feedback;
+				}
+			}
+			
+			return redirect+Url.feedback;
+		}
+		catch (Exception e)
+		{
+			PrintError.toErrorPage(e);
+		}
+		
+		return Page.feedback;
+	}
+	
+	
 	@Autowired
 	private ServiceFeedback sf;
 

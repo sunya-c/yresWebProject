@@ -14,6 +14,12 @@ public class LibraryConfig
 		return DateTimeFormatter.ofPattern("dd MMM yyyy");
 	}
 	
+	@Bean(name = "backDate")
+	public DateTimeFormatter getFormatDateBack()
+	{
+		return DateTimeFormatter.ofPattern("yyyy-MM-dd");
+	}
+	
 	@Bean(name = "frontDateTime")
 	public DateTimeFormatter getFormatDateTimeFront()
 	{

@@ -1,6 +1,10 @@
 package com.sunya.yresWebProject.controllers;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,9 +46,10 @@ public class ControllerHome extends Controller1
 	@GetMapping("/Home")
 	public String homePage()
 	{
-		System.out.println(
-				sm.getSession().getId().substring(0, 5)+"-"+sm.getSession().getId().substring(sm.getSession().getId().length()-5)
-				+"---"+sm.getKeyHolder().toString().substring(sm.getKeyHolder().toString().indexOf("KeyHolder@")));
+		System.out.println(sm.getSession().getId().substring(0, 5)+"-"
+									+sm.getSession().getId().substring(sm.getSession().getId().length() - 5)+"---"
+									+sm.getKeyHolder().toString().substring(
+																sm.getKeyHolder().toString().indexOf("KeyHolder@")));
 		sm.getSessionLogin().setFromPage("Home");
 
 		session.setAttribute("trial1", !(System.getenv("SERY_DB_URL")==null || System.getenv("SERY_DB_URL").isBlank()));
@@ -52,6 +57,7 @@ public class ControllerHome extends Controller1
 									|| System.getProperty("SERY_DB_URL").isBlank()));
 
 		setWebVersion();
+		setResumeDate();
 
 		try
 		{
@@ -82,6 +88,8 @@ public class ControllerHome extends Controller1
 	@GetMapping("/welcome")
 	public String welcomePage(HttpServletResponse response)
 	{
+		setResumeDate();
+
 		try
 		{
 			setAnnouncement(); // Retrieve data for the announcement at the top of the page from the database
@@ -135,5 +143,28 @@ public class ControllerHome extends Controller1
 	{
 		if (sm.getSessionWeb().getWebVersion()==null || sm.getSessionWeb().getWebVersion().isEmpty())
 			sm.getSessionWeb().setWebVersion(env.getProperty("yres.version"));
+	}
+
+
+	@Autowired
+	@Qualifier("backDate")
+	DateTimeFormatter dateFormatBack;
+	
+	@Autowired
+	@Qualifier("frontDate")
+	DateTimeFormatter dateFormatFront;
+	/**
+	 * If it hasn't done yet, retrieve the <strong>resume date</strong> from the
+	 * database and set it to the session. The views can make use of this text by
+	 * calling this attribute '{@code sessionWeb.resumeDate}'.
+	 */
+	private void setResumeDate()
+	{
+		if (sm.getSessionWeb().getResumeDate()==null || sm.getSessionWeb().getResumeDate().isEmpty())
+		{
+			ModelWebdatainfo model = dao.getWebinfo(DaoWebdatainfo.WEB_RESUME_DATE);
+			String date = LocalDate.parse(model.getValue(), dateFormatBack).format(dateFormatFront);
+			sm.getSessionWeb().setResumeDate(date);
+		}
 	}
 }
