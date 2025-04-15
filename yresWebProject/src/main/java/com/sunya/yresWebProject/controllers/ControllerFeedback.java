@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.sunya.yresWebProject.Page;
 import com.sunya.yresWebProject.PrintError;
@@ -47,11 +48,20 @@ public class ControllerFeedback extends Controller1
 				if (dataFeedback!=null)
 				{
 					dataFeedback.setSubmittedFeedback(false);
-					md.addAttribute(dataFeedback); // It's used for viewing purpose.
+					md.addAttribute(dataFeedback); // for viewing purpose.
 				}
 				else
-					return redirect+Url.feedback+"?"+((errorMessage==null || errorMessage.isBlank()) ? ""
-												: SessionManager.FEEDBACK_ERRORMESSAGE_PRETYPED+"="+errorMessage);
+				{
+					UriComponentsBuilder builder = UriComponentsBuilder.fromUriString("")
+																		.path(Url.feedback);
+					
+					if (errorMessage!=null && !errorMessage.isBlank())
+						builder.queryParam(SessionManager.FEEDBACK_ERRORMESSAGE_PRETYPED, errorMessage);
+					
+					String feedbackUrl = builder.encode().build().toUriString();
+										
+					return redirect + feedbackUrl;
+				}
 			}
 			
 			return Page.feedback;
@@ -73,6 +83,7 @@ public class ControllerFeedback extends Controller1
 			{
 				DataFeedback dataFeedback = sm.getSessionFeedback().consumeCode(codeSummary);
 				
+				// refNumber != null if and only if feedback is submitted successfully in ServiceFeedback
 				if (dataFeedback != null && dataFeedback.getRefNumber()!=null)
 				{
 					dataFeedback.setSubmittedFeedback(true);
@@ -85,10 +96,8 @@ public class ControllerFeedback extends Controller1
 		}
 		catch (Exception e)
 		{
-			PrintError.toErrorPage(e);
+			return redirect + PrintError.toErrorPage(e);
 		}
-		
-		return Page.feedback;
 	}
 	
 	

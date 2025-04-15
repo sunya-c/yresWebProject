@@ -8,11 +8,11 @@
 <title>Yres home</title>
 <link rel="icon" href="/resources/pics/Icon.png" type="image/png">
 <%
-String cssVersion;
+String cssVersion = "?";
 if (System.getenv("SERY_CSS_VERSION")==null || System.getenv("SERY_CSS_VERSION").isBlank())
-	cssVersion = System.getProperty("SERY_CSS_VERSION");
+	cssVersion += System.getProperty("SERY_CSS_VERSION");
 else
-	cssVersion = System.getenv("SERY_CSS_VERSION");
+	cssVersion += System.getenv("SERY_CSS_VERSION");
 %>
 <link rel="stylesheet"
 	href="/resources/css/WelcomePageCss.css<%=cssVersion%>" />

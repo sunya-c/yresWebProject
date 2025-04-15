@@ -7,11 +7,11 @@
 <title>Yres - create account</title>
 <link rel="icon" href="/resources/pics/Icon.png" type="image/png">
 <%
-	String cssVersion;
-	if (System.getenv("SERY_CSS_VERSION")==null || System.getenv("SERY_CSS_VERSION").isBlank())
-		cssVersion = System.getProperty("SERY_CSS_VERSION");
-	else
-		cssVersion = System.getenv("SERY_CSS_VERSION");
+String cssVersion = "?";
+if (System.getenv("SERY_CSS_VERSION")==null || System.getenv("SERY_CSS_VERSION").isBlank())
+	cssVersion += System.getProperty("SERY_CSS_VERSION");
+else
+	cssVersion += System.getenv("SERY_CSS_VERSION");
 %>
 <link rel="stylesheet" href="/resources/css/CreateAccountPageCss.css<%= cssVersion %>" />
 <link href="https://fonts.googleapis.com" rel="preconnect">

@@ -1,15 +1,16 @@
-1. Added new buttons to home page and welcome page (for upcoming features).
-2. Added a summary page after submitting feedback report (for upcoming features).
+1. Added support to the new RestApi page.
+2. Made use of 'UriComponentsBuilder' for constructing URL with path or params.
 
 ----------
 
-1. Added new buttons to home page and welcome page (for upcoming features):
+1. Added support to the new RestApi page:
 
--Added new buttons, updated HTML and CSS code, and added support to those code changes
-(the new URL patterns are not ready yet, so they are currently mapped to UnderConstruction page).
+-Added RestApi page mapped to path '/restApi'.
+-Added functional code related RestApi page.
+-Added FilterSiteUsage9 (page logging) support for RestApi page.
 
-2. Added a summary page after submitting feedback report (for upcoming features):
+2. Made use of 'UriComponentsBuilder' for constructing URL with path or params:
 
--Added a summary page that shows the reference number of the submitted issue. This is the
-preparation for the upcoming feature which will allow users to request for the information
-of the submitted issues by reference number.
+-The main purpose is to utilize the encode() method to encode the unsupported characters
+in the URL. Added this change to the existing code that directly returns URL with parameters
+in the MVC controllers. As of now, 'UriComponentBuilder' will be implemented for complex URL.

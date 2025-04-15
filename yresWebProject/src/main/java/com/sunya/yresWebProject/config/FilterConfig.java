@@ -22,6 +22,7 @@ import com.sunya.yresWebProject.filters.siteUsage.FilterSiteUsage5;
 import com.sunya.yresWebProject.filters.siteUsage.FilterSiteUsage6;
 import com.sunya.yresWebProject.filters.siteUsage.FilterSiteUsage7;
 import com.sunya.yresWebProject.filters.siteUsage.FilterSiteUsage8;
+import com.sunya.yresWebProject.filters.siteUsage.FilterSiteUsage9;
 import com.sunya.yresWebProject.managers.SessionManager;
 
 @Configuration
@@ -55,6 +56,7 @@ public class FilterConfig
 							"/Home",
 							"/personalInformation",
 							"/redirecting",
+							"/restApi",
 //							"/UnderConstructionPage.jsp",
 							"/welcome",
 							"/sCreateAccount",
@@ -80,6 +82,7 @@ public class FilterConfig
 							"/Home",
 							"/personalInformation",
 							"/redirecting",
+							"/restApi",
 //							"/UnderConstructionPage.jsp",
 							"/welcome",
 							"/sCreateAccount",
@@ -203,6 +206,19 @@ public class FilterConfig
 		FilterRegistrationBean<FilterSiteUsage8> bean = new FilterRegistrationBean<>();
 		bean.setFilter(new FilterSiteUsage8(siteUsage));
 		bean.addUrlPatterns("/sDownloadResume");
+		bean.setOrder(4);
+		
+		return bean;
+	}
+	
+	
+	
+	@Bean
+	public FilterRegistrationBean<FilterSiteUsage9> filterUsage9()  // Filter RestApiPage
+	{
+		FilterRegistrationBean<FilterSiteUsage9> bean = new FilterRegistrationBean<>();
+		bean.setFilter(new FilterSiteUsage9(siteUsage));
+		bean.addUrlPatterns("/restApi");
 		bean.setOrder(4);
 		
 		return bean;

@@ -15,10 +15,11 @@ public enum PageUsageinfo
 	PAGE_REDIRECTING		(5, "page_redirecting"),
 	PAGE_UNDERCONSTRUCTION	(6, "page_underconstruction"),
 	PAGE_WELCOME			(7, "page_welcome"),
-	RESUME_DOWNLOAD			(8, "resume_download");
+	RESUME_DOWNLOAD			(8, "resume_download"),
+	PAGE_RESTAPI			(9, "page_restapi");
 
 
-	public final static int numberOfPages = 9;
+	public final static int numberOfPages = 10;
 
 	private int columnOrder;
 	private String columnName;

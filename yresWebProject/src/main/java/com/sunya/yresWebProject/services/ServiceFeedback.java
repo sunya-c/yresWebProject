@@ -2,6 +2,7 @@ package com.sunya.yresWebProject.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.sunya.yresWebProject.Url;
 import com.sunya.yresWebProject.daos.DaoFeedback;
@@ -69,23 +70,37 @@ public class ServiceFeedback
 			}
 			catch (SomethingWentWrongException e)
 			{
-				return Url.feedback+"?"+((formFb.getFeedbackErrorMessage().isBlank()) ? ""
-											: SessionManager.FEEDBACK_ERRORMESSAGE_PRETYPED+"="+formFb.getFeedbackErrorMessage()+"&")
-											+"code="+codeFeedback;
+				UriComponentsBuilder builder = UriComponentsBuilder.fromUriString("")
+																	.path(Url.feedback)
+																	.queryParam("code", codeFeedback);
+				if (!formFb.getFeedbackErrorMessage().isBlank())
+					builder.queryParam(SessionManager.FEEDBACK_ERRORMESSAGE_PRETYPED, formFb.getFeedbackErrorMessage());
+				
+				String feedbackUrl = builder.encode().build().toUriString();
+				return feedbackUrl;
 			}
 
 			String codeRedirecting = sm.getSessionRedirecting().generateCode();
 			
-			return Url.redirecting+"?message=Thank you for reaching out!"
-										+ "&destinationPage=Feedback summary page"
-										+ "&destinationUrl=/feedback/summary?codeSummary="+codeFeedback
-										+ "&code="+codeRedirecting;
+			String redirectingUrl = UriComponentsBuilder.fromUriString("")
+														.path(Url.redirecting)
+														.queryParam("message", "Thank you for reaching out!")
+														.queryParam("destinationPage", "Feedback summary page")
+														.queryParam("destinationUrl", "/feedback/summary?codeSummary="+codeFeedback)
+														.queryParam("code", codeRedirecting)
+														.encode().build().toUriString();
+			return redirectingUrl;
 		}
 		else
 		{
-			return Url.feedback+"?"+((formFb.getFeedbackErrorMessage().isBlank()) ? ""
-										: SessionManager.FEEDBACK_ERRORMESSAGE_PRETYPED+"="+formFb.getFeedbackErrorMessage()+"&")
-										+"code="+codeFeedback;
+			UriComponentsBuilder builder = UriComponentsBuilder.fromUriString("")
+																.path(Url.feedback)
+																.queryParam("code", codeFeedback);
+			if (!formFb.getFeedbackErrorMessage().isBlank())
+				builder.queryParam(SessionManager.FEEDBACK_ERRORMESSAGE_PRETYPED, formFb.getFeedbackErrorMessage());
+			
+			String feedbackUrl = builder.encode().build().toUriString();
+			return feedbackUrl;
 		}
 	}
 

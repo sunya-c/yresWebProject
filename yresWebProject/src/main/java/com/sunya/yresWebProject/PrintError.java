@@ -6,6 +6,8 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.TimeZone;
 
+import org.springframework.web.util.UriComponentsBuilder;
+
 import jakarta.servlet.http.HttpServletResponse;
 
 public class PrintError
@@ -46,7 +48,7 @@ public class PrintError
 	 *         '{@code ?errorDescription=error message}' (so in total, you'll get
 	 *         'errorPageName?errorDescription=errorMessage'). It can then be
 	 *         returned in Spring MVC <strong>Controller</strong> to redirect to the
-	 *         <strong>error page</strong>, noting that 'redirect:' has to be
+	 *         <strong>error page</strong>, noting that 'redirect:/' has to be
 	 *         mentioned explicitly, as this method returns only the name of the
 	 *         error page.
 	 * @throws IOException
@@ -54,8 +56,13 @@ public class PrintError
 	public static String toErrorPage(Exception e)
 	{
 		System.out.println("PrintError: "+e);
-
-		return Url.yresError+"?errorDescription="+e.toString();
+		
+		String yresErrorPath = UriComponentsBuilder.fromUriString("")
+												.path(Url.yresError)
+												.queryParam("errorDescription", e.toString())
+												.encode().build().toUriString();
+		
+		return yresErrorPath;
 	}
 
 
@@ -76,7 +83,12 @@ public class PrintError
 	public static void toErrorPage(HttpServletResponse response, Exception e) throws IOException
 	{
 		System.out.println("PrintError: "+e);
-
-		response.sendRedirect(Url.yresError+"?errorDescription="+e.toString());
+		
+		String yresErrorPath = UriComponentsBuilder.fromUriString("")
+									.path(Url.yresError)
+									.queryParam("errorDescription", e.toString())
+									.encode().build().toUriString();
+		
+		response.sendRedirect("/"+yresErrorPath);
 	}
 }

@@ -41,6 +41,7 @@ public class DaoSiteUsage
 	private final String COLUMN_PAGE_UNDERCONSTRUCTION = "page_underconstruction";
 	private final String COLUMN_PAGE_WELCOME = "page_welcome";
 	private final String COLUMN_RESUME_DOWNLOAD = "resume_download";
+	private final String COLUMN_PAGE_RESTAPI = "page_restapi";
 	// end -- columnName
 
 	@Autowired
@@ -139,6 +140,7 @@ public class DaoSiteUsage
 				model.setUsageValue(rs.getInt(COLUMN_PAGE_UNDERCONSTRUCTION), PageUsageinfo.PAGE_UNDERCONSTRUCTION);
 				model.setUsageValue(rs.getInt(COLUMN_PAGE_WELCOME), PageUsageinfo.PAGE_WELCOME);
 				model.setUsageValue(rs.getInt(COLUMN_RESUME_DOWNLOAD), PageUsageinfo.RESUME_DOWNLOAD);
+				model.setUsageValue(rs.getInt(COLUMN_PAGE_RESTAPI), PageUsageinfo.PAGE_RESTAPI);
 				return model;
 			}
 			else

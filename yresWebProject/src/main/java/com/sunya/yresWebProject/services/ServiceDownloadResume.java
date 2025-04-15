@@ -31,9 +31,13 @@ public class ServiceDownloadResume
 			// Set headers for the response
 			if (resource.exists())
 			{
-				return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"ResumeC.pdf\"")
-											.header(HttpHeaders.CONTENT_TYPE, "application/pdf")
-											.body(resource);
+				long contentLength = resource.contentLength();
+				
+				return ResponseEntity.ok()
+										.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"ResumeC.pdf\"")
+										.header(HttpHeaders.CONTENT_TYPE, "application/pdf")
+										.header(HttpHeaders.CONTENT_LENGTH, String.valueOf(contentLength))
+										.body(resource);
 			}
 			else
 			{
