@@ -1,16 +1,10 @@
-1. Added support to the new RestApi page.
-2. Made use of 'UriComponentsBuilder' for constructing URL with path or params.
+Data in PersonalInformation page is now obtained from the database.
 
 ----------
 
-1. Added support to the new RestApi page:
+Data in PersonalInformation page is now obtained from the database:
 
--Added RestApi page mapped to path '/restApi'.
--Added functional code related RestApi page.
--Added FilterSiteUsage9 (page logging) support for RestApi page.
-
-2. Made use of 'UriComponentsBuilder' for constructing URL with path or params:
-
--The main purpose is to utilize the encode() method to encode the unsupported characters
-in the URL. Added this change to the existing code that directly returns URL with parameters
-in the MVC controllers. As of now, 'UriComponentBuilder' will be implemented for complex URL.
+-Added 'DaoPersinfo' class for database connection.
+-Added 'ModelPersinfo' class for storing data.
+-Deleted 'PojoPersonalInformation' class (data used to be obtained from this class).
+-Fixed miscellaneous things which were broken after this change.

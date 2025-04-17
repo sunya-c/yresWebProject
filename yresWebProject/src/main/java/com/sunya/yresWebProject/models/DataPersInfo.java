@@ -17,19 +17,19 @@ public class DataPersInfo
 	private String drivingLicense;
 	private String engineeringLicense;
 	
-	private ArrayList<String[]> listLanguage = new ArrayList<>();  // { {Language1, Proficiency1}, {...2, ...2} }
+	private ArrayList<ModelPersinfo.Language> listLanguage = new ArrayList<>();  // { {Language1, Proficiency1}, {...2, ...2} }
 	
-	private ArrayList<String[]> listProgrammingLanguage = new ArrayList<>();  // { {Language1, Proficiency1}, {...2, ...2} }
+	private ArrayList<ModelPersinfo.Language> listProgrammingLanguage = new ArrayList<>();  // { {Language1, Proficiency1}, {...2, ...2} }
 	
 	private String address;
 	private String phoneNumber;
 	private String email;
 	private String lineId;
 	
-	private ArrayList<String[]> listEducation = new ArrayList<>();  // {Period, Title, SchoolName, Details}
+	private ArrayList<ModelPersinfo.Education> listEducation = new ArrayList<>();  // {Period, Title, SchoolName, Details}
 	
 	// Pattern for TU-GET
-	private ArrayList<String[]> listEnglishTest = new ArrayList<>();  // {TestName, score1, score2, score3, scoreTotal}
+	private ArrayList<ModelPersinfo.EnglishTest> listEnglishTest = new ArrayList<>();  // {TestName, score1, score2, score3, scoreTotal}
 	
 	
 	
@@ -113,22 +113,22 @@ public class DataPersInfo
 		this.engineeringLicense = engineeringLicense;
 	}
 
-	public ArrayList<String[]> getListLanguage()
+	public ArrayList<ModelPersinfo.Language> getListLanguage()
 	{
 		return listLanguage;
 	}
 
-	public void setListLanguage(ArrayList<String[]> listLanguage)
+	public void setListLanguage(ArrayList<ModelPersinfo.Language> listLanguage)
 	{
 		this.listLanguage = listLanguage;
 	}
 
-	public ArrayList<String[]> getListProgrammingLanguage()
+	public ArrayList<ModelPersinfo.Language> getListProgrammingLanguage()
 	{
 		return listProgrammingLanguage;
 	}
 
-	public void setListProgrammingLanguage(ArrayList<String[]> listProgrammingLanguage)
+	public void setListProgrammingLanguage(ArrayList<ModelPersinfo.Language> listProgrammingLanguage)
 	{
 		this.listProgrammingLanguage = listProgrammingLanguage;
 	}
@@ -173,22 +173,22 @@ public class DataPersInfo
 		this.lineId = lineId;
 	}
 
-	public ArrayList<String[]> getListEducation()
+	public ArrayList<ModelPersinfo.Education> getListEducation()
 	{
 		return listEducation;
 	}
 
-	public void setListEducation(ArrayList<String[]> listEducation)
+	public void setListEducation(ArrayList<ModelPersinfo.Education> listEducation)
 	{
 		this.listEducation = listEducation;
 	}
 
-	public ArrayList<String[]> getListEnglishTest()
+	public ArrayList<ModelPersinfo.EnglishTest> getListEnglishTest()
 	{
 		return listEnglishTest;
 	}
 
-	public void setListEnglishTest(ArrayList<String[]> listEnglishTest)
+	public void setListEnglishTest(ArrayList<ModelPersinfo.EnglishTest> listEnglishTest)
 	{
 		this.listEnglishTest = listEnglishTest;
 	}

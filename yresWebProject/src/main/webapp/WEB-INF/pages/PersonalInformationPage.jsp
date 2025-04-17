@@ -97,25 +97,19 @@ else
 					request.setAttribute("counter", 0);
 					%>
 					<c:forEach items="${dataPersInfo.listLanguage}" var="language">
-						<c:forEach items="${language}" var="langAndProf">
-							<c:if test="${counter % 2 == 0}">
-								${langAndProf}
-								<br>
-							</c:if>
-							<c:if test="${counter % 2 == 1}">
-								(${langAndProf})
-								<c:if test="${counter != 3}">
-									<!-- , -->
-									<br>
-									<br>
-								</c:if>
-							</c:if>
-							<%
-							int count = (int)request.getAttribute("counter");
-							count += 1;
-							request.setAttribute("counter", count);
-							%>
-						</c:forEach>
+						${language.language}
+						<br>
+						(${language.proficiency})
+						<c:if test="${counter != 1}">
+							<!-- , -->
+							<br>
+							<br>
+						</c:if>
+						<%
+						int count = (int)request.getAttribute("counter");
+						count += 1;
+						request.setAttribute("counter", count);
+						%>
 					</c:forEach>
 					<%
 					request.setAttribute("counter", 0);
@@ -134,25 +128,19 @@ else
 					<!-- Programming Language -->
 					<c:forEach items="${dataPersInfo.listProgrammingLanguage}"
 						var="programmingLanguage">
-						<c:forEach items="${programmingLanguage}" var="langAndProf">
-							<c:if test="${counter % 2 == 0}">
-								${langAndProf}
-								<br>
-							</c:if>
-							<c:if test="${counter % 2 == 1}">
-								(${langAndProf})
-								<c:if test="${counter != 7}">
-									<!-- , -->
-									<br>
-									<br>
-								</c:if>
-							</c:if>
-							<%
-							int count = (int)request.getAttribute("counter");
-							count += 1;
-							request.setAttribute("counter", count);
-							%>
-						</c:forEach>
+						${programmingLanguage.language}
+						<br>
+						(${programmingLanguage.proficiency})
+						<c:if test="${counter != 3}">
+							<!-- , -->
+							<br>
+							<br>
+						</c:if>
+						<%
+						int count = (int)request.getAttribute("counter");
+						count += 1;
+						request.setAttribute("counter", count);
+						%>
 					</c:forEach>
 					<%
 					request.setAttribute("counter", 0);

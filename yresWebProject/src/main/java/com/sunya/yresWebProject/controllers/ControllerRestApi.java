@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sunya.yresWebProject.Page;
 import com.sunya.yresWebProject.exceptions.SomethingWentWrongException;
 import com.sunya.yresWebProject.models.DataRestApi;
