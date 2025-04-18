@@ -5,20 +5,19 @@ import java.net.URISyntaxException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.RequestEntity;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.sunya.yresWebProject.Page;
 import com.sunya.yresWebProject.exceptions.SomethingWentWrongException;
 import com.sunya.yresWebProject.models.DataRestApi;
+import com.sunya.yresWebProject.rest.exceptions.YresFileNotFound404Exception;
+import com.sunya.yresWebProject.rest.exceptions.YresMethodNotAllowed405Exception;
+import com.sunya.yresWebProject.services.ServiceSendRequest;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -43,14 +42,22 @@ public class ControllerRestApi extends Controller1
 		return Page.restApi;
 	}
 	
+	@Autowired
+	ServiceSendRequest ssr;
+	
 	@GetMapping("/restApi/sSendRequest")
 	@ResponseBody
-	public ResponseEntity<String> sSendRequest(HttpServletRequest request) throws URISyntaxException, SomethingWentWrongException
+	public Object sSendRequest(HttpServletRequest request) throws URISyntaxException, SomethingWentWrongException, YresFileNotFound404Exception, YresMethodNotAllowed405Exception
 	{
 		String restMethod = request.getParameter("restMethod");
 		String restUrl = request.getParameter("restUrl");
+		if (restMethod==null)
+			throw new SomethingWentWrongException("<br>Method cannot be null");
+		if (restUrl==null)
+			throw new SomethingWentWrongException("<br>URL cannot be null");
+		
 		restUrl = restUrl.replace("{", "%7B").replace("}", "%7D");
-
+		
 		URI url;
 		try
 		{
@@ -70,23 +77,20 @@ public class ControllerRestApi extends Controller1
 				throw new URISyntaxException(restUrl, "<br>Please check your URL");
 			}
 		}
-		
-		System.out.println(url.getAuthority()+"  &&&  "+env.getProperty("SERY_WEB_DOMAIN"));
-		String domain = url.getAuthority();
-		if (domain==null || !domain.equals(env.getProperty("SERY_WEB_DOMAIN")))
-		{
-			throw new SomethingWentWrongException("<br>Domain name not allowed: "+restUrl);
-		}
+		String protocol = (url.getScheme()==null)? null : url.getScheme().toLowerCase();
+		String domain = (url.getAuthority()==null)? null : url.getAuthority().toLowerCase();
+		String path = url.getPath();
+		System.out.println(" => "+restMethod+" & "+protocol+" & "+domain+" & "+path+" &&& "+env.getProperty("SERY_WEB_DOMAIN"));
+		if (protocol==null || domain==null || !protocol.equals("http") || !domain.equals(env.getProperty("SERY_WEB_DOMAIN")))
+			throw new SomethingWentWrongException("<br>URL not allowed: "+restUrl);
 		
 		HttpMethod method = HttpMethod.valueOf(restMethod.toUpperCase());
 		System.out.println("rest URL : "+url.toString()+"  &&&  rest Method : "+method.name());
 		
-		RequestEntity<Void> requestEntity = RequestEntity.method(method, url)
-														.header(HttpHeaders.ACCEPT, "application/xml, application/json")
-														.header("fromTryMe", "true")
-														.build();
+		request.setAttribute("tryMePath", path);
 		
-		RestTemplate restTemplate = new RestTemplate();
-		return restTemplate.exchange(requestEntity, String.class);
+		return ssr.sSendRequest(method, path, request);
 	}
 }
+
+

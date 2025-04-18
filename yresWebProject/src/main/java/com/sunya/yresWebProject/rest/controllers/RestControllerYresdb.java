@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sunya.yresWebProject.rest.exceptions.yresFileNotFound404Exception;
+import com.sunya.yresWebProject.rest.exceptions.YresFileNotFound404Exception;
 import com.sunya.yresWebProject.rest.repositories.RepoFeedback;
 import com.sunya.yresWebProject.rest.repositories.RepoIPBlacklist;
 import com.sunya.yresWebProject.rest.repositories.RepoLoginInfo;
@@ -42,13 +42,13 @@ public class RestControllerYresdb
 		}
 		
 		@GetMapping(path = "/{username}")
-		public ModelLoginInfo getUser(@PathVariable String username) throws yresFileNotFound404Exception
+		public ModelLoginInfo getUser(@PathVariable String username) throws YresFileNotFound404Exception
 		{
 			ModelLoginInfo user = repoLogin.getUser(username);
 			if (user!=null)
 				return user;
 			else
-				throw new yresFileNotFound404Exception();
+				throw new YresFileNotFound404Exception();
 		}
 	}
 	
@@ -60,13 +60,13 @@ public class RestControllerYresdb
 		RepoFeedback repoFeedback;
 		
 		@GetMapping(path = "/{refNumber}")
-		public ModelFeedback getFeedback(@PathVariable String refNumber) throws yresFileNotFound404Exception
+		public ModelFeedback getFeedback(@PathVariable String refNumber) throws YresFileNotFound404Exception
 		{
 			ModelFeedback feedback = repoFeedback.getFeedback(refNumber);
 			if (feedback!=null)
 				return feedback;
 			else
-				throw new yresFileNotFound404Exception();
+				throw new YresFileNotFound404Exception();
 		}
 	}
 	
@@ -78,23 +78,23 @@ public class RestControllerYresdb
 		RepoPersinfo repoPersinfo;
 		
 		@GetMapping({"", "/"})
-		public ModelPersinfo getPersinfo() throws yresFileNotFound404Exception
+		public ModelPersinfo getPersinfo() throws YresFileNotFound404Exception
 		{
 			ModelPersinfo persinfo = repoPersinfo.getPersinfoMinimal(1);
 			if (persinfo!=null)
 				return persinfo;
 			else
-				throw new yresFileNotFound404Exception();
+				throw new YresFileNotFound404Exception();
 		}
 		
 		@GetMapping("/fullversion")
-		public ModelPersinfo getPersinfoFull() throws yresFileNotFound404Exception
+		public ModelPersinfo getPersinfoFull() throws YresFileNotFound404Exception
 		{
 			ModelPersinfo persinfo = repoPersinfo.getPersinfoFullVersion(1);
 			if (persinfo!=null)
 				return persinfo;
 			else
-				throw new yresFileNotFound404Exception();
+				throw new YresFileNotFound404Exception();
 		}
 	}
 	
@@ -112,9 +112,25 @@ public class RestControllerYresdb
 		}
 		
 		@GetMapping("/{ipAddress}")
-		public boolean doesExistIPBlacklist(@PathVariable String ipAddress)
+		public DoesExistIPBlacklistObj doesExistIPBlacklist(@PathVariable String ipAddress)
 		{
-			return repoIP.isBlacklisted(ipAddress);
+			DoesExistIPBlacklistObj obj = new DoesExistIPBlacklistObj();
+			obj.setIsBlacklisted(repoIP.isBlacklisted(ipAddress));
+			return obj;
+		}
+		
+		public class DoesExistIPBlacklistObj
+		{
+			private boolean isBlacklisted;
+			
+			public boolean isIsBlacklisted()
+			{
+				return isBlacklisted;
+			}
+			public void setIsBlacklisted(boolean isBlacklisted)
+			{
+				this.isBlacklisted = isBlacklisted;
+			}
 		}
 	}
 }

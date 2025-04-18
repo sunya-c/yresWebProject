@@ -1,10 +1,14 @@
-Data in PersonalInformation page is now obtained from the database.
+Fixed 'TryMe!' form not working on AWS server.
 
 ----------
 
-Data in PersonalInformation page is now obtained from the database:
+Fixed 'TryMe!' form not working on AWS server:
 
--Added 'DaoPersinfo' class for database connection.
--Added 'ModelPersinfo' class for storing data.
--Deleted 'PojoPersonalInformation' class (data used to be obtained from this class).
--Fixed miscellaneous things which were broken after this change.
+-Initially, 'TryMe!' form on RestApi page sent a real REST request,
+with the help of RestTemplate, to the REST controller located within
+the same domain name (nested requests). However, it was somehow broken
+when running on AWS elastic beanstalk. The cause is still unknown.
+I believe it could be either AWS not able to handle nested requests or
+some timeout configurations not properly configured. Accordingly, it's
+not sending a real REST request anymore, it will internally call the
+methods in the REST controller instead.

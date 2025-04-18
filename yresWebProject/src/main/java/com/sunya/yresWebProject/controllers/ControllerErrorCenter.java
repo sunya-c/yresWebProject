@@ -6,7 +6,7 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.sunya.yresWebProject.Url;
-import com.sunya.yresWebProject.rest.exceptions.yresFileNotFound404Exception;
+import com.sunya.yresWebProject.rest.exceptions.YresFileNotFound404Exception;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -16,7 +16,7 @@ public class ControllerErrorCenter extends Controller1
 {
 	
 	@ExceptionHandler(exception = NoHandlerFoundException.class)
-	public String fileNotFound404(Exception e, HttpServletRequest request, HttpServletResponse response) throws yresFileNotFound404Exception
+	public String fileNotFound404(Exception e, HttpServletRequest request, HttpServletResponse response) throws YresFileNotFound404Exception
 	{
 		System.out.println("in no handler found handler");
 		System.out.println("PrintError: "+e);

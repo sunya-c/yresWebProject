@@ -69,7 +69,10 @@ public class FilterSiteUsage
 			if (refNumber!=null)
 			{
 				if (!dao.doesExistRefNumber(refNumber))
+				{
+					System.out.println("refNumber doesn't exists : dao.doesExistRefNumber => false");
 					refNumber = null;
+				}
 				else
 				{
 					String usageIP = dao.getIP(refNumber);

@@ -14,7 +14,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
-import com.sunya.yresWebProject.rest.exceptions.yresFileNotFound404Exception;
+import com.sunya.yresWebProject.rest.exceptions.YresFileNotFound404Exception;
+import com.sunya.yresWebProject.rest.exceptions.YresMethodNotAllowed405Exception;
 import com.sunya.yresWebProject.rest.repositories.models.ModelErrorReport;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -37,21 +38,16 @@ public class RestControllerErrorCenter
 		error.setTimestamp(LocalDateTime.now().minus(tzone.getRawOffset(), ChronoUnit.MILLIS).plusHours(7).format(format));
 		error.setStatus(status.value());
 		error.setError(status.getReasonPhrase());
-		error.setPath(request.getRequestURI());
 		
-		String fromTryMe = request.getHeader("fromTryMe");
-		if (fromTryMe != null && fromTryMe.equals("true"))
-		{
-			response.setStatus(200);
-		}
+		String tryMePath = (String)request.getAttribute("tryMePath");
+		if (tryMePath != null)
+			error.setPath(tryMePath);
 		else
-		{
-			response.setStatus(status.value());
-		}
+			error.setPath(request.getRequestURI());
 		return error;
 	}
 	
-	@ExceptionHandler(exception = {yresFileNotFound404Exception.class, NoHandlerFoundException.class})
+	@ExceptionHandler(exception = {YresFileNotFound404Exception.class, NoHandlerFoundException.class})
 //	@ResponseStatus(code = HttpStatus.NOT_FOUND)
 	public ModelErrorReport fileNotFound404(HttpServletRequest request, HttpServletResponse response) throws IOException
 	{
@@ -60,7 +56,7 @@ public class RestControllerErrorCenter
 		return commonTask(status, request, response);
 	}
 	
-	@ExceptionHandler(exception = {HttpRequestMethodNotSupportedException.class})
+	@ExceptionHandler(exception = {YresMethodNotAllowed405Exception.class, HttpRequestMethodNotSupportedException.class})
 //	@ResponseStatus(code = HttpStatus.METHOD_NOT_ALLOWED)
 	public ModelErrorReport methodNotAllowed405(HttpServletRequest request, HttpServletResponse response) throws IOException
 	{

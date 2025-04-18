@@ -68,7 +68,7 @@ else
 			You can try REST by adding '<span id="ir0id7">/api/rest/available_path</span>'
 			to the end of this website's domain name where you replace '<span
 				id="idc5lk">available_path</span>' with the available options
-			provided below. For example, '<span id="i6efs5">${dataRestApi.domainName}.com/api/rest/persinfo</span>'
+			provided below. For example, '<span id="i6efs5">${dataRestApi.domainName}/api/rest/persinfo</span>'
 			will return my personal information. You would expect the results to
 			be in either .xml or .json format. Feel free to try any URL below
 			with 'Try me!' form.
