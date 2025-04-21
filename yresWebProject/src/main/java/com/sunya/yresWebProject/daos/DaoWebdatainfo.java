@@ -20,6 +20,7 @@ public class DaoWebdatainfo
 	private final String COLUMN_VALUE = "value_webinfo";
 
 	public static final String WEB_NOTE1 = "WEB_NOTE1";
+	public static final String WEB_RESUME_DATE = "WEB_resumeDate";
 
 	@Autowired
 	private JdbcTemplate template;

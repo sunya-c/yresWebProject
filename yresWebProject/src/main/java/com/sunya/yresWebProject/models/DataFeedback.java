@@ -12,6 +12,8 @@ public class DataFeedback
 	private String titlePreTyped = null;
 	private String detailPreTyped = null;
 	private String errorMessagePreTyped = null;
+	private boolean submittedFeedback = false;
+	private String refNumber = null;
 
 
 	public String getTitleErr()
@@ -84,4 +86,29 @@ public class DataFeedback
 	{
 		this.errorMessagePreTyped = errorMessagePreTyped;
 	}
+
+
+	public boolean isSubmittedFeedback()
+	{
+		return submittedFeedback;
+	}
+
+
+	public void setSubmittedFeedback(boolean submittedFeedback)
+	{
+		this.submittedFeedback = submittedFeedback;
+	}
+
+
+	public String getRefNumber()
+	{
+		return refNumber;
+	}
+
+
+	public void setRefNumber(String refNumber)
+	{
+		this.refNumber = refNumber;
+	}
+	
 }

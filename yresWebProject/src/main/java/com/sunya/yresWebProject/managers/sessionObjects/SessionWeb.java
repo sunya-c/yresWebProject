@@ -11,6 +11,7 @@ public class SessionWeb
 {
 	private String webNote1 = null;
 	private String webVersion = null;
+	private String resumeDate = null;
 
 
 	public String getWebNote1()
@@ -34,5 +35,17 @@ public class SessionWeb
 	public void setWebVersion(String webVersion)
 	{
 		this.webVersion = webVersion;
+	}
+
+
+	public String getResumeDate()
+	{
+		return resumeDate;
+	}
+
+
+	public void setResumeDate(String resumeDate)
+	{
+		this.resumeDate = resumeDate;
 	}
 }

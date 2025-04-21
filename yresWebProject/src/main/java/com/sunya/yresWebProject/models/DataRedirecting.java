@@ -8,6 +8,7 @@ public class DataRedirecting
 {
 	private String message;
 	private String destinationPage;
+	private String destinationUrl;
 	
 	
 	public String getMessage()
@@ -25,5 +26,13 @@ public class DataRedirecting
 	public void setDestinationPage(String destinationPage)
 	{
 		this.destinationPage = destinationPage;
+	}
+	public String getDestinationUrl()
+	{
+		return destinationUrl;
+	}
+	public void setDestinationUrl(String destinationUrl)
+	{
+		this.destinationUrl = destinationUrl;
 	}
 }

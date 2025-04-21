@@ -11,5 +11,6 @@ public class Url
 	public static final String home = "Home";
 	public static final String persInfo = "personalInformation";
 	public static final String redirecting = "redirecting";
+	public static final String restApi = "restApi";
 	public static final String welcome = "welcome";
 }

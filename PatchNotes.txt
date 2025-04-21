@@ -1,13 +1,14 @@
-Fixed a bug where site logging doesn't work properly for BOT requests.
+Fixed 'TryMe!' form not working on AWS server.
 
 ----------
 
-Fixed a bug where site logging doesn't work properly for BOT requests:
+Fixed 'TryMe!' form not working on AWS server:
 
--Site logging, or being called in this project as 'SiteUsage', is a feature
-collecting number of page requested by each user. This feature was initially designed
-to work perfectly with normal human behavior. However, this website has been overwhelmed
-by spam BOTs which have inhuman behavior. As a result, it broke the site logging system
-in some certain circumstances, such as when a BOT accesses a page with a different cookie
-but within the same session which results in null data in the database, and when a BOT
-requests for unexpected URL which results in BOT detection filter not being triggered.
+-Initially, 'TryMe!' form on RestApi page sent a real REST request,
+with the help of RestTemplate, to the REST controller located within
+the same domain name (nested requests). However, it was somehow broken
+when running on AWS elastic beanstalk. The cause is still unknown.
+I believe it could be either AWS not able to handle nested requests or
+some timeout configurations not properly configured. Accordingly, it's
+not sending a real REST request anymore, it will internally call the
+methods in the REST controller instead.

@@ -5,16 +5,16 @@
 <head>
 <meta charset="UTF-8">
 <title>Loading...</title>
-<link rel="icon" href="resources/pics/Icon.png" type="image/png">
+<link rel="icon" href="/resources/pics/Icon.png" type="image/png">
 <%
-	String cssVersion;
-	if (System.getenv("SERY_CSS_VERSION")==null || System.getenv("SERY_CSS_VERSION").isBlank())
-		cssVersion = System.getProperty("SERY_CSS_VERSION");
-	else
-		cssVersion = System.getenv("SERY_CSS_VERSION");
+String cssVersion = "?";
+if (System.getenv("SERY_CSS_VERSION")==null || System.getenv("SERY_CSS_VERSION").isBlank())
+	cssVersion += System.getProperty("SERY_CSS_VERSION");
+else
+	cssVersion += System.getenv("SERY_CSS_VERSION");
 %>
 <link rel="stylesheet"
-	href="resources/css/PreHomePageCss.css" />
+	href="/resources/css/PreHomePageCss.css" />
 <link href="https://fonts.googleapis.com" rel="preconnect">
 <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
 <link
@@ -23,7 +23,7 @@
 <script type="text/javascript">
 	// Redirect to ServletRedirecting after a delay
 	setTimeout(function() {
-		window.location.href = "Home"; <!-- TODO: change to el for dynamic redirecting -->
+		window.location.href = "/Home"; <!-- TODO: change to el for dynamic redirecting -->
 	}, 2000); // 2000 milliseconds = 2.0 seconds
 </script>
 </head>

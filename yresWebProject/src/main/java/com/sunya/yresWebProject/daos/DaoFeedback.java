@@ -112,7 +112,7 @@ public class DaoFeedback
 	 * @return <strong>true</strong> ~ if the given refNumber exists in the database.<br>
 	 *         <strong>false</strong> ~ if otherwise.
 	 */
-	private boolean doesExistRefNumber(String refNumber)
+	public boolean doesExistRefNumber(String refNumber)
 	{
 		String query = "SELECT "+COLUMN_REF_NUMBER+" FROM "+TABLE_NAME+" WHERE "+COLUMN_REF_NUMBER+" = ?";
 		

@@ -69,7 +69,10 @@ public class FilterSiteUsage
 			if (refNumber!=null)
 			{
 				if (!dao.doesExistRefNumber(refNumber))
+				{
+					System.out.println("refNumber doesn't exists : dao.doesExistRefNumber => false");
 					refNumber = null;
+				}
 				else
 				{
 					String usageIP = dao.getIP(refNumber);
@@ -110,7 +113,7 @@ public class FilterSiteUsage
 		
 		if (whichPage.getColumnOrder()==1 || whichPage.getColumnOrder()==2 || whichPage.getColumnOrder()==3)
 		{
-			System.out.println("addIPToUsageinfo - inside first if : ");
+			System.out.println("addIPToUsageinfo - inside first if :");
 			if (ip!=null)
 			{
 				String dbIP = dao.getIP(resultRefNumber);

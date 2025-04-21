@@ -8,15 +8,16 @@
 <head>
 <meta charset="UTF-8">
 <title>Yres - personal information</title>
-<link rel="icon" href="resources/pics/Icon.png" type="image/png">
+<link rel="icon" href="/resources/pics/Icon.png" type="image/png">
 <%
-	String cssVersion;
-	if (System.getenv("SERY_CSS_VERSION")==null || System.getenv("SERY_CSS_VERSION").isBlank())
-		cssVersion = System.getProperty("SERY_CSS_VERSION");
-	else
-		cssVersion = System.getenv("SERY_CSS_VERSION");
+String cssVersion = "?";
+if (System.getenv("SERY_CSS_VERSION")==null || System.getenv("SERY_CSS_VERSION").isBlank())
+	cssVersion += System.getProperty("SERY_CSS_VERSION");
+else
+	cssVersion += System.getenv("SERY_CSS_VERSION");
 %>
-<link rel="stylesheet" href="resources/css/PersonalInformationPageCss.css<%= cssVersion %>" />
+<link rel="stylesheet"
+	href="/resources/css/PersonalInformationPageCss.css<%=cssVersion%>" />
 <link href="https://fonts.googleapis.com" rel="preconnect">
 <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
 <link
@@ -25,42 +26,41 @@
 </head>
 
 <body id="io13me">
-
-	<!-- Page content -->
 	<div id="i1lfxj">
-		<form method="get" id="iop9qh" action="Home">
+		<form method="get" id="iop9qh" action="/Home">
 			<button type="submit" id="iqm8le">Home</button>
 		</form>
 		<c:if test="${sessionLogin.loggedIn == false}">
-			<div id="inxnwh">
-				<form method="post" action="sLogin" id="ivnm6i">
-					<div id="isl8bj">
-						<label id="i94q24">Username<br /></label><input type="text"
+			<div id="imcix1">
+				<form method="post" action="/sLogin" id="in9rom">
+					<div id="ikd8rh">
+						<label id="i9zt1g">Username<br /></label><input type="text"
 							placeholder="Enter your username" name="username"
-							value="${sessionLogin.usernamePreTyped}" id="i7vzyb" /><label id="i1bciw"><br>${sessionLogin.usernameErr}<br /></label>
+							value="${sessionLogin.usernamePreTyped}" id="iw4bk5" /><label
+							id="icrvof"><br>${sessionLogin.usernameErr}<br /></label>
 					</div>
-					<div id="i7ri3j">
-						<label id="i10bjd">Password<br /></label><input type="password"
-							placeholder="Enter your password" name="password" id="i1tpzs" /><label
-							id="ibl3w1"><br>${sessionLogin.passwordErr}<br /></label>
+					<div id="iriilk">
+						<label id="i0vh8l">Password<br /></label><input type="password"
+							placeholder="Enter your password" name="password" id="i3zobi" /><label
+							id="igf1k3"><br>${sessionLogin.passwordErr}<br /></label>
 					</div>
-					<button type="submit" id="i2ckyv">Log in</button>
+					<button type="submit" id="ilwube">Log in</button>
 				</form>
-				<form method="get" action="createAccount" id="iwbnu1">
-					<button type="submit" id="im72si">Create an account</button>
+				<form method="get" action="/createAccount" id="idoqc1">
+					<button type="submit" id="itftp3">Create an account</button>
 				</form>
 			</div>
 		</c:if>
 		<c:if test="${sessionLogin.loggedIn == true}">
 			<div id="ic3x5g">
-				<form method="post" action="sLogout" id="iuj89x">
+				<form method="post" action="/sLogout" id="iuj89x">
 					<label id="iv62jr">Welcome ${sessionLogin.username},<br /></label><label
 						id="irlj8d">You're logged in<br /></label>
 					<button type="submit" id="i5ywx4">Log out</button>
 				</form>
 			</div>
 		</c:if>
-		<form method="get" action="feedback" id="ir5ivx">
+		<form method="get" action="/feedback" id="ir5ivx">
 			<button type="submit" id="itoc01">Give feedback / bug report</button>
 		</form>
 	</div>
@@ -97,25 +97,19 @@
 					request.setAttribute("counter", 0);
 					%>
 					<c:forEach items="${dataPersInfo.listLanguage}" var="language">
-						<c:forEach items="${language}" var="langAndProf">
-							<c:if test="${counter % 2 == 0}">
-								${langAndProf}
-								<br>
-							</c:if>
-							<c:if test="${counter % 2 == 1}">
-								(${langAndProf})
-								<c:if test="${counter != 3}">
-									<!-- , -->
-									<br>
-									<br>
-								</c:if>
-							</c:if>
-							<%
-							int count = (int) request.getAttribute("counter");
-							count += 1;
-							request.setAttribute("counter", count);
-							%>
-						</c:forEach>
+						${language.language}
+						<br>
+						(${language.proficiency})
+						<c:if test="${counter != 1}">
+							<!-- , -->
+							<br>
+							<br>
+						</c:if>
+						<%
+						int count = (int)request.getAttribute("counter");
+						count += 1;
+						request.setAttribute("counter", count);
+						%>
 					</c:forEach>
 					<%
 					request.setAttribute("counter", 0);
@@ -134,25 +128,19 @@
 					<!-- Programming Language -->
 					<c:forEach items="${dataPersInfo.listProgrammingLanguage}"
 						var="programmingLanguage">
-						<c:forEach items="${programmingLanguage}" var="langAndProf">
-							<c:if test="${counter % 2 == 0}">
-								${langAndProf}
-								<br>
-							</c:if>
-							<c:if test="${counter % 2 == 1}">
-								(${langAndProf})
-								<c:if test="${counter != 7}">
-									<!-- , -->
-									<br>
-									<br>
-								</c:if>
-							</c:if>
-							<%
-							int count = (int) request.getAttribute("counter");
-							count += 1;
-							request.setAttribute("counter", count);
-							%>
-						</c:forEach>
+						${programmingLanguage.language}
+						<br>
+						(${programmingLanguage.proficiency})
+						<c:if test="${counter != 3}">
+							<!-- , -->
+							<br>
+							<br>
+						</c:if>
+						<%
+						int count = (int)request.getAttribute("counter");
+						count += 1;
+						request.setAttribute("counter", count);
+						%>
 					</c:forEach>
 					<%
 					request.setAttribute("counter", 0);
@@ -172,9 +160,10 @@
 				<div id="iatzbi">${dataPersInfo.lineId}</div>
 			</div>
 		</div>
-		<img id="i1t2dk" src="resources/pics/Certificate1.png" />
-		<img id="i8tfk1" src="resources/pics/Certificate2.png" />
 	</div>
-
+	<div id="iipl26">
+		<img id="i1t2dk"  src="/resources/pics/Certificate1.png" /> <img
+			id="i8tfk1" src="/resources/pics/Certificate2.png" />
+	</div>
 </body>
 </html>

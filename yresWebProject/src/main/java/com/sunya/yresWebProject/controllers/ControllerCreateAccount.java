@@ -34,11 +34,8 @@ public class ControllerCreateAccount extends Controller1
 
 			if (code!=null)
 			{
-				DataCreateAccount dataCreateAccount = sm.getSessionCreateAccount().consumeCode(code); // The data stored
-																										// in the
-																										// session is
-																										// DataCreateAccount
-																										// type.
+				// The data stored in the session is DataCreateAccount type.
+				DataCreateAccount dataCreateAccount = sm.getSessionCreateAccount().consumeCode(code); 
 
 				if (dataCreateAccount!=null)
 					md.addAttribute(dataCreateAccount); // It's used for viewing purpose.

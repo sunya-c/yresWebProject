@@ -1,6 +1,7 @@
 package com.sunya.yresWebProject.config;
 
 import java.time.format.DateTimeFormatter;
+import java.util.TimeZone;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +15,12 @@ public class LibraryConfig
 		return DateTimeFormatter.ofPattern("dd MMM yyyy");
 	}
 	
+	@Bean(name = "backDate")
+	public DateTimeFormatter getFormatDateBack()
+	{
+		return DateTimeFormatter.ofPattern("yyyy-MM-dd");
+	}
+	
 	@Bean(name = "frontDateTime")
 	public DateTimeFormatter getFormatDateTimeFront()
 	{
@@ -24,5 +31,11 @@ public class LibraryConfig
 	public DateTimeFormatter getFormatDateTimeBack()
 	{
 		return DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+	}
+	
+	@Bean(name = "serverTimeZone")
+	public TimeZone getServerTimeZone()
+	{
+		return TimeZone.getDefault();
 	}
 }

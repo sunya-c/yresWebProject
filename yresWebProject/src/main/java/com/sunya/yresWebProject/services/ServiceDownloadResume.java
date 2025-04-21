@@ -9,11 +9,16 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.sunya.yresWebProject.daos.DaoWebdatainfo;
+import com.sunya.yresWebProject.models.ModelWebdatainfo;
+
 @Service
 public class ServiceDownloadResume
 {
 	@Autowired
 	private ResourceLoader loader;
+	@Autowired
+	private DaoWebdatainfo dao;
 
 
 	/**
@@ -31,9 +36,15 @@ public class ServiceDownloadResume
 			// Set headers for the response
 			if (resource.exists())
 			{
-				return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"ResumeC.pdf\"")
-											.header(HttpHeaders.CONTENT_TYPE, "application/pdf")
-											.body(resource);
+				ModelWebdatainfo model = dao.getWebinfo(DaoWebdatainfo.WEB_RESUME_DATE);
+				
+				long contentLength = resource.contentLength();
+				
+				return ResponseEntity.ok()
+										.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"ResumeC_"+model.getValue()+".pdf\"")
+										.header(HttpHeaders.CONTENT_TYPE, "application/pdf")
+										.header(HttpHeaders.CONTENT_LENGTH, String.valueOf(contentLength))
+										.body(resource);
 			}
 			else
 			{

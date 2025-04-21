@@ -2,6 +2,7 @@ package com.sunya.yresWebProject.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.sunya.yresWebProject.Url;
 import com.sunya.yresWebProject.daos.DaoLoginInfo;
@@ -64,17 +65,33 @@ public class ServiceCreateAccount
 				ErrMsg errMessage = ErrMsg.CREATEACCOUNT_UNAME_LENGTH;
 				errMessage.setCustomErrMessage("Something's wrong, pls try again.");
 				dataCreateAccount.setUsernameErr(errMessage.toString());
-				return Url.createAccount+"?code="+codeCreateAccount;
+				
+				String createAccountUrl = UriComponentsBuilder.fromUriString("")
+															.path(Url.createAccount)
+															.queryParam("code", codeCreateAccount)
+															.encode().build().toUriString();
+				return createAccountUrl;
 			}
 			sm.getSessionLogin().setUsernamePreTyped(formCA.getUsername());
 
 			String codeRedirecting = sm.getSessionRedirecting().generateCode();
 
-			return Url.redirecting+"?message=Done!&destinationPage=Home page&code="+codeRedirecting;
+			String redirectingUrl = UriComponentsBuilder.fromUriString("")
+								.path(Url.redirecting)
+								.queryParam("message", "Done!")
+								.queryParam("destinationPage", "Home")
+								.queryParam("destinationUrl", "Home")
+								.queryParam("code", codeRedirecting)
+								.encode().build().toUriString();
+			return redirectingUrl;
 		}
 		else
 		{
-			return Url.createAccount+"?code="+codeCreateAccount;
+			String createAccountUrl = UriComponentsBuilder.fromUriString("")
+														.path(Url.createAccount)
+														.queryParam("code", codeCreateAccount)
+														.encode().build().toUriString();
+			return createAccountUrl;
 		}
 	}
 

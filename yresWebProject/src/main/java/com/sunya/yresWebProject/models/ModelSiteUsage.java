@@ -21,9 +21,10 @@ public class ModelSiteUsage
 	 * #5 usageRedirecting<br>
 	 * #6 usageUnderConstruction<br>
 	 * #7 usageWelcome<br>
-	 * #8 usageResumeDownload
+	 * #8 usageResumeDownload<br>
+	 * #9 usageRestApi
 	 */
-	private int[] usages = new int[9];
+	private int[] usages = new int[PageUsageinfo.numberOfPages];
 	
 	
 	public String getRefNumber() {

@@ -2,7 +2,6 @@ package com.sunya.yresWebProject.filters;
 
 import java.io.IOException;
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.core.env.Environment;
@@ -25,85 +24,84 @@ public class FilterBot extends OncePerRequestFilter
 {
 	private DaoIPBlacklist dao;
 	private Environment env;
-	
-	private List<String> allowedUrl = List.of("/error", "/yresError", "/feedback", "/resources/css", "/resources/outBox", "/resources/pics");
-	
-	
+
+	private List<String> allowedUrl = List.of("/error", "/yresError", "/feedback", "/resources/css",
+								"/resources/outBox", "/resources/pics", "/restApi/sSendResponse");
+
+
 	public FilterBot(DaoIPBlacklist dao, Environment env)
 	{
 		this.dao = dao;
 		this.env = env;
 	}
-	
-	
-	
+
+
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-			throws ServletException, IOException
+								throws ServletException, IOException
 	{
 		System.out.println("Order: 0, in Filter Bot (Home)");
-		
+
 		String requestedUrl = request.getRequestURL().toString();
 		System.out.println(requestedUrl);
-		
+
 		String requestedUri = request.getRequestURI();
-		
+
 		if (requestedUri.equals("/") || allowedUrl.stream().anyMatch(requestedUri::startsWith))
 		{
 			System.out.println("filter Bot skipped - Allowed URI");
 			filterChain.doFilter(request, response);
 			return;
 		}
-		
+
 		String ip = getIP(request);
-		
+
 		String errText = "<br>"+ip+"<br>Your request is suspected to be inhuman.<br>If you're a human, "
-									+ "please send your intention to visit our website via \'Give feedback / bug report\' button down below.";
-		
+									+"please send your intention to visit our website via \'Give feedback / bug report\' button down below.";
+
 		try
 		{
 			boolean isBlacklisted = dao.isBlacklisted(ip);
-			
+
 			if (requestedUrl.contains(env.getProperty("yres.domain")) && !isBlacklisted)
 			{
 				System.out.println("filter Bot skipped - expected domain name");
 				filterChain.doFilter(request, response);
 				return;
 			}
-			
-			if (isBlacklisted)   // If it's already in the blacklist.
+
+			if (isBlacklisted) // If it's already in the blacklist.
 			{
 				dao.incrementCounter(ip);
 				throw new SuspiciousRequestException(errText);
 			}
-			else   // If NOT in the blacklist.
+			else // If NOT in the blacklist.
 			{
-				IPinfo info = new IPinfo.Builder()
-						.setCache(new SimpleCache(Duration.ofDays(30)))
-						.build();
+				IPinfo info = new IPinfo.Builder().setCache(new SimpleCache(Duration.ofDays(30))).build();
 				IPResponse lookUp = null;
-				
+
 				try
 				{
 					lookUp = info.lookupIP(ip);
 				}
 				catch (Exception e)
 				{
-					//TODO: Send a counter iteration to the database.
+					// TODO: Send a counter iteration to the database.
 					throw new SomethingWentWrongException("filterbot-01: Limit reached.");
 				}
-				
-				String countryCode = lookUp.getCountryCode();   // Look for the country.
+
+				String countryCode = lookUp.getCountryCode(); // Look for the country.
 				System.out.println("ip: "+ip);
 				System.out.println("code: "+countryCode);
-				
-				if (countryCode == null || !countryCode.equals("TH"))   // If the country is NOT Thailand (assume it's a bot).
+
+				if (countryCode==null || !countryCode.equals("TH")) // If the country is NOT Thailand (assume it's a
+																	// bot).
 				{
-					dao.addToBlacklist(ip, countryCode);   // Add the IP to blacklist
-					
+					dao.addToBlacklist(ip, countryCode); // Add the IP to blacklist
+
 					throw new SuspiciousRequestException(errText);
 				}
-				else   // If from Thailand.
+				else // If from Thailand.
 				{
 					System.out.println("filter Bot passed");
 					filterChain.doFilter(request, response);
@@ -115,17 +113,19 @@ public class FilterBot extends OncePerRequestFilter
 			PrintError.toErrorPage(response, e);
 		}
 	}
-	
+
+
 	private String getIP(HttpServletRequest request)
 	{
 		String ip = request.getHeader("X-Forwarded-For");
 		System.out.println("x-formwarded-for: "+ip);
 		System.out.println("getRemoteAdr    : "+request.getRemoteAddr());
-		if (ip == null || ip.isBlank())
+		if (ip==null || ip.isBlank())
 			ip = request.getRemoteAddr();
 		return ip;
 	}
-	
+
+
 	@Override
 	public String toString()
 	{
