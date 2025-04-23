@@ -4,12 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
 import org.springframework.core.env.Environment;
 
 import com.sunya.yresWebProject.daos.DaoIPBlacklist;
 import com.sunya.yresWebProject.daos.DaoLoginInfo;
 import com.sunya.yresWebProject.filters.FilterAccountExistence;
 import com.sunya.yresWebProject.filters.FilterBot;
+import com.sunya.yresWebProject.filters.FilterHttps;
 import com.sunya.yresWebProject.filters.FilterInitializeSession;
 import com.sunya.yresWebProject.filters.FilterLoginState;
 import com.sunya.yresWebProject.filters.siteUsage.FilterSiteUsage;
@@ -25,18 +27,30 @@ import com.sunya.yresWebProject.filters.siteUsage.FilterSiteUsage8;
 import com.sunya.yresWebProject.filters.siteUsage.FilterSiteUsage9;
 import com.sunya.yresWebProject.managers.SessionManager;
 
+import io.ipinfo.api.IPinfo;
+
 @Configuration
 public class FilterConfig
 {
 	@Autowired
 	private SessionManager sm;
 	
+	@Bean
+	public FilterRegistrationBean<FilterHttps> filterHttp(Environment env)
+	{
+		FilterRegistrationBean<FilterHttps> bean = new FilterRegistrationBean<>();
+		bean.setFilter(new FilterHttps(env));
+		bean.addUrlPatterns("/*");
+		bean.setOrder(Ordered.HIGHEST_PRECEDENCE);
+		
+		return bean;
+	}
 	
 	@Bean
-	public FilterRegistrationBean<FilterBot> filterBot(DaoIPBlacklist dao, Environment env)
+	public FilterRegistrationBean<FilterBot> filterBot(DaoIPBlacklist dao, Environment env, IPinfo info)
 	{
 		FilterRegistrationBean<FilterBot> bean = new FilterRegistrationBean<>();
-		bean.setFilter(new FilterBot(dao, env));
+		bean.setFilter(new FilterBot(dao, env, info));
 		bean.addUrlPatterns("/*");
 		bean.setOrder(0);
 		

@@ -140,7 +140,13 @@ public class FilterSiteUsage
 	private String getIP(HttpServletRequest request)
 	{
 		String ip = request.getHeader("X-Forwarded-For");
-
+		System.out.println("x-formwarded-for        : "+ip);
+		if (ip!=null)
+		{
+			ip = ip.split(",")[0].strip(); // the first one is the client's IP
+			System.out.println("x-formwarded-for(client): "+ip);
+		}
+		System.out.println("getRemoteAdr            : "+request.getRemoteAddr());
 		if (ip==null || ip.isBlank())
 			ip = request.getRemoteAddr();
 		return ip;

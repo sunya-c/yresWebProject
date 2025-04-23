@@ -24,4 +24,10 @@ public class ControllerOthers extends Controller1
 							.header(HttpHeaders.CONTENT_TYPE, MediaType.IMAGE_PNG_VALUE)
 							.body(resource);
 	}
+	
+	@GetMapping("/healthcheck")
+	public ResponseEntity<Void> healthcheck()
+	{
+		return ResponseEntity.status(200).build();
+	}
 }
