@@ -67,6 +67,7 @@ public class ControllerError extends Controller1 implements ErrorController
 				sm.getSession().getId().substring(0, 5)+"-"+sm.getSession().getId().substring(sm.getSession().getId().length()-5)
 				+"---"+sm.getKeyHolder().toString().substring(sm.getKeyHolder().toString().indexOf("KeyHolder@")));
 		String errorDescription = request.getParameter("errorDescription");
+		System.out.println("in Error Page: "+errorDescription);
 		
 		if (errorDescription!=null)
 		{

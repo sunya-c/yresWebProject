@@ -32,7 +32,7 @@ public class FilterLoginState extends OncePerRequestFilter
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException
 	{
-		System.out.println("Order: 3, in Filter Login State (welcome)");
+		System.out.println("Order: 4, in Filter Login State (welcome)");
 		
 		synchronized (sm.getKeyHolder().getKeyLogin())
 		{

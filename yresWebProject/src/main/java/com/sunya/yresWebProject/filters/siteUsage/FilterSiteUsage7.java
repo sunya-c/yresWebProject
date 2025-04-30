@@ -31,7 +31,7 @@ public class FilterSiteUsage7 extends OncePerRequestFilter
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException
 	{
-		System.out.println("Order: 4, in Filter Usage 7 (welcome)");
+		System.out.println("Order: 5, in Filter Usage 7 (welcome)");
 		siteUsage.doFilterInternal(request, response, filterChain, PageUsageinfo.PAGE_WELCOME);
 	}
 

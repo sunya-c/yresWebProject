@@ -24,7 +24,7 @@ public class FilterInitializeSession extends OncePerRequestFilter
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 								throws ServletException, IOException
 	{
-		System.out.println("Order: 1, in Filter Initialize (ALL)");
+		System.out.println("Order: 2, in Filter Initialize (ALL)");
 		
 		System.out.print(
 				sm.getSession().getId().substring(0, 5)+"-"+sm.getSession().getId().substring(sm.getSession().getId().length()-5)

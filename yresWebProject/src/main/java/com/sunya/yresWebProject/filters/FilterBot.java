@@ -1,15 +1,17 @@
 package com.sunya.yresWebProject.filters;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.core.env.Environment;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.sunya.yresWebProject.PrintError;
 import com.sunya.yresWebProject.daos.DaoIPBlacklist;
 import com.sunya.yresWebProject.exceptions.SomethingWentWrongException;
 import com.sunya.yresWebProject.exceptions.SuspiciousRequestException;
+import com.sunya.yresWebProject.rest.repositories.models.ModelIPBlacklist;
 
 import io.ipinfo.api.IPinfo;
 import io.ipinfo.api.model.IPResponse;
@@ -21,18 +23,22 @@ import jakarta.servlet.http.HttpServletResponse;
 public class FilterBot extends OncePerRequestFilter
 {
 	private DaoIPBlacklist dao;
-	private Environment env;
 	private IPinfo info;
 
-	private List<String> allowedUrl = List.of("/error", "/yresError", "/feedback", "/resources/css",
-								"/resources/outBox", "/resources/pics", "/restApi/sSendResponse");
+	private List<String> allowedUrlPrefix = List.of("/error", "/feedback", "/resources/css", "/resources/outBox",
+								"/resources/pics", "/restApi/sSendResponse"); // /yresError removed
+	private List<String> allowedUrlExact = List.of("/", "/healthcheck", "/saveBotstodatabase");
+
+	private CustomArrayList cachedBlacklist;
+	private CustomArrayList tempBlacklist;
 
 
-	public FilterBot(DaoIPBlacklist dao, Environment env, IPinfo info)
+	public FilterBot(DaoIPBlacklist dao, IPinfo info)
 	{
 		this.dao = dao;
-		this.env = env;
 		this.info = info;
+		this.cachedBlacklist = new CustomArrayList();
+		this.tempBlacklist = new CustomArrayList();
 	}
 
 
@@ -47,7 +53,7 @@ public class FilterBot extends OncePerRequestFilter
 
 		String requestedUri = request.getRequestURI();
 
-		if (requestedUri.equals("/") || allowedUrl.stream().anyMatch(requestedUri::startsWith) || requestedUri.equals("/healthcheck"))
+		if (allowedUrlExact.stream().anyMatch(requestedUri::equals) || allowedUrlPrefix.stream().anyMatch(requestedUri::startsWith))
 		{
 			System.out.println("filter Bot skipped - Allowed URI");
 			filterChain.doFilter(request, response);
@@ -56,54 +62,90 @@ public class FilterBot extends OncePerRequestFilter
 
 		String ip = getIP(request);
 
-		String errText = "<br>"+ip+"<br>Your request is suspected to be inhuman.<br>If you're a human, "
+		String errText = "<br>IPError:"+ip+":IPError<br>Your request is suspected to be inhuman.<br>If you're a human, "
 									+"please send your intention to visit our website via \'Give feedback / bug report\' button down below.";
 
 		try
 		{
-			boolean isBlacklisted = dao.isBlacklisted(ip);
-
-//			if (!isBlacklisted && requestedUrl.contains(env.getProperty("yres.domain")))
-//			{
-//				System.out.println("filter Bot skipped - expected domain name");
-//				filterChain.doFilter(request, response);
-//				return;
-//			}
-
-			if (isBlacklisted) // If it's already in the blacklist.
+			if (request.getRequestURI().startsWith("/yresError"))
 			{
-				dao.incrementCounter(ip);
+				String errDescrip = request.getParameter("errorDescription");
+				int begin;
+				int end;
+				String checkIp;
+				if (ip!=null && errDescrip!=null && (begin=errDescrip.indexOf("IPError:"))!=-1 && (end=errDescrip.indexOf(":IPError"))!=-1)
+				{
+					checkIp = errDescrip.substring(begin+"IPError:".length(), end);
+					System.out.println("checkIp:"+checkIp+".");
+					if (!ip.equals(checkIp))
+					{
+						tempBlacklist.incrementExistingOrAddNew(ip);
+					}
+				}
+				System.out.println("filter Bot skipped - yresError");
+				filterChain.doFilter(request, response);
+				return;
+			}
+			if (ip==null)
+			{
+				if (dao.isBlacklisted("-"))
+					dao.incrementCounter("-");
+				else
+					dao.addToBlacklist("-", "-");
 				throw new SuspiciousRequestException(errText);
 			}
-			else // If NOT in the blacklist.
+			if (request.getParameter("bqweqwaisdiqwe")!=null)
 			{
-				IPResponse lookUp = null;
-
-				try
-				{
-					lookUp = info.lookupIP(ip);
-				}
-				catch (Exception e)
-				{
-					// TODO: Send a counter iteration to the database.
-					throw new SomethingWentWrongException("filterbot-01: Limit reached.");
-				}
-
-				String countryCode = lookUp.getCountryCode(); // Look for the country.
-				System.out.println("IP lookup: "+countryCode+", "+"IP: "+ip);
-
-				if (!"TH".equals(countryCode)) // If the country is NOT Thailand (assume it's a bot).
-				{
-					dao.addToBlacklist(ip, countryCode); // Add the IP to blacklist
-
-					throw new SuspiciousRequestException(errText);
-				}
-				else // If from Thailand.
-				{
-					System.out.println("filter Bot passed");
-					filterChain.doFilter(request, response);
-				}
+				tempBlacklist.incrementExistingOrAddNew(ip);
+				System.out.println("BOT!!! bqweqwaisdiqwe");
+				throw new SuspiciousRequestException(errText);
 			}
+
+			// check whether the IP is blacklisted.
+			if (tempBlacklist.incrementExisting(ip)) // Does it exist in tempBlacklist
+			{
+				System.out.println("filter BOT failed - blacklisted IP tempBlacklist");
+				throw new SuspiciousRequestException(errText);
+			}
+			if (cachedBlacklist.incrementExisting(ip)) // Does it exist in cache
+			{
+				System.out.println("filter BOT failed - blacklisted IP cache");
+				throw new SuspiciousRequestException(errText);
+			}
+			if (dao.isBlacklisted(ip)) // Does it exist in blacklist database
+			{
+				cachedBlacklist.incrementExistingOrAddNew(ip);
+				System.out.println("filter BOT failed - blacklisted IP");
+				throw new SuspiciousRequestException(errText);
+			}
+
+			// If the IP is NOT in 'tempBlacklist', 'cachedBlacklist', and 'blacklist database', lookup the IP by 'ipinfo' library.
+			IPResponse lookUp = null;
+			String countryCode;
+			try
+			{
+				lookUp = info.lookupIP(ip);
+				countryCode = lookUp.getCountryCode(); // Look for the country.
+				System.out.println("IP lookup: "+countryCode+", "+"IP: "+ip);
+			}
+			catch (Exception e)
+			{
+				// TODO: Send a counter iteration to the database.
+				throw new SomethingWentWrongException("filterbot-01: Limit reached.");
+			}
+
+			// Check whether IP is from 'TH'.
+			if ("TH".equals(countryCode))
+			{
+				System.out.println("filter Bot passed - IP lookup");
+				filterChain.doFilter(request, response);
+				return;
+			}
+
+			// If the country is NOT 'TH', I presume it's a bot request.
+			// Add IP to tempBlacklist, or increment if already exists.
+			tempBlacklist.incrementExistingOrAddNew(ip);
+			throw new SuspiciousRequestException(errText);
 		}
 		catch (Exception e)
 		{
@@ -127,10 +169,76 @@ public class FilterBot extends OncePerRequestFilter
 		return ip;
 	}
 
+	public CustomArrayList getCachedBlacklist()
+	{
+		return cachedBlacklist;
+	}
+	public CustomArrayList getTempBlacklist()
+	{
+		return tempBlacklist;
+	}
 
 	@Override
 	public String toString()
 	{
 		return this.getClass().getName();
+	}
+	
+	public class CustomArrayList extends ArrayList<ModelIPBlacklist>
+	{
+		private static final long serialVersionUID = 1797283846835387687L;
+		private Object keySynchronized; // for synchronized block
+		
+		public CustomArrayList()
+		{
+			keySynchronized = new Object();
+		}
+
+		public boolean doesExist(@NotNull String ip)
+		{
+			synchronized (keySynchronized)
+			{
+				return stream().anyMatch(model -> ip.equals(model.getIpAddress()));
+			}
+		}
+		public boolean incrementExisting(@NotNull String ip)
+		{
+			synchronized (keySynchronized)
+			{
+				return stream().anyMatch(model -> {
+					if (ip.equals(model.getIpAddress()))
+					{
+						model.setBlockCount(model.getBlockCount()+1);
+						return true;
+					}
+					return false;
+				});
+			}
+		}
+		public void addNew(@NotNull String ip)
+		{
+			synchronized (keySynchronized)
+			{
+				ModelIPBlacklist model = new ModelIPBlacklist();
+				model.setIpAddress(ip);
+				model.setBlockCount(1);
+				add(model);
+			}
+		}
+		public void incrementExistingOrAddNew(@NotNull String ip)
+		{
+			synchronized (keySynchronized)
+			{
+				if (!incrementExisting(ip))
+				{
+					addNew(ip);
+				}
+			}
+		}
+		public Object getKeySynchronized()
+		{
+			return keySynchronized;
+		}
+		
 	}
 }

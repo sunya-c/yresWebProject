@@ -30,7 +30,8 @@ public class DaoIPBlacklist
 	 * Check in the database if the given <strong>IP address</strong> exists.
 	 * 
 	 * @param ip ~ The IP address to be checked.
-	 * @return <strong>true</strong> ~ if the given IP address exists in the database (in blacklist).<br>
+	 * @return <strong>true</strong> ~ if the given IP address exists in the
+	 *         database (in blacklist).<br>
 	 *         <strong>false</strong> ~ if otherwise.
 	 */
 	public boolean isBlacklisted(String ip)
@@ -43,7 +44,7 @@ public class DaoIPBlacklist
 			else
 				return false;
 		};
-		
+
 		try
 		{
 			return template.query(query, extractor, ip);
@@ -56,9 +57,10 @@ public class DaoIPBlacklist
 
 
 	/**
-	 * Add <strong>IP address</strong> and <strong>country code</strong> to the database.
+	 * Add <strong>IP address</strong> and <strong>country code</strong> to the
+	 * database.
 	 * 
-	 * @param ip ~ The IP address to be added.
+	 * @param ip          ~ The IP address to be added.
 	 * @param countryCode ~ The country code to be added.
 	 */
 	public void addToBlacklist(String ip, String countryCode)
@@ -81,6 +83,33 @@ public class DaoIPBlacklist
 
 
 	/**
+	 * Add <strong>IP address</strong> and <strong>country code</strong> and
+	 * <strong>block count</strong> to the database.
+	 * 
+	 * @param ip          ~ The IP address to be added.
+	 * @param countryCode ~ The country code to be added.
+	 * @param blockCount  ~ The block count to be added.
+	 */
+	public void addToBlacklist(String ip, String countryCode, int blockCount)
+	{
+		String query = "INSERT INTO "+TABLE_NAME+" ("+COLUMN_IP+", "+COLUMN_COUNTRY+", "+COLUMN_COUNT+") VALUES (?, ?, ?);";
+
+		int row;
+		try
+		{
+			row = template.update(query, ip, countryCode, blockCount);
+		}
+		catch (DataAccessException e)
+		{
+			throw new YresDataAccessException("daoipblacklist.addtoblacklist-03");
+		}
+
+		if (row!=1)
+			throw new YresDataAccessException("daoipblacklist.addtoblacklist-04");
+	}
+
+
+	/**
 	 * Increment the counter of the given <strong>IP address</strong> by 1.
 	 * 
 	 * @param ip ~ The IP address to increment the counter.
@@ -88,11 +117,37 @@ public class DaoIPBlacklist
 	public void incrementCounter(String ip)
 	{
 		String query = "UPDATE "+TABLE_NAME+" SET "+COLUMN_COUNT+" = "+COLUMN_COUNT+" + ? WHERE "+COLUMN_IP+" = ?;";
-		
+
 		int row;
 		try
 		{
 			row = template.update(query, 1, ip); // increase the counter by 1
+		}
+		catch (DataAccessException e)
+		{
+			throw new YresDataAccessException("daoipblacklist.increasecounter-01");
+		}
+
+		if (row!=1)
+			throw new YresDataAccessException("daoipblacklist.increasecounter-02");
+	}
+	
+
+	/**
+	 * Increment the counter of the given <strong>IP address</strong> by the
+	 * specified amount.
+	 * 
+	 * @param ip         ~ The IP address to increment the counter.
+	 * @param blockCount ~ The counter will be incremented by this amount.
+	 */
+	public void incrementCounter(String ip, int blockCount)
+	{
+		String query = "UPDATE "+TABLE_NAME+" SET "+COLUMN_COUNT+" = "+COLUMN_COUNT+" + ? WHERE "+COLUMN_IP+" = ?;";
+
+		int row;
+		try
+		{
+			row = template.update(query, blockCount, ip); // increase the counter by 1
 		}
 		catch (DataAccessException e)
 		{
@@ -107,7 +162,8 @@ public class DaoIPBlacklist
 	/**
 	 * Get all <strong>IP addresses</strong> from the database.
 	 * 
-	 * @return <strong>ArrayList&lt;String&gt; of all IP addresses</strong> in the blacklist.
+	 * @return <strong>ArrayList&lt;String&gt; of all IP addresses</strong> in the
+	 *         blacklist.
 	 */
 	public ArrayList<String> getIPs()
 	{

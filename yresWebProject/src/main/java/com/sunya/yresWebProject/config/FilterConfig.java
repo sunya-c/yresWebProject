@@ -10,6 +10,7 @@ import org.springframework.core.env.Environment;
 import com.sunya.yresWebProject.daos.DaoIPBlacklist;
 import com.sunya.yresWebProject.daos.DaoLoginInfo;
 import com.sunya.yresWebProject.filters.FilterAccountExistence;
+import com.sunya.yresWebProject.filters.FilterAdmin;
 import com.sunya.yresWebProject.filters.FilterBot;
 import com.sunya.yresWebProject.filters.FilterHttps;
 import com.sunya.yresWebProject.filters.FilterInitializeSession;
@@ -45,14 +46,25 @@ public class FilterConfig
 		
 		return bean;
 	}
-	
+
 	@Bean
-	public FilterRegistrationBean<FilterBot> filterBot(DaoIPBlacklist dao, Environment env, IPinfo info)
+	public FilterRegistrationBean<FilterBot> filterBot(DaoIPBlacklist dao, IPinfo info)
 	{
 		FilterRegistrationBean<FilterBot> bean = new FilterRegistrationBean<>();
-		bean.setFilter(new FilterBot(dao, env, info));
+		bean.setFilter(new FilterBot(dao, info));
 		bean.addUrlPatterns("/*");
 		bean.setOrder(0);
+		
+		return bean;
+	}
+	
+	@Bean
+	public FilterRegistrationBean<FilterAdmin> filterAdmin(DaoLoginInfo dao)
+	{
+		FilterRegistrationBean<FilterAdmin> bean = new FilterRegistrationBean<>();
+		bean.setFilter(new FilterAdmin(dao));
+		bean.addUrlPatterns("/saveBotstodatabase");
+		bean.setOrder(1);
 		
 		return bean;
 	}
@@ -78,7 +90,7 @@ public class FilterConfig
 							"/sFeedback",
 							"/sLogin",
 							"/sLogout");
-		bean.setOrder(1);
+		bean.setOrder(2);
 		
 		return bean;
 	}
@@ -104,7 +116,7 @@ public class FilterConfig
 							"/sFeedback",
 							"/sLogin",
 							"/sLogout");
-		bean.setOrder(2);
+		bean.setOrder(3);
 		
 		return bean;
 	}
@@ -115,7 +127,7 @@ public class FilterConfig
 		FilterRegistrationBean<FilterLoginState> bean = new FilterRegistrationBean<>();
 		bean.setFilter(new FilterLoginState(sm));
 		bean.addUrlPatterns("/welcome");
-		bean.setOrder(3);
+		bean.setOrder(4);
 		
 		return bean;
 	}
@@ -131,7 +143,7 @@ public class FilterConfig
 		FilterRegistrationBean<FilterSiteUsage0> bean = new FilterRegistrationBean<>();
 		bean.setFilter(new FilterSiteUsage0(siteUsage));
 		bean.addUrlPatterns("/createAccount");
-		bean.setOrder(4);
+		bean.setOrder(5);
 		
 		return bean;
 	}
@@ -142,7 +154,7 @@ public class FilterConfig
 		FilterRegistrationBean<FilterSiteUsage1> bean = new FilterRegistrationBean<>();
 		bean.setFilter(new FilterSiteUsage1(siteUsage));
 		bean.addUrlPatterns("/yresError");
-		bean.setOrder(4);
+		bean.setOrder(5);
 		
 		return bean;
 	}
@@ -153,7 +165,7 @@ public class FilterConfig
 		FilterRegistrationBean<FilterSiteUsage2> bean = new FilterRegistrationBean<>();
 		bean.setFilter(new FilterSiteUsage2(siteUsage));
 		bean.addUrlPatterns("/feedback", "/feedback/summary");
-		bean.setOrder(4);
+		bean.setOrder(5);
 		
 		return bean;
 	}
@@ -164,7 +176,7 @@ public class FilterConfig
 		FilterRegistrationBean<FilterSiteUsage3> bean = new FilterRegistrationBean<>();
 		bean.setFilter(new FilterSiteUsage3(siteUsage));
 		bean.addUrlPatterns("/Home");
-		bean.setOrder(4);
+		bean.setOrder(5);
 		
 		return bean;
 	}
@@ -175,7 +187,7 @@ public class FilterConfig
 		FilterRegistrationBean<FilterSiteUsage4> bean = new FilterRegistrationBean<>();
 		bean.setFilter(new FilterSiteUsage4(siteUsage));
 		bean.addUrlPatterns("/personalInformation");
-		bean.setOrder(4);
+		bean.setOrder(5);
 		
 		return bean;
 	}
@@ -186,7 +198,7 @@ public class FilterConfig
 		FilterRegistrationBean<FilterSiteUsage5> bean = new FilterRegistrationBean<>();
 		bean.setFilter(new FilterSiteUsage5(siteUsage));
 		bean.addUrlPatterns("/redirecting");
-		bean.setOrder(4);
+		bean.setOrder(5);
 		
 		return bean;
 	}
@@ -197,7 +209,7 @@ public class FilterConfig
 		FilterRegistrationBean<FilterSiteUsage6> bean = new FilterRegistrationBean<>();
 		bean.setFilter(new FilterSiteUsage6(siteUsage));
 //		bean.addUrlPatterns("/~~~");
-		bean.setOrder(4);
+		bean.setOrder(5);
 		bean.setEnabled(false);
 		
 		return bean;
@@ -209,7 +221,7 @@ public class FilterConfig
 		FilterRegistrationBean<FilterSiteUsage7> bean = new FilterRegistrationBean<>();
 		bean.setFilter(new FilterSiteUsage7(siteUsage));
 		bean.addUrlPatterns("/welcome");
-		bean.setOrder(4);
+		bean.setOrder(5);
 		
 		return bean;
 	}
@@ -220,7 +232,7 @@ public class FilterConfig
 		FilterRegistrationBean<FilterSiteUsage8> bean = new FilterRegistrationBean<>();
 		bean.setFilter(new FilterSiteUsage8(siteUsage));
 		bean.addUrlPatterns("/sDownloadResume");
-		bean.setOrder(4);
+		bean.setOrder(5);
 		
 		return bean;
 	}
@@ -233,7 +245,7 @@ public class FilterConfig
 		FilterRegistrationBean<FilterSiteUsage9> bean = new FilterRegistrationBean<>();
 		bean.setFilter(new FilterSiteUsage9(siteUsage));
 		bean.addUrlPatterns("/restApi");
-		bean.setOrder(4);
+		bean.setOrder(5);
 		
 		return bean;
 	}

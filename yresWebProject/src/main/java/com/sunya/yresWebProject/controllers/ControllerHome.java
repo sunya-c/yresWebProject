@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.sunya.yresWebProject.Page;
@@ -15,6 +16,7 @@ import com.sunya.yresWebProject.Url;
 import com.sunya.yresWebProject.daos.DaoWebdatainfo;
 import com.sunya.yresWebProject.models.ModelWebdatainfo;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
@@ -26,8 +28,13 @@ public class ControllerHome extends Controller1
 	 * @return Request dispatcher to 'PreHomePage.jsp'.
 	 */
 	@GetMapping("/")
-	public String firstPage()
+	public String firstPage(Model md, HttpServletRequest request)
 	{
+		String botParam = request.getParameter("bqweqwaisdiqwe");
+		if (botParam!=null)
+		{
+			md.addAttribute("botParam", "?bqweqwaisdiqwe="+botParam);
+		}
 		return Page.preHome;
 	}
 

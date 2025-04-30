@@ -31,7 +31,7 @@ public class FilterSiteUsage6 extends OncePerRequestFilter
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException
 	{
-		System.out.println("Order: 4, in Filter Usage 6 (UnderConstructionPage)"); // TODO
+		System.out.println("Order: 5, in Filter Usage 6 (UnderConstructionPage)"); // TODO
 		siteUsage.doFilterInternal(request, response, filterChain, PageUsageinfo.PAGE_UNDERCONSTRUCTION);
 	}
 

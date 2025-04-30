@@ -1,6 +1,7 @@
 package com.sunya.yresWebProject.filters;
 
 import java.io.IOException;
+import java.net.URI;
 
 import org.springframework.core.env.Environment;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -44,11 +45,33 @@ public class FilterHttps extends OncePerRequestFilter
 			return;
 		}
 		
+		boolean isBOT = true;
+		try
+		{
+			URI url = new URI(request.getRequestURL().toString());
+			if (env.getRequiredProperty("SERY_WEB_DOMAIN").equals(url.getAuthority()))
+				isBOT = false;
+			else if (env.getProperty("SERY_WEB_DOMAIN2")!=null && env.getProperty("SERY_WEB_DOMAIN2").equals(url.getAuthority()))
+				isBOT = false;
+		}
+		catch (IllegalStateException e)
+		{
+			PrintError.toErrorPage(response, new SomethingWentWrongException("filterhttps-01: Configuration Error."));
+			return;
+		}
+		catch (Exception e)
+		{
+			isBOT = true;
+		}
+		
+		
 		try
 		{
 			UriComponentsBuilder builder = UriComponentsBuilder.fromUriString("")
 								.scheme("https")
 								.host(env.getRequiredProperty("SERY_WEB_DOMAIN"));
+			if (isBOT)
+				builder.queryParam("bqweqwaisdiqwe", "bqweqwaisdiqwe");
 			
 			if (!request.getMethod().equals("GET"))
 			{
@@ -67,7 +90,7 @@ public class FilterHttps extends OncePerRequestFilter
 		}
 		catch (Exception e)
 		{
-			PrintError.toErrorPage(response, new SomethingWentWrongException("filterhttps-01: Configuration Error."));
+			PrintError.toErrorPage(response, new SomethingWentWrongException("filterhttps-02: Configuration Error."));
 		}
 		return;
 	}

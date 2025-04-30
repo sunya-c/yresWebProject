@@ -23,7 +23,7 @@ else
 <script type="text/javascript">
 	// Redirect to ServletRedirecting after a delay
 	setTimeout(function() {
-		window.location.href = "/Home"; <!-- TODO: change to el for dynamic redirecting -->
+		window.location.href = "/Home${botParam}"; <!-- TODO: change to el for dynamic redirecting -->
 	}, 2000); // 2000 milliseconds = 2.0 seconds
 </script>
 </head>

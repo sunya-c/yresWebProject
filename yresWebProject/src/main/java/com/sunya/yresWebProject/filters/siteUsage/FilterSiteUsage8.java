@@ -31,7 +31,7 @@ public class FilterSiteUsage8 extends OncePerRequestFilter
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException
 	{
-		System.out.println("Order: 4, in Filter Usage 8 (sDownloadResume)");
+		System.out.println("Order: 5, in Filter Usage 8 (sDownloadResume)");
 		siteUsage.doFilterInternal(request, response, filterChain, PageUsageinfo.RESUME_DOWNLOAD);
 	}
 

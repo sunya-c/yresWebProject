@@ -4,7 +4,7 @@ public class ModelIPBlacklist
 {
 	private String ipAddress;
 	private String countryCode;
-	private String blockCount;
+	private int blockCount;
 	
 	
 	public String getIpAddress()
@@ -23,12 +23,20 @@ public class ModelIPBlacklist
 	{
 		this.countryCode = countryCode;
 	}
-	public String getBlockCount()
+	public int getBlockCount()
 	{
 		return blockCount;
 	}
-	public void setBlockCount(String blockCount)
+	public void setBlockCount(int blockCount)
 	{
 		this.blockCount = blockCount;
 	}
+	
+	@Override
+	public String toString()
+	{
+		return "ModelIPBlacklist [ipAddress="+ipAddress+", countryCode="+countryCode+", blockCount="+blockCount+"]";
+	}
+	
+	
 }

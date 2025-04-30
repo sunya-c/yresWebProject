@@ -1,11 +1,23 @@
-Added support for the new 'domain name' and 'HTTPS certificate'.
+Optimized the process in FilterBot.
 
 ----------
 
-Added support for the new 'domain name' and 'HTTPS certificate':
+Optimized the process in FilterBot:
 
--After using AWS Elastic Beanstalk's default domain name for a long time, our application now has its own domain name!, which is 'y-res.com'.
--Added support for HTTPS protocol. All requests are now managed by load balancer which causes some HTTP header values different from what it used to be, some particular code that relies on these header values has to be changed accordingly.
--Added a filter which redirect HTTP requests to HTTPS URL.
--Added path '/healthcheck' for the application to run correctly on AWS.
--Optimized FilterBot to be more efficient. AWS load balancer brought so many random requests to the application that the free-tier limit of a library FilterBot implementing was reached. Further optimization will be done in the upcoming commit.
+-Optimized FilterBot to be more efficient. AWS load balancer brought so many random requests to the
+application that the free-tier limit of a library FilterBot implementing was reached. Bot filtering
+is now separated into 3 layers before utilizing the library. Incoming requests that fail in any of
+these layers will be thrown an exception. The first layer is 'tempBlacklist', which is an ArrayList
+that temporarily holds all newly-added and some existing blacklisted IPs. Fail if the request's IP
+exists in 'tempBlacklist'. The second layer is 'cachedBlacklist', which is an ArrayList that holds
+recently-visited IPs that fail to pass the third layer. Fail if the request's IP exists in
+'cachedBlacklist'. The purpose of this layer is to reduce the number of interactions between the
+application and the database. The third layer is 'blacklist database', which leverages our own
+IP blacklist data that has been collected since v0.71. If the request's IP exists in this database,
+it will fail and the IP will be added to 'cachedBlacklist'. Any request passing all these three layers
+will be checked by the library. Requests failing the library layer will be added to 'tempBlacklist'.
+
+-Added path '/saveBotstodatabase'. This path does two things:
+1. Adds items in tempBlacklist to the blacklist database. The existing items will be incremented the
+number of counter instead.
+2. Increments the number of counter of the IPs in blacklist database that exist in cachedBlacklist.
