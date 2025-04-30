@@ -54,7 +54,7 @@ public class ServiceFeedback
 			String username;
 			synchronized (sm.getKeyHolder().getKeyLogin())
 			{
-				username = sm.getSessionLogin().getUsername();
+				username = sm.getSessionLogin().getUsernameUnescaped();
 			}
 
 			ModelFeedback model = new ModelFeedback();

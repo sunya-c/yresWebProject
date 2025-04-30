@@ -1,5 +1,7 @@
 package com.sunya.yresWebProject.managers.sessionObjects;
 
+import org.springframework.web.util.HtmlUtils;
+
 import com.sunya.yresWebProject.YresWebProjectApplication;
 import com.sunya.yresWebProject.managers.SessionManager;
 
@@ -41,7 +43,7 @@ public class SessionLogin
 
 	public void setUsernameErr(String usernameErr)
 	{
-		this.usernameErr = usernameErr;
+		this.usernameErr = (usernameErr==null)? null : HtmlUtils.htmlEscape(usernameErr);
 	}
 
 
@@ -53,7 +55,7 @@ public class SessionLogin
 
 	public void setPasswordErr(String passwordErr)
 	{
-		this.passwordErr = passwordErr;
+		this.passwordErr = (passwordErr==null)? null : HtmlUtils.htmlEscape(passwordErr);
 	}
 
 
@@ -65,7 +67,7 @@ public class SessionLogin
 
 	public void setUsernamePreTyped(String usernamePreTyped)
 	{
-		this.usernamePreTyped = usernamePreTyped;
+		this.usernamePreTyped = (usernamePreTyped==null)? null : HtmlUtils.htmlEscape(usernamePreTyped);
 	}
 
 
@@ -78,6 +80,11 @@ public class SessionLogin
 			return username;
 		}
 	}
+	public String getUsernameUnescaped()
+	{
+		String username = getUsername();
+		return (username==null)? null : HtmlUtils.htmlUnescape(username);
+	}
 
 
 	public void setUsername(String username)
@@ -86,7 +93,7 @@ public class SessionLogin
 
 		synchronized (sm.getKeyHolder().getKeyLogin())
 		{
-			this.username = username;
+			this.username = (username==null)? null : HtmlUtils.htmlEscape(username);
 		}
 	}
 

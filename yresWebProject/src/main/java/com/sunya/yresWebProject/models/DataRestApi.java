@@ -1,5 +1,7 @@
 package com.sunya.yresWebProject.models;
 
+import org.springframework.web.util.HtmlUtils;
+
 public class DataRestApi
 {
 	private String domainName;
@@ -12,6 +14,6 @@ public class DataRestApi
 
 	public void setDomainName(String domainName)
 	{
-		this.domainName = "http://"+domainName;
+		this.domainName = HtmlUtils.htmlEscape("https://"+domainName);
 	}
 }

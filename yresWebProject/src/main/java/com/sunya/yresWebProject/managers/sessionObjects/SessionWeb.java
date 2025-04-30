@@ -1,5 +1,7 @@
 package com.sunya.yresWebProject.managers.sessionObjects;
 
+import org.springframework.web.util.HtmlUtils;
+
 /**
  * This class is for storing session-specific values related to
  * <strong>general web data</strong>.<br>
@@ -22,7 +24,7 @@ public class SessionWeb
 
 	public void setWebNote1(String webNote1)
 	{
-		this.webNote1 = webNote1;
+		this.webNote1 = (webNote1==null)? null : HtmlUtils.htmlEscape(webNote1);
 	}
 
 
@@ -34,7 +36,7 @@ public class SessionWeb
 
 	public void setWebVersion(String webVersion)
 	{
-		this.webVersion = webVersion;
+		this.webVersion = (webVersion==null)? null : HtmlUtils.htmlEscape(webVersion);
 	}
 
 
@@ -46,6 +48,6 @@ public class SessionWeb
 
 	public void setResumeDate(String resumeDate)
 	{
-		this.resumeDate = resumeDate;
+		this.resumeDate = (resumeDate==null)? null : HtmlUtils.htmlEscape(resumeDate);
 	}
 }

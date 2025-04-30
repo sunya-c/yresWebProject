@@ -44,7 +44,7 @@ public class FilterAccountExistence extends OncePerRequestFilter
 			synchronized (sm.getKeyHolder().getKeyLogin())
 			{
 				ModelLoginInfo model = new ModelLoginInfo();
-				model.setUsername(sm.getSessionLogin().getUsername());
+				model.setUsername(sm.getSessionLogin().getUsernameUnescaped());
 				
 				filterFailed = sm.getSessionLogin().isLoggedIn() && !dao.checkUsernameCaseSen(model);
 				

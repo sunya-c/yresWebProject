@@ -81,7 +81,7 @@ public class ControllerRestApi extends Controller1
 		String domain = (url.getAuthority()==null)? null : url.getAuthority().toLowerCase();
 		String path = url.getPath();
 		System.out.println(" => "+restMethod+" & "+protocol+" & "+domain+" & "+path+" &&& "+env.getProperty("SERY_WEB_DOMAIN"));
-		if (protocol==null || domain==null || !protocol.equals("http") || !domain.equals(env.getProperty("SERY_WEB_DOMAIN")))
+		if (protocol==null || domain==null || !protocol.equals("https") || !domain.equals(env.getProperty("SERY_WEB_DOMAIN")))
 			throw new SomethingWentWrongException("<br>URL not allowed: "+restUrl);
 		
 		HttpMethod method = HttpMethod.valueOf(restMethod.toUpperCase());

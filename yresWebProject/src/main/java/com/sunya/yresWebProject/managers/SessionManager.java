@@ -150,10 +150,13 @@ public class SessionManager
 	 */
 	public void clearLoginForm()
 	{
-		getSessionLogin().setUsernamePreTyped(null);
-		getSessionLogin().setFromPage(null);
-		getSessionLogin().setUsernameErr(null);
-		getSessionLogin().setPasswordErr(null);
+		synchronized (getKeyHolder().getKeyLogin())
+		{
+			getSessionLogin().setUsernamePreTyped(null);
+			getSessionLogin().setFromPage(null);
+			getSessionLogin().setUsernameErr(null);
+			getSessionLogin().setPasswordErr(null);
+		}
 	}
 
 
@@ -167,7 +170,11 @@ public class SessionManager
 	 */
 	public void clearLoginState()
 	{
-		getSessionLogin().setUsername(null);
-		getSessionLogin().setLoggedIn(false);
+		synchronized (getKeyHolder().getKeyLogin())
+		{
+			getSessionLogin().setUsername(null);
+			getSessionLogin().setLoggedIn(false);
+		}
+
 	}
 }

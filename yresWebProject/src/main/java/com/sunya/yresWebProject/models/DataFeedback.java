@@ -1,5 +1,7 @@
 package com.sunya.yresWebProject.models;
 
+import org.springframework.web.util.HtmlUtils;
+
 /**
  * A class created for viewing purpose. Use this class to display dynamic data
  * on <strong>Feedback page</strong>.
@@ -24,7 +26,7 @@ public class DataFeedback
 
 	public void setTitleErr(String titleErr)
 	{
-		this.titleErr = titleErr;
+		this.titleErr = (titleErr==null)? null : HtmlUtils.htmlEscape(titleErr);
 	}
 
 
@@ -36,7 +38,7 @@ public class DataFeedback
 
 	public void setDetailErr(String detailErr)
 	{
-		this.detailErr = detailErr;
+		this.detailErr = (detailErr==null)? null : HtmlUtils.htmlEscape(detailErr);
 	}
 
 
@@ -48,7 +50,7 @@ public class DataFeedback
 
 	public void setErrorMessageErr(String errorMessageErr)
 	{
-		this.errorMessageErr = errorMessageErr;
+		this.errorMessageErr = (errorMessageErr==null)? null : HtmlUtils.htmlEscape(errorMessageErr);
 	}
 
 
@@ -60,7 +62,7 @@ public class DataFeedback
 
 	public void setTitlePreTyped(String titlePreTyped)
 	{
-		this.titlePreTyped = titlePreTyped;
+		this.titlePreTyped = (titlePreTyped==null)? null : HtmlUtils.htmlEscape(titlePreTyped);
 	}
 
 
@@ -72,7 +74,7 @@ public class DataFeedback
 
 	public void setDetailPreTyped(String detailPreTyped)
 	{
-		this.detailPreTyped = detailPreTyped;
+		this.detailPreTyped = (detailPreTyped==null)? null : HtmlUtils.htmlEscape(detailPreTyped);
 	}
 
 
@@ -84,7 +86,7 @@ public class DataFeedback
 
 	public void setErrorMessagePreTyped(String errorMessagePreTyped)
 	{
-		this.errorMessagePreTyped = errorMessagePreTyped;
+		this.errorMessagePreTyped = (errorMessagePreTyped==null)? null : HtmlUtils.htmlEscape(errorMessagePreTyped);
 	}
 
 
@@ -108,7 +110,7 @@ public class DataFeedback
 
 	public void setRefNumber(String refNumber)
 	{
-		this.refNumber = refNumber;
+		this.refNumber = (refNumber==null)? null : HtmlUtils.htmlEscape(refNumber);
 	}
-	
+
 }

@@ -1,5 +1,7 @@
 package com.sunya.yresWebProject.models;
 
+import org.springframework.web.util.HtmlUtils;
+
 /**
  * A class created for viewing purpose. Use this class to display dynamic data
  * on <strong>CreateAccount page</strong>.
@@ -20,7 +22,7 @@ public class DataCreateAccount
 
 	public void setUsernamePreTyped(String usernamePreTyped)
 	{
-		this.usernamePreTyped = usernamePreTyped;
+		this.usernamePreTyped = (usernamePreTyped==null)? null : HtmlUtils.htmlEscape(usernamePreTyped);
 	}
 
 
@@ -32,7 +34,7 @@ public class DataCreateAccount
 
 	public void setUsernameErr(String usernameErr)
 	{
-		this.usernameErr = usernameErr;
+		this.usernameErr = (usernameErr==null)? null : HtmlUtils.htmlEscape(usernameErr);
 	}
 
 
@@ -44,7 +46,7 @@ public class DataCreateAccount
 
 	public void setPasswordErr1(String passwordErr1)
 	{
-		this.passwordErr1 = passwordErr1;
+		this.passwordErr1 = (passwordErr1==null)? null : HtmlUtils.htmlEscape(passwordErr1);
 	}
 
 
@@ -56,6 +58,6 @@ public class DataCreateAccount
 
 	public void setPasswordErr2(String passwordErr2)
 	{
-		this.passwordErr2 = passwordErr2;
+		this.passwordErr2 = (passwordErr2==null)? null : HtmlUtils.htmlEscape(passwordErr2);
 	}
 }

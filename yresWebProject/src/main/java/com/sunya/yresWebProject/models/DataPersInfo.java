@@ -2,6 +2,8 @@ package com.sunya.yresWebProject.models;
 
 import java.util.ArrayList;
 
+import org.springframework.web.util.HtmlUtils;
+
 /**
  * A class created for viewing purpose. Use this class to display dynamic data
  * on <strong>PersonalInformation page</strong>.
@@ -40,7 +42,7 @@ public class DataPersInfo
 
 	public void setFirstname(String firstname)
 	{
-		this.firstname = firstname;
+		this.firstname = (firstname==null)? null : HtmlUtils.htmlEscape(firstname);
 	}
 
 	public String getLastname()
@@ -50,7 +52,7 @@ public class DataPersInfo
 
 	public void setLastname(String lastname)
 	{
-		this.lastname = lastname;
+		this.lastname = (lastname==null)? null : HtmlUtils.htmlEscape(lastname);
 	}
 
 	public String getDateOfBirth()
@@ -60,7 +62,7 @@ public class DataPersInfo
 
 	public void setDateOfBirth(String dateOfBirth)
 	{
-		this.dateOfBirth = dateOfBirth;
+		this.dateOfBirth = (dateOfBirth==null)? null : HtmlUtils.htmlEscape(dateOfBirth);
 	}
 
 	public int getAge()
@@ -80,7 +82,7 @@ public class DataPersInfo
 
 	public void setGender(String gender)
 	{
-		this.gender = gender;
+		this.gender = (gender==null)? null : HtmlUtils.htmlEscape(gender);
 	}
 
 	public String getNationality()
@@ -90,7 +92,7 @@ public class DataPersInfo
 
 	public void setNationality(String nationality)
 	{
-		this.nationality = nationality;
+		this.nationality = (nationality==null)? null : HtmlUtils.htmlEscape(nationality);
 	}
 
 	public String getDrivingLicense()
@@ -100,7 +102,7 @@ public class DataPersInfo
 
 	public void setDrivingLicense(String drivingLicense)
 	{
-		this.drivingLicense = drivingLicense;
+		this.drivingLicense = (drivingLicense==null)? null : HtmlUtils.htmlEscape(drivingLicense);
 	}
 
 	public String getEngineeringLicense()
@@ -110,7 +112,7 @@ public class DataPersInfo
 
 	public void setEngineeringLicense(String engineeringLicense)
 	{
-		this.engineeringLicense = engineeringLicense;
+		this.engineeringLicense = (engineeringLicense==null)? null : HtmlUtils.htmlEscape(engineeringLicense);
 	}
 
 	public ArrayList<ModelPersinfo.Language> getListLanguage()
@@ -120,6 +122,13 @@ public class DataPersInfo
 
 	public void setListLanguage(ArrayList<ModelPersinfo.Language> listLanguage)
 	{
+		if (listLanguage!=null)
+		{
+			listLanguage.forEach(lang -> {
+				lang.setLanguage((lang.getLanguage()==null)? null : HtmlUtils.htmlEscape(lang.getLanguage()));
+				lang.setProficiency((lang.getProficiency()==null)? null : HtmlUtils.htmlEscape(lang.getProficiency()));
+			});
+		}
 		this.listLanguage = listLanguage;
 	}
 
@@ -130,6 +139,13 @@ public class DataPersInfo
 
 	public void setListProgrammingLanguage(ArrayList<ModelPersinfo.Language> listProgrammingLanguage)
 	{
+		if (listProgrammingLanguage!=null)
+		{
+			listProgrammingLanguage.forEach(progLang -> {
+				progLang.setLanguage((progLang.getLanguage()==null)? null : HtmlUtils.htmlEscape(progLang.getLanguage()));
+				progLang.setProficiency((progLang.getProficiency()==null)? null : HtmlUtils.htmlEscape(progLang.getProficiency()));
+			});
+		}
 		this.listProgrammingLanguage = listProgrammingLanguage;
 	}
 
@@ -140,7 +156,7 @@ public class DataPersInfo
 
 	public void setAddress(String address)
 	{
-		this.address = address;
+		this.address = (address==null)? null : HtmlUtils.htmlEscape(address);
 	}
 
 	public String getPhoneNumber()
@@ -150,7 +166,7 @@ public class DataPersInfo
 
 	public void setPhoneNumber(String phoneNumber)
 	{
-		this.phoneNumber = phoneNumber;
+		this.phoneNumber = (phoneNumber==null)? null : HtmlUtils.htmlEscape(phoneNumber);
 	}
 
 	public String getEmail()
@@ -160,7 +176,7 @@ public class DataPersInfo
 
 	public void setEmail(String email)
 	{
-		this.email = email;
+		this.email = (email==null)? null : HtmlUtils.htmlEscape(email);
 	}
 
 	public String getLineId()
@@ -170,7 +186,7 @@ public class DataPersInfo
 
 	public void setLineId(String lineId)
 	{
-		this.lineId = lineId;
+		this.lineId = (lineId==null)? null : HtmlUtils.htmlEscape(lineId);
 	}
 
 	public ArrayList<ModelPersinfo.Education> getListEducation()
@@ -180,6 +196,15 @@ public class DataPersInfo
 
 	public void setListEducation(ArrayList<ModelPersinfo.Education> listEducation)
 	{
+		if (listEducation!=null)
+		{
+			listEducation.forEach(edu -> {
+				edu.setLine1((edu.getLine1()==null)? null : HtmlUtils.htmlEscape(edu.getLine1()));
+				edu.setLine2((edu.getLine2()==null)? null : HtmlUtils.htmlEscape(edu.getLine2()));
+				edu.setLine3((edu.getLine3()==null)? null : HtmlUtils.htmlEscape(edu.getLine3()));
+				edu.setLine4((edu.getLine4()==null)? null : HtmlUtils.htmlEscape(edu.getLine4()));
+			});
+		}
 		this.listEducation = listEducation;
 	}
 
@@ -190,6 +215,16 @@ public class DataPersInfo
 
 	public void setListEnglishTest(ArrayList<ModelPersinfo.EnglishTest> listEnglishTest)
 	{
+		if (listEnglishTest!=null)
+		{
+			listEnglishTest.forEach(test -> {
+				test.setTestName((test.getTestName()==null)? null : HtmlUtils.htmlEscape(test.getTestName()));
+				test.setScore1((test.getScore1()==null)? null : HtmlUtils.htmlEscape(test.getScore1()));
+				test.setScore2((test.getScore2()==null)? null : HtmlUtils.htmlEscape(test.getScore2()));
+				test.setScore3((test.getScore3()==null)? null : HtmlUtils.htmlEscape(test.getScore3()));
+				test.setScore4((test.getScore4()==null)? null : HtmlUtils.htmlEscape(test.getScore4()));
+			});
+		}
 		this.listEnglishTest = listEnglishTest;
 	}
 }
