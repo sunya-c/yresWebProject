@@ -1,14 +1,10 @@
-1. Fixed a bug where certain user inputs caused unexpected behavior.
-2. Fixed TryMe! on 'Try REST api' page didn't accept HTTPS.
+Resume file is now downloaded from the database (used to be a static web resource).
 
 ----------
 
-1. Fixed a bug where certain user inputs caused unexpected behavior:
+Resume file is now downloaded from the database (used to be a static web resource):
 
--Text from user inputs that is included in HTML code is now escaped using HtmlUtils.htmlEscape().
-
-
-2. Fixed TryMe! on 'Try REST api' page didn't accept HTTPS:
-
--Updated protocol on sSendRequest controller to accept HTTPS instead of HTTP. This should be done
-in v1.61, but I somehow missed it.
+-Getting deeper into Java I/O operations, reading/writing raw byte data. Now that I
+have good understanding of this process, I feel like this should be the time to move
+the Resume file to the database as it is frequently updated, commiting in Git every
+time the Resume get an update might not be sustainable.

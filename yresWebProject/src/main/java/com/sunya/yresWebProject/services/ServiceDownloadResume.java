@@ -1,24 +1,32 @@
 package com.sunya.yresWebProject.services;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.sunya.yresWebProject.daos.DaoDownloadinfo;
 import com.sunya.yresWebProject.daos.DaoWebdatainfo;
+import com.sunya.yresWebProject.exceptions.SomethingWentWrongException;
+import com.sunya.yresWebProject.models.ModelDownloadinfo;
 import com.sunya.yresWebProject.models.ModelWebdatainfo;
 
 @Service
 public class ServiceDownloadResume
 {
 	@Autowired
-	private ResourceLoader loader;
+	private DaoWebdatainfo daoWebinfo;
 	@Autowired
-	private DaoWebdatainfo dao;
+	private DaoDownloadinfo daoDownload;
+	@Autowired
+	private Environment env;
 
 
 	/**
@@ -26,17 +34,16 @@ public class ServiceDownloadResume
 	 *         RESUME file.
 	 * @throws IOException
 	 */
-	public ResponseEntity<Resource> sDownloadResume() throws IOException
+	public ResponseEntity<Resource> sDownloadResume()
 	{
 		try
 		{
-			// Path to the file to be downloaded
-			Resource resource = loader.getResource("/resources/outBox/resumeC_pdf.pdf");
-
-			// Set headers for the response
+			Resource resource = getResource(env.getProperty("yres.resume", "Env. error!"));
+			
+			// Set headers and body for the response
 			if (resource.exists())
 			{
-				ModelWebdatainfo model = dao.getWebinfo(DaoWebdatainfo.WEB_RESUME_DATE);
+				ModelWebdatainfo model = daoWebinfo.getWebinfo(DaoWebdatainfo.WEB_RESUME_DATE);
 				
 				long contentLength = resource.contentLength();
 				
@@ -55,6 +62,26 @@ public class ServiceDownloadResume
 		{
 			System.err.println(e);
 			return ResponseEntity.internalServerError().build();
+		}
+	}
+	
+	private Resource getResource(String nameInDatabase) throws IOException, SomethingWentWrongException
+	{
+		ModelDownloadinfo model = daoDownload.getFile(nameInDatabase);
+		try (BufferedInputStream inStream = new BufferedInputStream(model.getFiledata()))
+		{
+			ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
+			byte[] temp = new byte[4096];
+			int length = 0;
+			while ((length = inStream.read(temp))!=-1)
+			{
+				byteArray.write(temp, 0, length);
+			}
+			return new ByteArrayResource(byteArray.toByteArray());
+		}
+		catch (IOException e)
+		{
+			throw e;
 		}
 	}
 }
