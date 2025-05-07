@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.sunya.yresWebProject.PrintError;
@@ -144,7 +145,7 @@ public class FilterBot extends OncePerRequestFilter
 
 			// If the country is NOT 'TH', I presume it's a bot request.
 			// Add IP to tempBlacklist, or increment if already exists.
-			tempBlacklist.incrementExistingOrAddNew(ip);
+			tempBlacklist.incrementExistingOrAddNew(ip, countryCode);
 			throw new SuspiciousRequestException(errText);
 		}
 		catch (Exception e)
@@ -215,12 +216,13 @@ public class FilterBot extends OncePerRequestFilter
 				});
 			}
 		}
-		public void addNew(@NotNull String ip)
+		public void addNew(@NotNull String ip, @Nullable String countryCode)
 		{
 			synchronized (keySynchronized)
 			{
 				ModelIPBlacklist model = new ModelIPBlacklist();
 				model.setIpAddress(ip);
+				model.setCountryCode(countryCode);
 				model.setBlockCount(1);
 				add(model);
 			}
@@ -231,7 +233,17 @@ public class FilterBot extends OncePerRequestFilter
 			{
 				if (!incrementExisting(ip))
 				{
-					addNew(ip);
+					addNew(ip, null);
+				}
+			}
+		}
+		public void incrementExistingOrAddNew(@NotNull String ip, @Nullable String countryCode)
+		{
+			synchronized (keySynchronized)
+			{
+				if (!incrementExisting(ip))
+				{
+					addNew(ip, countryCode);
 				}
 			}
 		}
