@@ -1,10 +1,7 @@
-Resume file is now downloaded from the database (used to be a static web resource).
+Added support for the new Server (moving from AWS to THAI DATA CLOUD).
 
 ----------
 
-Resume file is now downloaded from the database (used to be a static web resource):
+Added support for the new Server (moving from AWS to THAI DATA CLOUD):
 
--Getting deeper into Java I/O operations, reading/writing raw byte data. Now that I
-have good understanding of this process, I feel like this should be the time to move
-the Resume file to the database as it is frequently updated, commiting in Git every
-time the Resume get an update might not be sustainable.
+-We're moving to a new server which are much affordable than AWS. As this project has been designed with universal compatibility in mind, the only thing that has to be changed is just the database driver dependency. Since the database on the new server is MariaDB, we replaced the existing MySQL driver dependency with a MariaDB driver dependency.
