@@ -18,13 +18,16 @@ else
 <link href="https://fonts.googleapis.com" rel="preconnect">
 <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
 <link
-	href="https://fonts.googleapis.com/css?family=Open+Sans:regular,italic&display=swap"
+	href="https://fonts.googleapis.com/css?family=Roboto:regular,italic&display=swap"
+	rel="stylesheet">
+<link
+	href="https://fonts.googleapis.com/css?family=Inter:regular,italic&display=swap"
 	rel="stylesheet">
 <script type="text/javascript">
 	// Redirect to ServletRedirecting after a delay
 	setTimeout(function() {
 		window.location.href = "/Home${botParam}"; <!-- TODO: change to el for dynamic redirecting -->
-	}, 2000); // 2000 milliseconds = 2.0 seconds
+	}, 1500); // 1500 milliseconds = 1.5 seconds
 </script>
 </head>
 <body id="i0wps4">

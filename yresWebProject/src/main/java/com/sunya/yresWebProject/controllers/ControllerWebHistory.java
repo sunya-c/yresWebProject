@@ -11,6 +11,8 @@ public class ControllerWebHistory extends Controller1
 	@GetMapping("/webHistory")
 	public String webHistoryPage()
 	{
-		return Page.underConstruction;
+		sm.getSessionLogin().setFromPage("webHistory");
+		
+		return Page.webHistory;
 	}
 }

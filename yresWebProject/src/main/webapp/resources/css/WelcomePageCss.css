@@ -40,7 +40,7 @@ body {
 #iplzo3 {
 	position: relative;
 	left: 25px;
-	font-family: "Open Sans", sans-serif;
+	font-family: "Inter", sans-serif;
 	font-size: 18px;
 	color: #000000;
 }
@@ -48,7 +48,7 @@ body {
 #iv9349 {
 	position: relative;
 	left: 25px;
-	font-family: "Open Sans", sans-serif;
+	font-family: "Inter", sans-serif;
 	font-size: 18px;
 	color: #000000;
 	top: 5px;
@@ -65,9 +65,8 @@ body {
 	background-color: #8a4545;
 	text-align: center;
 	color: #fdfdfd;
-	font-family: "Open Sans", sans-serif;
+	font-family: "Inter", sans-serif;
 	font-size: 16px;
-	font-weight: 400;
 	letter-spacing: 1px;
 }
 
@@ -96,7 +95,7 @@ body {
 	border-radius: 7px;
 	background-color: #6f1d1d;
 	text-align: center;
-	font-family: "Open Sans", sans-serif;
+	font-family: "Inter", sans-serif;
 	font-size: 14px;
 	color: #fdfdfd;
 	border: 0px none rgba(0, 0, 0, 0);
@@ -113,7 +112,7 @@ body {
 	padding: 10px;
 	position: relative;
 	left: 10px;
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: "Inter", sans-serif;
 	font-size: 20px;
 	font-weight: 700;
 	color: #9a3e3e;
@@ -125,38 +124,38 @@ body {
 	padding: 10px;
 	position: relative;
 	left: 130px;
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: "Inter", sans-serif;
 	font-size: 17px;
 	font-weight: 700;
 	color: #9a3e3e;
 	top: -38px;
-	max-width: 955px;
 	text-shadow: 0px 0px 15px rgba(0, 0, 0, 0.4);
+	width: 955px;
 }
 
 #iy0w9r {
 	border: 10px solid rgba(147, 75, 75, 0.85);
-	max-width: 1145px;
 	position: relative;
 	height: 165px;
+	width: 1145px;
 }
 
 #iybpdh {
 	position: relative;
-	font-family: "Open Sans", sans-serif;
+	font-family: "Inter", sans-serif;
 	font-size: 20px;
 	font-weight: 700;
 	text-shadow: 2px 2px 5px rgba(115, 115, 115, 0.72);
 	left: 20px;
 	top: 55px;
-	max-width: 775px;
+	width: 725px;
 }
 
 #iitwbc {
 	position: relative;
 	width: 175px;
 	height: 30px;
-	font-family: "Open Sans", sans-serif;
+	font-family: "Inter", sans-serif;
 	font-size: 15px;
 	border-radius: 7px;
 	border: 0.5px solid #737373;
@@ -176,7 +175,7 @@ body {
 	position: relative;
 	width: 175px;
 	height: 30px;
-	font-family: "Open Sans", sans-serif;
+	font-family: "Inter", sans-serif;
 	font-size: 15px;
 	border-radius: 7px;
 	border: 0.5px solid #737373;
@@ -189,13 +188,13 @@ body {
 
 #idkq7h {
 	padding: 10px;
-	font-family: "Open Sans", sans-serif;
+	font-family: "Inter", sans-serif;
 	font-size: 14px;
 	position: relative;
 	left: 200px;
 	top: -29px;
-	max-width: 595px;
 	color: #000000;
+	width: 545px;
 }
 
 #i3po9k {
@@ -207,7 +206,7 @@ body {
 	position: relative;
 	width: 175px;
 	height: 30px;
-	font-family: "Open Sans", sans-serif;
+	font-family: "Inter", sans-serif;
 	font-size: 15px;
 	border-radius: 7px;
 	border: 0.5px solid #737373;
@@ -227,7 +226,7 @@ body {
 	position: relative;
 	width: 175px;
 	height: 30px;
-	font-family: "Open Sans", sans-serif;
+	font-family: "Inter", sans-serif;
 	font-size: 15px;
 	border-radius: 7px;
 	border: 0.5px solid #737373;
@@ -245,16 +244,17 @@ body {
 
 #inqnnz {
 	font-weight: normal;
+	font-family: "Inter", sans-serif;
 }
 
 #iiawfa {
 	padding: 10px;
-	font-family: "Open Sans", sans-serif;
+	font-family: "Inter", sans-serif;
 	font-size: 15px;
 	position: relative;
 	left: 13px;
-	text-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
 	color: #000000;
+	width: 735px;
 }
 
 #i9w8ag {
@@ -262,17 +262,17 @@ body {
 	left: 350px;
 	top: -600px;
 	height: 600px;
-	max-width: 795px;
 	border-bottom: 5px solid rgba(147, 75, 75, 0.6);
 	border-right: 5px solid rgba(147, 75, 75, 0.6);
 	border-left: 5px solid rgba(147, 75, 75, 0.6);
+	width: 795px;
 }
 
 #ia0qth {
 	position: relative;
 	width: 175px;
 	height: 30px;
-	font-family: "Open Sans", sans-serif;
+	font-family: "Inter", sans-serif;
 	font-size: 15px;
 	border-radius: 7px;
 	border: 0.5px solid rgba(147, 75, 75, 0.85);
@@ -291,20 +291,20 @@ body {
 
 #i32dz7 {
 	padding: 10px;
-	font-family: "Open Sans", sans-serif;
+	font-family: "Inter", sans-serif;
 	font-size: 14px;
 	position: relative;
 	left: 200px;
 	top: -29px;
-	max-width: 595px;
 	color: #d60000;
+	width: 545px;
 }
 
 #ifuk9u {
 	position: relative;
 	width: 175px;
 	height: 30px;
-	font-family: "Open Sans", sans-serif;
+	font-family: "Inter", sans-serif;
 	font-size: 15px;
 	border-radius: 7px;
 	border: 0.5px solid #737373;
@@ -323,4 +323,14 @@ body {
 
 #i9lqo2 {
 	min-height: 100px;
+}
+
+#iy2ne2 {
+	font-family: "Inter", sans-serif;
+	font-weight: 700;
+}
+
+#i9b28cj {
+	font-family: "Inter", sans-serif;
+	color: #0b9f37;
 }

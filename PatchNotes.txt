@@ -1,14 +1,10 @@
-1. Fixed a bug where certain user inputs caused unexpected behavior.
-2. Fixed TryMe! on 'Try REST api' page didn't accept HTTPS.
+Added WebHistory page.
 
 ----------
 
-1. Fixed a bug where certain user inputs caused unexpected behavior:
+Added WebHistory page:
 
--Text from user inputs that is included in HTML code is now escaped using HtmlUtils.htmlEscape().
-
-
-2. Fixed TryMe! on 'Try REST api' page didn't accept HTTPS:
-
--Updated protocol on sSendRequest controller to accept HTTPS instead of HTTP. This should be done
-in v1.61, but I somehow missed it.
+-Added .jsp and .css for WebHistory page.
+-Added a function in ControllerWebHistory to forward 'GET /webHistory' to WebHistoryPage.
+-Added FilterSiteUsage10 to track number of visits of WebHistory page.
+-Made DaoSiteUsage support WebHistory page.

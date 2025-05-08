@@ -18,6 +18,7 @@ import com.sunya.yresWebProject.filters.FilterLoginState;
 import com.sunya.yresWebProject.filters.siteUsage.FilterSiteUsage;
 import com.sunya.yresWebProject.filters.siteUsage.FilterSiteUsage0;
 import com.sunya.yresWebProject.filters.siteUsage.FilterSiteUsage1;
+import com.sunya.yresWebProject.filters.siteUsage.FilterSiteUsage10;
 import com.sunya.yresWebProject.filters.siteUsage.FilterSiteUsage2;
 import com.sunya.yresWebProject.filters.siteUsage.FilterSiteUsage3;
 import com.sunya.yresWebProject.filters.siteUsage.FilterSiteUsage4;
@@ -84,6 +85,7 @@ public class FilterConfig
 							"/redirecting",
 							"/restApi",
 //							"/UnderConstructionPage.jsp",
+							"/webHistory",
 							"/welcome",
 							"/sCreateAccount",
 							"/sDownloadResume",
@@ -110,6 +112,7 @@ public class FilterConfig
 							"/redirecting",
 							"/restApi",
 //							"/UnderConstructionPage.jsp",
+							"/webHistory",
 							"/welcome",
 							"/sCreateAccount",
 							"/sDownloadResume",
@@ -208,9 +211,9 @@ public class FilterConfig
 	{
 		FilterRegistrationBean<FilterSiteUsage6> bean = new FilterRegistrationBean<>();
 		bean.setFilter(new FilterSiteUsage6(siteUsage));
-//		bean.addUrlPatterns("/~~~");
+		bean.addUrlPatterns("/accountInfo", "/adminPanel");
 		bean.setOrder(5);
-		bean.setEnabled(false);
+//		bean.setEnabled(false);
 		
 		return bean;
 	}
@@ -245,6 +248,16 @@ public class FilterConfig
 		FilterRegistrationBean<FilterSiteUsage9> bean = new FilterRegistrationBean<>();
 		bean.setFilter(new FilterSiteUsage9(siteUsage));
 		bean.addUrlPatterns("/restApi");
+		bean.setOrder(5);
+		
+		return bean;
+	}
+	@Bean
+	public FilterRegistrationBean<FilterSiteUsage10> filterUsage10()  // Filter RestApiPage
+	{
+		FilterRegistrationBean<FilterSiteUsage10> bean = new FilterRegistrationBean<>();
+		bean.setFilter(new FilterSiteUsage10(siteUsage));
+		bean.addUrlPatterns("/webHistory");
 		bean.setOrder(5);
 		
 		return bean;

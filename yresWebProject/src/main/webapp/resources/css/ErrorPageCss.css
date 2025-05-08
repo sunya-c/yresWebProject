@@ -19,9 +19,9 @@ body {
 
 #iakzlo {
 	padding: 10px;
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: "Roboto", sans-serif;
 	font-weight: 700;
-	font-size: 24px;
+	font-size: 18px;
 	color: #333333;
 	top: 25px;
 	position: relative;
@@ -56,7 +56,7 @@ body {
 	border-radius: 7px;
 	background-color: #6f1d1d;
 	text-align: center;
-	font-family: "Open Sans", sans-serif;
+	font-family: "Inter", sans-serif;
 	font-size: 14px;
 	color: #fdfdfd;
 	border: 0px none rgba(0, 0, 0, 0);

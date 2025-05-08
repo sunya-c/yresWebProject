@@ -19,7 +19,10 @@ else
 <link href="https://fonts.googleapis.com" rel="preconnect">
 <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
 <link
-	href="https://fonts.googleapis.com/css?family=Open+Sans:regular,italic&display=swap"
+	href="https://fonts.googleapis.com/css?family=Roboto:regular,italic&display=swap"
+	rel="stylesheet">
+<link
+	href="https://fonts.googleapis.com/css?family=Inter:regular,italic&display=swap"
 	rel="stylesheet">
 </head>
 
@@ -34,7 +37,7 @@ else
 		</form>
 		<div id="iqzgf4">
 			<form method="post" action="/sLogout" id="i6yg8g">
-				<label id="iplzo3">Welcome ${sessionLogin.username},<br /></label><label
+				<label id="iplzo3">Welcome <span id="iy2ne2">${sessionLogin.username}</span>,<br /></label><label
 					id="iv9349">You're logged in<br /></label>
 				<button type="submit" id="i8e392">Log out</button>
 			</form>
@@ -52,7 +55,9 @@ else
 		</form>
 		<form method="get" action="/sDownloadResume" id="i3po9k">
 			<button type="submit" id="ib81jz">Download Resume</button>
-			<div id="idkq7h">Last update: ${sessionWeb.resumeDate}</div>
+			<div id="idkq7h">
+				Last update: <span id="i9b28cj">${sessionWeb.resumeDate}</span>
+			</div>
 		</form>
 		<form method="get" action="/webHistory" id="i7yq1c">
 			<button type="submit" id="i5fj2f">About this website</button>

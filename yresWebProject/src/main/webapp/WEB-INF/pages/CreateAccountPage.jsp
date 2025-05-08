@@ -13,11 +13,15 @@ if (System.getenv("SERY_CSS_VERSION")==null || System.getenv("SERY_CSS_VERSION")
 else
 	cssVersion += System.getenv("SERY_CSS_VERSION");
 %>
-<link rel="stylesheet" href="/resources/css/CreateAccountPageCss.css<%= cssVersion %>" />
+<link rel="stylesheet"
+	href="/resources/css/CreateAccountPageCss.css<%=cssVersion%>" />
 <link href="https://fonts.googleapis.com" rel="preconnect">
 <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
 <link
-	href="https://fonts.googleapis.com/css?family=Open+Sans:regular,italic&display=swap"
+	href="https://fonts.googleapis.com/css?family=Roboto:regular,italic&display=swap"
+	rel="stylesheet">
+<link
+	href="https://fonts.googleapis.com/css?family=Inter:regular,italic&display=swap"
 	rel="stylesheet">
 </head>
 
@@ -36,7 +40,8 @@ else
 			<form method="post" action="/sCreateAccount" id="ijtey8">
 				<div id="ip4cc6">
 					<label id="iyd4c4">Username<br /></label><input type="text"
-						placeholder="Create your username" name="username" value="${dataCreateAccount.usernamePreTyped}" id="ir4udv" /><label
+						placeholder="Create your username" name="username"
+						value="${dataCreateAccount.usernamePreTyped}" id="ir4udv" /><label
 						id="iy009g"><br>${dataCreateAccount.usernameErr}<br /></label>
 				</div>
 				<div id="i69h82">

@@ -21,7 +21,10 @@ else
 <link href="https://fonts.googleapis.com" rel="preconnect">
 <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
 <link
-	href="https://fonts.googleapis.com/css?family=Open+Sans:regular,italic&display=swap"
+	href="https://fonts.googleapis.com/css?family=Roboto:regular,italic&display=swap"
+	rel="stylesheet">
+<link
+	href="https://fonts.googleapis.com/css?family=Inter:regular,italic&display=swap"
 	rel="stylesheet">
 </head>
 
@@ -54,7 +57,7 @@ else
 		<c:if test="${sessionLogin.loggedIn == true}">
 			<div id="ic3x5g">
 				<form method="post" action="/sLogout" id="iuj89x">
-					<label id="iv62jr">Welcome ${sessionLogin.username},<br /></label><label
+					<label id="iv62jr">Welcome <span id="ig3spq">${sessionLogin.username}</span>,<br /></label><label
 						id="irlj8d">You're logged in<br /></label>
 					<button type="submit" id="i5ywx4">Log out</button>
 				</form>
@@ -162,7 +165,7 @@ else
 		</div>
 	</div>
 	<div id="iipl26">
-		<img id="i1t2dk"  src="/resources/pics/Certificate1.png" /> <img
+		<img id="i1t2dk" src="/resources/pics/Certificate1.png" /><img
 			id="i8tfk1" src="/resources/pics/Certificate2.png" />
 	</div>
 </body>

@@ -14,5 +14,6 @@ public class Page
 	public static final String redirecting = "RedirectingPage";
 	public static final String restApi = "RestApiPage";
 	public static final String underConstruction = "UnderConstructionPage";
+	public static final String webHistory = "WebHistoryPage";
 	public static final String welcome = "WelcomePage";
 }

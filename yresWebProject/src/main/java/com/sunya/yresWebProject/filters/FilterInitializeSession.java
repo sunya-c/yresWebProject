@@ -35,7 +35,7 @@ public class FilterInitializeSession extends OncePerRequestFilter
 		{
 			if (sm.getInitializeString()==null)
 			{
-				System.out.println("in Filter Initizlize. Should be run once at the beginning of each session.--------------------------------------------------once");
+				System.out.println("in Filter Initizlize. Should be run once at the beginning of each session.-----------------------------------once");
 				
 				sm.createKeyHolder();
 				sm.createSessionFeedback();

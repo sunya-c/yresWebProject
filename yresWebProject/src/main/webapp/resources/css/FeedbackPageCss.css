@@ -35,19 +35,19 @@ body {
 
 #ipethv {
 	position: relative;
-	font-family: "Open Sans", sans-serif;
+	font-family: "Inter", sans-serif;
 	font-size: 24px;
-	font-weight: 700;
 	text-shadow: 2px 2px 10px rgba(115, 115, 115, 0.72);
 	left: 20px;
 	top: 20px;
 	color: #333333;
+	font-weight: 700;
 }
 
 #i1qbol {
 	position: relative;
 	left: 25px;
-	font-family: "Open Sans", sans-serif;
+	font-family: "Inter", sans-serif;
 	font-size: 18px;
 }
 
@@ -68,7 +68,7 @@ body {
 #igsftu {
 	position: relative;
 	left: 25px;
-	font-family: "Open Sans", sans-serif;
+	font-family: "Inter", sans-serif;
 	font-size: 18px;
 }
 
@@ -80,7 +80,7 @@ body {
 #irmd7o {
 	position: relative;
 	left: 25px;
-	font-family: "Open Sans", sans-serif;
+	font-family: "Inter", sans-serif;
 	font-size: 18px;
 }
 
@@ -100,9 +100,8 @@ body {
 	background-color: #313131;
 	text-align: center;
 	color: #fdfdfd;
-	font-family: "Open Sans", sans-serif;
+	font-family: "Inter", sans-serif;
 	font-size: 16px;
-	font-weight: 400;
 	letter-spacing: 1px;
 }
 
@@ -128,6 +127,11 @@ body {
 	left: 350px;
 	top: -600px;
 	height: 600px;
+	width: 795px;
+	border-top: 5px solid rgba(147, 75, 75, 0.6);
+	border-right: 5px solid rgba(147, 75, 75, 0.6);
+	border-bottom: 5px solid rgba(147, 75, 75, 0.6);
+	border-left: 5px solid rgba(147, 75, 75, 0.6);
 }
 
 #ih5e81 {
@@ -159,7 +163,7 @@ body {
 #i5n6pj {
 	position: relative;
 	left: 25px;
-	font-family: "Open Sans", sans-serif;
+	font-family: "Inter", sans-serif;
 	font-size: 14px;
 	color: #d60000;
 }
@@ -167,7 +171,7 @@ body {
 #iuost3 {
 	position: relative;
 	left: 25px;
-	font-family: "Open Sans", sans-serif;
+	font-family: "Inter", sans-serif;
 	font-size: 14px;
 	color: #d60000;
 	top: -4px;
@@ -176,7 +180,7 @@ body {
 #iyh6a9 {
 	position: relative;
 	left: 25px;
-	font-family: "Open Sans", sans-serif;
+	font-family: "Inter", sans-serif;
 	font-size: 14px;
 	color: #d60000;
 	top: -4px;
@@ -185,7 +189,7 @@ body {
 #iclv6l {
 	padding: 10px 10px 10px 20px;
 	position: relative;
-	font-family: "Open Sans", sans-serif;
+	font-family: "Inter", sans-serif;
 	font-size: 18px;
 }
 
@@ -200,9 +204,8 @@ body {
 	background-color: #4e7d41;
 	text-align: center;
 	color: #fdfdfd;
-	font-family: "Open Sans", sans-serif;
+	font-family: "Inter", sans-serif;
 	font-size: 16px;
-	font-weight: 400;
 	letter-spacing: 1px;
 	box-shadow: 2px 2px 5px 0 rgba(168, 168, 168, 0.5);
 }
@@ -222,4 +225,9 @@ body {
 	left: 50px;
 	top: 50px;
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+#il8i5h {
+	font-family: "Inter", sans-serif;
+	font-weight: 700;
 }

@@ -37,13 +37,13 @@ body {
 	position: relative;
 	left: 25px;
 	font-size: 18px;
-	font-family: "Open Sans", sans-serif;
+	font-family: "Inter", sans-serif;
 }
 
 #ianeo {
 	position: relative;
 	left: 25px;
-	font-family: "Open Sans", sans-serif;
+	font-family: "Inter", sans-serif;
 	font-size: 18px;
 }
 
@@ -58,9 +58,8 @@ body {
 	background-color: #313131;
 	text-align: center;
 	color: #fdfdfd;
-	font-family: "Open Sans", sans-serif;
+	font-family: "Inter", sans-serif;
 	font-size: 16px;
-	font-weight: 400;
 	letter-spacing: 1px;
 }
 
@@ -99,27 +98,27 @@ body {
 	left: 350px;
 	top: -600px;
 	height: 600px;
-	max-width: 795px;
 	border-left: 5px solid rgba(147, 75, 75, 0.6);
 	border-bottom: 5px solid rgba(147, 75, 75, 0.6);
 	border-right: 5px solid rgba(147, 75, 75, 0.6);
+	width: 795px;
 }
 
 #illyu {
 	position: relative;
-	font-family: "Open Sans", sans-serif;
+	font-family: "Inter", sans-serif;
 	font-size: 20px;
 	font-weight: 700;
 	text-shadow: 2px 2px 5px rgba(115, 115, 115, 0.72);
 	left: 20px;
 	top: 55px;
-	max-width: 775px;
+	width: 725px;
 }
 
 #i3xat {
 	position: relative;
 	left: 20px;
-	font-family: "Open Sans", sans-serif;
+	font-family: "Inter", sans-serif;
 	font-size: 15px;
 	border: 0px none;
 	background-color: rgba(0, 0, 0, 0);
@@ -133,7 +132,7 @@ body {
 	position: relative;
 	width: 175px;
 	height: 30px;
-	font-family: "Open Sans", sans-serif;
+	font-family: "Inter", sans-serif;
 	font-size: 15px;
 	border-radius: 7px;
 	border: 0.5px solid #737373;
@@ -157,7 +156,7 @@ body {
 #irep4 {
 	position: relative;
 	left: 25px;
-	font-family: "Open Sans", sans-serif;
+	font-family: "Inter", sans-serif;
 	font-size: 14px;
 	color: #d60000;
 }
@@ -165,7 +164,7 @@ body {
 #igiel {
 	position: relative;
 	left: 25px;
-	font-family: "Open Sans", sans-serif;
+	font-family: "Inter", sans-serif;
 	font-size: 14px;
 	color: #d60000;
 }
@@ -198,7 +197,7 @@ body {
 	border-radius: 7px;
 	background-color: #6f1d1d;
 	text-align: center;
-	font-family: "Open Sans", sans-serif;
+	font-family: "Inter", sans-serif;
 	font-size: 14px;
 	color: #fdfdfd;
 	border: 0px none rgba(0, 0, 0, 0);
@@ -213,16 +212,16 @@ body {
 
 #ilt5zk {
 	border: 10px solid rgba(147, 75, 75, 0.85);
-	max-width: 1145px;
 	position: relative;
 	height: 165px;
+	width: 1145px;
 }
 
 #i99fq4 {
 	padding: 10px;
 	position: relative;
 	left: 10px;
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: "Inter", sans-serif;
 	font-size: 20px;
 	font-weight: 700;
 	color: #9a3e3e;
@@ -234,34 +233,35 @@ body {
 	padding: 10px;
 	position: relative;
 	left: 130px;
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: "Inter", sans-serif;
 	font-size: 17px;
 	font-weight: 700;
 	color: #9a3e3e;
 	top: -38px;
-	max-width: 955px;
 	text-shadow: 0px 0px 15px rgba(0, 0, 0, 0.4);
+	width: 955px;
 }
 
 #ip7596 {
 	padding: 10px;
-	font-family: "Open Sans", sans-serif;
+	font-family: "Inter", sans-serif;
 	font-size: 15px;
 	position: relative;
 	left: 13px;
-	text-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
 	color: #000000;
+	width: 735px;
 }
 
 #ir0137 {
 	font-weight: normal;
+	font-family: "Inter", sans-serif;
 }
 
 #ia7xhn {
 	position: relative;
 	width: 175px;
 	height: 30px;
-	font-family: "Open Sans", sans-serif;
+	font-family: "Inter", sans-serif;
 	font-size: 15px;
 	border-radius: 7px;
 	border: 0.5px solid #737373;
@@ -280,7 +280,7 @@ body {
 	position: relative;
 	width: 175px;
 	height: 30px;
-	font-family: "Open Sans", sans-serif;
+	font-family: "Inter", sans-serif;
 	font-size: 15px;
 	border-radius: 7px;
 	border: 0.5px solid #737373;
@@ -297,20 +297,20 @@ body {
 
 #if14we {
 	padding: 10px;
-	font-family: "Open Sans", sans-serif;
+	font-family: "Inter", sans-serif;
 	font-size: 14px;
 	position: relative;
 	left: 200px;
 	top: -29px;
-	max-width: 595px;
 	color: #000000;
+	width: 545px;
 }
 
 #i4zxdj {
 	position: relative;
 	width: 175px;
 	height: 30px;
-	font-family: "Open Sans", sans-serif;
+	font-family: "Inter", sans-serif;
 	font-size: 15px;
 	border-radius: 7px;
 	border: 0.5px solid #737373;
@@ -326,5 +326,10 @@ body {
 }
 
 #ileipf {
-	min-height: 100px;
+	height: 100px;
+}
+
+#i9n2n3k {
+	font-family: "Inter", sans-serif;
+	color: #0b9f37;
 }

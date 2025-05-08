@@ -19,7 +19,10 @@ else
 <link href="https://fonts.googleapis.com" rel="preconnect">
 <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
 <link
-	href="https://fonts.googleapis.com/css?family=Open+Sans:regular,italic&display=swap"
+	href="https://fonts.googleapis.com/css?family=Roboto:regular,italic&display=swap"
+	rel="stylesheet">
+<link
+	href="https://fonts.googleapis.com/css?family=Inter:regular,italic&display=swap"
 	rel="stylesheet">
 </head>
 <body id="ih5e81">
@@ -61,8 +64,8 @@ else
 			<div id="ibgd9d">
 				<form method="get" action="/Home" id="ibfdco">
 					<div id="iclv6l">
-						Your issue has been submitted.<br /> <br />Reference number :
-						${dataFeedback.refNumber}
+						Your issue has been submitted.<br /> <br />Reference number : <span
+							id="il8i5h">${dataFeedback.refNumber}</span>
 					</div>
 					<button type="submit" id="iw8t3k">Go to Home page</button>
 				</form>
