@@ -49,8 +49,8 @@ else
 					</div>
 					<button type="submit" id="ilwube">Log in</button>
 				</form>
-				<form method="get" action="/createAccount" id="idoqc1">
-					<button type="submit" id="itftp3">Create an account</button>
+				<form method="get" action="/createAccount" id="i8bga-2">
+					<button type="submit" id="i3xat-2">Create an account</button>
 				</form>
 			</div>
 		</c:if>
@@ -64,7 +64,7 @@ else
 			</div>
 		</c:if>
 		<form method="get" action="/feedback" id="ir5ivx">
-			<button type="submit" id="itoc01">Give feedback / bug report</button>
+			<button type="submit" id="i0hicj-2">Give feedback / bug report</button>
 		</form>
 	</div>
 	<div id="ihfb5e">

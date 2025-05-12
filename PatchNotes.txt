@@ -1,10 +1,7 @@
-Added WebHistory page.
+Fixed elements on some pages displayed incorrectly on mobile phone.
 
 ----------
 
-Added WebHistory page:
+Fixed elements on some pages displayed incorrectly on mobile phone:
 
--Added .jsp and .css for WebHistory page.
--Added a function in ControllerWebHistory to forward 'GET /webHistory' to WebHistoryPage.
--Added FilterSiteUsage10 to track number of visits of WebHistory page.
--Made DaoSiteUsage support WebHistory page.
+-Some CSS styles were not displaying correctly on mobile phone. Even though I have minimum knowledge about frontend, I've tried my best to make the appearance as consistent as possible across different devices.

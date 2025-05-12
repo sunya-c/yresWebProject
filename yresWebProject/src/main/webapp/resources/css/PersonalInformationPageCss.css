@@ -18,10 +18,11 @@ body {
 	font-family: "Inter", sans-serif;
 	font-size: 24px;
 	font-weight: 700;
-	text-shadow: 2px 2px 10px rgba(115, 115, 115, 0.72);
 	left: 20px;
 	top: 20px;
 	color: #333333;
+	margin: 0px;
+	padding: 0px;
 }
 
 #iqm8le {
@@ -32,12 +33,15 @@ body {
 	font-size: 40px;
 	border-radius: 7px;
 	border: 0px solid #737373;
-	box-shadow: 2px 2px 5px 0 rgba(168, 168, 168, 0.5);
+	box-shadow: 2px 2px 5px 0 rgba(0, 0, 0, 0.5);
 	left: 45px;
 	top: 35px;
 	font-weight: 700;
 	color: #8a4545;
 	background-color: #efefef;
+	letter-spacing: 0px;
+	margin: 0px;
+	padding: 0px;
 }
 
 #iop9qh {
@@ -67,6 +71,8 @@ body {
 	border: 2px solid #ba9b9b;
 	outline: #000000;
 	background-color: rgba(219, 165, 165, 0.5);
+	margin: 0px;
+	padding: 0px;
 }
 
 #iyobxw {
@@ -77,6 +83,8 @@ body {
 	left: 20px;
 	top: 10px;
 	color: #333333;
+	margin: 0px;
+	padding: 0px;
 }
 
 #ijzbef {
@@ -96,6 +104,8 @@ body {
 	left: 20px;
 	top: 10px;
 	color: #333333;
+	margin: 0px;
+	padding: 0px;
 }
 
 #izyktm {
@@ -117,6 +127,8 @@ body {
 	left: 20px;
 	top: 15px;
 	color: #333333;
+	margin: 0px;
+	padding: 0px;
 }
 
 #ihqgah {
@@ -127,6 +139,8 @@ body {
 	left: 20px;
 	top: 20px;
 	color: #333333;
+	margin: 0px;
+	padding: 0px;
 }
 
 #i9a8eg {
@@ -137,6 +151,8 @@ body {
 	left: 20px;
 	top: 25px;
 	color: #333333;
+	margin: 0px;
+	padding: 0px;
 }
 
 #ipeusp {
@@ -147,6 +163,8 @@ body {
 	left: 20px;
 	top: 30px;
 	color: #333333;
+	margin: 0px;
+	padding: 0px;
 }
 
 #ij5rfj {
@@ -157,6 +175,8 @@ body {
 	left: 20px;
 	top: 35px;
 	color: #333333;
+	margin: 0px;
+	padding: 0px;
 }
 
 #itln1x {
@@ -167,6 +187,8 @@ body {
 	left: 20px;
 	top: 40px;
 	color: #333333;
+	margin: 0px;
+	padding: 0px;
 }
 
 #i7gimj {
@@ -177,6 +199,8 @@ body {
 	left: 20px;
 	top: 15px;
 	color: #333333;
+	margin: 0px;
+	padding: 0px;
 }
 
 #imbwyx {
@@ -187,6 +211,8 @@ body {
 	left: 20px;
 	top: 20px;
 	color: #333333;
+	margin: 0px;
+	padding: 0px;
 }
 
 #itmcmf {
@@ -197,6 +223,8 @@ body {
 	left: 20px;
 	top: 25px;
 	color: #333333;
+	margin: 0px;
+	padding: 0px;
 }
 
 #inlbga {
@@ -207,6 +235,8 @@ body {
 	left: 20px;
 	top: 30px;
 	color: #333333;
+	margin: 0px;
+	padding: 0px;
 }
 
 #ifh8ea {
@@ -217,6 +247,8 @@ body {
 	left: 20px;
 	top: 35px;
 	color: #333333;
+	margin: 0px;
+	padding: 0px;
 }
 
 #i213kh {
@@ -227,6 +259,8 @@ body {
 	left: 20px;
 	top: 40px;
 	color: #333333;
+	margin: 0px;
+	padding: 0px;
 }
 
 #ihl9vf {
@@ -237,6 +271,8 @@ body {
 	left: 20px;
 	top: 10px;
 	color: #333333;
+	margin: 0px;
+	padding: 0px;
 }
 
 #ig7ge7 {
@@ -256,6 +292,8 @@ body {
 	left: 20px;
 	color: #333333;
 	top: 10px;
+	margin: 0px;
+	padding: 0px;
 }
 
 #irb5ln {
@@ -280,6 +318,8 @@ body {
 	border: 2px solid #ba9b9b;
 	outline: #000000;
 	background-color: rgba(219, 165, 165, 0.5);
+	padding: 0px;
+	margin: 0px;
 }
 
 #islcj5 {
@@ -290,6 +330,8 @@ body {
 	left: 20px;
 	top: 10px;
 	color: #333333;
+	margin: 0px;
+	padding: 0px;
 }
 
 #ieml5q {
@@ -310,6 +352,8 @@ body {
 	top: 10px;
 	color: #333333;
 	width: 300px;
+	margin: 0px;
+	padding: 0px;
 }
 
 #isa74l {
@@ -334,6 +378,8 @@ body {
 	outline: #000000;
 	height: 285px;
 	background-color: rgba(219, 165, 165, 0.5);
+	margin: 0px;
+	padding: 0px;
 }
 
 #ia5yky {
@@ -344,6 +390,8 @@ body {
 	left: 20px;
 	top: 10px;
 	color: #333333;
+	margin: 0px;
+	padding: 0px;
 }
 
 #ievfsr {
@@ -364,6 +412,8 @@ body {
 	top: 10px;
 	color: #333333;
 	width: 325px;
+	margin: 0px;
+	padding: 0px;
 }
 
 #inroda {
@@ -388,6 +438,8 @@ body {
 	outline: #000000;
 	height: 95px;
 	background-color: rgba(219, 165, 165, 0.5);
+	padding: 0px;
+	margin: 0px;
 }
 
 #ikobp9 {
@@ -398,6 +450,8 @@ body {
 	left: 20px;
 	top: 15px;
 	color: #333333;
+	margin: 0px;
+	padding: 0px;
 }
 
 #iwgisy {
@@ -408,6 +462,8 @@ body {
 	left: 20px;
 	top: 20px;
 	color: #333333;
+	margin: 0px;
+	padding: 0px;
 }
 
 #i8nard {
@@ -419,6 +475,8 @@ body {
 	top: 15px;
 	color: #333333;
 	width: 325px;
+	margin: 0px;
+	padding: 0px;
 }
 
 #iatzbi {
@@ -430,6 +488,8 @@ body {
 	top: 20px;
 	color: #333333;
 	width: 325px;
+	margin: 0px;
+	padding: 0px;
 }
 
 #iv62jr {
@@ -438,6 +498,10 @@ body {
 	font-family: "Inter", sans-serif;
 	font-size: 18px;
 	color: #000000;
+	font-weight: 400;
+	letter-spacing: 0px;
+	margin: 0px;
+	padding: 0px;
 }
 
 #irlj8d {
@@ -447,6 +511,10 @@ body {
 	font-size: 18px;
 	color: #000000;
 	top: 5px;
+	font-weight: 400;
+	letter-spacing: 0px;
+	margin: 0px;
+	padding: 0px;
 }
 
 #i5ywx4 {
@@ -464,12 +532,17 @@ body {
 	font-size: 16px;
 	font-weight: 400;
 	letter-spacing: 1px;
+	margin: 0px;
+	padding: 0px;
+	box-shadow: 0 0 7px 0px rgba(0, 0, 0, 0.5);
 }
 
 #iuj89x {
 	position: relative;
 	top: 15px;
 	height: 205px;
+	margin: 0px;
+	padding: 0px;
 }
 
 #ic3x5g {
@@ -477,25 +550,12 @@ body {
 	height: 270px;
 	width: 250px;
 	border-radius: 20px 20px 20px 20px;
-	box-shadow: unset;
 	position: relative;
 	top: 15px;
 	left: 45px;
-}
-
-#itoc01 {
-	position: relative;
-	left: 60px;
-	width: 220px;
-	height: 35px;
-	border-radius: 7px;
-	background-color: #6f1d1d;
-	text-align: center;
-	font-family: "Inter", sans-serif;
-	font-size: 14px;
-	color: #fdfdfd;
-	border: 0px none rgba(0, 0, 0, 0);
-	box-shadow: 0 0 5px 0px rgba(0, 0, 0, 0.5);
+	margin: 0px;
+	padding: 0px;
+	box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
 }
 
 #ir5ivx {
@@ -536,6 +596,10 @@ body {
 	left: 25px;
 	font-size: 18px;
 	font-family: "Inter", sans-serif;
+	font-weight: 400;
+	letter-spacing: 0px;
+	margin: 0px;
+	padding: 0px;
 }
 
 #iw4bk5 {
@@ -546,6 +610,8 @@ body {
 	border-radius: 7px 7px 7px 7px;
 	border: 2px solid #bdbdbd;
 	font-size: 15px;
+	margin: 0px;
+	padding: 10px;
 }
 
 #icrvof {
@@ -554,10 +620,16 @@ body {
 	font-family: "Inter", sans-serif;
 	font-size: 14px;
 	color: #d60000;
+	font-weight: 400;
+	letter-spacing: 0px;
+	margin: 0px;
+	padding: 0px;
 }
 
 #ikd8rh {
 	position: relative;
+	margin: 0px;
+	padding: 0px;
 }
 
 #i0vh8l {
@@ -565,6 +637,10 @@ body {
 	left: 25px;
 	font-family: "Inter", sans-serif;
 	font-size: 18px;
+	font-weight: 400;
+	letter-spacing: 0px;
+	margin: 0px;
+	padding: 0px;
 }
 
 #i3zobi {
@@ -575,6 +651,8 @@ body {
 	border-radius: 7px 7px 7px 7px;
 	border: 2px solid #bdbdbd;
 	font-size: 15px;
+	margin: 0px;
+	padding: 10px;
 }
 
 #igf1k3 {
@@ -583,11 +661,17 @@ body {
 	font-family: "Inter", sans-serif;
 	font-size: 14px;
 	color: #d60000;
+	font-weight: 400;
+	letter-spacing: 0px;
+	margin: 0px;
+	padding: 0px;
 }
 
 #iriilk {
 	position: relative;
 	top: 5px;
+	margin: 0px;
+	padding: 0px;
 }
 
 #ilwube {
@@ -603,18 +687,44 @@ body {
 	color: #fdfdfd;
 	font-family: "Inter", sans-serif;
 	font-size: 16px;
+	font-weight: 400;
 	letter-spacing: 1px;
+	margin: 0px;
+	padding: 0px;
 }
 
 #in9rom {
 	position: relative;
 	top: 15px;
 	height: 210px;
+	margin: 0px;
+	padding: 0px;
 }
 
-#itftp3 {
+#imcix1 {
+	background-color: #fff8f8;
+	height: 270px;
+	width: 250px;
+	border-radius: 20px 20px 20px 20px;
 	position: relative;
-	left: 20px;
+	top: 15px;
+	left: 45px;
+	margin: 0px;
+	padding: 0px;
+	box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+}
+
+#ig3spq {
+	font-family: "Inter", sans-serif;
+	font-weight: 700;
+	margin: 0px;
+	padding: 0px;
+	letter-spacing: 0px;
+}
+
+#i3xat-2 {
+	position: relative;
+	left: 25px;
 	font-family: "Inter", sans-serif;
 	font-size: 15px;
 	border: 0px none;
@@ -623,26 +733,67 @@ body {
 	text-align: left;
 	top: 10px;
 	color: #000000;
+	font-weight: 400;
+	letter-spacing: 0px;
+	margin: 0px;
+	padding: 0px;
 }
 
-#idoqc1 {
+#i8bga-2 {
 	position: relative;
 	top: 14px;
 	height: 46px;
+	margin: 0px;
+	padding: 0px;
 }
 
-#imcix1 {
-	background-color: #fff8f8;
-	height: 270px;
-	width: 250px;
-	border-radius: 20px 20px 20px 20px;
-	box-shadow: unset;
+#i0hicj-2 {
 	position: relative;
-	top: 15px;
-	left: 45px;
+	left: 60px;
+	width: 220px;
+	height: 35px;
+	border-radius: 7px;
+	background-color: #6f1d1d;
+	text-align: center;
+	font-family: "Inter", sans-serif;
+	font-size: 14px;
+	color: #fdfdfd;
+	border: 0px none rgba(0, 0, 0, 0);
+	box-shadow: 0 0 5px 0px rgba(0, 0, 0, 0.5);
+	font-weight: 400;
+	letter-spacing: 0px;
+	margin: 0px;
+	padding: 0px;
 }
 
-#ig3spq {
-	font-family: "Inter", sans-serif;
-	font-weight: 700;
+#ilwube:hover {
+	box-shadow: 0 0 10px 0 rgba(11, 159, 55, 0.85);
+}
+
+#ilwube:active {
+	background-color: rgba(49, 49, 49, 0.85);
+}
+
+#i0hicj-2:hover {
+	background-color: #842222;
+}
+
+#i0hicj-2:active {
+	background-color: #9c3737;
+}
+
+#i5ywx4:hover {
+	background-color: #a15151;
+}
+
+#i5ywx4:active {
+	background-color: #c67474;
+}
+
+#iqm8le:hover {
+	background-color: #e4e4e4;
+}
+
+#iqm8le:active {
+	background-color: #a8a8a8;
 }

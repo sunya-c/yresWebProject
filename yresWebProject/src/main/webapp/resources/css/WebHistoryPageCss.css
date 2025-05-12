@@ -14,16 +14,21 @@ body {
 	font-size: 40px;
 	border-radius: 7px;
 	border: 0px solid #737373;
-	box-shadow: 2px 2px 5px 0 rgba(168, 168, 168, 0.5);
+	box-shadow: 2px 2px 5px 0 rgba(0, 0, 0, 0.5);
 	left: 45px;
 	top: 35px;
 	font-weight: 700;
 	color: #8a4545;
 	background-color: #efefef;
+	padding: 0px;
+	margin: 0px;
+	letter-spacing: 0px;
 }
 
 #iglplu {
 	height: 130px;
+	padding: 0px;
+	margin: 0px;
 }
 
 #isaekj {
@@ -31,6 +36,8 @@ body {
 	left: 25px;
 	font-size: 18px;
 	font-family: "Inter", sans-serif;
+	margin: 0px;
+	padding: 0px;
 }
 
 #ih9voi {
@@ -41,6 +48,8 @@ body {
 	border-radius: 7px 7px 7px 7px;
 	border: 2px solid #bdbdbd;
 	font-size: 15px;
+	margin: 0px;
+	padding: 10px;
 }
 
 #inx1qz {
@@ -49,6 +58,8 @@ body {
 	font-family: "Inter", sans-serif;
 	font-size: 14px;
 	color: #d60000;
+	margin: 0px;
+	padding: 0px;
 }
 
 #igvknh {
@@ -60,6 +71,8 @@ body {
 	left: 25px;
 	font-family: "Inter", sans-serif;
 	font-size: 18px;
+	margin: 0px;
+	padding: 0px;
 }
 
 #i8h15f {
@@ -70,6 +83,8 @@ body {
 	border-radius: 7px 7px 7px 7px;
 	border: 2px solid #bdbdbd;
 	font-size: 15px;
+	margin: 0px;
+	padding: 10px;
 }
 
 #imi9zx {
@@ -78,6 +93,8 @@ body {
 	font-family: "Inter", sans-serif;
 	font-size: 14px;
 	color: #d60000;
+	margin: 0px;
+	padding: 0px;
 }
 
 #ic93bf {
@@ -98,18 +115,22 @@ body {
 	color: #fdfdfd;
 	font-family: "Inter", sans-serif;
 	font-size: 16px;
+	margin: 0px;
+	padding: 0px;
 	letter-spacing: 1px;
+	font-weight: 400;
 }
 
 #ic5esq {
 	position: relative;
 	top: 15px;
 	height: 210px;
+	padding: 0px;
+	margin: 0px;
 }
 
 #ixoedw {
 	position: relative;
-	left: 20px;
 	font-family: "Inter", sans-serif;
 	font-size: 15px;
 	border: 0px none;
@@ -118,12 +139,18 @@ body {
 	text-align: left;
 	top: 10px;
 	color: #000000;
+	margin: 0px;
+	padding: 0px;
+	font-weight: 400;
+	letter-spacing: 0px;
 }
 
 #ix885q {
 	position: relative;
 	top: 14px;
 	height: 46px;
+	margin: 0px 0px 0px 25px;
+	padding: 0px;
 }
 
 #ilm4tj {
@@ -131,10 +158,12 @@ body {
 	height: 270px;
 	width: 250px;
 	border-radius: 20px 20px 20px 20px;
-	box-shadow: unset;
 	position: relative;
 	top: 15px;
 	left: 45px;
+	font-weight: 400;
+	letter-spacing: 0px;
+	box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
 }
 
 #idihl7 {
@@ -143,6 +172,8 @@ body {
 	font-family: "Inter", sans-serif;
 	font-size: 18px;
 	color: #000000;
+	margin: 0px;
+	padding: 0px;
 }
 
 #i1esqz {
@@ -152,6 +183,8 @@ body {
 	font-size: 18px;
 	color: #000000;
 	top: 5px;
+	margin: 0px;
+	padding: 0px;
 }
 
 #ika14b {
@@ -167,7 +200,11 @@ body {
 	color: #fdfdfd;
 	font-family: "Inter", sans-serif;
 	font-size: 16px;
+	margin: 0px;
+	padding: 0px;
 	letter-spacing: 1px;
+	box-shadow: 0 0 7px 0px rgba(0, 0, 0, 0.5);
+	font-weight: 400;
 }
 
 #icsvqi {
@@ -181,10 +218,12 @@ body {
 	height: 270px;
 	width: 250px;
 	border-radius: 20px 20px 20px 20px;
-	box-shadow: unset;
 	position: relative;
 	top: 15px;
 	left: 45px;
+	font-weight: 400;
+	letter-spacing: 0px;
+	box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
 }
 
 #idlvn2 {
@@ -200,6 +239,10 @@ body {
 	color: #fdfdfd;
 	border: 0px none rgba(0, 0, 0, 0);
 	box-shadow: 0 0 5px 0px rgba(0, 0, 0, 0.5);
+	margin: 0px;
+	padding: 0px;
+	font-weight: 400;
+	letter-spacing: 0px;
 }
 
 #iltvjz {
@@ -220,21 +263,22 @@ body {
 	font-family: "Inter", sans-serif;
 	font-size: 24px;
 	font-weight: 700;
-	text-shadow: 2px 2px 10px rgba(115, 115, 115, 0.72);
 	left: 20px;
 	top: 20px;
 	color: #333333;
+	letter-spacing: 0px;
 }
 
 #iwtec6 {
 	position: relative;
 	font-family: "Inter", sans-serif;
 	font-size: 16px;
-	text-shadow: 2px 2px 10px rgba(115, 115, 115, 0.72);
 	left: 20px;
 	top: 65px;
 	color: #333333;
 	width: 750px;
+	font-weight: 400;
+	letter-spacing: 0px;
 }
 
 #it5trm {
@@ -259,6 +303,8 @@ body {
 	border: 2px solid #ba9b9b;
 	outline: #000000;
 	background-color: rgba(219, 165, 165, 0.5);
+	font-weight: 400;
+	letter-spacing: 0px;
 }
 
 #i2uo19 {
@@ -478,6 +524,7 @@ body {
 	top: -15px;
 	left: -10px;
 	color: #a17070;
+	letter-spacing: 0px;
 }
 
 #iczwo9y {
@@ -687,4 +734,36 @@ body {
 	color: rgba(0, 0, 0, 0);
 	font-size: 22px;
 	font-weight: 700;
+}
+
+#ivnv8v:active {
+	background-color: rgba(49, 49, 49, 0.85);
+}
+
+#ivnv8v:hover {
+	box-shadow: 0 0 10px 0 rgba(11, 159, 55, 0.85);
+}
+
+#idlvn2:hover {
+	background-color: #842222;
+}
+
+#idlvn2:active {
+	background-color: #9c3737;
+}
+
+#ika14b:hover {
+	background-color: #a15151;
+}
+
+#ika14b:active {
+	background-color: #c67474;
+}
+
+#ib78ph:hover {
+	background-color: #e4e4e4;
+}
+
+#ib78ph:active {
+	background-color: #a8a8a8;
 }

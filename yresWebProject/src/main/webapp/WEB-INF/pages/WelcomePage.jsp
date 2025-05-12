@@ -74,7 +74,6 @@ else
 		</form>
 		<form method="get" action="/adminPanel" id="i2vuok">
 			<button type="submit" id="ia0qth">Admin panel</button>
-			<div id="i32dz7">${dataWelcome.adminPanelButtonErr}</div>
 		</form>
 	</div>
 </body>
