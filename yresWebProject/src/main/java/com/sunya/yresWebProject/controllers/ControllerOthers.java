@@ -16,6 +16,8 @@ import com.sunya.yresWebProject.daos.DaoIPBlacklist;
 import com.sunya.yresWebProject.filters.FilterBot;
 import com.sunya.yresWebProject.rest.repositories.models.ModelIPBlacklist;
 
+import io.ipinfo.api.IPinfo;
+import io.ipinfo.api.errors.RateLimitedException;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
@@ -44,6 +46,8 @@ public class ControllerOthers extends Controller1
 	FilterRegistrationBean<FilterBot> filterBot;
 	@Autowired
 	DaoIPBlacklist dao;
+	@Autowired
+	IPinfo info;
 	
 	@GetMapping("/saveBotstodatabase")
 	public ResponseEntity<String> saveBotsToDatabase(HttpServletResponse response)
@@ -67,6 +71,17 @@ public class ControllerOthers extends Controller1
 					}
 					else
 					{
+						if (model.getCountryCode()==null)
+						{
+							try
+							{
+								model.setCountryCode(info.lookupIP(model.getIpAddress()).getCountryCode());
+							}
+							catch (RateLimitedException e)
+							{
+								e.printStackTrace();
+							}
+						}
 						dao.addToBlacklist(model.getIpAddress(), model.getCountryCode(), model.getBlockCount());
 						newlyAdded.add(model);
 					}
