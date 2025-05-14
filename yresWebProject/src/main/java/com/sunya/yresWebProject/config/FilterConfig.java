@@ -19,6 +19,7 @@ import com.sunya.yresWebProject.filters.siteUsage.FilterSiteUsage;
 import com.sunya.yresWebProject.filters.siteUsage.FilterSiteUsage0;
 import com.sunya.yresWebProject.filters.siteUsage.FilterSiteUsage1;
 import com.sunya.yresWebProject.filters.siteUsage.FilterSiteUsage10;
+import com.sunya.yresWebProject.filters.siteUsage.FilterSiteUsage11;
 import com.sunya.yresWebProject.filters.siteUsage.FilterSiteUsage2;
 import com.sunya.yresWebProject.filters.siteUsage.FilterSiteUsage3;
 import com.sunya.yresWebProject.filters.siteUsage.FilterSiteUsage4;
@@ -60,22 +61,42 @@ public class FilterConfig
 	}
 	
 	@Bean
-	public FilterRegistrationBean<FilterAdmin> filterAdmin(DaoLoginInfo dao)
+	public FilterRegistrationBean<FilterInitializeSession> filterInitializeSession()
 	{
-		FilterRegistrationBean<FilterAdmin> bean = new FilterRegistrationBean<>();
-		bean.setFilter(new FilterAdmin(dao));
-		bean.addUrlPatterns("/saveBotstodatabase");
+		FilterRegistrationBean<FilterInitializeSession> bean = new FilterRegistrationBean<>();
+		bean.setFilter(new FilterInitializeSession(sm));
+		bean.addUrlPatterns(
+							"/adminPanel",
+							"/adminPanel/*",
+							"/createAccount",
+							"/yresError",
+							"/feedback",
+							"/feedback/summary",
+							"/Home",
+							"/personalInformation",
+							"/redirecting",
+							"/restApi",
+//							"/UnderConstructionPage.jsp",
+							"/webHistory",
+							"/welcome",
+							"/sCreateAccount",
+							"/sDownloadResume",
+							"/sFeedback",
+							"/sLogin",
+							"/sLogout");
 		bean.setOrder(1);
 		
 		return bean;
 	}
 	
 	@Bean
-	public FilterRegistrationBean<FilterInitializeSession> filterInitializeSession()
+	public FilterRegistrationBean<FilterAccountExistence> filterAccExistence(DaoLoginInfo dao)
 	{
-		FilterRegistrationBean<FilterInitializeSession> bean = new FilterRegistrationBean<>();
-		bean.setFilter(new FilterInitializeSession(sm));
+		FilterRegistrationBean<FilterAccountExistence> bean = new FilterRegistrationBean<>();
+		bean.setFilter(new FilterAccountExistence(sm, dao));
 		bean.addUrlPatterns(
+							"/adminPanel",
+							"/adminPanel/*",
 							"/createAccount",
 							"/yresError",
 							"/feedback",
@@ -98,38 +119,22 @@ public class FilterConfig
 	}
 	
 	@Bean
-	public FilterRegistrationBean<FilterAccountExistence> filterAccExistence(DaoLoginInfo dao)
+	public FilterRegistrationBean<FilterLoginState> filterLoginState() // Choose either FilterLoginState or FilterAdmin
 	{
-		FilterRegistrationBean<FilterAccountExistence> bean = new FilterRegistrationBean<>();
-		bean.setFilter(new FilterAccountExistence(sm, dao));
-		bean.addUrlPatterns(
-							"/createAccount",
-							"/yresError",
-							"/feedback",
-							"/feedback/summary",
-							"/Home",
-							"/personalInformation",
-							"/redirecting",
-							"/restApi",
-//							"/UnderConstructionPage.jsp",
-							"/webHistory",
-							"/welcome",
-							"/sCreateAccount",
-							"/sDownloadResume",
-							"/sFeedback",
-							"/sLogin",
-							"/sLogout");
+		FilterRegistrationBean<FilterLoginState> bean = new FilterRegistrationBean<>();
+		bean.setFilter(new FilterLoginState(sm));
+		bean.addUrlPatterns("/welcome");
 		bean.setOrder(3);
 		
 		return bean;
 	}
 	
 	@Bean
-	public FilterRegistrationBean<FilterLoginState> filterLoginState()
+	public FilterRegistrationBean<FilterAdmin> filterAdmin(DaoLoginInfo dao) // Choose either FilterLoginState or FilterAdmin
 	{
-		FilterRegistrationBean<FilterLoginState> bean = new FilterRegistrationBean<>();
-		bean.setFilter(new FilterLoginState(sm));
-		bean.addUrlPatterns("/welcome");
+		FilterRegistrationBean<FilterAdmin> bean = new FilterRegistrationBean<>();
+		bean.setFilter(new FilterAdmin(dao, sm));
+		bean.addUrlPatterns("/saveBotstodatabase", "/adminPanel", "/adminPanel/*");
 		bean.setOrder(4);
 		
 		return bean;
@@ -211,9 +216,8 @@ public class FilterConfig
 	{
 		FilterRegistrationBean<FilterSiteUsage6> bean = new FilterRegistrationBean<>();
 		bean.setFilter(new FilterSiteUsage6(siteUsage));
-		bean.addUrlPatterns("/accountInfo", "/adminPanel");
+		bean.addUrlPatterns("/accountInfo");
 		bean.setOrder(5);
-//		bean.setEnabled(false);
 		
 		return bean;
 	}
@@ -253,11 +257,21 @@ public class FilterConfig
 		return bean;
 	}
 	@Bean
-	public FilterRegistrationBean<FilterSiteUsage10> filterUsage10()  // Filter RestApiPage
+	public FilterRegistrationBean<FilterSiteUsage10> filterUsage10()  // Filter WebHistoryPage
 	{
 		FilterRegistrationBean<FilterSiteUsage10> bean = new FilterRegistrationBean<>();
 		bean.setFilter(new FilterSiteUsage10(siteUsage));
 		bean.addUrlPatterns("/webHistory");
+		bean.setOrder(5);
+		
+		return bean;
+	}
+	@Bean
+	public FilterRegistrationBean<FilterSiteUsage11> filterUsage11()  // Filter AdminPanelPage
+	{
+		FilterRegistrationBean<FilterSiteUsage11> bean = new FilterRegistrationBean<>();
+		bean.setFilter(new FilterSiteUsage11(siteUsage));
+		bean.addUrlPatterns("/adminPanel");
 		bean.setOrder(5);
 		
 		return bean;

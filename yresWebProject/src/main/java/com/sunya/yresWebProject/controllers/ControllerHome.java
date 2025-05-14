@@ -167,11 +167,8 @@ public class ControllerHome extends Controller1
 	 */
 	private void setResumeDate()
 	{
-		if (sm.getSessionWeb().getResumeDate()==null || sm.getSessionWeb().getResumeDate().isEmpty())
-		{
-			ModelWebdatainfo model = dao.getWebinfo(DaoWebdatainfo.WEB_RESUME_DATE);
-			String date = LocalDate.parse(model.getValue(), dateFormatBack).format(dateFormatFront);
-			sm.getSessionWeb().setResumeDate(date);
-		}
+		ModelWebdatainfo model = dao.getWebinfo(DaoWebdatainfo.WEB_RESUME_DATE);
+		String date = LocalDate.parse(model.getValue(), dateFormatBack).format(dateFormatFront);
+		sm.getSessionWeb().setResumeDate(date);
 	}
 }

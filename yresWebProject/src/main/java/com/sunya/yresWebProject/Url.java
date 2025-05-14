@@ -5,6 +5,7 @@ package com.sunya.yresWebProject;
  */
 public class Url
 {
+	public static final String adminPanel = "adminPanel";
 	public static final String createAccount = "createAccount";
 	public static final String yresError = "yresError";
 	public static final String feedback = "feedback";

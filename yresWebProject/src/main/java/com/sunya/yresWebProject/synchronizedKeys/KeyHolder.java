@@ -14,6 +14,7 @@ public class KeyHolder
 	private final Object keyRedirecting = new Object();
 	private final Object keyCreateAccount = new Object();
 	private final Object keyFeedback = new Object();
+	private final Object keyAdminPanel = new Object();
 
 
 	public Object getKeyLogin()
@@ -37,5 +38,11 @@ public class KeyHolder
 	public Object getKeyFeedback()
 	{
 		return keyFeedback;
+	}
+
+
+	public Object getKeyAdminPanel()
+	{
+		return keyAdminPanel;
 	}
 }

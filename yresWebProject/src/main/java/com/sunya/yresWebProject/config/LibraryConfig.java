@@ -21,6 +21,12 @@ public class LibraryConfig
 		return DateTimeFormatter.ofPattern("yyyy-MM-dd");
 	}
 	
+	@Bean(name = "noSeparatorBackDate")
+	public DateTimeFormatter getFormatDateBackNoSeparator()
+	{
+		return DateTimeFormatter.ofPattern("yyyyMMdd");
+	}
+	
 	@Bean(name = "frontDateTime")
 	public DateTimeFormatter getFormatDateTimeFront()
 	{
@@ -31,6 +37,12 @@ public class LibraryConfig
 	public DateTimeFormatter getFormatDateTimeBack()
 	{
 		return DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+	}
+	
+	@Bean(name = "noSeparatorBackDateTime")
+	public DateTimeFormatter getFormatDateTimeBackNoSeparator()
+	{
+		return DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
 	}
 	
 	@Bean(name = "serverTimeZone")

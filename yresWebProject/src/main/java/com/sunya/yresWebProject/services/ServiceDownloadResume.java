@@ -3,9 +3,11 @@ package com.sunya.yresWebProject.services;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -26,8 +28,11 @@ public class ServiceDownloadResume
 	@Autowired
 	private DaoDownloadinfo daoDownload;
 	@Autowired
-	private Environment env;
-
+	@Qualifier("backDate")
+	private DateTimeFormatter dateFormatBack;
+	@Autowired
+	@Qualifier("noSeparatorBackDate")
+	private DateTimeFormatter dateFormatNoSep;
 
 	/**
 	 * @return <strong>ResponseEntity&lt;Resource&gt;</strong> which contains the
@@ -38,13 +43,13 @@ public class ServiceDownloadResume
 	{
 		try
 		{
-			Resource resource = getResource(env.getProperty("yres.resume", "Env. error!"));
+			ModelWebdatainfo model = daoWebinfo.getWebinfo(DaoWebdatainfo.WEB_RESUME_DATE);
+			String resumeDate = LocalDate.parse(model.getValue(), dateFormatBack).format(dateFormatNoSep);
+			Resource resource = getResource("resumeC_pdf_"+resumeDate);
 			
 			// Set headers and body for the response
 			if (resource.exists())
 			{
-				ModelWebdatainfo model = daoWebinfo.getWebinfo(DaoWebdatainfo.WEB_RESUME_DATE);
-				
 				long contentLength = resource.contentLength();
 				
 				return ResponseEntity.ok()

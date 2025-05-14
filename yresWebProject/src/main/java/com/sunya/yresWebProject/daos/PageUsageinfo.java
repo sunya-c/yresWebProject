@@ -17,10 +17,11 @@ public enum PageUsageinfo
 	PAGE_WELCOME			(7, "page_welcome"),
 	RESUME_DOWNLOAD			(8, "resume_download"),
 	PAGE_RESTAPI			(9, "page_restapi"),
-	PAGE_WEBHISTORY			(10, "page_webhistory");
+	PAGE_WEBHISTORY			(10, "page_webhistory"),
+	PAGE_ADMINPANEL			(11, "page_adminpanel");
 
 
-	public final static int numberOfPages = 11;
+	public final static int numberOfPages = 12;
 
 	private int columnOrder;
 	private String columnName;

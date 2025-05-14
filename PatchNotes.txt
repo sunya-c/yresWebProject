@@ -1,7 +1,16 @@
-Fixed elements on some pages displayed incorrectly on mobile phone.
+Added AdminPanel page.
 
 ----------
 
-Fixed elements on some pages displayed incorrectly on mobile phone:
+Added AdminPanel page:
 
--Some CSS styles were not displaying correctly on mobile phone. Even though I have minimum knowledge about frontend, I've tried my best to make the appearance as consistent as possible across different devices.
+-Added AdminPanel page and its functions. This page will not be publicly accessible.
+Only users logging in an admin account or requests with the specific header are allowed
+to visit this page. This page was created to improve my own quality of life. It provides
+UI for modifying different elements in this web application such as uploading a new
+resume file, choosing a different resume file for 'Download Resume' button, or setting
+the announcement message that is shown at the top of home page.
+
+-Remove the usage of the environment variable, 'SERY_WEB_RESUME'. It used to specify
+which resume file in the database to be downloaded when clicking 'Download Resume'
+button. Now, which resume file to be downloaded is specified in the database itself.
