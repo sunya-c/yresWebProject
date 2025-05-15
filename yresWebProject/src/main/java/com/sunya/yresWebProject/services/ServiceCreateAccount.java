@@ -72,6 +72,7 @@ public class ServiceCreateAccount
 															.encode().build().toUriString();
 				return createAccountUrl;
 			}
+			sm.clearLoginForm();
 			sm.getSessionLogin().setUsernamePreTyped(formCA.getUsername());
 
 			String codeRedirecting = sm.getSessionRedirecting().generateCode();

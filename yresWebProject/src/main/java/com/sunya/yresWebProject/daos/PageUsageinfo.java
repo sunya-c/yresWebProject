@@ -16,10 +16,13 @@ public enum PageUsageinfo
 	PAGE_UNDERCONSTRUCTION	(6, "page_underconstruction"),
 	PAGE_WELCOME			(7, "page_welcome"),
 	RESUME_DOWNLOAD			(8, "resume_download"),
-	PAGE_RESTAPI			(9, "page_restapi");
+	PAGE_RESTAPI			(9, "page_restapi"),
+	PAGE_WEBHISTORY			(10, "page_webhistory"),
+	PAGE_ADMINPANEL			(11, "page_adminpanel"),
+	PAGE_ACCOUNTINFO		(12, "page_accountinfo");
 
 
-	public final static int numberOfPages = 10;
+	public final static int numberOfPages = 13;
 
 	private int columnOrder;
 	private String columnName;

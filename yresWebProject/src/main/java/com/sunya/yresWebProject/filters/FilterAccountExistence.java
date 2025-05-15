@@ -36,7 +36,7 @@ public class FilterAccountExistence extends OncePerRequestFilter
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException
 	{
-		System.out.println("Order: 3, in Filter AccExist. (all pages)");
+		System.out.println("Order: 2, in Filter AccExist. (all pages)");
 		
 		try
 		{

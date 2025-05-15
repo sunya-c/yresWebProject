@@ -17,17 +17,21 @@ else
 <link rel="stylesheet" href="/resources/css/UnderConstructionPageCss.css<%= cssVersion %>" />
 <link href="https://fonts.googleapis.com" rel="preconnect">
 <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-<link href="https://fonts.googleapis.com/css?family=Open+Sans:regular,italic&display=swap" rel="stylesheet" >
+<link
+	href="https://fonts.googleapis.com/css?family=Roboto:regular,italic&display=swap"
+	rel="stylesheet">
+<link
+	href="https://fonts.googleapis.com/css?family=Inter:regular,italic&display=swap"
+	rel="stylesheet">
 </head>
 
 <body id="ie993">
 	<div id="i3p1i">
 		<div id="ikk4r">
-			Under Construction...<br />
+			Under Construction<br />
 			<br />Check back soon!!!
 		</div>
 	</div>
-
 </body>
 </html>
 

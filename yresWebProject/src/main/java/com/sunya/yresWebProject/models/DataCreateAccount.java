@@ -10,8 +10,8 @@ public class DataCreateAccount
 {
 	private String usernamePreTyped = null;
 	private String usernameErr = null;
-	private String passwordErr1 = null;
-	private String passwordErr2 = null;
+	private String password1Err = null;
+	private String password2Err = null;
 
 
 	public String getUsernamePreTyped()
@@ -38,26 +38,26 @@ public class DataCreateAccount
 	}
 
 
-	public String getPasswordErr1()
+	public String getPassword1Err()
 	{
-		return passwordErr1;
+		return password1Err;
 	}
 
 
-	public void setPasswordErr1(String passwordErr1)
+	public void setPassword1Err(String password1Err)
 	{
-		this.passwordErr1 = (passwordErr1==null)? null : HtmlUtils.htmlEscape(passwordErr1);
+		this.password1Err = (password1Err==null)? null : HtmlUtils.htmlEscape(password1Err);
 	}
 
 
-	public String getPasswordErr2()
+	public String getPassword2Err()
 	{
-		return passwordErr2;
+		return password2Err;
 	}
 
 
-	public void setPasswordErr2(String passwordErr2)
+	public void setPassword2Err(String password2Err)
 	{
-		this.passwordErr2 = (passwordErr2==null)? null : HtmlUtils.htmlEscape(passwordErr2);
+		this.password2Err = (password2Err==null)? null : HtmlUtils.htmlEscape(password2Err);
 	}
 }

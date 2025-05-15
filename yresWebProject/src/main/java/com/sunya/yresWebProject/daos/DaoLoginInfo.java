@@ -1,10 +1,13 @@
 package com.sunya.yresWebProject.daos;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.TimeZone;
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Primary;
@@ -45,6 +48,47 @@ public class DaoLoginInfo
 	@Autowired
 	protected JdbcTemplate template;
 
+	
+	public void changePassword(ModelLoginInfo model)
+	{
+		if (model.getUsername()==null || model.getPassword()==null)
+			throw new YresDataAccessException("Username or Password cannot be null");
+		
+		String query = "UPDATE "+TABLE_NAME+" SET "+COLUMN_PASSWORD+" = ? WHERE "+COLUMN_USERNAME+" = ?;";
+		
+		try
+		{
+			template.update(query, model.getPassword(), model.getUsername());
+		}
+		catch (Exception e)
+		{
+			throw new YresDataAccessException("daologininfo.changepassword-01");
+		}
+	}
+	
+	public boolean isTempAccount(@NotNull String username)
+	{
+		if (username==null)
+			throw new YresDataAccessException("Username cannot be null");
+		
+		String query = "SELECT "+COLUMN_USERNAME+", "+COLUMN_TEMPACCOUNT+" FROM "+TABLE_NAME+" WHERE "+COLUMN_USERNAME+" = ?;";
+		
+		ResultSetExtractor<Boolean> extractor = new ResultSetExtractor<Boolean>() {
+			
+			@Override
+			public Boolean extractData(ResultSet rs) throws SQLException, DataAccessException
+			{
+				if (rs.next() && username.equals(rs.getString(COLUMN_USERNAME)))
+				{
+					return rs.getBoolean(COLUMN_TEMPACCOUNT);
+				}
+				
+				throw new YresDataAccessException("Username not found");
+			}
+		};
+		
+		return template.query(query, extractor, username);
+	}
 
 	// TODO: Just removed the isExistingUsername part, have to do that in the upper
 	// layer

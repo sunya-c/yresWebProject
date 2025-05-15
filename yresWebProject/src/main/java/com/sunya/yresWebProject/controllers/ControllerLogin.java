@@ -42,7 +42,7 @@ public class ControllerLogin extends Controller1
 			{
 				if (sm.getSessionLogin().isLoggedIn())
 					throw new SomethingWentWrongException("<br>You're already logged in as '<i>"
-												+sm.getSessionLogin().getUsername()+"</i>', "
+												+sm.getSessionLogin().getUsernameUnescaped()+"</i>', "
 												+"please log out first before logging in to a different account.");
 				else
 					return redirect + sli.sLogin(formL);

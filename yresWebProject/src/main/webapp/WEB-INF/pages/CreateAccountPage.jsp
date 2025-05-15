@@ -13,11 +13,15 @@ if (System.getenv("SERY_CSS_VERSION")==null || System.getenv("SERY_CSS_VERSION")
 else
 	cssVersion += System.getenv("SERY_CSS_VERSION");
 %>
-<link rel="stylesheet" href="/resources/css/CreateAccountPageCss.css<%= cssVersion %>" />
+<link rel="stylesheet"
+	href="/resources/css/CreateAccountPageCss.css<%=cssVersion%>" />
 <link href="https://fonts.googleapis.com" rel="preconnect">
 <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
 <link
-	href="https://fonts.googleapis.com/css?family=Open+Sans:regular,italic&display=swap"
+	href="https://fonts.googleapis.com/css?family=Roboto:regular,italic&display=swap"
+	rel="stylesheet">
+<link
+	href="https://fonts.googleapis.com/css?family=Inter:regular,italic&display=swap"
 	rel="stylesheet">
 </head>
 
@@ -36,18 +40,19 @@ else
 			<form method="post" action="/sCreateAccount" id="ijtey8">
 				<div id="ip4cc6">
 					<label id="iyd4c4">Username<br /></label><input type="text"
-						placeholder="Create your username" name="username" value="${dataCreateAccount.usernamePreTyped}" id="ir4udv" /><label
+						placeholder="Create your username" name="username"
+						value="${dataCreateAccount.usernamePreTyped}" id="ir4udv" /><label
 						id="iy009g"><br>${dataCreateAccount.usernameErr}<br /></label>
 				</div>
 				<div id="i69h82">
 					<label id="inwehq">Password<br /></label><input type="password"
 						placeholder="Create your password" name="password1" id="icug3i" /><label
-						id="iq5yjh"><br>${dataCreateAccount.passwordErr1}<br /></label>
+						id="iq5yjh"><br>${dataCreateAccount.password1Err}<br /></label>
 				</div>
 				<div id="ir3u0x">
 					<label id="ibtkzi">Confirm Password<br /></label><input
 						type="password" placeholder="Repeat your password"
-						name="password2" id="i5yupc" /><label id="ib1ixt"><br>${dataCreateAccount.passwordErr2}<br /></label>
+						name="password2" id="i5yupc" /><label id="ib1ixt"><br>${dataCreateAccount.password2Err}<br /></label>
 				</div>
 				<button type="submit" id="ih73op">Create account</button>
 			</form>

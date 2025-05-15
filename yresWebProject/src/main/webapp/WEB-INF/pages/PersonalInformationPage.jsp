@@ -21,7 +21,10 @@ else
 <link href="https://fonts.googleapis.com" rel="preconnect">
 <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
 <link
-	href="https://fonts.googleapis.com/css?family=Open+Sans:regular,italic&display=swap"
+	href="https://fonts.googleapis.com/css?family=Roboto:regular,italic&display=swap"
+	rel="stylesheet">
+<link
+	href="https://fonts.googleapis.com/css?family=Inter:regular,italic&display=swap"
 	rel="stylesheet">
 </head>
 
@@ -46,22 +49,22 @@ else
 					</div>
 					<button type="submit" id="ilwube">Log in</button>
 				</form>
-				<form method="get" action="/createAccount" id="idoqc1">
-					<button type="submit" id="itftp3">Create an account</button>
+				<form method="get" action="/createAccount" id="i8bga-2">
+					<button type="submit" id="i3xat-2">Create an account</button>
 				</form>
 			</div>
 		</c:if>
 		<c:if test="${sessionLogin.loggedIn == true}">
 			<div id="ic3x5g">
 				<form method="post" action="/sLogout" id="iuj89x">
-					<label id="iv62jr">Welcome ${sessionLogin.username},<br /></label><label
+					<label id="iv62jr">Welcome <span id="ig3spq">${sessionLogin.username}</span>,<br /></label><label
 						id="irlj8d">You're logged in<br /></label>
 					<button type="submit" id="i5ywx4">Log out</button>
 				</form>
 			</div>
 		</c:if>
 		<form method="get" action="/feedback" id="ir5ivx">
-			<button type="submit" id="itoc01">Give feedback / bug report</button>
+			<button type="submit" id="i0hicj-2">Give feedback / bug report</button>
 		</form>
 	</div>
 	<div id="ihfb5e">
@@ -162,7 +165,7 @@ else
 		</div>
 	</div>
 	<div id="iipl26">
-		<img id="i1t2dk"  src="/resources/pics/Certificate1.png" /> <img
+		<img id="i1t2dk" src="/resources/pics/Certificate1.png" /><img
 			id="i8tfk1" src="/resources/pics/Certificate2.png" />
 	</div>
 </body>

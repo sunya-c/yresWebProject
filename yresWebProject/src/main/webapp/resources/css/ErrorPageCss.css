@@ -19,9 +19,9 @@ body {
 
 #iakzlo {
 	padding: 10px;
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: "Roboto", sans-serif;
 	font-weight: 700;
-	font-size: 24px;
+	font-size: 18px;
 	color: #333333;
 	top: 25px;
 	position: relative;
@@ -56,16 +56,28 @@ body {
 	border-radius: 7px;
 	background-color: #6f1d1d;
 	text-align: center;
-	font-family: "Open Sans", sans-serif;
+	font-family: "Inter", sans-serif;
 	font-size: 14px;
 	color: #fdfdfd;
 	border: 0px none rgba(0, 0, 0, 0);
 	box-shadow: 0 0 5px 0px rgba(0, 0, 0, 0.5);
 	top: 10px;
+	font-weight: 400;
+	letter-spacing: 0px;
+	margin: 0px;
+	padding: 0px;
 }
 
 #ijo1ol {
 	position: relative;
 	height: 100px;
 	top: 46px;
+}
+
+#iwacim:hover {
+	background-color: #842222;
+}
+
+#iwacim:active {
+	background-color: #9c3737;
 }

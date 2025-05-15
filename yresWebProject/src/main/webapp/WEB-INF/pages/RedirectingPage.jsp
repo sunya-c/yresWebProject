@@ -17,7 +17,10 @@ else
 <link href="https://fonts.googleapis.com" rel="preconnect">
 <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
 <link
-	href="https://fonts.googleapis.com/css?family=Open+Sans:regular,italic&display=swap"
+	href="https://fonts.googleapis.com/css?family=Roboto:regular,italic&display=swap"
+	rel="stylesheet">
+<link
+	href="https://fonts.googleapis.com/css?family=Inter:regular,italic&display=swap"
 	rel="stylesheet">
 <script type="text/javascript">
 	// Redirect to ServletRedirecting after a delay

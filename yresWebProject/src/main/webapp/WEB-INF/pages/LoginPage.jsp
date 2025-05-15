@@ -18,7 +18,10 @@ else
 <link href="https://fonts.googleapis.com" rel="preconnect">
 <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
 <link
-	href="https://fonts.googleapis.com/css?family=Open+Sans:regular,italic&display=swap"
+	href="https://fonts.googleapis.com/css?family=Roboto:regular,italic&display=swap"
+	rel="stylesheet">
+<link
+	href="https://fonts.googleapis.com/css?family=Inter:regular,italic&display=swap"
 	rel="stylesheet">
 </head>
 
@@ -36,7 +39,8 @@ else
 				<div id="i2sh">
 					<label id="i9zl">Username<br /></label><input type="text"
 						id="ikq8l" placeholder="Enter your username" name="username"
-						value="${sessionLogin.usernamePreTyped}" /><label id="irep4"><br>${sessionLogin.usernameErr}<br /></label>
+						value="${sessionLogin.usernamePreTyped}" />
+						<label id="irep4"><br>${sessionLogin.usernameErr}<br /></label>
 				</div>
 				<div id="i1uz3">
 					<label id="ianeo">Password<br /></label><input type="password"
@@ -62,7 +66,9 @@ else
 		</form>
 		<form method="get" id="iuoax" action="/sDownloadResume">
 			<button type="submit" id="i9ami">Download Resume</button>
-			<div id="if14we">Last update: ${sessionWeb.resumeDate}</div>
+			<div id="if14we">
+				Last update: <span id="i9n2n3k">${sessionWeb.resumeDate}</span>
+			</div>
 		</form>
 		<form method="get" action="/webHistory" id="i8arqt">
 			<button type="submit" id="ia7xhn">About this website</button>
@@ -75,9 +81,9 @@ else
 				href="https://github.com/sunya-c/yresWebProject">https://github.com/sunya-c/yresWebProject</a>
 		</div>
 	</div>
-	test Environment variable(getenv) : ${trial1}<br>
-	test Environment variable(getProp) : ${trial2}<br>
-	version : ${sessionWeb.webVersion}
+	test Environment variable(getenv) : ${trial1}
+	<br> test Environment variable(getProp) : ${trial2}
+	<br> version : ${sessionWeb.webVersion}
 </body>
 </html>
 

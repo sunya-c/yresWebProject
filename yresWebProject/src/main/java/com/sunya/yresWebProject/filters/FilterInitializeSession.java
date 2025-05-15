@@ -24,7 +24,7 @@ public class FilterInitializeSession extends OncePerRequestFilter
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 								throws ServletException, IOException
 	{
-		System.out.println("Order: 2, in Filter Initialize (ALL)");
+		System.out.println("Order: 1, in Filter Initialize (ALL)");
 		
 		System.out.print(
 				sm.getSession().getId().substring(0, 5)+"-"+sm.getSession().getId().substring(sm.getSession().getId().length()-5)
@@ -35,7 +35,7 @@ public class FilterInitializeSession extends OncePerRequestFilter
 		{
 			if (sm.getInitializeString()==null)
 			{
-				System.out.println("in Filter Initizlize. Should be run once at the beginning of each session.--------------------------------------------------once");
+				System.out.println("in Filter Initizlize. Should be run once at the beginning of each session.-----------------------------------once");
 				
 				sm.createKeyHolder();
 				sm.createSessionFeedback();
@@ -43,6 +43,8 @@ public class FilterInitializeSession extends OncePerRequestFilter
 				sm.createSessionLogin();
 				sm.createSessionWeb();
 				sm.createSessionRedirecting();
+				sm.createSessionAdminPanel();
+				sm.createSessionAccountInfo();
 				
 				sm.setSessionInitialized();
 				

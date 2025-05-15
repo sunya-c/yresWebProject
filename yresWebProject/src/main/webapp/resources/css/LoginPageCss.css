@@ -21,6 +21,8 @@ body {
 	position: relative;
 	top: 15px;
 	height: 210px;
+	margin: 0px;
+	padding: 0px;
 }
 
 #ikq8l {
@@ -31,20 +33,26 @@ body {
 	border-radius: 7px 7px 7px 7px;
 	border: 2px solid #bdbdbd;
 	font-size: 15px;
+	padding: 10px;
+	margin: 0px;
 }
 
 #i9zl {
 	position: relative;
 	left: 25px;
 	font-size: 18px;
-	font-family: "Open Sans", sans-serif;
+	font-family: "Inter", sans-serif;
+	padding: 0px;
+	margin: 0px;
 }
 
 #ianeo {
 	position: relative;
 	left: 25px;
-	font-family: "Open Sans", sans-serif;
+	font-family: "Inter", sans-serif;
 	font-size: 18px;
+	padding: 0px;
+	margin: 0px;
 }
 
 #ikmqp {
@@ -53,15 +61,17 @@ body {
 	left: 25px;
 	width: 200px;
 	height: 35px;
-	border: 0px none;
 	border-radius: 7px;
 	background-color: #313131;
 	text-align: center;
 	color: #fdfdfd;
-	font-family: "Open Sans", sans-serif;
+	font-family: "Inter", sans-serif;
 	font-size: 16px;
-	font-weight: 400;
 	letter-spacing: 1px;
+	border: 0px none;
+	padding: 0px;
+	font-weight: 400;
+	margin: 0px;
 }
 
 #in4rx {
@@ -72,6 +82,8 @@ body {
 	border-radius: 7px 7px 7px 7px;
 	border: 2px solid #bdbdbd;
 	font-size: 15px;
+	margin: 0px;
+	padding: 10px;
 }
 
 #iao9b {
@@ -79,19 +91,25 @@ body {
 	height: 270px;
 	width: 250px;
 	border-radius: 20px 20px 20px 20px;
-	box-shadow: unset;
 	position: relative;
 	top: 15px;
 	left: 45px;
+	box-shadow: 0 0 10px 0px rgba(0, 0, 0, 0.5);
+	padding: 0px;
+	margin: 0px;
 }
 
 #i2sh {
 	position: relative;
+	margin: 0px;
+	padding: 0px;
 }
 
 #i1uz3 {
 	position: relative;
 	top: 5px;
+	margin: 0px;
+	padding: 0px;
 }
 
 #imxfh {
@@ -99,27 +117,28 @@ body {
 	left: 350px;
 	top: -600px;
 	height: 600px;
-	max-width: 795px;
 	border-left: 5px solid rgba(147, 75, 75, 0.6);
 	border-bottom: 5px solid rgba(147, 75, 75, 0.6);
 	border-right: 5px solid rgba(147, 75, 75, 0.6);
+	width: 795px;
 }
 
 #illyu {
 	position: relative;
-	font-family: "Open Sans", sans-serif;
+	font-family: "Inter", sans-serif;
 	font-size: 20px;
 	font-weight: 700;
-	text-shadow: 2px 2px 5px rgba(115, 115, 115, 0.72);
 	left: 20px;
 	top: 55px;
-	max-width: 775px;
+	width: 725px;
+	padding: 0px;
+	margin: 0px;
 }
 
 #i3xat {
 	position: relative;
-	left: 20px;
-	font-family: "Open Sans", sans-serif;
+	left: 25px;
+	font-family: "Inter", sans-serif;
 	font-size: 15px;
 	border: 0px none;
 	background-color: rgba(0, 0, 0, 0);
@@ -127,13 +146,17 @@ body {
 	text-align: left;
 	top: 10px;
 	color: #000000;
+	letter-spacing: 0px;
+	font-weight: 400;
+	padding: 0px;
+	margin: 0px;
 }
 
 #i9ami {
 	position: relative;
 	width: 175px;
 	height: 30px;
-	font-family: "Open Sans", sans-serif;
+	font-family: "Inter", sans-serif;
 	font-size: 15px;
 	border-radius: 7px;
 	border: 0.5px solid #737373;
@@ -142,6 +165,10 @@ body {
 	top: 5px;
 	background-color: #efefef;
 	color: #000000;
+	letter-spacing: 0px;
+	font-weight: 400;
+	padding: 0px;
+	margin: 0px;
 }
 
 #iuoax {
@@ -152,22 +179,28 @@ body {
 	position: relative;
 	top: 14px;
 	height: 46px;
+	margin: 0px;
+	padding: 0px;
 }
 
 #irep4 {
 	position: relative;
 	left: 25px;
-	font-family: "Open Sans", sans-serif;
+	font-family: "Inter", sans-serif;
 	font-size: 14px;
 	color: #d60000;
+	padding: 0px;
+	margin: 0px;
 }
 
 #igiel {
 	position: relative;
 	left: 25px;
-	font-family: "Open Sans", sans-serif;
+	font-family: "Inter", sans-serif;
 	font-size: 14px;
 	color: #d60000;
+	padding: 0px;
+	margin: 0px;
 }
 
 #ix3vku {
@@ -178,12 +211,15 @@ body {
 	font-size: 40px;
 	border-radius: 7px;
 	border: 0px solid #737373;
-	box-shadow: 2px 2px 5px 0 rgba(168, 168, 168, 0.5);
+	box-shadow: 2px 2px 5px 0 rgba(0, 0, 0, 0.5);
 	left: 45px;
 	top: 35px;
 	color: #8a4545;
 	font-weight: 700;
 	background-color: #efefef;
+	padding: 0px;
+	letter-spacing: 0px;
+	margin: 0px;
 }
 
 #iq2wzk {
@@ -198,70 +234,82 @@ body {
 	border-radius: 7px;
 	background-color: #6f1d1d;
 	text-align: center;
-	font-family: "Open Sans", sans-serif;
+	font-family: "Inter", sans-serif;
 	font-size: 14px;
 	color: #fdfdfd;
 	border: 0px none rgba(0, 0, 0, 0);
 	box-shadow: 0 0 5px 0px rgba(0, 0, 0, 0.5);
+	font-weight: 400;
+	letter-spacing: 0px;
+	padding: 0px;
+	margin: 0px;
 }
 
 #i9ojw1 {
 	position: relative;
 	top: 75px;
 	height: 50px;
+	padding: 0px;
+	margin: 0px;
 }
 
 #ilt5zk {
 	border: 10px solid rgba(147, 75, 75, 0.85);
-	max-width: 1145px;
 	position: relative;
 	height: 165px;
+	width: 1145px;
+	padding: 0px;
 }
 
 #i99fq4 {
-	padding: 10px;
 	position: relative;
 	left: 10px;
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: "Inter", sans-serif;
 	font-size: 20px;
 	font-weight: 700;
-	color: #9a3e3e;
-	top: 2px;
+	color: #d60000;
+	top: 6px;
 	max-width: 140px;
+	letter-spacing: 0px;
+	padding: 0px;
+	margin: 0px;
 }
 
 #i1hupq {
-	padding: 10px;
 	position: relative;
-	left: 130px;
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 17px;
-	font-weight: 700;
-	color: #9a3e3e;
-	top: -38px;
-	max-width: 955px;
-	text-shadow: 0px 0px 15px rgba(0, 0, 0, 0.4);
+	left: 135px;
+	font-family: "Inter", sans-serif;
+	font-size: 16px;
+	font-weight: 400;
+	color: #d60000;
+	top: -16px;
+	width: 955px;
+	height: 135px;
+	letter-spacing: 0px;
+	padding: 0px;
+	margin: 0px;
 }
 
 #ip7596 {
 	padding: 10px;
-	font-family: "Open Sans", sans-serif;
+	font-family: "Inter", sans-serif;
 	font-size: 15px;
 	position: relative;
 	left: 13px;
-	text-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
 	color: #000000;
+	width: 735px;
 }
 
 #ir0137 {
 	font-weight: normal;
+	font-family: "Inter", sans-serif;
 }
 
 #ia7xhn {
 	position: relative;
 	width: 175px;
 	height: 30px;
-	font-family: "Open Sans", sans-serif;
+	font-family: "Inter", sans-serif;
 	font-size: 15px;
 	border-radius: 7px;
 	border: 0.5px solid #737373;
@@ -270,6 +318,10 @@ body {
 	top: 5px;
 	background-color: #efefef;
 	color: #000000;
+	letter-spacing: 0px;
+	font-weight: 400;
+	padding: 0px;
+	margin: 0px;
 }
 
 #i8arqt {
@@ -280,7 +332,7 @@ body {
 	position: relative;
 	width: 175px;
 	height: 30px;
-	font-family: "Open Sans", sans-serif;
+	font-family: "Inter", sans-serif;
 	font-size: 15px;
 	border-radius: 7px;
 	border: 0.5px solid #737373;
@@ -289,6 +341,10 @@ body {
 	top: 5px;
 	background-color: #efefef;
 	color: #000000;
+	letter-spacing: 0px;
+	font-weight: 400;
+	padding: 0px;
+	margin: 0px;
 }
 
 #i8t8wg {
@@ -297,20 +353,20 @@ body {
 
 #if14we {
 	padding: 10px;
-	font-family: "Open Sans", sans-serif;
+	font-family: "Inter", sans-serif;
 	font-size: 14px;
 	position: relative;
 	left: 200px;
 	top: -29px;
-	max-width: 595px;
 	color: #000000;
+	width: 545px;
 }
 
 #i4zxdj {
 	position: relative;
 	width: 175px;
 	height: 30px;
-	font-family: "Open Sans", sans-serif;
+	font-family: "Inter", sans-serif;
 	font-size: 15px;
 	border-radius: 7px;
 	border: 0.5px solid #737373;
@@ -319,6 +375,10 @@ body {
 	top: 5px;
 	background-color: #efefef;
 	color: #000000;
+	letter-spacing: 0px;
+	font-weight: 400;
+	padding: 0px;
+	margin: 0px;
 }
 
 #i90xc5 {
@@ -326,5 +386,69 @@ body {
 }
 
 #ileipf {
-	min-height: 100px;
+	height: 100px;
+	margin: 0px;
+	padding: 0px;
+}
+
+#i9n2n3k {
+	font-family: "Inter", sans-serif;
+	color: #0b9f37;
+}
+
+#ikmqp:hover {
+	box-shadow: 0 0 10px 0 rgba(11, 159, 55, 0.85);
+}
+
+#ikmqp:active {
+	background-color: rgba(49, 49, 49, 0.85);
+	color: #fdfdfd;
+}
+
+#i4zxdj:hover {
+	background-color: #e4e4e4;
+}
+
+#ia7xhn:hover {
+	background-color: #e4e4e4;
+}
+
+#i9ami:hover {
+	background-color: #e4e4e4;
+}
+
+#ijuhm8:hover {
+	background-color: #e4e4e4;
+}
+
+#i4zxdj:active {
+	background-color: #a8a8a8;
+}
+
+#i9ami:active {
+	background-color: #a8a8a8;
+}
+
+#ia7xhn:active {
+	background-color: #a8a8a8;
+}
+
+#ijuhm8:active {
+	background-color: #a8a8a8;
+}
+
+#i9l8gi:hover {
+	background-color: #842222;
+}
+
+#i9l8gi:active {
+	background-color: #9c3737;
+}
+
+#ix3vku:hover {
+	background-color: #e4e4e4;
+}
+
+#ix3vku:active {
+	background-color: #a8a8a8;
 }

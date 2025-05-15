@@ -14,23 +14,30 @@ body {
 	font-size: 40px;
 	border-radius: 7px;
 	border: 0px solid #737373;
-	box-shadow: 2px 2px 5px 0 rgba(168, 168, 168, 0.5);
+	box-shadow: 2px 2px 5px 0 rgba(0, 0, 0, 0.5);
 	left: 45px;
 	top: 35px;
 	font-weight: 700;
 	color: #8a4545;
 	background-color: #efefef;
+	margin: 0px;
+	padding: 0px;
+	letter-spacing: 0px;
 }
 
 #idtzab {
 	height: 130px;
+	margin: 0px;
+	padding: 0px;
 }
 
 #iyd4c4 {
 	position: relative;
 	left: 25px;
-	font-family: "Open Sans", sans-serif;
+	font-family: "Inter", sans-serif;
 	font-size: 18px;
+	margin: 0px;
+	padding: 0px;
 }
 
 #ir4udv {
@@ -41,6 +48,8 @@ body {
 	border-radius: 7px 7px 7px 7px;
 	border: 2px solid #bdbdbd;
 	font-size: 15px;
+	margin: 0px;
+	padding: 10px;
 }
 
 #ip4cc6 {
@@ -50,16 +59,20 @@ body {
 #iy009g {
 	position: relative;
 	left: 25px;
-	font-family: "Open Sans", sans-serif;
+	font-family: "Inter", sans-serif;
 	font-size: 14px;
 	color: #d60000;
+	margin: 0px;
+	padding: 0px;
 }
 
 #inwehq {
 	position: relative;
 	left: 25px;
-	font-family: "Open Sans", sans-serif;
+	font-family: "Inter", sans-serif;
 	font-size: 18px;
+	margin: 0px;
+	padding: 0px;
 }
 
 #icug3i {
@@ -70,6 +83,8 @@ body {
 	border-radius: 7px 7px 7px 7px;
 	border: 2px solid #bdbdbd;
 	font-size: 15px;
+	margin: 0px;
+	padding: 10px;
 }
 
 #i69h82 {
@@ -80,32 +95,38 @@ body {
 #ih73op {
 	position: relative;
 	top: 40px;
-	left: 25px;
-	width: 200px;
+	left: 40px;
+	width: 170px;
 	height: 35px;
 	border: 0px none;
 	border-radius: 7px;
 	background-color: #313131;
 	text-align: center;
 	color: #fdfdfd;
-	font-family: "Open Sans", sans-serif;
+	font-family: "Inter", sans-serif;
 	font-size: 16px;
-	font-weight: 400;
 	letter-spacing: 1px;
+	margin: 0px;
+	padding: 0px;
+	font-weight: 400;
 }
 
 #iq5yjh {
 	position: relative;
 	left: 25px;
-	font-family: "Open Sans", sans-serif;
+	font-family: "Inter", sans-serif;
 	font-size: 14px;
 	color: #d60000;
+	margin: 0px;
+	padding: 0px;
 }
 
 #ijtey8 {
 	position: relative;
 	top: 15px;
 	height: 310px;
+	margin: 0px;
+	padding: 0px;
 }
 
 #itqzxp {
@@ -117,6 +138,10 @@ body {
 	left: 50px;
 	top: 50px;
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+	padding: 0px;
+	margin: 0px;
+	font-weight: 400;
+	letter-spacing: 0px;
 }
 
 #i1h2wx {
@@ -128,10 +153,9 @@ body {
 
 #i82jpw {
 	position: relative;
-	font-family: "Open Sans", sans-serif;
+	font-family: "Inter", sans-serif;
 	font-size: 24px;
 	font-weight: 700;
-	text-shadow: 2px 2px 10px rgba(115, 115, 115, 0.72);
 	left: 20px;
 	top: 20px;
 	color: #333333;
@@ -142,6 +166,11 @@ body {
 	left: 350px;
 	top: -600px;
 	height: 600px;
+	width: 795px;
+	border-left: 5px solid rgba(147, 75, 75, 0.6);
+	border-bottom: 5px solid rgba(147, 75, 75, 0.6);
+	border-right: 5px solid rgba(147, 75, 75, 0.6);
+	border-top: 5px solid rgba(147, 75, 75, 0.6);
 }
 
 #ihjsk6 {
@@ -151,8 +180,10 @@ body {
 #ibtkzi {
 	position: relative;
 	left: 25px;
-	font-family: "Open Sans", sans-serif;
+	font-family: "Inter", sans-serif;
 	font-size: 18px;
+	margin: 0px;
+	padding: 0px;
 }
 
 #i5yupc {
@@ -163,6 +194,8 @@ body {
 	border-radius: 7px 7px 7px 7px;
 	border: 2px solid #bdbdbd;
 	font-size: 15px;
+	margin: 0px;
+	padding: 10px;
 }
 
 #ir3u0x {
@@ -173,9 +206,11 @@ body {
 #ib1ixt {
 	position: relative;
 	left: 25px;
-	font-family: "Open Sans", sans-serif;
+	font-family: "Inter", sans-serif;
 	font-size: 14px;
 	color: #d60000;
+	margin: 0px;
+	padding: 0px;
 }
 
 #ikzg0o {
@@ -186,15 +221,45 @@ body {
 	border-radius: 7px;
 	background-color: #6f1d1d;
 	text-align: center;
-	font-family: "Open Sans", sans-serif;
+	font-family: "Inter", sans-serif;
 	font-size: 14px;
 	color: #fdfdfd;
 	border: 0px none rgba(0, 0, 0, 0);
 	box-shadow: 0 0 5px 0px rgba(0, 0, 0, 0.5);
+	margin: 0px;
+	padding: 0px;
+	font-weight: 400;
+	letter-spacing: 0px;
 }
 
 #in9x4b {
 	position: relative;
 	top: 75px;
 	height: 50px;
+	margin: 0px;
+	padding: 0px;
+}
+
+#ikzg0o:hover {
+	background-color: #842222;
+}
+
+#ikzg0o:active {
+	background-color: #9c3737;
+}
+
+#ih73op:hover {
+	box-shadow: 0 0 10px 0 rgba(11, 159, 55, 0.85);
+}
+
+#ih73op:active {
+	background-color: rgba(49, 49, 49, 0.85);
+}
+
+#i1ckeh:hover {
+	background-color: #e4e4e4;
+}
+
+#i1ckeh:active {
+	background-color: #a8a8a8;
 }

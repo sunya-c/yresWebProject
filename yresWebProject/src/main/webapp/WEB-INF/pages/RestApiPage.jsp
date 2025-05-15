@@ -20,7 +20,10 @@ else
 <link href="https://fonts.googleapis.com" rel="preconnect">
 <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
 <link
-	href="https://fonts.googleapis.com/css?family=Open+Sans:regular,italic&display=swap"
+	href="https://fonts.googleapis.com/css?family=Roboto:regular,italic&display=swap"
+	rel="stylesheet">
+<link
+	href="https://fonts.googleapis.com/css?family=Inter:regular,italic&display=swap"
 	rel="stylesheet">
 </head>
 <body id="i96scr">
@@ -52,7 +55,7 @@ else
 		<c:if test="${sessionLogin.loggedIn == true}">
 			<div id="iyfwz7">
 				<form method="post" action="/sLogout" id="ii3nc3">
-					<label id="i1l84x">Welcome ${sessionLogin.username},<br /></label><label
+					<label id="i1l84x">Welcome <span id="ifv1ph">${sessionLogin.username}</span>,<br /></label><label
 						id="ilinpi">You're logged in<br /></label>
 					<button type="submit" id="iwuy1p">Log out</button>
 				</form>
@@ -71,12 +74,12 @@ else
 			provided below. For example, '<span id="i6efs5">${dataRestApi.domainName}/api/rest/persinfo</span>'
 			will return my personal information. You would expect the results to
 			be in either .xml or .json format. Feel free to try any URL below
-			with 'Try me!' form.
+			with '<span id="iciqng">Try me!</span>' form.
 		</div>
 		<div id="i00rjm">
 			<form method="get" action="/restApi/sSendRequest" id="ia1sa8">
 				<div id="i8qkte">Try me!</div>
-				<select id="infg1j" name="restMethod">
+				<select name="restMethod" id="infg1j">
 					<option value="get">GET</option>
 					<option value="post">POST</option>
 					<option value="put">PUT</option>
@@ -89,14 +92,15 @@ else
 		</div>
 		<div id="ib0uwp">
 			<div id="ilph7x">GET  ${dataRestApi.domainName}/api/rest/user</div>
-			<div id="i9rta6">This URL returns all accounts' detail, excluding password.</div>
+			<div id="i9rta6">This URL returns all accounts' detail,
+				excluding password.</div>
 		</div>
 		<div id="i9kesp">
 			<div id="idpyeq">GET 
 				${dataRestApi.domainName}/api/rest/user/{username}</div>
-			<div id="idp5ag">This URL returns the specified account's 
-				detail, excluding password. Replace '{username}' with
-				the desired username.</div>
+			<div id="idp5ag">This URL returns the specified account's
+				detail, excluding password. Replace '{username}' with the desired
+				username.</div>
 		</div>
 		<div id="ix28e9">
 			<div id="i1p86y">GET 

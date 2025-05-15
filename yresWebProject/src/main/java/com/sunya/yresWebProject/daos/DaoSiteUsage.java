@@ -42,6 +42,9 @@ public class DaoSiteUsage
 	private final String COLUMN_PAGE_WELCOME = "page_welcome";
 	private final String COLUMN_RESUME_DOWNLOAD = "resume_download";
 	private final String COLUMN_PAGE_RESTAPI = "page_restapi";
+	private final String COLUMN_PAGE_WEBHISTORY = "page_webhistory";
+	private final String COLUMN_PAGE_ADMINPANEL = "page_adminpanel";
+	private final String COLUMN_PAGE_ACCOUNTINFO = "page_accountinfo";
 	// end -- columnName
 
 	@Autowired
@@ -141,6 +144,9 @@ public class DaoSiteUsage
 				model.setUsageValue(rs.getInt(COLUMN_PAGE_WELCOME), PageUsageinfo.PAGE_WELCOME);
 				model.setUsageValue(rs.getInt(COLUMN_RESUME_DOWNLOAD), PageUsageinfo.RESUME_DOWNLOAD);
 				model.setUsageValue(rs.getInt(COLUMN_PAGE_RESTAPI), PageUsageinfo.PAGE_RESTAPI);
+				model.setUsageValue(rs.getInt(COLUMN_PAGE_WEBHISTORY), PageUsageinfo.PAGE_WEBHISTORY);
+				model.setUsageValue(rs.getInt(COLUMN_PAGE_ADMINPANEL), PageUsageinfo.PAGE_ADMINPANEL);
+				model.setUsageValue(rs.getInt(COLUMN_PAGE_ACCOUNTINFO), PageUsageinfo.PAGE_ACCOUNTINFO);
 				return model;
 			}
 			else
@@ -290,54 +296,4 @@ public class DaoSiteUsage
 			throw new YresDataAccessException("daositeusage.getip-01");
 		}
 	}
-
-
-	/**
-	 * Remove rows from usageinfo table where IP address is in blacklist.
-	 * 
-	 * @param blacklistedIPs ~ Get these IPs from DaoIPBlacklist.getIPs().
-	 * @param usageIPs       ~ Get these IPs from DaoSiteUsage.getIPs();
-	 */
-	public void removeUsageByBlacklist(ArrayList<String> blacklistedIPs, ArrayList<String> usageIPs)
-	{
-		String query = "DELETE FROM "+TABLE_NAME+" WHERE "+COLUMN_IP+" = ?;";
-
-		try
-		{
-			int row = 0;
-			for (int i = 0; i<blacklistedIPs.size(); i++)
-			{
-				if (usageIPs.contains(blacklistedIPs.get(i)))
-					row += template.update(query, blacklistedIPs.get(i));
-			}
-			System.out.println("row deleted: "+row);
-		}
-		catch (DataAccessException e)
-		{
-			throw new YresDataAccessException("daositeusage.removeusagebyblacklist-01");
-		}
-	}
-
-
-	/**
-	 * Get all <strong>IP addresses</strong> from the database.
-	 * 
-	 * @return <strong>ArrayList&lt;String&gt; of all IP addresses</strong> in the usageinfo table.
-	 */
-	public ArrayList<String> getIPs()
-	{
-		String query = "SELECT "+COLUMN_IP+" FROM "+TABLE_NAME+";";
-
-		RowMapper<String> rowMapper = (ResultSet rs, int rowNum) -> rs.getString(COLUMN_IP);
-
-		try
-		{
-			return (ArrayList<String>)template.query(query, rowMapper);
-		}
-		catch (DataAccessException e)
-		{
-			throw new YresDataAccessException("daositeusage.getips-01");
-		}
-	}
-
 }
