@@ -47,12 +47,12 @@ else
 				<div id="i69h82">
 					<label id="inwehq">Password<br /></label><input type="password"
 						placeholder="Create your password" name="password1" id="icug3i" /><label
-						id="iq5yjh"><br>${dataCreateAccount.passwordErr1}<br /></label>
+						id="iq5yjh"><br>${dataCreateAccount.password1Err}<br /></label>
 				</div>
 				<div id="ir3u0x">
 					<label id="ibtkzi">Confirm Password<br /></label><input
 						type="password" placeholder="Repeat your password"
-						name="password2" id="i5yupc" /><label id="ib1ixt"><br>${dataCreateAccount.passwordErr2}<br /></label>
+						name="password2" id="i5yupc" /><label id="ib1ixt"><br>${dataCreateAccount.password2Err}<br /></label>
 				</div>
 				<button type="submit" id="ih73op">Create account</button>
 			</form>

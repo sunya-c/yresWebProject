@@ -49,6 +49,23 @@ public class DaoLoginInfo
 	protected JdbcTemplate template;
 
 	
+	public void changePassword(ModelLoginInfo model)
+	{
+		if (model.getUsername()==null || model.getPassword()==null)
+			throw new YresDataAccessException("Username or Password cannot be null");
+		
+		String query = "UPDATE "+TABLE_NAME+" SET "+COLUMN_PASSWORD+" = ? WHERE "+COLUMN_USERNAME+" = ?;";
+		
+		try
+		{
+			template.update(query, model.getPassword(), model.getUsername());
+		}
+		catch (Exception e)
+		{
+			throw new YresDataAccessException("daologininfo.changepassword-01");
+		}
+	}
+	
 	public boolean isTempAccount(@NotNull String username)
 	{
 		if (username==null)

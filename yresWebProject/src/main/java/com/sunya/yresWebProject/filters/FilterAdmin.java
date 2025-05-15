@@ -45,7 +45,7 @@ public class FilterAdmin extends OncePerRequestFilter
 		SessionLogin sessLogin = sm.getSessionLogin();
 		try
 		{
-			if (sessLogin.isLoggedIn() && !dao.isTempAccount(sessLogin.getUsername()))
+			if (sessLogin.isLoggedIn() && !dao.isTempAccount(sessLogin.getUsernameUnescaped()))
 			{
 				System.out.println("filter Admin passed");
 				filterChain.doFilter(request, response);

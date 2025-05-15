@@ -4,7 +4,7 @@ package com.sunya.yresWebProject.models;
  * A class created for mapping values come with the request object. Use this
  * class to map <strong>CreateAccount</strong>-form values.
  */
-public class FormCreateAccount
+public class FormCreateAccount implements FormPassword
 {
 	private String username;
 	private String password1;

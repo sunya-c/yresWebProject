@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 import com.sunya.yresWebProject.YresWebProjectApplication;
 import com.sunya.yresWebProject.managers.SessionManager;
+import com.sunya.yresWebProject.models.DataAccountInfo;
 import com.sunya.yresWebProject.models.DataAdminPanel;
 import com.sunya.yresWebProject.models.DataCreateAccount;
 
@@ -17,7 +18,7 @@ import com.sunya.yresWebProject.models.DataCreateAccount;
  * The object of this class is meant to be session-specific, which means one
  * object per one session.
  */
-public class SessionAdminPanel
+public class SessionAccountInfo
 {
 	private ArrayList<DataObject> dataObjects = new ArrayList<>();
 
@@ -34,7 +35,7 @@ public class SessionAdminPanel
 	 *         ~ if the code exists.<br>
 	 *         <strong>null</strong> ~ if otherwise.
 	 */
-	public DataAdminPanel consumeCode(@NotNull String code)
+	public DataAccountInfo consumeCode(@NotNull String code)
 	{
 		SessionManager sm = YresWebProjectApplication.context.getBean(SessionManager.class);
 
@@ -57,7 +58,7 @@ public class SessionAdminPanel
 				dataObjects.remove(dataObject);
 				System.out.println("after removal: "+dataObjects);
 
-				return dataObject.getDataAdminPanel();
+				return dataObject.getDataAccountInfo();
 			}
 			else
 				return null;
@@ -77,7 +78,7 @@ public class SessionAdminPanel
 	 * @return <strong>String of code</strong> ~ This code is used as a one-time key
 	 *         to get the saved object back.
 	 */
-	public String generateCode(DataAdminPanel dataAdminPanel)
+	public String generateCode(DataAccountInfo dataAccountInfo)
 	{
 		SessionManager sm = YresWebProjectApplication.context.getBean(SessionManager.class);
 
@@ -110,7 +111,7 @@ public class SessionAdminPanel
 			while (loopAgain);
 
 			dataObject.setCode(code);
-			dataObject.setDataAdminPanel(dataAdminPanel);
+			dataObject.setDataAccountInfo(dataAccountInfo);
 
 			dataObjects.add(dataObject);
 		}
@@ -130,30 +131,24 @@ public class SessionAdminPanel
 	class DataObject
 	{
 		private String code = null;
-		private DataAdminPanel dataAdminPanel = null;
+		private DataAccountInfo dataAccountInfo = null;
 
 
 		public String getCode()
 		{
 			return code;
 		}
-
-
 		public void setCode(String code)
 		{
 			this.code = code;
 		}
-
-
-		public DataAdminPanel getDataAdminPanel()
+		public DataAccountInfo getDataAccountInfo()
 		{
-			return dataAdminPanel;
+			return dataAccountInfo;
 		}
-
-
-		public void setDataAdminPanel(DataAdminPanel dataAdminPanel)
+		public void setDataAccountInfo(DataAccountInfo DataAccountInfo)
 		{
-			this.dataAdminPanel = dataAdminPanel;
+			this.dataAccountInfo = DataAccountInfo;
 		}
 	}
 }

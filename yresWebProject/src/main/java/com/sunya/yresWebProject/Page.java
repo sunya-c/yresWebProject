@@ -5,6 +5,7 @@ package com.sunya.yresWebProject;
  */
 public class Page
 {
+	public static final String accountInfo = "AccountInfoPage";
 	public static final String adminPanel = "AdminPanelPage";
 	public static final String createAccount = "CreateAccountPage";
 	public static final String error = "ErrorPage";

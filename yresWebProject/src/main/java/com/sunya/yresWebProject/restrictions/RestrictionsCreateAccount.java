@@ -9,7 +9,7 @@ import com.sunya.yresWebProject.models.FormCreateAccount;
 import com.sunya.yresWebProject.models.ModelLoginInfo;
 
 @Component
-public class RestrictionsCreateAccount
+public class RestrictionsCreateAccount extends RestrictionsPassword
 {
 	@Autowired
 	private DaoLoginInfo dao;
@@ -64,14 +64,14 @@ public class RestrictionsCreateAccount
 		{
 			if (!checkSpacePassword(formCA))
 			{
-				dataCreateAccount.setPasswordErr1(ErrMsg.CREATEACCOUNT_PASS_SPACE.toString()); // pass error message
+				dataCreateAccount.setPassword1Err(ErrMsg.CREATEACCOUNT_PASS_SPACE.toString()); // pass error message
 																								// here.
 				validInfo = false;
 			}
 		}
 		else
 		{
-			dataCreateAccount.setPasswordErr1(ErrMsg.CREATEACCOUNT_PASS_LENGTH.toString()); // pass error message enum
+			dataCreateAccount.setPassword1Err(ErrMsg.CREATEACCOUNT_PASS_LENGTH.toString()); // pass error message enum
 																							// here.
 			validInfo = false;
 		}
@@ -79,7 +79,7 @@ public class RestrictionsCreateAccount
 		// confirm password check
 		if (!confirmPassword(formCA))
 		{
-			dataCreateAccount.setPasswordErr2(ErrMsg.CREATEACCOUNT_PASS_CONFIRM.toString());// pass error message enum
+			dataCreateAccount.setPassword2Err(ErrMsg.CREATEACCOUNT_PASS_CONFIRM.toString());// pass error message enum
 																							// here.
 			validInfo = false;
 		}
@@ -87,34 +87,13 @@ public class RestrictionsCreateAccount
 		// overall check result
 		return validInfo;
 	}
-
-
-	private boolean confirmPassword(FormCreateAccount formCA)
-	{
-		return (formCA.getPassword1().equals(formCA.getPassword2()));
-	}
-
-
+	
 	private boolean checkLengthUsername(FormCreateAccount formCA)
 	{
 		return (formCA.getUsername().length()>=4 && formCA.getUsername().length()<=10);
 	}
-
-
-	private boolean checkLengthPassword(FormCreateAccount formCA)
-	{
-		return (formCA.getPassword1().length()>=4 && formCA.getPassword1().length()<=20);
-	}
-
-
 	private boolean checkSpaceUsername(FormCreateAccount formCA)
 	{
 		return !(formCA.getUsername().contains(" "));
-	}
-
-
-	private boolean checkSpacePassword(FormCreateAccount formCA)
-	{
-		return !(formCA.getPassword1().contains(" "));
 	}
 }

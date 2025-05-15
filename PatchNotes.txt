@@ -1,16 +1,12 @@
-Added AdminPanel page.
+Added AccountInfo page.
 
 ----------
 
-Added AdminPanel page:
+Added AccountInfo page:
 
--Added AdminPanel page and its functions. This page will not be publicly accessible.
-Only users logging in an admin account or requests with the specific header are allowed
-to visit this page. This page was created to improve my own quality of life. It provides
-UI for modifying different elements in this web application such as uploading a new
-resume file, choosing a different resume file for 'Download Resume' button, or setting
-the announcement message that is shown at the top of home page.
-
--Remove the usage of the environment variable, 'SERY_WEB_RESUME'. It used to specify
-which resume file in the database to be downloaded when clicking 'Download Resume'
-button. Now, which resume file to be downloaded is specified in the database itself.
+-Added .jsp and .css for AccountInfo page.
+-Added a function in ControllerAccountInfo to forward 'GET /accountInfo' to AccountInfoPage.
+-Added a function to process the requests requesting for 'GET /accountInfo/sChangePassword'.
+Users can now change their password in AccountInfo page.
+-Added FilterSiteUsage12 to track number of visits of AccountInfo page.
+-Made DaoSiteUsage support AccountInfo page.

@@ -1,5 +1,7 @@
 package com.sunya.yresWebProject.config;
 
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -20,6 +22,7 @@ import com.sunya.yresWebProject.filters.siteUsage.FilterSiteUsage0;
 import com.sunya.yresWebProject.filters.siteUsage.FilterSiteUsage1;
 import com.sunya.yresWebProject.filters.siteUsage.FilterSiteUsage10;
 import com.sunya.yresWebProject.filters.siteUsage.FilterSiteUsage11;
+import com.sunya.yresWebProject.filters.siteUsage.FilterSiteUsage12;
 import com.sunya.yresWebProject.filters.siteUsage.FilterSiteUsage2;
 import com.sunya.yresWebProject.filters.siteUsage.FilterSiteUsage3;
 import com.sunya.yresWebProject.filters.siteUsage.FilterSiteUsage4;
@@ -37,6 +40,25 @@ public class FilterConfig
 {
 	@Autowired
 	private SessionManager sm;
+	private Set<String> allPaths = Set.of("/accountInfo",
+											"/accountInfo/*",
+											"/adminPanel",
+											"/adminPanel/*",
+											"/createAccount",
+											"/yresError",
+											"/feedback",
+											"/feedback/summary",
+											"/Home",
+											"/personalInformation",
+											"/redirecting",
+											"/restApi",
+											"/webHistory",
+											"/welcome",
+											"/sCreateAccount",
+											"/sDownloadResume",
+											"/sFeedback",
+											"/sLogin",
+											"/sLogout");
 	
 	@Bean
 	public FilterRegistrationBean<FilterHttps> filterHttp(Environment env)
@@ -65,25 +87,7 @@ public class FilterConfig
 	{
 		FilterRegistrationBean<FilterInitializeSession> bean = new FilterRegistrationBean<>();
 		bean.setFilter(new FilterInitializeSession(sm));
-		bean.addUrlPatterns(
-							"/adminPanel",
-							"/adminPanel/*",
-							"/createAccount",
-							"/yresError",
-							"/feedback",
-							"/feedback/summary",
-							"/Home",
-							"/personalInformation",
-							"/redirecting",
-							"/restApi",
-//							"/UnderConstructionPage.jsp",
-							"/webHistory",
-							"/welcome",
-							"/sCreateAccount",
-							"/sDownloadResume",
-							"/sFeedback",
-							"/sLogin",
-							"/sLogout");
+		bean.setUrlPatterns(allPaths);
 		bean.setOrder(1);
 		
 		return bean;
@@ -94,25 +98,7 @@ public class FilterConfig
 	{
 		FilterRegistrationBean<FilterAccountExistence> bean = new FilterRegistrationBean<>();
 		bean.setFilter(new FilterAccountExistence(sm, dao));
-		bean.addUrlPatterns(
-							"/adminPanel",
-							"/adminPanel/*",
-							"/createAccount",
-							"/yresError",
-							"/feedback",
-							"/feedback/summary",
-							"/Home",
-							"/personalInformation",
-							"/redirecting",
-							"/restApi",
-//							"/UnderConstructionPage.jsp",
-							"/webHistory",
-							"/welcome",
-							"/sCreateAccount",
-							"/sDownloadResume",
-							"/sFeedback",
-							"/sLogin",
-							"/sLogout");
+		bean.setUrlPatterns(allPaths);
 		bean.setOrder(2);
 		
 		return bean;
@@ -123,7 +109,7 @@ public class FilterConfig
 	{
 		FilterRegistrationBean<FilterLoginState> bean = new FilterRegistrationBean<>();
 		bean.setFilter(new FilterLoginState(sm));
-		bean.addUrlPatterns("/welcome");
+		bean.addUrlPatterns("/welcome", "/accountInfo", "/accountInfo/*");
 		bean.setOrder(3);
 		
 		return bean;
@@ -272,6 +258,16 @@ public class FilterConfig
 		FilterRegistrationBean<FilterSiteUsage11> bean = new FilterRegistrationBean<>();
 		bean.setFilter(new FilterSiteUsage11(siteUsage));
 		bean.addUrlPatterns("/adminPanel");
+		bean.setOrder(5);
+		
+		return bean;
+	}
+	@Bean
+	public FilterRegistrationBean<FilterSiteUsage12> filterUsage12()  // Filter AccountInfoPage
+	{
+		FilterRegistrationBean<FilterSiteUsage12> bean = new FilterRegistrationBean<>();
+		bean.setFilter(new FilterSiteUsage12(siteUsage));
+		bean.addUrlPatterns("/accountInfo");
 		bean.setOrder(5);
 		
 		return bean;

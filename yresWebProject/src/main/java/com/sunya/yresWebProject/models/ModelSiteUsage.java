@@ -22,7 +22,10 @@ public class ModelSiteUsage
 	 * #6 usageUnderConstruction<br>
 	 * #7 usageWelcome<br>
 	 * #8 usageResumeDownload<br>
-	 * #9 usageRestApi
+	 * #9 usageRestApi<br>
+	 * #10 usageWebHistory<br>
+	 * #11 usageAdminPanel<br>
+	 * #12 usageAccountInfo<br>
 	 */
 	private int[] usages = new int[PageUsageinfo.numberOfPages];
 	

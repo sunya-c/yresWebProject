@@ -3,6 +3,7 @@ package com.sunya.yresWebProject.managers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.sunya.yresWebProject.managers.sessionObjects.SessionAccountInfo;
 import com.sunya.yresWebProject.managers.sessionObjects.SessionAdminPanel;
 import com.sunya.yresWebProject.managers.sessionObjects.SessionCreateAccount;
 import com.sunya.yresWebProject.managers.sessionObjects.SessionFeedback;
@@ -145,6 +146,17 @@ public class SessionManager
 	public void createSessionAdminPanel()
 	{
 		session.setAttribute("sessionAdminPanel", new SessionAdminPanel());
+	}
+	
+	
+	public SessionAccountInfo getSessionAccountInfo()
+	{
+		return (SessionAccountInfo)session.getAttribute("sessionAccountInfo");
+	}
+	
+	public void createSessionAccountInfo()
+	{
+		session.setAttribute("sessionAccountInfo", new SessionAccountInfo());
 	}
 	// end -- Attribute objects
 
