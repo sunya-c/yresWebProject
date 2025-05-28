@@ -31,6 +31,13 @@ public class FilterInitializeSession extends OncePerRequestFilter
 				+"---"+((sm.getKeyHolder()==null)? null : sm.getKeyHolder().toString().substring(sm.getKeyHolder().toString().indexOf("KeyHolder@")))+", ");
 		System.out.println("URL : "+request.getRequestURI());
 		
+		initializeSession();
+		
+		filterChain.doFilter(request, response);
+	}
+	
+	public void initializeSession()
+	{
 		synchronized (sm.getSession())
 		{
 			if (sm.getInitializeString()==null)
@@ -53,6 +60,5 @@ public class FilterInitializeSession extends OncePerRequestFilter
 						+"---"+((sm.getKeyHolder()==null)? null : sm.getKeyHolder().toString().substring(sm.getKeyHolder().toString().indexOf("KeyHolder@"))));
 			}
 		}
-		filterChain.doFilter(request, response);
 	}
 }

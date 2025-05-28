@@ -32,6 +32,11 @@ public class FilterHttps extends OncePerRequestFilter
 	{
 		String protocol = request.getHeader("X-Forwarded-Proto");
 		System.out.println("Order: HIGHEST, xForwardedProto : "+protocol+", method : "+request.getMethod()+", URL : "+request.getRequestURL());
+//		if (!request.getRequestURI().equals("djqwkjei"))
+//		{
+//			filterChain.doFilter(request, response);
+//			return;
+//		}
 		if ("https".equals(protocol))
 		{
 			System.out.println("filter Https passed");

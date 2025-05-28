@@ -48,6 +48,11 @@ public class FilterBot extends OncePerRequestFilter
 								throws ServletException, IOException
 	{
 		System.out.println("Order: 0, in Filter Bot (/*)");
+//		if (!request.getRequestURI().equals("djqwkjei"))
+//		{
+//			filterChain.doFilter(request, response);
+//			return;
+//		}
 
 		String requestedUrl = request.getRequestURL().toString();
 		System.out.println(requestedUrl);

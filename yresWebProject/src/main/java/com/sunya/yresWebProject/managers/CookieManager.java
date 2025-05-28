@@ -7,6 +7,7 @@ import jakarta.servlet.http.Cookie;
 @Component
 public class CookieManager
 {
+	public static final String JSESSION = "JSESSIONID";
 	public static final String CLIENT_REF = "YRES_clientRef_9123ks7df5ka4dif12339odsf";
 	
 	
@@ -30,5 +31,16 @@ public class CookieManager
 			}
 		}
 		return null;
+	}
+	
+	public Cookie createCookie(String name, String value, int age)
+	{
+		Cookie c = new Cookie(name, value);
+		c.setMaxAge(age);
+		c.setPath("/");
+		c.setSecure(true);
+		c.setHttpOnly(true);
+		c.setAttribute("SameSite", "Lax");
+		return c;
 	}
 }

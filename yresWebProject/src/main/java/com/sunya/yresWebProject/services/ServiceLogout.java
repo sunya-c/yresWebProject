@@ -7,6 +7,7 @@ import com.sunya.yresWebProject.Url;
 import com.sunya.yresWebProject.managers.SessionManager;
 
 @Service
+@Deprecated
 public class ServiceLogout
 {
 	@Autowired

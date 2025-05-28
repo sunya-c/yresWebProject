@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import com.sunya.yresWebProject.PrintError;
@@ -47,6 +48,9 @@ public class DaoLoginInfo
 
 	@Autowired
 	protected JdbcTemplate template;
+	
+	@Autowired
+	private PasswordEncoder passEncoder;
 
 	
 	public void changePassword(ModelLoginInfo model)
@@ -241,12 +245,11 @@ public class DaoLoginInfo
 	public boolean doesExistPasswordCaseSen(ModelLoginInfo model)
 	{
 		// For password checking
-		String query = "SELECT "+COLUMN_USERNAME+", "+COLUMN_PASSWORD+" FROM "+TABLE_NAME+" WHERE "+COLUMN_USERNAME
-									+" = ? AND "+COLUMN_PASSWORD+" = ?;";
+		String query = "SELECT "+COLUMN_USERNAME+", "+COLUMN_PASSWORD+" FROM "+TABLE_NAME+" WHERE "+COLUMN_USERNAME+" = ?;";
 
 		ResultSetExtractor<Boolean> extractor = rs -> {
 			if (rs.next() && rs.getString(COLUMN_USERNAME).equals(model.getUsername())
-										&& rs.getString(COLUMN_PASSWORD).equals(model.getPassword()))
+										&& passEncoder.matches(model.getPassword(), rs.getString(COLUMN_PASSWORD)))
 				return true;
 			else
 				return false;
@@ -254,12 +257,31 @@ public class DaoLoginInfo
 
 		try
 		{
-			return template.query(query, extractor, model.getUsername(), model.getPassword());
+			return template.query(query, extractor, model.getUsername());
 		}
 		catch (DataAccessException e)
 		{
 			throw new YresDataAccessException("daologininfo.isexistingpasswordcasesen-01");
 		}
+	}
+	
+	public ModelLoginInfo getPasswordAndRole(String username)
+	{
+		if (username==null)
+			return null;
+		String query = "SELECT "+COLUMN_USERNAME+", "+COLUMN_PASSWORD+", "+COLUMN_TEMPACCOUNT+" FROM "+TABLE_NAME+" WHERE "+COLUMN_USERNAME+" = ?;";
+		ResultSetExtractor<ModelLoginInfo> extractor = rs -> {
+			if (rs.next() && username.equals(rs.getString(COLUMN_USERNAME)))
+			{
+				ModelLoginInfo model = new ModelLoginInfo();
+				model.setPassword(rs.getString(COLUMN_PASSWORD));
+				model.setTempaccount(rs.getString(COLUMN_TEMPACCOUNT));
+				return model;
+			}
+			return null;
+		};
+		
+		return template.query(query, extractor, username);
 	}
 
 

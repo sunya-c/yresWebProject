@@ -9,6 +9,7 @@ import com.sunya.yresWebProject.models.FormLogin;
 import com.sunya.yresWebProject.models.ModelLoginInfo;
 
 @Service
+@Deprecated
 public class ServiceLogin
 {
 	@Autowired

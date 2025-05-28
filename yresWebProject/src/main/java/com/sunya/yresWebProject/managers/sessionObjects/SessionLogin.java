@@ -2,6 +2,7 @@ package com.sunya.yresWebProject.managers.sessionObjects;
 
 import org.springframework.web.util.HtmlUtils;
 
+import com.sunya.yresWebProject.Url;
 import com.sunya.yresWebProject.YresWebProjectApplication;
 import com.sunya.yresWebProject.managers.SessionManager;
 
@@ -25,6 +26,8 @@ public class SessionLogin
 
 	public String getFromPage()
 	{
+		if (fromPage==null)
+			fromPage = Url.home;
 		return fromPage;
 	}
 

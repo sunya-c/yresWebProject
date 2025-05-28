@@ -2,7 +2,6 @@ package com.sunya.yresWebProject.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import com.sunya.yresWebProject.PrintError;
 import com.sunya.yresWebProject.exceptions.SomethingWentWrongException;
@@ -11,6 +10,7 @@ import com.sunya.yresWebProject.services.ServiceLogin;
 import com.sunya.yresWebProject.services.ServiceLogout;
 
 @Controller
+@Deprecated
 public class ControllerLogin extends Controller1
 {
 	@Autowired
@@ -33,7 +33,7 @@ public class ControllerLogin extends Controller1
 	 *         Redirect to the <strong>Error page</strong> if an Exception is
 	 *         thrown.
 	 */
-	@PostMapping("/sLogin")
+//	@PostMapping("/sLogin")
 	public String sLogin(FormLogin formL)
 	{
 		try
@@ -73,7 +73,7 @@ public class ControllerLogin extends Controller1
 	 *         Redirect to the <strong>Error page</strong> if an Exception is
 	 *         thrown.
 	 */
-	@PostMapping("/sLogout")
+//	@PostMapping("/sLogout")
 	public String sLogout()
 	{
 		try

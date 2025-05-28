@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import com.sunya.yresWebProject.Page;
 import com.sunya.yresWebProject.PrintError;
 import com.sunya.yresWebProject.Url;
+import com.sunya.yresWebProject.accountSecurity.CheckRole;
 import com.sunya.yresWebProject.daos.DaoWebdatainfo;
 import com.sunya.yresWebProject.models.ModelWebdatainfo;
 
@@ -41,7 +42,8 @@ public class ControllerHome extends Controller1
 
 	@Autowired
 	private Environment env;
-
+	@Autowired
+	CheckRole checkRole;
 
 	/**
 	 * The Controller for URL pattern 'Home'.
@@ -74,8 +76,7 @@ public class ControllerHome extends Controller1
 		{
 			return redirect + PrintError.toErrorPage(e);
 		}
-
-		if (sm.getSessionLogin().isLoggedIn()==true)
+		if (checkRole.hasAuthority("ROLE_USER"))
 		{
 			return redirect + Url.welcome;
 		}
@@ -109,14 +110,9 @@ public class ControllerHome extends Controller1
 
 		synchronized (sm.getKeyHolder().getKeyLogin())
 		{
-			if (sm.getSessionLogin().isLoggedIn())
-			{
-				preventBackButton(response);
+			preventBackButton(response);
 
-				return Page.welcome;
-			}
-			else
-				return redirect + Url.home;
+			return Page.welcome;
 		}
 	}
 

@@ -1,6 +1,7 @@
 package com.sunya.yresWebProject.managers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.stereotype.Component;
 
 import com.sunya.yresWebProject.managers.sessionObjects.SessionAccountInfo;
@@ -51,6 +52,17 @@ public class SessionManager
 		return session;
 	}
 
+	// Spring Security
+	public SecurityContext getSecurityContext()
+	{
+		return (SecurityContext)session.getAttribute("SPRING_SECURITY_CONTEXT");
+	}
+	
+	public void setSecurityContext(SecurityContext context)
+	{
+		session.setAttribute("SPRING_SECURITY_CONTEXT", context);
+	}
+	// end -- Spring Security
 
 	// Attribute objects
 	public String getInitializeString()
