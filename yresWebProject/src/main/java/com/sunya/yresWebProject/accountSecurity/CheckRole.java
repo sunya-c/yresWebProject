@@ -40,8 +40,17 @@ public class CheckRole
 
 	public boolean isAuthenticated()
 	{
-		Authentication auth = sm.getSecurityContext().getAuthentication();
-		return auth.isAuthenticated();
+		return hasAuthority("ROLE_USER");
 	}
-
+	
+	public String getUsername()
+	{
+		Authentication auth;
+		if (sm.getSecurityContext()==null)
+			auth = SecurityContextHolder.getContext().getAuthentication();
+		else
+			auth = sm.getSecurityContext().getAuthentication();
+		
+		return auth.getName();
+	}
 }

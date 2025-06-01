@@ -1,6 +1,7 @@
 package com.sunya.yresWebProject.filters;
 
 import java.io.IOException;
+import java.time.Duration;
 
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -44,6 +45,7 @@ public class FilterInitializeSession extends OncePerRequestFilter
 			{
 				System.out.println("in Filter Initizlize. Should be run once at the beginning of each session.-----------------------------------once");
 				
+				sm.getSession().setMaxInactiveInterval((int)Duration.ofMinutes(30).getSeconds());
 				sm.createKeyHolder();
 				sm.createSessionFeedback();
 				sm.createSessionCreateAccount();

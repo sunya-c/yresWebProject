@@ -76,7 +76,7 @@ public class ControllerHome extends Controller1
 		{
 			return redirect + PrintError.toErrorPage(e);
 		}
-		if (checkRole.hasAuthority("ROLE_USER"))
+		if (checkRole.isAuthenticated())
 		{
 			return redirect + Url.welcome;
 		}

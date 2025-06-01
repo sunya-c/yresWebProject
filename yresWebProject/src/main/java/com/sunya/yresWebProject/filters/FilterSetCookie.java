@@ -1,7 +1,6 @@
 package com.sunya.yresWebProject.filters;
 
 import java.io.IOException;
-import java.time.Duration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -36,7 +35,6 @@ public class FilterSetCookie extends OncePerRequestFilter
 		System.out.println("Order: 1.5, in Filter Set Cookie (/*)");
 		try
 		{
-			sm.getSession().setMaxInactiveInterval((int)Duration.ofMinutes(30).getSeconds());
 			Cookie c = cm.createCookie(CookieManager.JSESSION, sm.getSession().getId(), -1);
 			response.addCookie(c);
 			filterChain.doFilter(request, response);

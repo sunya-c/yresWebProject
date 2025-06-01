@@ -2,6 +2,8 @@ package com.sunya.yresWebProject.models;
 
 import java.util.ArrayList;
 
+import org.springframework.web.util.HtmlUtils;
+
 public class DataAdminPanel
 {
 	private String actionResults;
@@ -16,7 +18,7 @@ public class DataAdminPanel
 	}
 	public void setActionResults(String actionResults)
 	{
-		this.actionResults = actionResults;
+		this.actionResults = (actionResults==null)? null : HtmlUtils.htmlEscape(actionResults);
 	}
 	public String getUploadResumeErr()
 	{
@@ -24,7 +26,7 @@ public class DataAdminPanel
 	}
 	public void setUploadResumeErr(String uploadResumeErr)
 	{
-		this.uploadResumeErr = uploadResumeErr;
+		this.uploadResumeErr = (uploadResumeErr==null)? null : HtmlUtils.htmlEscape(uploadResumeErr);
 	}
 	public String getResumeVersionErr()
 	{
@@ -32,7 +34,7 @@ public class DataAdminPanel
 	}
 	public void setResumeVersionErr(String resumeVersionErr)
 	{
-		this.resumeVersionErr = resumeVersionErr;
+		this.resumeVersionErr = (resumeVersionErr==null)? null : HtmlUtils.htmlEscape(resumeVersionErr);
 	}
 	public String getAnnouncementErr()
 	{
@@ -40,7 +42,7 @@ public class DataAdminPanel
 	}
 	public void setAnnouncementErr(String announcementErr)
 	{
-		this.announcementErr = announcementErr;
+		this.announcementErr = (announcementErr==null)? null : HtmlUtils.htmlEscape(announcementErr);
 	}
 	public ArrayList<ModelDownloadinfo> getResumeModels()
 	{
@@ -48,6 +50,7 @@ public class DataAdminPanel
 	}
 	public void setResumeModels(ArrayList<ModelDownloadinfo> resumeModels)
 	{
+		resumeModels.stream().forEach(model -> model.setFilename(HtmlUtils.htmlEscape(model.getFilename())));
 		this.resumeModels = resumeModels;
 	}
 }

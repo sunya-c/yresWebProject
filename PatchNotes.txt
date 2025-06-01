@@ -1,26 +1,22 @@
-1. Spring Security.
-2. Fixed Cookies bug.
+1. Implemented JWT token.
+2. Escaped output text in AccountInfo and AdminPanel pages.
 
 ----------
 
-1. Spring Security:
+1. Implemented JWT token:
 
--Log in system is now based on Spring Security (used to be manually-written filters).
+-Users can now maintain their login state after closing the session
+with the help of JWT token.
 
--Implemented login form authentication and basic authentication.
+-JWT token in the 'Authorization' header that starts with 'Bearer '
+will get the higher priority over token sent with Cookies. In other
+words, the server will rely on the header if available, or it will
+rely on Cookies as a fallback when there's no 'Authorization' header
+that starts with 'Bearer '.
 
--Password stored in the database is now hashed with 'Bcrypt' algorithm, enhancing security
-to the next level.
+-JWT token is located in Cookies by default.
 
--Added FilterSetCookie to centralize Cookies configuration.
+-The age of the token is set to 90 minutes.
 
--Enhanced various security factors which include CORS and explicitly mentioning SameSite,
-Secure, and HttpOnly Cookies flags. (CSRF will be configured in the upcoming commit)
-(CookieManager.createCookie() method can be used for a quick Cookies creation with these
-security Cookies flags)
-
-
-2. Fixed Cookies bug:
-
--Fixed a bug where there're occasionally duplicate Cookies saved in the browser. This was
-fixed by mentioning the correct cookies path.
+-The server will ask the browser to delete the token in the Cookies
+when users log out.

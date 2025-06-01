@@ -4,6 +4,7 @@ import org.springframework.web.util.HtmlUtils;
 
 import com.sunya.yresWebProject.Url;
 import com.sunya.yresWebProject.YresWebProjectApplication;
+import com.sunya.yresWebProject.accountSecurity.CheckRole;
 import com.sunya.yresWebProject.managers.SessionManager;
 
 /**
@@ -77,9 +78,11 @@ public class SessionLogin
 	public String getUsername()
 	{
 		SessionManager sm = YresWebProjectApplication.context.getBean(SessionManager.class);
+		CheckRole checkRole = YresWebProjectApplication.context.getBean(CheckRole.class);
 
 		synchronized (sm.getKeyHolder().getKeyLogin())
 		{
+			setUsername(checkRole.getUsername());
 			return username;
 		}
 	}
@@ -104,10 +107,12 @@ public class SessionLogin
 	public boolean isLoggedIn()
 	{
 		SessionManager sm = YresWebProjectApplication.context.getBean(SessionManager.class);
+		CheckRole checkRole = YresWebProjectApplication.context.getBean(CheckRole.class);
 
 		synchronized (sm.getKeyHolder().getKeyLogin())
 		{
-			return loggedIn;
+//			return loggedIn;
+			return checkRole.isAuthenticated();
 		}
 	}
 

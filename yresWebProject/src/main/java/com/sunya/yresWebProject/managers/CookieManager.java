@@ -1,6 +1,11 @@
 package com.sunya.yresWebProject.managers;
 
+import java.time.Duration;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import com.sunya.yresWebProject.accountSecurity.JWT.ServiceJWT;
 
 import jakarta.servlet.http.Cookie;
 
@@ -9,8 +14,10 @@ public class CookieManager
 {
 	public static final String JSESSION = "JSESSIONID";
 	public static final String CLIENT_REF = "YRES_clientRef_9123ks7df5ka4dif12339odsf";
+	public static final String JWT_TOKEN = "YRES_token";
 	
-	
+	@Autowired
+	private ServiceJWT serJwt;
 	
 	/**
 	 * Get the <strong>value</strong> of the given cookieName.
@@ -33,14 +40,22 @@ public class CookieManager
 		return null;
 	}
 	
-	public Cookie createCookie(String name, String value, int age)
+	public Cookie createCookie(String name, String value, int ageInSeconds)
 	{
 		Cookie c = new Cookie(name, value);
-		c.setMaxAge(age);
+		c.setMaxAge(ageInSeconds);
 		c.setPath("/");
 		c.setSecure(true);
 		c.setHttpOnly(true);
 		c.setAttribute("SameSite", "Lax");
 		return c;
+	}
+	
+	public Cookie createJWTCookie(String username)
+	{
+		return createCookie(
+								CookieManager.JWT_TOKEN,
+								serJwt.generateToken(username),
+								(int)Duration.ofMinutes(ServiceJWT.tokenAge).getSeconds());
 	}
 }

@@ -28,11 +28,15 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.sunya.yresWebProject.PrintError;
+import com.sunya.yresWebProject.accountSecurity.JWT.FilterJWT;
+import com.sunya.yresWebProject.accountSecurity.JWT.ServiceJWT;
 import com.sunya.yresWebProject.daos.DaoIPBlacklist;
+import com.sunya.yresWebProject.daos.DaoLoginInfo;
 import com.sunya.yresWebProject.exceptions.SomethingWentWrongException;
 import com.sunya.yresWebProject.filters.FilterBot;
 import com.sunya.yresWebProject.filters.FilterHttps;
 import com.sunya.yresWebProject.filters.FilterInitializeSession;
+import com.sunya.yresWebProject.managers.CookieManager;
 import com.sunya.yresWebProject.managers.SessionManager;
 
 import io.ipinfo.api.IPinfo;
@@ -49,15 +53,6 @@ public class AccountSecurityConfig
 	{
 		return new BCryptPasswordEncoder();
 	}
-	
-//	@Bean
-//	public AuthenticationManager getAuthManager(PasswordEncoder passEncoder, UserDetailsService uds)
-//	{
-//		DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-//		authProvider.setPasswordEncoder(passEncoder);
-//		authProvider.setUserDetailsService(uds);
-//		return new ProviderManager(authProvider);
-//	}
 	
 	@Bean
 	public AuthenticationManager getAuthManager(AuthenticationConfiguration authConfig) throws Exception
@@ -79,7 +74,10 @@ public class AccountSecurityConfig
 								SessionManager sm, 
 								DaoIPBlacklist daoBl,
 								IPinfo ipinfo,
-								Environment env) throws Exception
+								Environment env,
+								CookieManager cm,
+								ServiceJWT serJwt,
+								DaoLoginInfo daoLg) throws Exception
 	{
 		System.err.println("create SecurityFilterChain");
 
@@ -113,17 +111,18 @@ public class AccountSecurityConfig
 						.passwordParameter("password")
 						.loginPage("/Home")
 						.loginProcessingUrl("/sLogin")
-						.successHandler(new CustomSuccessHandler(sm))//, filterIni))
-						.failureHandler(new CustomFailureHandler(sm))//, filterIni))
+						.successHandler(new CustomSuccessHandler(sm, cm))
+						.failureHandler(new CustomFailureHandler(sm))
 						.permitAll();
 				}
 			)
-			.logout(logout -> logout.deleteCookies("remove")
+			.logout(logout -> logout.deleteCookies(CookieManager.JWT_TOKEN)
 				 					.invalidateHttpSession(false)
 				 					.logoutUrl("/sLogout")
 				 					.clearAuthentication(true)
 				 					.logoutSuccessHandler(new CustomLogoutSuccessHandler(sm)))
-			.addFilterBefore(new FilterInitializeSession(sm), UsernamePasswordAuthenticationFilter.class)
+			.addFilterBefore(new FilterJWT(cm, serJwt, daoLg), UsernamePasswordAuthenticationFilter.class)
+			.addFilterBefore(new FilterInitializeSession(sm), FilterJWT.class)
 			.addFilterBefore(new FilterBot(daoBl, ipinfo), FilterInitializeSession.class)
 			.addFilterBefore(new FilterHttps(env), FilterBot.class);
 		CustomBasicAuthFilter basicCustomFilter = new CustomBasicAuthFilter("/basicLogin", authManager, sm);
@@ -132,19 +131,22 @@ public class AccountSecurityConfig
 			System.err.println("in Bad cred handler!");
 			response.sendRedirect("/badCredentials");
 		});
-		basicCustomFilter.setAuthenticationSuccessHandler(new CustomSuccessHandler(sm));
+		basicCustomFilter.setAuthenticationSuccessHandler(new CustomSuccessHandler(sm, cm));
 		http.addFilterAfter(basicCustomFilter, UsernamePasswordAuthenticationFilter.class);
-
+		
 		return http.build();
 	}
+	
 	
 	public class CustomSuccessHandler implements AuthenticationSuccessHandler
 	{
 		private SessionManager sm;
+		private CookieManager cm;
 		
-		public CustomSuccessHandler(SessionManager sm)
+		public CustomSuccessHandler(SessionManager sm, CookieManager cm)
 		{
 			this.sm = sm;
+			this.cm = cm;
 		}
 
 		@Override
@@ -153,9 +155,11 @@ public class AccountSecurityConfig
 		{
 			sm.getSessionLogin().setUsername(authentication.getName());
 			sm.getSessionLogin().setLoggedIn(true);
+			response.addCookie(cm.createJWTCookie(authentication.getName()));
 			response.sendRedirect("/"+sm.getSessionLogin().getFromPage());
 		}
 	}
+	
 	public class CustomFailureHandler implements AuthenticationFailureHandler
 	{
 		private SessionManager sm;
@@ -174,6 +178,7 @@ public class AccountSecurityConfig
 			response.sendRedirect("/"+sm.getSessionLogin().getFromPage());
 		}
 	}
+	
 	public class CustomAccessDeniedHandler implements AccessDeniedHandler
 	{
 		@Override
@@ -183,6 +188,7 @@ public class AccountSecurityConfig
 			PrintError.toErrorPage(response, new SomethingWentWrongException("You don't have permission to access this page"));
 		}
 	}
+	
 	public class CustomLogoutSuccessHandler implements LogoutSuccessHandler
 	{
 		private SessionManager sm;
