@@ -11,6 +11,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.sunya.yresWebProject.daos.DaoLoginInfo;
 import com.sunya.yresWebProject.managers.CookieManager;
+import com.sunya.yresWebProject.managers.SessionManager;
 import com.sunya.yresWebProject.models.ModelLoginInfo;
 
 import jakarta.servlet.FilterChain;
@@ -20,12 +21,14 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class FilterJWT extends OncePerRequestFilter
 {
+	private SessionManager sm;
 	private CookieManager cm;
 	private ServiceJWT serJwt;
 	private DaoLoginInfo dao;
 	
-	public FilterJWT(CookieManager cm, ServiceJWT serJwt, DaoLoginInfo dao)
+	public FilterJWT(SessionManager sm, CookieManager cm, ServiceJWT serJwt, DaoLoginInfo dao)
 	{
+		this.sm = sm;
 		this.cm = cm;
 		this.serJwt = serJwt;
 		this.dao = dao;
@@ -67,15 +70,19 @@ public class FilterJWT extends OncePerRequestFilter
 			return;
 		}
 		String authority = (dao.isTempAccount(model.getUsername()))? "ROLE_USER" : "ROLE_ADMIN";
-		SecurityContext context = SecurityContextHolder.getContext();
-		context.setAuthentication(new UsernamePasswordAuthenticationToken(
-									model.getUsername(),
-									null,
-									Set.of(new SimpleGrantedAuthority(authority))));
+		synchronized (sm.getKeyHolder().getKeyLogin())
+		{
+			SecurityContext context = SecurityContextHolder.getContext();
+			context.setAuthentication(new UsernamePasswordAuthenticationToken(
+										model.getUsername(),
+										null,
+										Set.of(new SimpleGrantedAuthority(authority))));
+		}
 		if (serJwt.almostExpire(token))
 		{
 			response.addCookie(cm.createJWTCookie(model.getUsername()));
 		}
+		sm.clearLoginForm();
 		filterChain.doFilter(request, response);
 		return;
 	}

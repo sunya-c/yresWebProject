@@ -1,22 +1,21 @@
-1. Implemented JWT token.
-2. Escaped output text in AccountInfo and AdminPanel pages.
+User login status is now retrieved from Spring Security's context.
 
 ----------
 
-1. Implemented JWT token:
+User login status is now retrieved from Spring Security's context:
 
--Users can now maintain their login state after closing the session
-with the help of JWT token.
+-Before this, login status and user detail were stored in 'username'
+and 'loggedIn' fields located in 'SessionLogin' class. Since we now
+successfully implemented Spring Security, I'd like to centralize all
+authentication-related detail into one place. Thus, Spring Security's
+SecurityContext is a perfect place for this purpose.
 
--JWT token in the 'Authorization' header that starts with 'Bearer '
-will get the higher priority over token sent with Cookies. In other
-words, the server will rely on the header if available, or it will
-rely on Cookies as a fallback when there's no 'Authorization' header
-that starts with 'Bearer '.
-
--JWT token is located in Cookies by default.
-
--The age of the token is set to 90 minutes.
-
--The server will ask the browser to delete the token in the Cookies
-when users log out.
+-'UserAuthContext' class was created to retrieve information from
+SecurityContext. It will look for SecurityContext in session first
+(prioritize session), or in local thread as a fallback when
+SecurityContext in the session is null. It provides convenient getter
+methods including 'getUsername()' which returns the username of the user,
+'hasAuthority()' which verifies whether the user's role is higher than
+the specified role regarding role hierarchy, 'isAuthenticated()' which
+verifies whether the user is logged in (gives more reliable result than
+'Authenticaion.isAuthenticated()').

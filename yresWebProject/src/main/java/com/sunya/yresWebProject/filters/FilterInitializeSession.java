@@ -54,6 +54,7 @@ public class FilterInitializeSession extends OncePerRequestFilter
 				sm.createSessionRedirecting();
 				sm.createSessionAdminPanel();
 				sm.createSessionAccountInfo();
+				sm.createAuthContext();
 				
 				sm.setSessionInitialized();
 				

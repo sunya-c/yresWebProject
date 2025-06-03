@@ -68,10 +68,15 @@ public class CustomBasicAuthFilter extends AbstractAuthenticationProcessingFilte
 		model.setUsername(usernamePassword[0]);
 		model.setPassword(usernamePassword[1]);
 		
-		Authentication auth = getAuthenticationManager().authenticate(new UsernamePasswordAuthenticationToken(model.getUsername(), model.getPassword()));
-		SecurityContext context = SecurityContextHolder.getContext();
-		context.setAuthentication(auth);
-		sm.setSecurityContext(context); // manually save the SecurityContext to the session (Spring doesn't preserve context when using custom filter)
+		Authentication auth = getAuthenticationManager().authenticate(new UsernamePasswordAuthenticationToken(
+																												model.getUsername(),
+																												model.getPassword()));
+		synchronized (sm.getKeyHolder().getKeyLogin())
+		{
+			SecurityContext context = SecurityContextHolder.getContext();
+			context.setAuthentication(auth);
+			sm.setSecurityContext(context); // manually save the SecurityContext to the session (Spring doesn't preserve context when using custom filter)
+		}
 		return auth;
 	}
 }

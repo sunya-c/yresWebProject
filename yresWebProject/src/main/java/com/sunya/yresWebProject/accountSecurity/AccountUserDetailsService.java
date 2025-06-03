@@ -23,9 +23,7 @@ public class AccountUserDetailsService implements UserDetailsService
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException
 	{
 		System.err.println("in IdentityStore");
-		String fromPage = sm.getSessionLogin().getFromPage();
 		sm.clearLoginForm();
-		sm.getSessionLogin().setFromPage(fromPage);
 		sm.getSessionLogin().setUsernamePreTyped(username);
 		ModelLoginInfo model = dao.getPasswordAndRole(username);
 		if (model==null)

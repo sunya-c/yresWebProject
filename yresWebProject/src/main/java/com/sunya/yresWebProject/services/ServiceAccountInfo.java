@@ -30,11 +30,11 @@ public class ServiceAccountInfo
 	public String sChangePassword(FormChangePassword formCP)
 	{
 		ModelLoginInfo model = new ModelLoginInfo();
-		model.setUsername(sm.getSessionLogin().getUsernameUnescaped());
-		model.setPassword(formCP.getCurrentPassword());
 		DataAccountInfo dataAccountInfo = new DataAccountInfo();
 		synchronized (sm.getKeyHolder().getKeyLogin())
 		{
+			model.setUsername(sm.getAuthContext().getUsername());
+			model.setPassword(formCP.getCurrentPassword());
 			try
 			{
 				boolean throwException = false;
@@ -64,10 +64,6 @@ public class ServiceAccountInfo
 			dao.changePassword(model);
 		}
 		String codeRedi = sm.getSessionRedirecting().generateCode();
-//		return UriComponentsBuilder.fromUriString("")
-//							.path(Url.redirecting)
-//							.queryParam("code", codeRedi)
-//							.encode().build().toUriString();
 		return UriComponentsBuilder.fromUriString("")
 									.path(Url.redirecting)
 									.queryParam("message", "Done!")

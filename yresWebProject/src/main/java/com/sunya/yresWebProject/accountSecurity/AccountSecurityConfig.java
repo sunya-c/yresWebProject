@@ -121,7 +121,7 @@ public class AccountSecurityConfig
 				 					.logoutUrl("/sLogout")
 				 					.clearAuthentication(true)
 				 					.logoutSuccessHandler(new CustomLogoutSuccessHandler(sm)))
-			.addFilterBefore(new FilterJWT(cm, serJwt, daoLg), UsernamePasswordAuthenticationFilter.class)
+			.addFilterBefore(new FilterJWT(sm, cm, serJwt, daoLg), UsernamePasswordAuthenticationFilter.class)
 			.addFilterBefore(new FilterInitializeSession(sm), FilterJWT.class)
 			.addFilterBefore(new FilterBot(daoBl, ipinfo), FilterInitializeSession.class)
 			.addFilterBefore(new FilterHttps(env), FilterBot.class);
@@ -153,8 +153,7 @@ public class AccountSecurityConfig
 		public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
 									Authentication authentication) throws IOException, ServletException
 		{
-			sm.getSessionLogin().setUsername(authentication.getName());
-			sm.getSessionLogin().setLoggedIn(true);
+			sm.clearLoginForm();
 			response.addCookie(cm.createJWTCookie(authentication.getName()));
 			response.sendRedirect("/"+sm.getSessionLogin().getFromPage());
 		}
@@ -202,11 +201,11 @@ public class AccountSecurityConfig
 		public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response,
 									Authentication authentication) throws IOException, ServletException
 		{
-			sm.clearLoginState();
-			String fromPage = sm.getSessionLogin().getFromPage();
-			sm.clearLoginForm();
-			sm.getSessionLogin().setFromPage(fromPage);
-			response.sendRedirect("/"+sm.getSessionLogin().getFromPage());
+			synchronized (sm.getKeyHolder().getKeyLogin())
+			{
+				sm.clearLoginForm();
+				response.sendRedirect("/"+sm.getSessionLogin().getFromPage());
+			}
 		}
 	}
 }

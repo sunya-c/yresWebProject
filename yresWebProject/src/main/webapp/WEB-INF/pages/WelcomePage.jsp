@@ -37,7 +37,7 @@ else
 		</form>
 		<div id="iqzgf4">
 			<form method="post" action="/sLogout" id="i6yg8g">
-				<label id="iplzo3">Welcome <span id="iy2ne2">${sessionLogin.username}</span>,<br /></label><label
+				<label id="iplzo3">Welcome <span id="iy2ne2">${userAuth.usernameEscaped}</span>,<br /></label><label
 					id="iv9349">You're logged in<br /></label>
 				<button type="submit" id="i8e392">Log out</button>
 			</form>

@@ -32,7 +32,7 @@ else
 		</form>
 		<div id="ilcg8t-2">
 			<form method="post" action="/sLogout" id="icsvqi-2">
-				<label id="idihl7-2">Welcome <span id="iziw2p-2">${sessionLogin.username}</span>,<br /></label><label
+				<label id="idihl7-2">Welcome <span id="iziw2p-2">${userAuth.usernameEscaped}</span>,<br /></label><label
 					id="i1esqz-2">You're logged in<br /></label>
 				<button type="submit" id="ika14b-2">Log out</button>
 			</form>

@@ -18,7 +18,7 @@ public class DataAdminPanel
 	}
 	public void setActionResults(String actionResults)
 	{
-		this.actionResults = (actionResults==null)? null : HtmlUtils.htmlEscape(actionResults);
+		this.actionResults = actionResults;
 	}
 	public String getUploadResumeErr()
 	{

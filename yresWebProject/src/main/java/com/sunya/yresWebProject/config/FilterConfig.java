@@ -65,10 +65,10 @@ public class FilterConfig
 	}
 	
 	@Bean
-	public FilterRegistrationBean<FilterAccountExistence> filterAccExistence(DaoLoginInfo dao)
+	public FilterRegistrationBean<FilterAccountExistence> filterAccExistence(DaoLoginInfo dao, CookieManager cm)
 	{
 		FilterRegistrationBean<FilterAccountExistence> bean = new FilterRegistrationBean<>();
-		bean.setFilter(new FilterAccountExistence(sm, dao));
+		bean.setFilter(new FilterAccountExistence(sm, dao, cm));
 		bean.setUrlPatterns(allPaths);
 		bean.setOrder(2);
 		

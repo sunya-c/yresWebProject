@@ -30,7 +30,7 @@ else
 		<form method="get" action="Home" id="iglplu">
 			<button type="submit" id="ib78ph">Home</button>
 		</form>
-		<c:if test="${sessionLogin.loggedIn == false}">
+		<c:if test="${userAuth.authenticated == false}">
 			<div id="ilm4tj">
 				<form method="post" action="sLogin" id="ic5esq">
 					<div id="igvknh">
@@ -51,10 +51,10 @@ else
 				</form>
 			</div>
 		</c:if>
-		<c:if test="${sessionLogin.loggedIn == true}">
+		<c:if test="${userAuth.authenticated == true}">
 			<div id="ilcg8t">
 				<form method="post" action="sLogout" id="icsvqi">
-					<label id="idihl7">Welcome <span id="iziw2p">${sessionLogin.username}</span>,<br /></label><label
+					<label id="idihl7">Welcome <span id="iziw2p">${userAuth.usernameEscaped}</span>,<br /></label><label
 						id="i1esqz">You're logged in<br /></label>
 					<button type="submit" id="ika14b">Log out</button>
 				</form>

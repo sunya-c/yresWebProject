@@ -51,10 +51,11 @@ public class ServiceFeedback
 
 		if (restriction.checkRestriction(formFb, dataFeedback))
 		{
-			String username;
+			String username = null;
 			synchronized (sm.getKeyHolder().getKeyLogin())
 			{
-				username = sm.getSessionLogin().getUsernameUnescaped();
+				if (sm.getAuthContext().isAuthenticated())
+					username = sm.getAuthContext().getUsername();
 			}
 
 			ModelFeedback model = new ModelFeedback();
