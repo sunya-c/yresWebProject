@@ -9,6 +9,7 @@ public class ModelLoginInfo
 	private String username;
 	private String password;
 	private String tempaccount;
+	private String role;
 	private String timecreated;
 	
 	
@@ -36,6 +37,14 @@ public class ModelLoginInfo
 	public void setTempaccount(String tempaccount)
 	{
 		this.tempaccount = tempaccount;
+	}
+	public String getRole()
+	{
+		return role;
+	}
+	public void setRole(String role)
+	{
+		this.role = role;
 	}
 	public String getTimecreated()
 	{

@@ -33,7 +33,7 @@ public class AccountUserDetailsService implements UserDetailsService
 		}
 		return User.withUsername(username)
 					.password(model.getPassword())
-					.roles(("0".equals(model.getTempaccount()))? "ADMIN" : "USER")
+					.roles(model.getRole())
 					.build();
 	}
 }

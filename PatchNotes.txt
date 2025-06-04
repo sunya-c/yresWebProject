@@ -1,21 +1,21 @@
-User login status is now retrieved from Spring Security's context.
+1. Implemented user role/authority.
+2. Handled more conditions in JWT filter.
 
 ----------
 
-User login status is now retrieved from Spring Security's context:
+Implemented user role/authority:
 
--Before this, login status and user detail were stored in 'username'
-and 'loggedIn' fields located in 'SessionLogin' class. Since we now
-successfully implemented Spring Security, I'd like to centralize all
-authentication-related detail into one place. Thus, Spring Security's
-SecurityContext is a perfect place for this purpose.
+-User role is now retieved from the role column in the database.
 
--'UserAuthContext' class was created to retrieve information from
-SecurityContext. It will look for SecurityContext in session first
-(prioritize session), or in local thread as a fallback when
-SecurityContext in the session is null. It provides convenient getter
-methods including 'getUsername()' which returns the username of the user,
-'hasAuthority()' which verifies whether the user's role is higher than
-the specified role regarding role hierarchy, 'isAuthenticated()' which
-verifies whether the user is logged in (gives more reliable result than
-'Authenticaion.isAuthenticated()').
+-Role/authority is managed by Spring Security.
+
+-Marked 'tempaccount'-related elements as deprecated. It used to work
+similarly to role/authority. We don't need this anymore as we now have
+Spring Security's role/authority.
+
+
+2. Handled more conditions in JWT filter:
+
+-Added more condition handling to 'FilterJWT', where user is already
+authenticated (in session) but sends different-identity JWT token with 
+the request.

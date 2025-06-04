@@ -69,15 +69,16 @@ public class AccountSecurityConfig
 	
 	@Bean
 	public SecurityFilterChain getSecurityFilterChain(
-								HttpSecurity http, 
+								HttpSecurity http,
 								AuthenticationManager authManager,
-								SessionManager sm, 
+								SessionManager sm,
 								DaoIPBlacklist daoBl,
 								IPinfo ipinfo,
 								Environment env,
 								CookieManager cm,
 								ServiceJWT serJwt,
-								DaoLoginInfo daoLg) throws Exception
+								DaoLoginInfo daoLg,
+								UserAuthContext userAuth) throws Exception
 	{
 		System.err.println("create SecurityFilterChain");
 
@@ -121,7 +122,7 @@ public class AccountSecurityConfig
 				 					.logoutUrl("/sLogout")
 				 					.clearAuthentication(true)
 				 					.logoutSuccessHandler(new CustomLogoutSuccessHandler(sm)))
-			.addFilterBefore(new FilterJWT(sm, cm, serJwt, daoLg), UsernamePasswordAuthenticationFilter.class)
+			.addFilterBefore(new FilterJWT(sm, cm, serJwt, daoLg, userAuth), UsernamePasswordAuthenticationFilter.class)
 			.addFilterBefore(new FilterInitializeSession(sm), FilterJWT.class)
 			.addFilterBefore(new FilterBot(daoBl, ipinfo), FilterInitializeSession.class)
 			.addFilterBefore(new FilterHttps(env), FilterBot.class);

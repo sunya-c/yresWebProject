@@ -41,17 +41,17 @@ public class DaoAutoRemove extends DaoLoginInfo
 	 */
 	private void removeTempUser(ModelLoginInfo model)
 	{
-		String query = "DELETE FROM "+TABLE_NAME+" WHERE "+COLUMN_TEMPACCOUNT+" = ? AND "+COLUMN_USERNAME+" = ? AND "
+		String query = "DELETE FROM "+TABLE_NAME+" WHERE "+COLUMN_ROLE+" = ? AND "+COLUMN_USERNAME+" = ? AND "
 									+COLUMN_PASSWORD+" = ? AND "+COLUMN_TIMECREATED+" = ?";
 
-		model.setTempaccount("1");
+		model.setRole("USER");
 
 		PreparedStatementSetter pss = new PreparedStatementSetter() {
 
 			@Override
 			public void setValues(PreparedStatement ps) throws SQLException
 			{
-				ps.setString(1, model.getTempaccount());
+				ps.setString(1, model.getRole());
 				ps.setString(2, model.getUsername());
 				ps.setString(3, model.getPassword());
 				ps.setString(4, model.getTimecreated());
@@ -81,7 +81,7 @@ public class DaoAutoRemove extends DaoLoginInfo
 	public void autoRemoveTempUser()
 	{
 		String query = "SELECT "+COLUMN_USERNAME+", "+COLUMN_PASSWORD+", "+COLUMN_TIMECREATED+" FROM "+TABLE_NAME
-									+" WHERE "+COLUMN_TEMPACCOUNT+" = ?";
+									+" WHERE "+COLUMN_ROLE+" = ?";
 
 		ResultSetExtractor<ArrayList<ModelLoginInfo>> extractor = new ResultSetExtractor<>() {
 
@@ -96,7 +96,7 @@ public class DaoAutoRemove extends DaoLoginInfo
 
 					do
 					{
-						if (rs.getString(COLUMN_TEMPACCOUNT).equals("1"))
+						if (rs.getString(COLUMN_ROLE).equals("USER"))
 						{
 							ModelLoginInfo model = new ModelLoginInfo();
 							model.setUsername(rs.getString(COLUMN_USERNAME));
@@ -112,7 +112,7 @@ public class DaoAutoRemove extends DaoLoginInfo
 			}
 		};
 
-		ArrayList<ModelLoginInfo> models = template.query(query, extractor, "1");
+		ArrayList<ModelLoginInfo> models = template.query(query, extractor, "USER");
 
 		TimeZone timeZone = TimeZone.getDefault();
 		

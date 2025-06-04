@@ -9,6 +9,7 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.sunya.yresWebProject.accountSecurity.UserAuthContext;
 import com.sunya.yresWebProject.daos.DaoLoginInfo;
 import com.sunya.yresWebProject.managers.CookieManager;
 import com.sunya.yresWebProject.managers.SessionManager;
@@ -25,20 +26,22 @@ public class FilterJWT extends OncePerRequestFilter
 	private CookieManager cm;
 	private ServiceJWT serJwt;
 	private DaoLoginInfo dao;
+	private UserAuthContext userAuth;
 	
-	public FilterJWT(SessionManager sm, CookieManager cm, ServiceJWT serJwt, DaoLoginInfo dao)
+	public FilterJWT(SessionManager sm, CookieManager cm, ServiceJWT serJwt, DaoLoginInfo dao, UserAuthContext userAuth)
 	{
 		this.sm = sm;
 		this.cm = cm;
 		this.serJwt = serJwt;
 		this.dao = dao;
+		this.userAuth = userAuth;
 	}
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 								throws ServletException, IOException
 	{
-		System.out.println("Order 1.1, in Filter JWT ()");
+		System.out.println("Order 1.1, in Filter JWT (/*)");
 		String bearer = request.getHeader("Authorization");
 		String token;
 		
@@ -69,21 +72,39 @@ public class FilterJWT extends OncePerRequestFilter
 			filterChain.doFilter(request, response);
 			return;
 		}
-		String authority = (dao.isTempAccount(model.getUsername()))? "ROLE_USER" : "ROLE_ADMIN";
+		
+		sm.clearLoginForm();
 		synchronized (sm.getKeyHolder().getKeyLogin())
 		{
-			SecurityContext context = SecurityContextHolder.getContext();
-			context.setAuthentication(new UsernamePasswordAuthenticationToken(
-										model.getUsername(),
-										null,
-										Set.of(new SimpleGrantedAuthority(authority))));
+			if (!userAuth.isAuthenticated())
+			{
+				authenticateLocalThread(model.getUsername());
+			}
+			else if (!userAuth.getUsername().equals(model.getUsername())) // Identity in SecurityContext and token are different.
+			{
+				response.addCookie(cm.createJWTCookie(userAuth.getUsername()));
+				filterChain.doFilter(request, response);
+				return;
+			}
 		}
 		if (serJwt.almostExpire(token))
 		{
 			response.addCookie(cm.createJWTCookie(model.getUsername()));
 		}
-		sm.clearLoginForm();
+		
 		filterChain.doFilter(request, response);
 		return;
+	}
+	
+	private void authenticateLocalThread(String username)
+	{
+		synchronized (sm.getKeyHolder().getKeyLogin())
+		{
+			SecurityContext context = SecurityContextHolder.getContext();
+			context.setAuthentication(new UsernamePasswordAuthenticationToken(
+										username,
+										null,
+										Set.of(new SimpleGrantedAuthority("ROLE_"+dao.getRole(username)))));
+		}
 	}
 }

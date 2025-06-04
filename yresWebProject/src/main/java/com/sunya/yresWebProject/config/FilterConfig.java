@@ -151,8 +151,9 @@ public class FilterConfig
 	{
 		FilterRegistrationBean<FilterSiteUsage6> bean = new FilterRegistrationBean<>();
 		bean.setFilter(new FilterSiteUsage6(siteUsage));
-		bean.addUrlPatterns("/accountInfo");
+		bean.addUrlPatterns("");
 		bean.setOrder(5);
+		bean.setEnabled(false);
 		
 		return bean;
 	}

@@ -68,4 +68,18 @@ public class UserAuthContext
 		String username = getUsername();
 		return (username==null)? null : HtmlUtils.htmlEscape(username);
 	}
+	
+	public void printAllAthor()
+	{
+		Authentication auth;
+		if (sm.getSecurityContext()==null)
+			auth = SecurityContextHolder.getContext().getAuthentication();
+		else
+			auth = sm.getSecurityContext().getAuthentication();
+		
+		Collection<? extends GrantedAuthority> reachAthor = roleHierar.getReachableGrantedAuthorities(auth.getAuthorities());
+		auth.getAuthorities().forEach(e -> System.err.println(e.toString()));
+		System.err.println("^athor, v reachableAthor");
+		reachAthor.forEach(e -> System.err.println(e.toString()));
+	}
 }
