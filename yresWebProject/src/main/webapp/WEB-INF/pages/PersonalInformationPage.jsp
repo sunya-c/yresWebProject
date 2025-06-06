@@ -48,6 +48,7 @@ else
 							id="igf1k3"><br>${sessionLogin.passwordErr}<br /></label>
 					</div>
 					<button type="submit" id="ilwube">Log in</button>
+					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 				</form>
 				<form method="get" action="/createAccount" id="i8bga-2">
 					<button type="submit" id="i3xat-2">Create an account</button>
@@ -60,6 +61,7 @@ else
 					<label id="iv62jr">Welcome <span id="ig3spq">${userAuth.usernameEscaped}</span>,<br /></label><label
 						id="irlj8d">You're logged in<br /></label>
 					<button type="submit" id="i5ywx4">Log out</button>
+					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 				</form>
 			</div>
 		</c:if>

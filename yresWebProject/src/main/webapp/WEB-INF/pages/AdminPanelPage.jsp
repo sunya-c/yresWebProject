@@ -35,6 +35,7 @@ else
 				<label id="idihl7-2">Welcome <span id="iziw2p-2">${userAuth.usernameEscaped}</span>,<br /></label><label
 					id="i1esqz-2">You're logged in<br /></label>
 				<button type="submit" id="ika14b-2">Log out</button>
+				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 			</form>
 		</div>
 		<form method="get" action="/feedback" id="iltvjz-2">
@@ -53,6 +54,7 @@ else
 					<option value="deleteBotsinusageinfo">Clear usageinfo</option>
 				</select>
 				<button type="submit" id="iw8t3k-2">Confirm action</button>
+				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 			</form>
 			<label id="iesbes8"><span id="ibnapgl">${dataAdminPanel.actionResults}</span></label>
 		</div>
@@ -66,6 +68,7 @@ else
 				<br />
 				<label id="i5n6pj-2-3">${dataAdminPanel.uploadResumeErr}<br /></label><input
 					type="file" name="resumeFile" id="injdihj" /><br />
+				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 			</form>
 		</div>
 		<div id="ibyi03-2-2-2-2">
@@ -80,6 +83,7 @@ else
 				</select>
 				<button type="submit" id="i4b9eg-2">Set version</button>
 				<label id="i5n6pj-2"><br>${dataAdminPanel.resumeVersionErr}<br /></label>
+				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 			</form>
 		</div>
 		<div id="ibyi03-2-2-2-2-2">
@@ -90,6 +94,7 @@ else
 					name="announcementMessage"></textarea>
 				<label id="i5n6pj-2-2">${dataAdminPanel.announcementErr}<br /></label>
 				<button type="submit" id="i4b9eg-2-2">Set announcement</button>
+				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 			</form>
 		</div>
 	</div>

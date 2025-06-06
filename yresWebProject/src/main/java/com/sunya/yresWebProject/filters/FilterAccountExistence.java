@@ -16,6 +16,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 public class FilterAccountExistence extends OncePerRequestFilter
 {
@@ -56,6 +57,9 @@ public class FilterAccountExistence extends OncePerRequestFilter
 				{
 					SecurityContextHolder.clearContext();
 					sm.setSecurityContext(null);
+					sm.getSession().invalidate();
+					HttpSession newSession = request.getSession(true);
+					response.addCookie(cm.createCookie(CookieManager.JSESSION, newSession.getId(), -1));
 					response.addCookie(cm.createCookie(CookieManager.JWT_TOKEN, "", 0));
 				}
 			}

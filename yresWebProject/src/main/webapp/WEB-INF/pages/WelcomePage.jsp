@@ -40,6 +40,7 @@ else
 				<label id="iplzo3">Welcome <span id="iy2ne2">${userAuth.usernameEscaped}</span>,<br /></label><label
 					id="iv9349">You're logged in<br /></label>
 				<button type="submit" id="i8e392">Log out</button>
+				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 			</form>
 		</div>
 		<form method="get" action="/feedback" id="ixkbtg">

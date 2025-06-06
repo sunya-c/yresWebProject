@@ -24,6 +24,8 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
+import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
@@ -81,14 +83,20 @@ public class AccountSecurityConfig
 								UserAuthContext userAuth) throws Exception
 	{
 		System.err.println("create SecurityFilterChain");
-
+		
 		CorsConfiguration corsConfig = new CorsConfiguration();
 		corsConfig.addAllowedOrigin("https://"+env.getProperty("yres.domain", "YresEnvNotFound"));
 		corsConfig.addAllowedMethod(CorsConfiguration.ALL);
 		UrlBasedCorsConfigurationSource corsSource = new UrlBasedCorsConfigurationSource();
 		corsSource.registerCorsConfiguration("/**", corsConfig);
-		http.csrf(customCsrf -> customCsrf.disable());
 		http.cors(customCors -> customCors.configurationSource(corsSource));
+		
+		http.csrf(csrf ->
+			{
+				csrf.csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler());
+				csrf.csrfTokenRepository(new HttpSessionCsrfTokenRepository());
+			});
+		
 		http.sessionManagement(session ->
 			{
 				session.maximumSessions(1);

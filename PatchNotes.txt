@@ -1,21 +1,14 @@
-1. Implemented user role/authority.
-2. Handled more conditions in JWT filter.
+Implemented CSRF protection.
 
 ----------
 
-Implemented user role/authority:
+Implemented CSRF protection:
 
--User role is now retieved from the role column in the database.
+-As promising in a few previous commits, CSRF is now successfully implemented.
 
--Role/authority is managed by Spring Security.
+-From now on, any request that doesn't use the GET method requires a valid CSRF token,
+which can be included with the request in either of the following ways:
+	1. 'request header' whose name is set to 'X-CSRF-TOKEN',
+	2. 'request parameter' whose name is set to '_csrf'.
 
--Marked 'tempaccount'-related elements as deprecated. It used to work
-similarly to role/authority. We don't need this anymore as we now have
-Spring Security's role/authority.
-
-
-2. Handled more conditions in JWT filter:
-
--Added more condition handling to 'FilterJWT', where user is already
-authenticated (in session) but sends different-identity JWT token with 
-the request.
+-Added GET '/csrf' path, which can be used for manually requesting for the CSRF token.
