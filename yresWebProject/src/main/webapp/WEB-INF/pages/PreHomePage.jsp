@@ -26,8 +26,8 @@ else
 <script type="text/javascript">
 	// Redirect to ServletRedirecting after a delay
 	setTimeout(function() {
-		window.location.href = "/Home${botParam}"; <!-- TODO: change to el for dynamic redirecting -->
-	}, 1500); // 1500 milliseconds = 1.5 seconds
+		window.location.href = "/Home${botParam}";
+	}, 800); // 800 milliseconds = 0.8 seconds
 </script>
 </head>
 <body id="i0wps4">

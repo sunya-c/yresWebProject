@@ -1,12 +1,3 @@
-Added AccountInfo page.
+Added identity token for 'ipinfo' library.
 
 ----------
-
-Added AccountInfo page:
-
--Added .jsp and .css for AccountInfo page.
--Added a function in ControllerAccountInfo to forward 'GET /accountInfo' to AccountInfoPage.
--Added a function to process the requests requesting for 'GET /accountInfo/sChangePassword'.
-Users can now change their password in AccountInfo page.
--Added FilterSiteUsage12 to track number of visits of AccountInfo page.
--Made DaoSiteUsage support AccountInfo page.
