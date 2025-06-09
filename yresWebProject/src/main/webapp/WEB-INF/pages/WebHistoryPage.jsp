@@ -27,12 +27,12 @@ else
 </head>
 <body id="ibrvou">
 	<div id="ijp2zh">
-		<form method="get" action="Home" id="iglplu">
+		<form method="get" action="/Home" id="iglplu">
 			<button type="submit" id="ib78ph">Home</button>
 		</form>
-		<c:if test="${sessionLogin.loggedIn == false}">
+		<c:if test="${userAuth.authenticated == false}">
 			<div id="ilm4tj">
-				<form method="post" action="sLogin" id="ic5esq">
+				<form method="post" action="/sLogin" id="ic5esq">
 					<div id="igvknh">
 						<label id="isaekj">Username<br /></label><input type="text"
 							placeholder="Enter your username" name="username"
@@ -45,22 +45,24 @@ else
 							id="imi9zx"><br>${sessionLogin.passwordErr}<br /></label>
 					</div>
 					<button type="submit" id="ivnv8v">Log in</button>
+					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 				</form>
-				<form method="get" action="createAccount" id="ix885q">
+				<form method="get" action="/createAccount" id="ix885q">
 					<button type="submit" id="ixoedw">Create an account</button>
 				</form>
 			</div>
 		</c:if>
-		<c:if test="${sessionLogin.loggedIn == true}">
+		<c:if test="${userAuth.authenticated == true}">
 			<div id="ilcg8t">
-				<form method="post" action="sLogout" id="icsvqi">
-					<label id="idihl7">Welcome <span id="iziw2p">${sessionLogin.username}</span>,<br /></label><label
+				<form method="post" action="/sLogout" id="icsvqi">
+					<label id="idihl7">Welcome <span id="iziw2p">${userAuth.usernameEscaped}</span>,<br /></label><label
 						id="i1esqz">You're logged in<br /></label>
 					<button type="submit" id="ika14b">Log out</button>
+					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 				</form>
 			</div>
 		</c:if>
-		<form method="get" action="feedback" id="iltvjz">
+		<form method="get" action="/feedback" id="iltvjz">
 			<button type="submit" id="idlvn2">Give feedback / bug report</button>
 		</form>
 	</div>

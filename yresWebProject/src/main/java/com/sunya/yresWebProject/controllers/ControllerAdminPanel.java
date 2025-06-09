@@ -2,7 +2,6 @@ package com.sunya.yresWebProject.controllers;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -61,7 +60,6 @@ public class ControllerAdminPanel extends Controller1
 	@PostMapping("/adminPanel/sAction")
 	public String sAction(Model md, HttpServletRequest request, HttpServletResponse response)
 	{
-		System.err.println("in /sAction!!!");
 		String action = request.getParameter("action");
 		
 		DataAdminPanel dataAdminPanel = new DataAdminPanel();

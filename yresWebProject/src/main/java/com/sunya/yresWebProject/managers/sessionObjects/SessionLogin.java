@@ -2,8 +2,7 @@ package com.sunya.yresWebProject.managers.sessionObjects;
 
 import org.springframework.web.util.HtmlUtils;
 
-import com.sunya.yresWebProject.YresWebProjectApplication;
-import com.sunya.yresWebProject.managers.SessionManager;
+import com.sunya.yresWebProject.Url;
 
 /**
  * This class is for storing session-specific values related to
@@ -19,12 +18,11 @@ public class SessionLogin
 	private String passwordErr = null;
 	private String usernamePreTyped = null;
 
-	private String username = null;
-	private boolean loggedIn = false;
-
 
 	public String getFromPage()
 	{
+		if (fromPage==null)
+			fromPage = Url.home;
 		return fromPage;
 	}
 
@@ -68,54 +66,5 @@ public class SessionLogin
 	public void setUsernamePreTyped(String usernamePreTyped)
 	{
 		this.usernamePreTyped = (usernamePreTyped==null)? null : HtmlUtils.htmlEscape(usernamePreTyped);
-	}
-
-
-	public String getUsername()
-	{
-		SessionManager sm = YresWebProjectApplication.context.getBean(SessionManager.class);
-
-		synchronized (sm.getKeyHolder().getKeyLogin())
-		{
-			return username;
-		}
-	}
-	public String getUsernameUnescaped()
-	{
-		String username = getUsername();
-		return (username==null)? null : HtmlUtils.htmlUnescape(username);
-	}
-
-
-	public void setUsername(String username)
-	{
-		SessionManager sm = YresWebProjectApplication.context.getBean(SessionManager.class);
-
-		synchronized (sm.getKeyHolder().getKeyLogin())
-		{
-			this.username = (username==null)? null : HtmlUtils.htmlEscape(username);
-		}
-	}
-
-
-	public boolean isLoggedIn()
-	{
-		SessionManager sm = YresWebProjectApplication.context.getBean(SessionManager.class);
-
-		synchronized (sm.getKeyHolder().getKeyLogin())
-		{
-			return loggedIn;
-		}
-	}
-
-
-	public void setLoggedIn(boolean loggedIn)
-	{
-		SessionManager sm = YresWebProjectApplication.context.getBean(SessionManager.class);
-
-		synchronized (sm.getKeyHolder().getKeyLogin())
-		{
-			this.loggedIn = loggedIn;
-		}
 	}
 }

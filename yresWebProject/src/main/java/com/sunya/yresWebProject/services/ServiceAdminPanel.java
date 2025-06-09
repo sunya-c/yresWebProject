@@ -5,10 +5,11 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -23,11 +24,13 @@ import com.sunya.yresWebProject.models.DataAdminPanel;
 import com.sunya.yresWebProject.models.ModelWebdatainfo;
 import com.sunya.yresWebProject.rest.repositories.models.ModelIPBlacklist;
 
+import jakarta.servlet.Filter;
+
 @Service
 public class ServiceAdminPanel
 {
 	@Autowired
-	FilterRegistrationBean<FilterBot> filterBot;
+	SecurityFilterChain securityFilters;
 	@Autowired
 	DaoIPBlacklist daoIpbl;
 	@Autowired
@@ -54,8 +57,16 @@ public class ServiceAdminPanel
 		ArrayList<ModelIPBlacklist> newlyAdded = new ArrayList<>();
 		ArrayList<ModelIPBlacklist> cachedAdded = new ArrayList<>();
 
-		tempBlacklist = filterBot.getFilter().getTempBlacklist();
-		cachedBlacklist = filterBot.getFilter().getCachedBlacklist();
+		FilterBot filterBot = null;
+		Iterator<Filter> itr = securityFilters.getFilters().iterator();
+		while (itr.hasNext())
+		{
+			Filter filter = itr.next();
+			if (filter instanceof FilterBot)
+				filterBot = (FilterBot)filter;
+		}
+		tempBlacklist = filterBot.getTempBlacklist();
+		cachedBlacklist = filterBot.getCachedBlacklist();
 		synchronized (tempBlacklist.getKeySynchronized())
 		{
 			tempBlacklist.stream().forEach(model -> {

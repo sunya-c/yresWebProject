@@ -1,6 +1,7 @@
 package com.sunya.yresWebProject.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -23,6 +24,8 @@ public class ServiceCreateAccount
 	private DaoLoginInfo dao;
 	@Autowired
 	private RestrictionsCreateAccount restriction;
+	@Autowired
+	private PasswordEncoder passEncoder;
 
 
 	/**
@@ -54,7 +57,7 @@ public class ServiceCreateAccount
 		{
 			ModelLoginInfo model = new ModelLoginInfo();
 			model.setUsername(formCA.getUsername());
-			model.setPassword(formCA.getPassword1());
+			model.setPassword(passEncoder.encode(formCA.getPassword1()));
 
 			try
 			{
@@ -95,8 +98,8 @@ public class ServiceCreateAccount
 			return createAccountUrl;
 		}
 	}
-
-
+	
+	
 	@Override
 	public String toString()
 	{

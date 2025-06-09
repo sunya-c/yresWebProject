@@ -31,7 +31,9 @@ public class RepoLoginInfo
 	// columnName :
 	protected final String COLUMN_USERNAME = "webuname"; // Primary key
 	protected final String COLUMN_PASSWORD = "webpass";
+	@Deprecated
 	protected final String COLUMN_TEMPACCOUNT = "tempaccount";
+	protected final String COLUMN_ROLE = "role";
 	protected final String COLUMN_TIMECREATED = "timecreated";
 	// end -- columnName
 
@@ -64,7 +66,7 @@ public class RepoLoginInfo
 				{
 					ModelLoginInfo model = new ModelLoginInfo();
 					model.setUsername(rs.getString(COLUMN_USERNAME));
-					model.setTempaccount(rs.getString(COLUMN_TEMPACCOUNT));
+					model.setRole(rs.getString(COLUMN_ROLE));
 					model.setTimecreated(rs.getString(COLUMN_TIMECREATED));
 					list.add(model);
 				} while (rs.next());
@@ -89,7 +91,7 @@ public class RepoLoginInfo
 				{
 					ModelLoginInfo model = new ModelLoginInfo();
 					model.setUsername(rs.getString(COLUMN_USERNAME));
-					model.setTempaccount(rs.getString(COLUMN_TEMPACCOUNT));
+					model.setRole(rs.getString(COLUMN_ROLE));
 					model.setTimecreated(rs.getString(COLUMN_TIMECREATED));
 					return model;
 				}
@@ -115,14 +117,14 @@ public class RepoLoginInfo
 	public void removeUser(ModelLoginInfo model) throws SomethingWentWrongException
 	{
 		String query = "DELETE FROM "+TABLE_NAME+" WHERE "+COLUMN_USERNAME+" = ? AND "+COLUMN_PASSWORD+" = ? AND "
-									+COLUMN_TEMPACCOUNT+" = ?";
+									+COLUMN_ROLE+" = ?";
 
-		model.setTempaccount("1"); // 1==non-admin account. Admin account cannot be removed.
+		model.setRole("USER"); // Admin account cannot be removed.
 
 		int row;
 		try
 		{
-			row = template.update(query, model.getUsername(), model.getPassword(), model.getTempaccount());
+			row = template.update(query, model.getUsername(), model.getPassword(), model.getRole());
 		}
 		catch (DataAccessException e)
 		{

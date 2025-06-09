@@ -8,8 +8,6 @@ import org.jetbrains.annotations.NotNull;
 import com.sunya.yresWebProject.YresWebProjectApplication;
 import com.sunya.yresWebProject.managers.SessionManager;
 import com.sunya.yresWebProject.models.DataAccountInfo;
-import com.sunya.yresWebProject.models.DataAdminPanel;
-import com.sunya.yresWebProject.models.DataCreateAccount;
 
 /**
  * This class is for storing session-specific values related to

@@ -1,6 +1,7 @@
 package com.sunya.yresWebProject.filters;
 
 import java.io.IOException;
+import java.time.Duration;
 
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -31,12 +32,20 @@ public class FilterInitializeSession extends OncePerRequestFilter
 				+"---"+((sm.getKeyHolder()==null)? null : sm.getKeyHolder().toString().substring(sm.getKeyHolder().toString().indexOf("KeyHolder@")))+", ");
 		System.out.println("URL : "+request.getRequestURI());
 		
+		initializeSession();
+		
+		filterChain.doFilter(request, response);
+	}
+	
+	public void initializeSession()
+	{
 		synchronized (sm.getSession())
 		{
 			if (sm.getInitializeString()==null)
 			{
 				System.out.println("in Filter Initizlize. Should be run once at the beginning of each session.-----------------------------------once");
 				
+				sm.getSession().setMaxInactiveInterval((int)Duration.ofMinutes(30).getSeconds());
 				sm.createKeyHolder();
 				sm.createSessionFeedback();
 				sm.createSessionCreateAccount();
@@ -45,6 +54,7 @@ public class FilterInitializeSession extends OncePerRequestFilter
 				sm.createSessionRedirecting();
 				sm.createSessionAdminPanel();
 				sm.createSessionAccountInfo();
+				sm.createAuthContext();
 				
 				sm.setSessionInitialized();
 				
@@ -53,6 +63,5 @@ public class FilterInitializeSession extends OncePerRequestFilter
 						+"---"+((sm.getKeyHolder()==null)? null : sm.getKeyHolder().toString().substring(sm.getKeyHolder().toString().indexOf("KeyHolder@"))));
 			}
 		}
-		filterChain.doFilter(request, response);
 	}
 }

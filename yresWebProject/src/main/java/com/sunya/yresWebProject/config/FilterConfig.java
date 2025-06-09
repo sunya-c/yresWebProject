@@ -6,17 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.Ordered;
-import org.springframework.core.env.Environment;
 
-import com.sunya.yresWebProject.daos.DaoIPBlacklist;
 import com.sunya.yresWebProject.daos.DaoLoginInfo;
 import com.sunya.yresWebProject.filters.FilterAccountExistence;
-import com.sunya.yresWebProject.filters.FilterAdmin;
-import com.sunya.yresWebProject.filters.FilterBot;
-import com.sunya.yresWebProject.filters.FilterHttps;
-import com.sunya.yresWebProject.filters.FilterInitializeSession;
-import com.sunya.yresWebProject.filters.FilterLoginState;
+import com.sunya.yresWebProject.filters.FilterSetCookie;
 import com.sunya.yresWebProject.filters.siteUsage.FilterSiteUsage;
 import com.sunya.yresWebProject.filters.siteUsage.FilterSiteUsage0;
 import com.sunya.yresWebProject.filters.siteUsage.FilterSiteUsage1;
@@ -31,9 +24,8 @@ import com.sunya.yresWebProject.filters.siteUsage.FilterSiteUsage6;
 import com.sunya.yresWebProject.filters.siteUsage.FilterSiteUsage7;
 import com.sunya.yresWebProject.filters.siteUsage.FilterSiteUsage8;
 import com.sunya.yresWebProject.filters.siteUsage.FilterSiteUsage9;
+import com.sunya.yresWebProject.managers.CookieManager;
 import com.sunya.yresWebProject.managers.SessionManager;
-
-import io.ipinfo.api.IPinfo;
 
 @Configuration
 public class FilterConfig
@@ -60,68 +52,25 @@ public class FilterConfig
 											"/sLogin",
 											"/sLogout");
 	
-	@Bean
-	public FilterRegistrationBean<FilterHttps> filterHttp(Environment env)
-	{
-		FilterRegistrationBean<FilterHttps> bean = new FilterRegistrationBean<>();
-		bean.setFilter(new FilterHttps(env));
-		bean.addUrlPatterns("/*");
-		bean.setOrder(Ordered.HIGHEST_PRECEDENCE);
-		
-		return bean;
-	}
-
-	@Bean
-	public FilterRegistrationBean<FilterBot> filterBot(DaoIPBlacklist dao, IPinfo info)
-	{
-		FilterRegistrationBean<FilterBot> bean = new FilterRegistrationBean<>();
-		bean.setFilter(new FilterBot(dao, info));
-		bean.addUrlPatterns("/*");
-		bean.setOrder(0);
-		
-		return bean;
-	}
 	
 	@Bean
-	public FilterRegistrationBean<FilterInitializeSession> filterInitializeSession()
+	public FilterRegistrationBean<FilterSetCookie> filterSetCookie(DaoLoginInfo dao, CookieManager cm)
 	{
-		FilterRegistrationBean<FilterInitializeSession> bean = new FilterRegistrationBean<>();
-		bean.setFilter(new FilterInitializeSession(sm));
-		bean.setUrlPatterns(allPaths);
+		FilterRegistrationBean<FilterSetCookie> bean = new FilterRegistrationBean<>();
+		bean.setFilter(new FilterSetCookie(cm, sm));
+		bean.addUrlPatterns("/*");
 		bean.setOrder(1);
 		
 		return bean;
 	}
 	
 	@Bean
-	public FilterRegistrationBean<FilterAccountExistence> filterAccExistence(DaoLoginInfo dao)
+	public FilterRegistrationBean<FilterAccountExistence> filterAccExistence(DaoLoginInfo dao, CookieManager cm)
 	{
 		FilterRegistrationBean<FilterAccountExistence> bean = new FilterRegistrationBean<>();
-		bean.setFilter(new FilterAccountExistence(sm, dao));
+		bean.setFilter(new FilterAccountExistence(sm, dao, cm));
 		bean.setUrlPatterns(allPaths);
 		bean.setOrder(2);
-		
-		return bean;
-	}
-	
-	@Bean
-	public FilterRegistrationBean<FilterLoginState> filterLoginState() // Choose either FilterLoginState or FilterAdmin
-	{
-		FilterRegistrationBean<FilterLoginState> bean = new FilterRegistrationBean<>();
-		bean.setFilter(new FilterLoginState(sm));
-		bean.addUrlPatterns("/welcome", "/accountInfo", "/accountInfo/*");
-		bean.setOrder(3);
-		
-		return bean;
-	}
-	
-	@Bean
-	public FilterRegistrationBean<FilterAdmin> filterAdmin(DaoLoginInfo dao) // Choose either FilterLoginState or FilterAdmin
-	{
-		FilterRegistrationBean<FilterAdmin> bean = new FilterRegistrationBean<>();
-		bean.setFilter(new FilterAdmin(dao, sm));
-		bean.addUrlPatterns("/saveBotstodatabase", "/adminPanel", "/adminPanel/*");
-		bean.setOrder(4);
 		
 		return bean;
 	}
@@ -202,8 +151,9 @@ public class FilterConfig
 	{
 		FilterRegistrationBean<FilterSiteUsage6> bean = new FilterRegistrationBean<>();
 		bean.setFilter(new FilterSiteUsage6(siteUsage));
-		bean.addUrlPatterns("/accountInfo");
+		bean.addUrlPatterns("");
 		bean.setOrder(5);
+		bean.setEnabled(false);
 		
 		return bean;
 	}

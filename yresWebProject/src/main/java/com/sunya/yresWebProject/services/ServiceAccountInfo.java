@@ -1,6 +1,7 @@
 package com.sunya.yresWebProject.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -22,16 +23,18 @@ public class ServiceAccountInfo
 	private DaoLoginInfo dao;
 	@Autowired
 	private RestrictionsChangePassword restriction;
+	@Autowired
+	private PasswordEncoder passEncoder;
 	
 	
 	public String sChangePassword(FormChangePassword formCP)
 	{
 		ModelLoginInfo model = new ModelLoginInfo();
-		model.setUsername(sm.getSessionLogin().getUsernameUnescaped());
-		model.setPassword(formCP.getCurrentPassword());
 		DataAccountInfo dataAccountInfo = new DataAccountInfo();
 		synchronized (sm.getKeyHolder().getKeyLogin())
 		{
+			model.setUsername(sm.getAuthContext().getUsername());
+			model.setPassword(formCP.getCurrentPassword());
 			try
 			{
 				boolean throwException = false;
@@ -57,14 +60,10 @@ public class ServiceAccountInfo
 											.queryParam("code", codeAccInfo)
 											.encode().build().toUriString();
 			}
-			model.setPassword(formCP.getPassword1());
+			model.setPassword(passEncoder.encode(formCP.getPassword1())); // reuse object
 			dao.changePassword(model);
 		}
 		String codeRedi = sm.getSessionRedirecting().generateCode();
-//		return UriComponentsBuilder.fromUriString("")
-//							.path(Url.redirecting)
-//							.queryParam("code", codeRedi)
-//							.encode().build().toUriString();
 		return UriComponentsBuilder.fromUriString("")
 									.path(Url.redirecting)
 									.queryParam("message", "Done!")

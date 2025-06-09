@@ -48,6 +48,7 @@ else
 						id="igiel"><br>${sessionLogin.passwordErr}<br /></label>
 				</div>
 				<button type="submit" id="ikmqp">Log in</button>
+				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 			</form>
 			<form method="get" id="i8bga" action="/createAccount">
 				<button type="submit" id="i3xat">Create an account</button>

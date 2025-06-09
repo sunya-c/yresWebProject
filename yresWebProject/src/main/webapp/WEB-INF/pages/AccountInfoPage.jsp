@@ -31,9 +31,10 @@ else
 		</form>
 		<div id="iyfwz7-2-2">
 			<form method="post" action="/sLogout" id="ii3nc3-2-2">
-				<label id="i1l84x-2-2">Welcome <span id="ifv1ph-2-2">${sessionLogin.username}</span>,<br /></label><label
+				<label id="i1l84x-2-2">Welcome <span id="ifv1ph-2-2">${userAuth.usernameEscaped}</span>,<br /></label><label
 					id="ilinpi-2-2">You're logged in<br /></label>
 				<button type="submit" id="iwuy1p-2-2">Log out</button>
+				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 			</form>
 		</div>
 		<form method="get" action="/feedback" id="igi9b8-2-2">
@@ -59,6 +60,7 @@ else
 					placeholder="Confirm new password" id="i52w35i-2" /><br />
 				<label id="ik0b94j-2">${dataAccountInfo.password2Err}</label><br />
 				<button type="submit" id="igi5nyu-2">Confirm</button>
+				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 			</form>
 		</div>
 	</div>

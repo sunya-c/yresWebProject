@@ -57,6 +57,7 @@ else
 						<label id="iyh6a9"><br>${dataFeedback.errorMessageErr}<br /></label>
 					</div>
 					<button type="submit" id="i4b9eg">Submit</button>
+					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 				</form>
 			</div>
 		</c:if>

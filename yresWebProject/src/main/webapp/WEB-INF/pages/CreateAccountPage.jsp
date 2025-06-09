@@ -55,6 +55,7 @@ else
 						name="password2" id="i5yupc" /><label id="ib1ixt"><br>${dataCreateAccount.password2Err}<br /></label>
 				</div>
 				<button type="submit" id="ih73op">Create account</button>
+				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 			</form>
 		</div>
 	</div>

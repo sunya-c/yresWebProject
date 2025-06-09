@@ -7,13 +7,13 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.TimeZone;
 
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Primary;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import com.sunya.yresWebProject.PrintError;
@@ -31,7 +31,9 @@ public class DaoLoginInfo
 	// columnName :
 	protected final String COLUMN_USERNAME = "webuname"; // Primary key
 	protected final String COLUMN_PASSWORD = "webpass";
+	@Deprecated
 	protected final String COLUMN_TEMPACCOUNT = "tempaccount";
+	protected final String COLUMN_ROLE = "role";
 	protected final String COLUMN_TIMECREATED = "timecreated";
 	// end -- columnName
 
@@ -47,6 +49,9 @@ public class DaoLoginInfo
 
 	@Autowired
 	protected JdbcTemplate template;
+	
+	@Autowired
+	private PasswordEncoder passEncoder;
 
 	
 	public void changePassword(ModelLoginInfo model)
@@ -66,28 +71,24 @@ public class DaoLoginInfo
 		}
 	}
 	
-	public boolean isTempAccount(@NotNull String username)
+	public String getRole(String username)
 	{
-		if (username==null)
-			throw new YresDataAccessException("Username cannot be null");
+		String query = "SELECT "+COLUMN_ROLE+" FROM "+TABLE_NAME+" WHERE "+COLUMN_USERNAME+" = ?;";
 		
-		String query = "SELECT "+COLUMN_USERNAME+", "+COLUMN_TEMPACCOUNT+" FROM "+TABLE_NAME+" WHERE "+COLUMN_USERNAME+" = ?;";
-		
-		ResultSetExtractor<Boolean> extractor = new ResultSetExtractor<Boolean>() {
+		ResultSetExtractor<String> extractor = new ResultSetExtractor<String>() {
 			
 			@Override
-			public Boolean extractData(ResultSet rs) throws SQLException, DataAccessException
+			public String extractData(ResultSet rs) throws SQLException, DataAccessException
 			{
-				if (rs.next() && username.equals(rs.getString(COLUMN_USERNAME)))
-				{
-					return rs.getBoolean(COLUMN_TEMPACCOUNT);
-				}
-				
-				throw new YresDataAccessException("Username not found");
+				if (rs.next())
+					return rs.getString(COLUMN_ROLE);
+				return null;
 			}
 		};
-		
-		return template.query(query, extractor, username);
+		String role = template.query(query, extractor, username);
+		if (role==null)
+			throw new YresDataAccessException("daologininfo.getrole-01");
+		return role;
 	}
 
 	// TODO: Just removed the isExistingUsername part, have to do that in the upper
@@ -103,14 +104,14 @@ public class DaoLoginInfo
 	public void removeUser(ModelLoginInfo model) throws SomethingWentWrongException
 	{
 		String query = "DELETE FROM "+TABLE_NAME+" WHERE "+COLUMN_USERNAME+" = ? AND "+COLUMN_PASSWORD+" = ? AND "
-									+COLUMN_TEMPACCOUNT+" = ?";
+									+COLUMN_ROLE+" = ?";
 
-		model.setTempaccount("1"); // 1==non-admin account. Admin account cannot be removed.
+		model.setRole("USER"); // Admin account cannot be removed.
 
 		int row;
 		try
 		{
-			row = template.update(query, model.getUsername(), model.getPassword(), model.getTempaccount());
+			row = template.update(query, model.getUsername(), model.getPassword(), model.getRole());
 		}
 		catch (DataAccessException e)
 		{
@@ -241,12 +242,11 @@ public class DaoLoginInfo
 	public boolean doesExistPasswordCaseSen(ModelLoginInfo model)
 	{
 		// For password checking
-		String query = "SELECT "+COLUMN_USERNAME+", "+COLUMN_PASSWORD+" FROM "+TABLE_NAME+" WHERE "+COLUMN_USERNAME
-									+" = ? AND "+COLUMN_PASSWORD+" = ?;";
+		String query = "SELECT "+COLUMN_USERNAME+", "+COLUMN_PASSWORD+" FROM "+TABLE_NAME+" WHERE "+COLUMN_USERNAME+" = ?;";
 
 		ResultSetExtractor<Boolean> extractor = rs -> {
 			if (rs.next() && rs.getString(COLUMN_USERNAME).equals(model.getUsername())
-										&& rs.getString(COLUMN_PASSWORD).equals(model.getPassword()))
+										&& passEncoder.matches(model.getPassword(), rs.getString(COLUMN_PASSWORD)))
 				return true;
 			else
 				return false;
@@ -254,12 +254,31 @@ public class DaoLoginInfo
 
 		try
 		{
-			return template.query(query, extractor, model.getUsername(), model.getPassword());
+			return template.query(query, extractor, model.getUsername());
 		}
 		catch (DataAccessException e)
 		{
 			throw new YresDataAccessException("daologininfo.isexistingpasswordcasesen-01");
 		}
+	}
+	
+	public ModelLoginInfo getPasswordAndRole(String username)
+	{
+		if (username==null)
+			return null;
+		String query = "SELECT "+COLUMN_USERNAME+", "+COLUMN_PASSWORD+", "+COLUMN_ROLE+" FROM "+TABLE_NAME+" WHERE "+COLUMN_USERNAME+" = ?;";
+		ResultSetExtractor<ModelLoginInfo> extractor = rs -> {
+			if (rs.next() && username.equals(rs.getString(COLUMN_USERNAME)))
+			{
+				ModelLoginInfo model = new ModelLoginInfo();
+				model.setPassword(rs.getString(COLUMN_PASSWORD));
+				model.setRole(rs.getString(COLUMN_ROLE));
+				return model;
+			}
+			return null;
+		};
+		
+		return template.query(query, extractor, username);
 	}
 
 

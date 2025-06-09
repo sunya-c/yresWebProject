@@ -1,14 +1,15 @@
 package com.sunya.yresWebProject.controllers;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -18,6 +19,7 @@ import com.sunya.yresWebProject.rest.repositories.models.ModelIPBlacklist;
 
 import io.ipinfo.api.IPinfo;
 import io.ipinfo.api.errors.RateLimitedException;
+import jakarta.servlet.Filter;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
@@ -43,7 +45,7 @@ public class ControllerOthers extends Controller1
 	}
 	
 	@Autowired
-	FilterRegistrationBean<FilterBot> filterBot;
+	SecurityFilterChain securityFilters;
 	@Autowired
 	DaoIPBlacklist dao;
 	@Autowired
@@ -57,10 +59,18 @@ public class ControllerOthers extends Controller1
 		ArrayList<ModelIPBlacklist> existing = new ArrayList<>();
 		ArrayList<ModelIPBlacklist> newlyAdded = new ArrayList<>();
 		ArrayList<ModelIPBlacklist> cachedAdded = new ArrayList<>();
+		FilterBot filterBot = null;
+		Iterator<Filter> itr = securityFilters.getFilters().iterator();
+		while (itr.hasNext())
+		{
+			Filter filter = itr.next();
+			if (filter instanceof FilterBot)
+				filterBot = (FilterBot)filter;
+		}
 		try
 		{
-			tempBlacklist = filterBot.getFilter().getTempBlacklist();
-			cachedBlacklist = filterBot.getFilter().getCachedBlacklist();
+			tempBlacklist = filterBot.getTempBlacklist();
+			cachedBlacklist = filterBot.getCachedBlacklist();
 			synchronized (tempBlacklist.getKeySynchronized())
 			{
 				tempBlacklist.stream().forEach(model -> {

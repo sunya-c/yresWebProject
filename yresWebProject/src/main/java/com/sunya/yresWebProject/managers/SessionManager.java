@@ -1,8 +1,11 @@
 package com.sunya.yresWebProject.managers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.stereotype.Component;
 
+import com.sunya.yresWebProject.YresWebProjectApplication;
+import com.sunya.yresWebProject.accountSecurity.UserAuthContext;
 import com.sunya.yresWebProject.managers.sessionObjects.SessionAccountInfo;
 import com.sunya.yresWebProject.managers.sessionObjects.SessionAdminPanel;
 import com.sunya.yresWebProject.managers.sessionObjects.SessionCreateAccount;
@@ -51,6 +54,28 @@ public class SessionManager
 		return session;
 	}
 
+	// Spring Security
+	public SecurityContext getSecurityContext()
+	{
+		return (SecurityContext)session.getAttribute("SPRING_SECURITY_CONTEXT");
+	}
+	
+	public void setSecurityContext(SecurityContext context)
+	{
+		session.setAttribute("SPRING_SECURITY_CONTEXT", context);
+	}
+	
+	public UserAuthContext getAuthContext()
+	{
+		return (UserAuthContext)session.getAttribute("userAuth");
+	}
+	
+	public void createAuthContext()
+	{
+		UserAuthContext userAuth = YresWebProjectApplication.context.getBean(UserAuthContext.class);
+		session.setAttribute("userAuth", userAuth);
+	}
+	// end -- Spring Security
 
 	// Attribute objects
 	public String getInitializeString()
@@ -167,7 +192,7 @@ public class SessionManager
 	 * <br>
 	 * 1. usernamePreTyped <br>
 	 * <br>
-	 * 2. fromPage <br>
+	 * TODO: remove this line => 2. fromPage <br>
 	 * <br>
 	 * 3. usernameErr <br>
 	 * <br>
@@ -178,7 +203,6 @@ public class SessionManager
 		synchronized (getKeyHolder().getKeyLogin())
 		{
 			getSessionLogin().setUsernamePreTyped(null);
-			getSessionLogin().setFromPage(null);
 			getSessionLogin().setUsernameErr(null);
 			getSessionLogin().setPasswordErr(null);
 		}
@@ -193,13 +217,12 @@ public class SessionManager
 	 * <br>
 	 * 2. loggedIn
 	 */
-	public void clearLoginState()
-	{
-		synchronized (getKeyHolder().getKeyLogin())
-		{
-			getSessionLogin().setUsername(null);
-			getSessionLogin().setLoggedIn(false);
-		}
-
-	}
+//	public void clearLoginState()
+//	{
+//		synchronized (getKeyHolder().getKeyLogin())
+//		{
+//			getSessionLogin().setUsername(null);
+//			getSessionLogin().setLoggedIn(false);
+//		}
+//	}
 }

@@ -2,11 +2,13 @@ package com.sunya.yresWebProject.filters;
 
 import java.io.IOException;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.sunya.yresWebProject.PrintError;
 import com.sunya.yresWebProject.daos.DaoLoginInfo;
 import com.sunya.yresWebProject.exceptions.WebUnameException;
+import com.sunya.yresWebProject.managers.CookieManager;
 import com.sunya.yresWebProject.managers.SessionManager;
 import com.sunya.yresWebProject.models.ModelLoginInfo;
 
@@ -14,6 +16,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 public class FilterAccountExistence extends OncePerRequestFilter
 {
@@ -21,13 +24,15 @@ public class FilterAccountExistence extends OncePerRequestFilter
 	
 	private SessionManager sm;
 	private DaoLoginInfo dao;
+	private CookieManager cm;
 	
 	
 	
-	public FilterAccountExistence(SessionManager sm, DaoLoginInfo dao)
+	public FilterAccountExistence(SessionManager sm, DaoLoginInfo dao, CookieManager cm)
 	{
 		this.sm = sm;
 		this.dao = dao;
+		this.cm = cm;
 	}
 	
 	
@@ -44,12 +49,19 @@ public class FilterAccountExistence extends OncePerRequestFilter
 			synchronized (sm.getKeyHolder().getKeyLogin())
 			{
 				ModelLoginInfo model = new ModelLoginInfo();
-				model.setUsername(sm.getSessionLogin().getUsernameUnescaped());
+				model.setUsername(sm.getAuthContext().getUsername());
 				
-				filterFailed = sm.getSessionLogin().isLoggedIn() && !dao.checkUsernameCaseSen(model);
+				filterFailed = sm.getAuthContext().isAuthenticated() && !dao.checkUsernameCaseSen(model);
 				
 				if (filterFailed)
-					sm.clearLoginState();
+				{
+					SecurityContextHolder.clearContext();
+					sm.setSecurityContext(null);
+					sm.getSession().invalidate();
+					HttpSession newSession = request.getSession(true);
+					response.addCookie(cm.createCookie(CookieManager.JSESSION, newSession.getId(), -1));
+					response.addCookie(cm.createCookie(CookieManager.JWT_TOKEN, "", 0));
+				}
 			}
 			
 			if (filterFailed)

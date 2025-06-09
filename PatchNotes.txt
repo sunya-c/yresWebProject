@@ -1,3 +1,9 @@
-Added identity token for 'ipinfo' library.
+Implemented Spring Security.
 
 ----------
+
+Implemented Spring Security:
+
+-Turning all authentication-related functions into Spring Security.
+
+-Read more detail in branch 'SpringSecurity'.

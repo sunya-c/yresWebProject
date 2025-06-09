@@ -131,8 +131,7 @@ public class FilterSiteUsage
 
 	private void setupRefInCookie(String resultRefNumber, HttpServletResponse response)
 	{
-		Cookie cookie = new Cookie(CookieManager.CLIENT_REF, resultRefNumber);
-		cookie.setMaxAge((int)Duration.ofDays(7).getSeconds());
+		Cookie cookie = cm.createCookie(CookieManager.CLIENT_REF, resultRefNumber, (int)Duration.ofDays(7).getSeconds());
 		response.addCookie(cookie);
 	}
 
