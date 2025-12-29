@@ -1,20 +1,22 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<!-- <%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%> -->
 
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Yres home</title>
 <link rel="icon" href="/resources/pics/Icon.png" type="image/png">
-<%
+<!-- <%
 String cssVersion = "?";
 if (System.getenv("SERY_CSS_VERSION")==null || System.getenv("SERY_CSS_VERSION").isBlank())
 	cssVersion += System.getProperty("SERY_CSS_VERSION");
 else
 	cssVersion += System.getenv("SERY_CSS_VERSION");
-%>
-<link rel="stylesheet" href="/resources/css/LoginPageCss.css<%= cssVersion %>" />
+%> -->
+<!-- <link rel="stylesheet" href="/resources/css/LoginPageCss.css<%= cssVersion %>" /> -->
+<link rel="stylesheet" href="/resources/css/LoginPageCss.css" />
 <link href="https://fonts.googleapis.com" rel="preconnect">
 <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
 <link
@@ -23,68 +25,104 @@ else
 <link
 	href="https://fonts.googleapis.com/css?family=Inter:regular,italic&display=swap"
 	rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=YouTube+Sans:wght@300..900&display=swap" rel="stylesheet">
+<script src="/resources/javascript/NavBar.js" type="module"></script>
 </head>
 
-<body id="i5xm">
-	<div id="ilt5zk">
-		<div id="i99fq4">Important : </div>
-		<div id="i1hupq">${sessionWeb.webNote1}</div>
-	</div>
-	<div id="i5dg">
-		<form method="get" id="iq2wzk" action="/Home">
-			<button type="submit" id="ix3vku">Home</button>
-		</form>
-		<div id="iao9b">
-			<form method="post" id="iipx" action="/sLogin">
-				<div id="i2sh">
-					<label id="i9zl">Username<br /></label><input type="text"
-						id="ikq8l" placeholder="Enter your username" name="username"
-						value="${sessionLogin.usernamePreTyped}" />
-						<label id="irep4"><br>${sessionLogin.usernameErr}<br /></label>
-				</div>
-				<div id="i1uz3">
-					<label id="ianeo">Password<br /></label><input type="password"
-						id="in4rx" placeholder="Enter your password" name="password" /><label
-						id="igiel"><br>${sessionLogin.passwordErr}<br /></label>
-				</div>
-				<button type="submit" id="ikmqp">Log in</button>
-				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-			</form>
-			<form method="get" id="i8bga" action="/createAccount">
-				<button type="submit" id="i3xat">Create an account</button>
-			</form>
-		</div>
-		<form method="get" action="/feedback" id="i9ojw1">
-			<button type="submit" id="i9l8gi">Give feedback / bug report</button>
-		</form>
-	</div>
-	<div id="imxfh">
-		<div id="ileipf">
-			<div id="illyu">What are you looking for?</div>
-		</div>
-		<form method="get" action="/personalInformation" id="i90xc5">
-			<button type="submit" id="i4zxdj">Personal Information</button>
-		</form>
-		<form method="get" id="iuoax" action="/sDownloadResume">
-			<button type="submit" id="i9ami">Download Resume</button>
-			<div id="if14we">
-				Last update: <span id="i9n2n3k">${sessionWeb.resumeDate}</span>
+<body>
+	<div id="wrapper">
+		<div id="header">
+			<div>
+				<span class="bold">Important !!! : </span>
+				<span>${sessionWeb.webNote1}</span>
 			</div>
-		</form>
-		<form method="get" action="/webHistory" id="i8arqt">
-			<button type="submit" id="ia7xhn">About this website</button>
-		</form>
-		<form method="get" action="/restApi" id="i8t8wg">
-			<button type="submit" id="ijuhm8">Try REST api</button>
-		</form>
-		<div id="ip7596">
-			Website's source code:  <a id="ir0137"
-				href="https://github.com/sunya-c/yresWebProject">https://github.com/sunya-c/yresWebProject</a>
+		</div>
+		<div id="preventActionScreen"></div>
+		<div id="leftContent">
+			<div id="toggleMenu">Menu</div>
+			<div id="contentLeftMenu">
+				<nav>
+					<ul>
+						<c:if test="${userAuth.authenticated == true}">
+							<li><span id="welcomeMessage">Welcome, ${userAuth.usernameEscaped}</span></li>
+						</c:if>
+						<c:if test="${userAuth.authenticated == false}">
+							<li><a id="welcomeMessage" href="/login">Login</a></li>
+						</c:if>
+						<li><a href="/Home">Home</a></li>
+						<li><a href="/accountInfo">My account</a></li>
+						<li><a href="/feedback">Give feedback / bug report</a></li>
+						<c:if test="${userAuth.authenticated == true}">
+							<li><a href="/sLogout">Log out</a></li>
+						</c:if>
+					</ul>
+					<%--<c:if test="${userAuth.isAdmin == true}">
+						<ul>
+							<li><span class="fontSize bold">Admin-only:</span></li>
+							<li><a href="/adminPanel">Admin Panel</a></li>
+						</ul>
+					</c:if>--%>
+				</nav>
+			</div>
+		</div>
+		<div id="mainContent">
+			<div id="contentPane">
+				<div id="contentLogin" class="content">
+					<h1 class="contentLabel">Login</h1>
+					<form method="post" action="/sLogin">
+						<div class="inputWrapper">
+							<label for="username">Username</label>
+							<input id="username" type="text" placeholder="Enter your username" name="username" value="${sessionLogin.usernamePreTyped}"/>
+							<span class="errMessage">${sessionLogin.usernameErr}</span>
+						</div>
+						<div class="inputWrapper">
+							<label for="password">Password</label>
+							<input id="password" type="password" placeholder="Enter your password" name="password">
+							<span class="errMessage">${sessionLogin.passwordErr}</span>
+						</div>
+						<button class="formButton" type="submit">Log in</button>
+						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+					</form>
+					<div class="errMessageWrapper">
+						<div>
+							<span class="errMessage mainErr">Main error</span>
+						</div>
+					</div>
+					<a href="/createAccount">Create an account</a>
+				</div>
+
+
+
+
+
+				<!-- <div id="ileipf">
+					<span id="illyu">What are you looking for?</span>
+				</div>
+				<form method="get" action="/personalInformation" id="i90xc5">
+					<button type="submit" id="i4zxdj">Personal Information</button>
+				</form>
+				<form method="get" id="iuoax" action="/sDownloadResume">
+					<button type="submit" id="i9ami">Download Resume</button>
+					<div id="if14we">
+						Last update: <span id="i9n2n3k">${sessionWeb.resumeDate}</span>
+					</div>
+				</form>
+				<form method="get" action="/webHistory" id="i8arqt">
+					<button type="submit" id="ia7xhn">About this website</button>
+				</form>
+				<form method="get" action="/restApi" id="i8t8wg">
+					<button type="submit" id="ijuhm8">Try REST api</button>
+				</form>
+				<div id="ip7596">
+					Website's source code:  <a id="ir0137"
+						href="https://github.com/sunya-c/yresWebProject">https://github.com/sunya-c/yresWebProject</a>
+				</div> -->
+			</div>
 		</div>
 	</div>
-	test Environment variable(getenv) : ${trial1}
+	<!-- test Environment variable(getenv) : ${trial1}
 	<br> test Environment variable(getProp) : ${trial2}
-	<br> version : ${sessionWeb.webVersion}
+	<br> version : ${sessionWeb.webVersion} -->
 </body>
 </html>
 

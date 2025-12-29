@@ -1,22 +1,24 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+<!--<%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="jakarta.tags.core"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>-->
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Yres - REST api</title>
 <link rel="icon" href="/resources/pics/Icon.png" type="image/png">
-<%
+<!--<%
 String cssVersion = "?";
 if (System.getenv("SERY_CSS_VERSION")==null || System.getenv("SERY_CSS_VERSION").isBlank())
 	cssVersion += System.getProperty("SERY_CSS_VERSION");
 else
 	cssVersion += System.getenv("SERY_CSS_VERSION");
-%>
+%>-->
+<!--<link rel="stylesheet"
+	href="/resources/css/RestApiPageCss.css<%=cssVersion%>" />-->
 <link rel="stylesheet"
-	href="/resources/css/RestApiPageCss.css<%=cssVersion%>" />
+	href="/resources/css/RestApiPageCss.css" />
 <link href="https://fonts.googleapis.com" rel="preconnect">
 <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
 <link
@@ -25,117 +27,167 @@ else
 <link
 	href="https://fonts.googleapis.com/css?family=Inter:regular,italic&display=swap"
 	rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=YouTube+Sans:wght@300..900&display=swap" rel="stylesheet">
+<script src="/resources/javascript/NavBar.js" type="module"></script>
 </head>
-<body id="i96scr">
-	<div id="ie2uro">
-		<form method="get" action="/Home" id="i9m7kf">
-			<button type="submit" id="irgx3m">Home</button>
-		</form>
-		<c:if test="${userAuth.authenticated == false}">
-			<div id="ivy1r3">
-				<form method="post" action="/sLogin" id="i9cj3v">
-					<div id="im4j5a">
-						<label id="itzy77">Username<br /></label><input type="text"
-							placeholder="Enter your username" name="username"
-							value="${sessionLogin.usernamePreTyped}" id="iz0gul" /><label
-							id="izw88e"><br>${sessionLogin.usernameErr}<br /></label>
-					</div>
-					<div id="iez4lk">
-						<label id="iilz28">Password<br /></label><input type="password"
-							placeholder="Enter your password" name="password" id="ioq0nk" /><label
-							id="iv744l"><br>${sessionLogin.passwordErr}<br /></label>
-					</div>
-					<button type="submit" id="i2w5cn">Log in</button>
-					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-				</form>
-				<form method="get" action="/createAccount" id="iueefk">
-					<button type="submit" id="ijgpam">Create an account</button>
-				</form>
+
+<body>
+	<div id="wrapper">
+		<div id="header">
+			<div>
+				<span class="bold">Important !!! : </span>
+				<span>${sessionWeb.webNote1}</span>
 			</div>
-		</c:if>
-		<c:if test="${userAuth.authenticated == true}">
-			<div id="iyfwz7">
-				<form method="post" action="/sLogout" id="ii3nc3">
-					<label id="i1l84x">Welcome <span id="ifv1ph">${userAuth.usernameEscaped}</span>,<br /></label><label
-						id="ilinpi">You're logged in<br /></label>
-					<button type="submit" id="iwuy1p">Log out</button>
-					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-				</form>
+		</div>
+		<div id="preventActionScreen"></div>
+		<div id="leftContent">
+			<div id="toggleMenu">Menu</div>
+			<div id="contentLeftMenu">
+				<nav>
+					<ul>
+						<c:if test="${userAuth.authenticated == true}">
+							<li><span id="welcomeMessage">Welcome, ${userAuth.usernameEscaped}</span></li>
+						</c:if>
+						<c:if test="${userAuth.authenticated == false}">
+							<li><a id="welcomeMessage" href="/login">Login</a></li>
+						</c:if>
+						<li><a href="/Home">Home</a></li>
+						<li><a href="/accountInfo">My account</a></li>
+						<li><a href="/feedback">Give feedback / bug report</a></li>
+						<c:if test="${userAuth.authenticated == true}">
+							<li><a href="/sLogout">Log out</a></li>
+						</c:if>
+					</ul>
+					<%--<c:if test="${userAuth.isAdmin == true}">
+						<ul>
+							<li><span class="fontSize bold">Admin-only:</span></li>
+							<li><a href="/adminPanel">Admin Panel</a></li>
+						</ul>
+					</c:if> --%>
+				</nav>
 			</div>
-		</c:if>
-		<form method="get" action="/feedback" id="igi9b8">
-			<button type="submit" id="i0hicj">Give feedback / bug report</button>
-		</form>
-	</div>
-	<div id="i1xzpl">
-		<div id="infkrv">REST API built on Spring</div>
-		<div id="ix9svt">
-			You can try REST by adding '<span id="ir0id7">/api/rest/available_path</span>'
-			to the end of this website's domain name where you replace '<span
-				id="idc5lk">available_path</span>' with the available options
-			provided below. For example, '<span id="i6efs5">${dataRestApi.domainName}/api/rest/persinfo</span>'
-			will return my personal information. You would expect the results to
-			be in either .xml or .json format. Feel free to try any URL below
-			with '<span id="iciqng">Try me!</span>' form.
 		</div>
-		<div id="i00rjm">
-			<form method="get" action="/restApi/sSendRequest" id="ia1sa8">
-				<div id="i8qkte">Try me!</div>
-				<select name="restMethod" id="infg1j">
-					<option value="get">GET</option>
-					<option value="post">POST</option>
-					<option value="put">PUT</option>
-					<option value="delete">DELETE</option>
-				</select>
-				<textarea placeholder="Paste the URL here!" name="restUrl"
-					id="ibgifx"></textarea>
-				<button type="submit" id="ijn4wn">Send request</button>
-			</form>
-		</div>
-		<div id="ib0uwp">
-			<div id="ilph7x">GET  ${dataRestApi.domainName}/api/rest/user</div>
-			<div id="i9rta6">This URL returns all accounts' detail,
-				excluding password.</div>
-		</div>
-		<div id="i9kesp">
-			<div id="idpyeq">GET 
-				${dataRestApi.domainName}/api/rest/user/{username}</div>
-			<div id="idp5ag">This URL returns the specified account's
-				detail, excluding password. Replace '{username}' with the desired
-				username.</div>
-		</div>
-		<div id="ix28e9">
-			<div id="i1p86y">GET 
-				${dataRestApi.domainName}/api/rest/feedback/{refNumber}</div>
-			<div id="igenqc">This URL returns the feedback detail of the
-				specified reference number. Replace '{refNumber}' with the feedback
-				reference number.</div>
-		</div>
-		<div id="i3j6qu">
-			<div id="imqaoa">GET 
-				${dataRestApi.domainName}/api/rest/persinfo</div>
-			<div id="icjf2h">This URL returns my personal information,
-				including everything in personal information page.</div>
-		</div>
-		<div id="i6h12r">
-			<div id="im2a74">GET 
-				${dataRestApi.domainName}/api/rest/persinfo/fullversion</div>
-			<div id="ifumzu">This URL returns my personal information,
-				including everything in personal information page and other
-				additional detail.</div>
-		</div>
-		<div id="imqiwi">
-			<div id="iklldp">GET 
-				${dataRestApi.domainName}/api/rest/ipblacklist</div>
-			<div id="iq79wi">This URL returns all spam BOTs' IP addresses
-				that I've been collecting since this web application version v0.71.</div>
-		</div>
-		<div id="itkacr">
-			<div id="ifkqzj">GET 
-				${dataRestApi.domainName}/api/rest/ipblacklist/{ipAddress}</div>
-			<div id="ih95tg">This URL returns 'true' if the specified IP
-				address exists in the blacklist database, otherwise returns 'false'.
-				Replace '{ipAddress}' with the IP address you'd like to check.</div>
+		<div id="mainContent">
+			<div id="contentPane">
+
+				<div id="contentPageDescription" class="content">
+					<h1 class="contentLabel">REST API built on Spring</h1>
+					<div class="text text-color-dim">
+						You can try REST by adding '<span class="bold">/api/rest/available_path</span>'
+						to the end of this website's domain name where you replace 
+						'<span class="bold">available_path</span>' with the available options
+						provided below. For example, '<span class="bold">${dataRestApi.domainName}/api/rest/persinfo</span>'
+						will return my personal information. You would expect the results to
+						be in either .xml or .json format. Feel free to try any URL below
+						with '<span class="bold">Try me!</span>' form.
+					</div>
+				</div>
+				<div id="contentTryMe" class="content">
+					<form method="get" action="/restApi/sSendRequest">
+						<h1 class="contentLabel">Try me!</h1>
+						<div class="inputWrapper">
+							<label for="restMethod">HTTP method</label>
+							<select id="restMethod" name="restMethod">
+								<option value="get">GET</option>
+								<option value="post">POST</option>
+								<option value="put">PUT</option>
+								<option value="delete">DELETE</option>
+							</select>
+						</div>
+						<div class="inputWrapper">
+							<label for="restUrl">URL</label>
+							<textarea id="restUrl" placeholder="Paste the URL here!" name="restUrl"></textarea>
+						</div>
+						<button class="formButton" type="submit">Send request</button>
+					</form>
+					<div class="errMessageWrapper">
+						<div>
+							<span class="errMessage mainErr">test main err</span>
+						</div>
+					</div>
+				</div>
+
+				<div class="content firstContent">
+					<div class="text bold">
+						GET<span class="text space"> </span>${dataRestApi.domainName}/api/rest/user
+					</div>
+					<br>
+					<div class="text-14 text-color-dim">
+						This URL returns all accounts' detail, excluding password.
+					</div>
+				</div>
+
+				<div class="content">
+					<div class="text bold">
+						GET<span class="text space"> </span>${dataRestApi.domainName}/api/rest/user/{username}
+					</div>
+					<br>
+					<div class="text-14 text-color-dim">
+						This URL returns the specified account's
+						detail, excluding password. Replace '{username}' with the desired
+						username.
+					</div>
+				</div>
+				<div class="content">
+					<div class="text bold">
+						GET<span class="text space"> </span>${dataRestApi.domainName}/api/rest/feedback/{refNumber}
+					</div>
+					<br>
+					<div class="text-14 text-color-dim">
+						This URL returns the feedback detail of the
+						specified reference number. Replace '{refNumber}' with the feedback
+						reference number.
+					</div>
+				</div>
+				<div class="content">
+					<div class="text bold">
+						GET<span class="text space"> </span>${dataRestApi.domainName}/api/rest/persinfo
+					</div>
+					<br>
+					<div class="text-14 text-color-dim">
+						This URL returns my personal information,
+						including everything in personal information page.
+					</div>
+				</div>
+				<div class="content">
+					<div class="text bold">
+						GET<span class="text space"> </span>${dataRestApi.domainName}/api/rest/persinfo/fullversion
+					</div>
+					<br>
+					<div class="text-14 text-color-dim">
+						This URL returns my personal information,
+						including everything in personal information page and other
+						additional detail.
+					</div>
+				</div>
+				<div class="content">
+					<div class="text bold">
+						GET<span class="text space"> </span>${dataRestApi.domainName}/api/rest/ipblacklist
+					</div>
+					<br>
+					<div class="text-14 text-color-dim">
+						This URL returns all spam BOTs' IP addresses
+						that I've been collecting since this web application version v0.71.</div>
+				</div>
+				<div class="content">
+					<div class="text bold">
+						GET<span class="text space"> </span>${dataRestApi.domainName}/api/rest/ipblacklist/{ipAddress}
+					</div>
+					<br>
+					<div class="text-14 text-color-dim">
+						This URL returns 'true' if the specified IP
+						address exists in the blacklist database, otherwise returns 'false'.
+						Replace '{ipAddress}' with the IP address you'd like to check.
+					</div>
+				</div>
+
+				<div class="content">
+					<div class="text-14 margin-auto-block">
+						More to be updated soon.
+					</div>
+				</div>
+
+			</div>
 		</div>
 	</div>
 </body>

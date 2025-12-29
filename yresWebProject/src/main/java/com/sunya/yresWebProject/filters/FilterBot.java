@@ -28,7 +28,7 @@ public class FilterBot extends OncePerRequestFilter
 
 	private List<String> allowedUrlPrefix = List.of("/error", "/feedback", "/resources/css", "/resources/outBox",
 								"/resources/pics", "/restApi/sSendResponse"); // /yresError removed
-	private List<String> allowedUrlExact = List.of("/", "/healthcheck", "/saveBotstodatabase");
+	private List<String> allowedUrlExact = List.of("/", "/healthcheck", "/saveBotstodatabase", "/basicLogin");
 
 	private CustomArrayList cachedBlacklist;
 	private CustomArrayList tempBlacklist;
