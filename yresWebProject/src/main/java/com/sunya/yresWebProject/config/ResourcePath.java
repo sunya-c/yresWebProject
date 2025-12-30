@@ -12,5 +12,6 @@ public class ResourcePath implements WebMvcConfigurer
 	{
 		reg.addResourceHandler("/resources/css/**").addResourceLocations("/resources/css/");
 		reg.addResourceHandler("/resources/pics/**").addResourceLocations("/resources/pics/");
+		reg.addResourceHandler("/resources/javascript/**").addResourceLocations("/resources/javascript/");
 	}
 }

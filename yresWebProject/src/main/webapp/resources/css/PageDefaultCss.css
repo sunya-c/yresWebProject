@@ -129,6 +129,15 @@ body {
     font-weight: var(--font-weight-bold);
 }
 
+#logoutForm {
+    margin-top: 1.2rem;
+    margin-bottom: 1.2rem;
+}
+#logoutForm button {
+    margin-left: auto;
+    margin-right: auto;
+}
+
 li:has(#welcomeMessage) {
     margin: 2.5rem 0px 3rem;
     font-size: 2.1rem;

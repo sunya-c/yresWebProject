@@ -46,6 +46,11 @@ public class UserAuthContext
 		return hasAuthority("ROLE_USER");
 	}
 	
+	public boolean isAdmin()
+	{
+		return hasAuthority("ROLE_ADMIN");
+	}
+	
 	public String getUsername()
 	{
 		synchronized (sm.getKeyHolder().getKeyLogin())

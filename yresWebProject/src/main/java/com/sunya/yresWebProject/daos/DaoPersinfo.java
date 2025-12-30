@@ -180,7 +180,7 @@ public class DaoPersinfo
 		+ 	COLUMN_LANGUAGE+", "
 		+ 	COLUMN_PROFICIENCY
 		+ " FROM "+TABLE_PROGRAMMINGLANGUAGE+" WHERE "+COLUMN_PERSINFO_ID+" = ?"
-		+ " ORDER BY "+COLUMN_PROFICIENCY+" DESC, "+COLUMN_LANGUAGE+" DESC";
+		+ " ORDER BY "+COLUMN_LANGUAGE +", "+COLUMN_PROFICIENCY+" DESC";
 		
 		ResultSetExtractor<ModelPersinfo> extractor = new ResultSetExtractor<ModelPersinfo>() {
 			

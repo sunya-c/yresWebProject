@@ -1,5 +1,5 @@
-<!--<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>-->
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,13 +7,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Loading...</title>
 <link rel="icon" href="/resources/pics/Icon.png" type="image/png">
-<!--<%
+<%
 String cssVersion = "?";
 if (System.getenv("SERY_CSS_VERSION")==null || System.getenv("SERY_CSS_VERSION").isBlank())
 	cssVersion += System.getProperty("SERY_CSS_VERSION");
 else
 	cssVersion += System.getenv("SERY_CSS_VERSION");
-%>-->
+%>
 <link rel="stylesheet"
 	href="/resources/css/PreHomePageCss.css" />
 <link href="https://fonts.googleapis.com" rel="preconnect">
@@ -28,7 +28,7 @@ else
 	window.onload = function() {
 		// Redirect to ServletRedirecting after a delay
 		setTimeout(() => {
-			window.location.href = "/Home${botParam}";
+			window.location.href = "/home${botParam}";
 		}, 800);
 	}
 </script>

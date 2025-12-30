@@ -1,7 +1,9 @@
 package com.sunya.yresWebProject.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -14,6 +16,14 @@ import jakarta.servlet.http.HttpServletResponse;
 @ControllerAdvice
 public class ControllerErrorCenter extends Controller1
 {
+	@Autowired
+	private ControllerHome controllerHome;
+	
+	@ModelAttribute
+	public void setupAnnouncement()
+	{
+		controllerHome.setAnnouncement();
+	}
 	
 	@ExceptionHandler(exception = NoHandlerFoundException.class)
 	public String fileNotFound404(Exception e, HttpServletRequest request, HttpServletResponse response) throws YresFileNotFound404Exception

@@ -40,12 +40,12 @@ public class FilterConfig
 											"/yresError",
 											"/feedback",
 											"/feedback/summary",
-											"/Home",
+											"/home",
 											"/personalInformation",
 											"/redirecting",
 											"/restApi",
 											"/webHistory",
-											"/welcome",
+//											"/welcome",
 											"/sCreateAccount",
 											"/sDownloadResume",
 											"/sFeedback",
@@ -118,7 +118,7 @@ public class FilterConfig
 	{
 		FilterRegistrationBean<FilterSiteUsage3> bean = new FilterRegistrationBean<>();
 		bean.setFilter(new FilterSiteUsage3(siteUsage));
-		bean.addUrlPatterns("/Home");
+		bean.addUrlPatterns("/home");
 		bean.setOrder(5);
 		
 		return bean;
@@ -165,6 +165,7 @@ public class FilterConfig
 		bean.setFilter(new FilterSiteUsage7(siteUsage));
 		bean.addUrlPatterns("/welcome");
 		bean.setOrder(5);
+		bean.setEnabled(false);
 		
 		return bean;
 	}

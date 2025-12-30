@@ -30,6 +30,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.sunya.yresWebProject.PrintError;
+import com.sunya.yresWebProject.Url;
 import com.sunya.yresWebProject.accountSecurity.JWT.FilterJWT;
 import com.sunya.yresWebProject.accountSecurity.JWT.ServiceJWT;
 import com.sunya.yresWebProject.daos.DaoIPBlacklist;
@@ -108,8 +109,8 @@ public class AccountSecurityConfig
 																"/adminPanel",
 																"/adminPanel/**").hasRole("ADMIN")
 												.requestMatchers(
-																"/welcome",
-																"/welcome/**",
+//																"/welcome",
+//																"/welcome/**",
 																"/accountInfo",
 																"/accountInfo/**").hasRole("USER")
 												.requestMatchers("/**").permitAll())
@@ -118,7 +119,7 @@ public class AccountSecurityConfig
 				{
 					login.usernameParameter("username")
 						.passwordParameter("password")
-						.loginPage("/Home")
+						.loginPage("/login")
 						.loginProcessingUrl("/sLogin")
 						.successHandler(new CustomSuccessHandler(sm, cm))
 						.failureHandler(new CustomFailureHandler(sm))
@@ -183,7 +184,7 @@ public class AccountSecurityConfig
 		{
 			if (exception instanceof BadCredentialsException && sm.getSessionLogin().getUsernameErr()==null)
 				sm.getSessionLogin().setPasswordErr("Incorrect password!");
-			response.sendRedirect("/"+sm.getSessionLogin().getFromPage());
+			response.sendRedirect("/"+Url.login);
 		}
 	}
 	

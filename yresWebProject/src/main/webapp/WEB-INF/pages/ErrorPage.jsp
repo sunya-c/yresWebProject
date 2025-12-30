@@ -1,5 +1,5 @@
-<!--<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8" isErrorPage="true"%>-->
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8" isErrorPage="true"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,17 +7,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Yres - error</title>
 <link rel="icon" href="/resources/pics/Icon.png" type="image/png">
-<!--<%
+<%
 String cssVersion = "?";
 if (System.getenv("SERY_CSS_VERSION")==null || System.getenv("SERY_CSS_VERSION").isBlank())
 	cssVersion += System.getProperty("SERY_CSS_VERSION");
 else
 	cssVersion += System.getenv("SERY_CSS_VERSION");
-%>-->
-<!--<link rel="stylesheet"
-	href="/resources/css/ErrorPageCss.css<%= cssVersion %>" />-->
+%>
 <link rel="stylesheet"
-	href="/resources/css/ErrorPageCss.css" />
+	href="/resources/css/ErrorPageCss.css<%= cssVersion %>" />
 <link href="https://fonts.googleapis.com" rel="preconnect">
 <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
 <link

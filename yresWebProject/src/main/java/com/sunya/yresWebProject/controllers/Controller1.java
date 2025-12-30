@@ -20,7 +20,7 @@ public class Controller1
 	protected HttpSession session;
 	@Autowired
 	protected SessionManager sm;
-
+	
 
 	/**
 	 * This method sets the <strong>header</strong> of the given response object to

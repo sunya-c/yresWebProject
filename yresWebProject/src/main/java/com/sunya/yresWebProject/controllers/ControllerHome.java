@@ -11,14 +11,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.sunya.yresWebProject.Page;
-import com.sunya.yresWebProject.PrintError;
 import com.sunya.yresWebProject.Url;
 import com.sunya.yresWebProject.accountSecurity.UserAuthContext;
 import com.sunya.yresWebProject.daos.DaoWebdatainfo;
 import com.sunya.yresWebProject.models.ModelWebdatainfo;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
 public class ControllerHome extends Controller1
@@ -52,69 +50,71 @@ public class ControllerHome extends Controller1
 	 *         {@code SessionManager.getSessionLogin.isLoggedIn() == true}.<br>
 	 *         Request dispatcher to <strong>LoginPage.jsp</strong> if otherwise.
 	 */
-	@GetMapping("/Home")
+	@GetMapping("/home")
 	public String homePage()
 	{
 		System.out.println(sm.getSession().getId().substring(0, 5)+"-"
 									+sm.getSession().getId().substring(sm.getSession().getId().length() - 5)+"---"
 									+sm.getKeyHolder().toString().substring(
 																sm.getKeyHolder().toString().indexOf("KeyHolder@")));
-		sm.getSessionLogin().setFromPage("Home");
+		sm.getSessionLogin().setFromPage(Url.home);
 
 		session.setAttribute("trial1", !(System.getenv("SERY_DB_URL")==null || System.getenv("SERY_DB_URL").isBlank()));
 		session.setAttribute("trial2", !(System.getProperty("SERY_DB_URL")==null
 									|| System.getProperty("SERY_DB_URL").isBlank()));
 
-		setWebVersion();
+//		setWebVersion();
 		setResumeDate();
 
-		try
-		{
-			setAnnouncement();
-		}
-		catch (Exception e)
-		{
-			return redirect + PrintError.toErrorPage(e);
-		}
-		if (userAuth.isAuthenticated())
-		{
-			return redirect + Url.welcome;
-		}
-
-		return Page.home;
+//		try
+//		{
+//			setAnnouncement();
+//		}
+//		catch (Exception e)
+//		{
+//			return redirect + PrintError.toErrorPage(e);
+//		}
+		
+		return Page.welcome;
 	}
-
-
-	/**
-	 * The Controller for URL pattern 'welcome'.
-	 * 
-	 * @param response
-	 * @return Request dispatcher to <strong>WelcomePage.jsp</strong> if
-	 *         {@code SessionManager.getSessionLogin.isLoggedIn() == true}.<br>
-	 *         Request dispatcher to <strong>LoginPage.jsp</strong> if otherwise.
-	 */
-	@GetMapping("/welcome")
-	public String welcomePage(HttpServletResponse response)
+	
+	@GetMapping("/login")
+	public String loginPage()
 	{
-		setResumeDate();
-
-		try
-		{
-			setAnnouncement(); // Retrieve data for the announcement at the top of the page from the database
-								// and set it to session.
-		}
-		catch (Exception e)
-		{
-			return redirect + PrintError.toErrorPage(e);
-		}
-
-		synchronized (sm.getKeyHolder().getKeyLogin())
-		{
-			preventBackButton(response);
-
-			return Page.welcome;
-		}
+		return Page.login;
 	}
+
+
+//	/**
+//	 * The Controller for URL pattern 'welcome'.
+//	 * 
+//	 * @param response
+//	 * @return Request dispatcher to <strong>WelcomePage.jsp</strong> if
+//	 *         {@code SessionManager.getSessionLogin.isLoggedIn() == true}.<br>
+//	 *         Request dispatcher to <strong>LoginPage.jsp</strong> if otherwise.
+//	 */
+//	@GetMapping("/welcome")
+//	public String welcomePage(HttpServletResponse response)
+//	{
+//		setResumeDate();
+//
+//		try
+//		{
+//			setAnnouncement(); // Retrieve data for the announcement at the top of the page from the database
+//								// and set it to session.
+//		}
+//		catch (Exception e)
+//		{
+//			return redirect + PrintError.toErrorPage(e);
+//		}
+//
+//		synchronized (sm.getKeyHolder().getKeyLogin())
+//		{
+//			preventBackButton(response);
+//
+//			return Page.welcome;
+//		}
+//	}
 
 
 	@Autowired
@@ -126,7 +126,7 @@ public class ControllerHome extends Controller1
 	 * the database and set it to the session. The views can make use of this text
 	 * by calling this attribute '{@code sessionWeb.webNote1}'.
 	 */
-	private void setAnnouncement()
+	public void setAnnouncement()
 	{
 		if (sm.getSessionWeb().getWebNote1()==null || sm.getSessionWeb().getWebNote1().isEmpty())
 		{

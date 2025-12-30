@@ -10,7 +10,7 @@ public class Page
 	public static final String createAccount = "CreateAccountPage";
 	public static final String error = "ErrorPage";
 	public static final String feedback = "FeedbackPage";
-	public static final String home = "LoginPage";
+	public static final String login = "LoginPage";
 	public static final String persInfo = "PersonalInformationPage";
 	public static final String preHome = "PreHomePage";
 	public static final String redirecting = "RedirectingPage";

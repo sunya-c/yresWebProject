@@ -1,6 +1,6 @@
-<!--<%@ page language="java" contentType="text/html; charset=UTF-8"
+<%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="jakarta.tags.core"%>-->
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,17 +8,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Yres - REST api</title>
 <link rel="icon" href="/resources/pics/Icon.png" type="image/png">
-<!--<%
+<%
 String cssVersion = "?";
 if (System.getenv("SERY_CSS_VERSION")==null || System.getenv("SERY_CSS_VERSION").isBlank())
 	cssVersion += System.getProperty("SERY_CSS_VERSION");
 else
 	cssVersion += System.getenv("SERY_CSS_VERSION");
-%>-->
-<!--<link rel="stylesheet"
-	href="/resources/css/RestApiPageCss.css<%=cssVersion%>" />-->
+%>
 <link rel="stylesheet"
-	href="/resources/css/RestApiPageCss.css" />
+	href="/resources/css/RestApiPageCss.css<%=cssVersion%>" />
 <link href="https://fonts.googleapis.com" rel="preconnect">
 <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
 <link
@@ -51,19 +49,24 @@ else
 						<c:if test="${userAuth.authenticated == false}">
 							<li><a id="welcomeMessage" href="/login">Login</a></li>
 						</c:if>
-						<li><a href="/Home">Home</a></li>
+						<li><a href="/home">Home</a></li>
 						<li><a href="/accountInfo">My account</a></li>
 						<li><a href="/feedback">Give feedback / bug report</a></li>
 						<c:if test="${userAuth.authenticated == true}">
-							<li><a href="/sLogout">Log out</a></li>
+							<li>
+								<form id="logoutForm" action="/sLogout" method="post">
+									<button type="submit">Log out</button>
+									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+								</form>
+							</li>
 						</c:if>
 					</ul>
-					<%--<c:if test="${userAuth.isAdmin == true}">
+					<c:if test="${userAuth.admin == true}">
 						<ul>
 							<li><span class="fontSize bold">Admin-only:</span></li>
 							<li><a href="/adminPanel">Admin Panel</a></li>
 						</ul>
-					</c:if> --%>
+					</c:if>
 				</nav>
 			</div>
 		</div>
@@ -73,13 +76,7 @@ else
 				<div id="contentPageDescription" class="content">
 					<h1 class="contentLabel">REST API built on Spring</h1>
 					<div class="text text-color-dim">
-						You can try REST by adding '<span class="bold">/api/rest/available_path</span>'
-						to the end of this website's domain name where you replace 
-						'<span class="bold">available_path</span>' with the available options
-						provided below. For example, '<span class="bold">${dataRestApi.domainName}/api/rest/persinfo</span>'
-						will return my personal information. You would expect the results to
-						be in either .xml or .json format. Feel free to try any URL below
-						with '<span class="bold">Try me!</span>' form.
+						You can try REST by adding '<span class="bold">/api/rest/available_path</span>' to the end of this website's domain name where you replace '<span class="bold">available_path</span>' with the available options provided below. For example, '<span class="bold">${dataRestApi.domainName}/api/rest/persinfo</span>' will return my personal information. You would expect the results to be in either .xml or .json format. Feel free to try any URL below with '<span class="bold">Try me!</span>' form.
 					</div>
 				</div>
 				<div id="contentTryMe" class="content">
@@ -102,7 +99,7 @@ else
 					</form>
 					<div class="errMessageWrapper">
 						<div>
-							<span class="errMessage mainErr">test main err</span>
+							<span class="errMessage mainErr"></span>
 						</div>
 					</div>
 				</div>

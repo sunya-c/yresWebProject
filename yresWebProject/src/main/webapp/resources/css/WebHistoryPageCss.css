@@ -4,10 +4,6 @@
 	max-width: 80rem;
 }
 
-#contentPageDescription {
-	max-width: 70rem;
-}
-
 #contentPageDescription p:not(p:first-of-type) {
 	margin-top: 1.1em;
 }

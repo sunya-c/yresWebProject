@@ -12,7 +12,7 @@ import jakarta.servlet.http.Cookie;
 @Component
 public class CookieManager
 {
-	public static final String JSESSION = "JSESSIONID";
+	public static final String JSESSION = "yres_session";
 	public static final String CLIENT_REF = "YRES_clientRef_9123ks7df5ka4dif12339odsf";
 	public static final String JWT_TOKEN = "YRES_token";
 	

@@ -1,6 +1,6 @@
-<!--<%@ page language="java" contentType="text/html; charset=UTF-8"
+<%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="jakarta.tags.core"%>--->
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,17 +8,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Yres - web history</title>
 <link rel="icon" href="/resources/pics/Icon.png" type="image/png">
-<!--<%
+<%
 String cssVersion = "?";
 if (System.getenv("SERY_CSS_VERSION")==null || System.getenv("SERY_CSS_VERSION").isBlank())
 	cssVersion += System.getProperty("SERY_CSS_VERSION");
 else
 	cssVersion += System.getenv("SERY_CSS_VERSION");
-%>--->
-<!--<link rel="stylesheet"
-	href="/resources/css/WebHistoryPageCss.css<%=cssVersion%>" />--->
+%>
 <link rel="stylesheet"
-	href="/resources/css/WebHistoryPageCss.css" />
+	href="/resources/css/WebHistoryPageCss.css<%=cssVersion%>" />
 <link href="https://fonts.googleapis.com" rel="preconnect">
 <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
 <link
@@ -50,19 +48,24 @@ else
 						<c:if test="${userAuth.authenticated == false}">
 							<li><a id="welcomeMessage" href="/login">Login</a></li>
 						</c:if>
-						<li><a href="/Home">Home</a></li>
+						<li><a href="/home">Home</a></li>
 						<li><a href="/accountInfo">My account</a></li>
 						<li><a href="/feedback">Give feedback / bug report</a></li>
 						<c:if test="${userAuth.authenticated == true}">
-							<li><a href="/sLogout">Log out</a></li>
+							<li>
+								<form id="logoutForm" action="/sLogout" method="post">
+									<button type="submit">Log out</button>
+									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+								</form>
+							</li>
 						</c:if>
 					</ul>
-					<%-- <c:if test="${userAuth.isAdmin == true}">
+					<c:if test="${userAuth.admin == true}">
 						<ul>
 							<li><span class="fontSize bold">Admin-only:</span></li>
 							<li><a href="/adminPanel">Admin Panel</a></li>
 						</ul>
-					</c:if> --%>
+					</c:if>
 				</nav>
 			</div>
 		</div>
@@ -95,9 +98,9 @@ else
 						<div class="webHistory">
 							<span class="version">
 								<span class="text-14 bold">Version 0.1</span>
-								<span class="text-13">13 Jan 2025</span>
+								<span class="text-13 text-color-dim">13 Jan 2025</span>
 							</span>
-							<span class="arrow">---></span>
+							<span class="arrow">---&gt;</span>
 							<span class="description">
 								<span class="title">
 									commit hash: dc763a8 (tag: v0.1)
@@ -112,9 +115,9 @@ else
 						<div class="webHistory">
 							<span class="version">
 								<span class="text-14 bold">Version 0.3</span>
-								<span class="text-13">16 Jan 2025</span>
+								<span class="text-13 text-color-dim">16 Jan 2025</span>
 							</span>
-							<span class="arrow">---></span>
+							<span class="arrow">---&gt;</span>
 							<span class="description">
 								<span class="title">
 									commit hash: 8b3e352 (tag: v0.3)
@@ -130,9 +133,9 @@ else
 						<div class="webHistory">
 							<span class="version">
 								<span class="text-14 bold">Version 0.4</span>
-								<span class="text-13">19 Jan 2025</span>
+								<span class="text-13 text-color-dim">19 Jan 2025</span>
 							</span>
-							<span class="arrow">---></span>
+							<span class="arrow">---&gt;</span>
 							<span class="description">
 								<span class="title">
 									commit hash: 68ebd19 (tag: v0.4)
@@ -147,9 +150,9 @@ else
 						<div class="webHistory">
 							<span class="version">
 								<span class="text-14 bold">Version 0.5</span>
-								<span class="text-13">19 Jan 2025</span>
+								<span class="text-13 text-color-dim">19 Jan 2025</span>
 							</span>
-							<span class="arrow">---></span>
+							<span class="arrow">---&gt;</span>
 							<span class="description">
 								<span class="title">
 									commit hash: 22e0375 (tag: v0.5)
@@ -165,9 +168,9 @@ else
 						<div class="webHistory">
 							<span class="version">
 								<span class="text-14 bold">Version 0.71</span>
-								<span class="text-13">24 Jan 2025</span>
+								<span class="text-13 text-color-dim">24 Jan 2025</span>
 							</span>
-							<span class="arrow">---></span>
+							<span class="arrow">---&gt;</span>
 							<span class="description">
 								<span class="title">
 									commit hash: df3880e (tag: v0.71)
@@ -182,9 +185,9 @@ else
 						<div class="webHistory">
 							<span class="version">
 								<span class="text-14 bold">Version 0.8</span>
-								<span class="text-13">25 Jan 2025</span>
+								<span class="text-13 text-color-dim">25 Jan 2025</span>
 							</span>
-							<span class="arrow">---></span>
+							<span class="arrow">---&gt;</span>
 							<span class="description">
 								<span class="title">
 									commit hash: 179bb6b (tag: v0.8)
@@ -199,9 +202,9 @@ else
 						<div class="webHistory">
 							<span class="version">
 								<span class="text-14 bold">Version 1.0</span>
-								<span class="text-13">19 Feb 2025</span>
+								<span class="text-13 text-color-dim">19 Feb 2025</span>
 							</span>
-							<span class="arrow">---></span>
+							<span class="arrow">---&gt;</span>
 							<span class="description">
 								<span class="title">
 									commit hash: 03486d9 (tag: v1.0)
@@ -216,9 +219,9 @@ else
 						<div class="webHistory">
 							<span class="version">
 								<span class="text-14 bold">Version 1.3</span>
-								<span class="text-13">17 Mar 2025</span>
+								<span class="text-13 text-color-dim">17 Mar 2025</span>
 							</span>
-							<span class="arrow">---></span>
+							<span class="arrow">---&gt;</span>
 							<span class="description">
 								<span class="title">
 									commit hash: 7624954 (tag: v1.3)
@@ -234,9 +237,9 @@ else
 						<div class="webHistory">
 							<span class="version">
 								<span class="text-14 bold">Version 1.4</span>
-								<span class="text-13">23 Mar 2025</span>
+								<span class="text-13 text-color-dim">23 Mar 2025</span>
 							</span>
-							<span class="arrow">---></span>
+							<span class="arrow">---&gt;</span>
 							<span class="description">
 								<span class="title">
 									commit hash: 65693a2 (tag: v1.4)
@@ -251,9 +254,9 @@ else
 						<div class="webHistory">
 							<span class="version">
 								<span class="text-14 bold">Version 1.6</span>
-								<span class="text-13">21 Apr 2025</span>
+								<span class="text-13 text-color-dim">21 Apr 2025</span>
 							</span>
-							<span class="arrow">---></span>
+							<span class="arrow">---&gt;</span>
 							<span class="description">
 								<span class="title">
 									commit hash: 12089d8 (tag: v1.6)
@@ -268,9 +271,9 @@ else
 						<div class="webHistory">
 							<span class="version">
 								<span class="text-14 bold">Version 1.61</span>
-								<span class="text-13">23 Apr 2025</span>
+								<span class="text-13 text-color-dim">23 Apr 2025</span>
 							</span>
-							<span class="arrow">---></span>
+							<span class="arrow">---&gt;</span>
 							<span class="description">
 								<span class="title">
 									commit hash: 12e9562 (tag: v1.61)
@@ -285,9 +288,9 @@ else
 						<div class="webHistory">
 							<span class="version">
 								<span class="text-14 bold">Version 1.62</span>
-								<span class="text-13">29 Apr 2025</span>
+								<span class="text-13 text-color-dim">29 Apr 2025</span>
 							</span>
-							<span class="arrow">---></span>
+							<span class="arrow">---&gt;</span>
 							<span class="description">
 								<span class="title">
 									commit hash: 9e304a9 (tag: v1.62)
@@ -302,9 +305,9 @@ else
 						<div class="webHistory">
 							<span class="version">
 								<span class="text-14 bold">Version 1.71</span>
-								<span class="text-13">07 May 2025</span>
+								<span class="text-13 text-color-dim">07 May 2025</span>
 							</span>
-							<span class="arrow">---></span>
+							<span class="arrow">---&gt;</span>
 							<span class="description">
 								<span class="title">
 									commit hash: d027dc6 (tag: v1.71)

@@ -1,5 +1,5 @@
-<!--<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>-->
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,15 +7,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Redirecting</title>
 <link rel="icon" href="/resources/pics/Icon.png" type="image/png">
-<!--<%
+<%
 String cssVersion = "?";
 if (System.getenv("SERY_CSS_VERSION")==null || System.getenv("SERY_CSS_VERSION").isBlank())
 	cssVersion += System.getProperty("SERY_CSS_VERSION");
 else
 	cssVersion += System.getenv("SERY_CSS_VERSION");
-%>-->
-<!--<link rel="stylesheet" href="/resources/css/RedirectingPageCss.css<%= cssVersion %>" />-->
-<link rel="stylesheet" href="/resources/css/RedirectingPageCss.css" />
+%>
+<link rel="stylesheet" href="/resources/css/RedirectingPageCss.css<%= cssVersion %>" />
 <link href="https://fonts.googleapis.com" rel="preconnect">
 <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
 <link
@@ -26,9 +25,9 @@ else
 	rel="stylesheet">
 <script type="text/javascript">
 	// Redirect to ServletRedirecting after a delay
-	/*setTimeout(function() {
+	setTimeout(function() {
 		window.location.href = "${dataRedirecting.destinationUrl}";
-	}, 4500); // 4500 milliseconds = 4.5 seconds*/
+	}, 4500); // 4500 milliseconds = 4.5 seconds
 </script>
 </head>
 <body>
