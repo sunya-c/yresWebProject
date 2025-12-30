@@ -34,8 +34,10 @@
 	width: fit-content;
 	margin-left: auto;
 	margin-right: auto;
+	overflow: visible;
+	white-space: noWrap;
 
-	font-size: 1.2rem;
+	font-size: 1.3rem;
 }
 #resumeLastUpdateWrapper span {
 	display: inline-block;

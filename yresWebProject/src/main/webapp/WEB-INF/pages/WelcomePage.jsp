@@ -91,7 +91,7 @@ else
 							<a href="/restApi"><span>Try REST api</span></a>
 						</div>
 						<div class="linkWrapper">
-							<a href="https://github.com/sunya-c/yresWebProject">
+							<a href="https://github.com/sunya-c/yresWebProject" target="_blank">
 								<span>This Website's source code</span>
 							</a>
 						</div>
