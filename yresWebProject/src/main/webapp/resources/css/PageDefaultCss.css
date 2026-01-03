@@ -85,10 +85,36 @@ body {
 
 #toggleMenu {
     display: none;
+
+    text-align: center;
+    width: 6rem;
+    padding: 0.5rem;
+    position: absolute;
+    top: 9.5rem;
+    right: -6rem;
+    border-top: 1px solid var(--color-border);
+    border-right: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+    background-color: hsl(from var(--color-bg-2) h s l / 80%);
+
+    font-size: 1.5rem;
+    cursor: default;
+    user-select: none;
+    pointer-events: all;
 }
 
 #preventActionScreen {
     display: none;
+
+    position: fixed;
+    z-index: 10;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    -webkit-backdrop-filter: blur(1.5px);
+    backdrop-filter: blur(1.5px);
 }
 
 #leftContent {
@@ -391,20 +417,6 @@ button, .linkButton {
     }
     #toggleMenu {
         display: block;
-        text-align: center;
-        width: 6rem;
-        padding: 0.5rem;
-        position: absolute;
-        top: 9.5rem;
-        right: -6rem;
-        border-top: 1px solid var(--color-border);
-        border-right: 1px solid var(--color-border);
-        border-bottom: 1px solid var(--color-border);
-        background-color: hsl(from var(--color-bg-2) h s l / 80%);
-
-        font-size: 1.5rem;
-        cursor: default;
-        user-select: none;
     }
     #leftContent {
         display: block;
@@ -417,23 +429,14 @@ button, .linkButton {
         width: var(--leftContent-width);
         height: 100%;
     }
-    #leftContent.show {
+    #leftContent:has(#toggleMenuCheckbox:checked) {
         transition: 200ms;
         left: 0px;
     }
     #preventActionScreen.show {
         display: block;
-        position: fixed;
-        z-index: 10;
-        top: 0px;
-        left: 0px;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.3);
-        -webkit-backdrop-filter: blur(1.5px);
-	    backdrop-filter: blur(1.5px);
     }
-    body.preventScrolling {
+    body:has(#toggleMenuCheckbox:checked) {
         overflow: hidden;
     }
 }
@@ -470,9 +473,6 @@ button, .linkButton {
 
 #toggleMenu:hover {
     background-color: var(--color-hover);
-
-    font-size: 1.5rem;
-    cursor: default;
 }
 
 input:not([type="file"]):hover, textarea:hover, select:hover, label.inputFile:hover {

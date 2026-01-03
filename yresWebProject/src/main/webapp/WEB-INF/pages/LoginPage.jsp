@@ -38,7 +38,10 @@ else
 		</div>
 		<div id="preventActionScreen"></div>
 		<div id="leftContent">
-			<div id="toggleMenu">Menu</div>
+			<label id="toggleMenu" for="toggleMenuCheckbox">
+				Menu
+				<input id="toggleMenuCheckbox" type="checkbox" style="display: none;">
+			</label>
 			<div id="contentLeftMenu">
 				<nav>
 					<ul>

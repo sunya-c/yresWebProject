@@ -1,28 +1,25 @@
 window.onload = function() {
     let toggleMenu = document.querySelector("#toggleMenu");
-    let leftContent = document.querySelector("#leftContent");
+    /** @type {HTMLInputElement} */
+    let toggleMenuCheckbox = toggleMenu.querySelector("#toggleMenuCheckbox");
     let preventActionScreen = document.querySelector("#preventActionScreen");
-    let body = document.querySelector("body");
 
-    function clickToClose(event) {
-        toggleMenu.dispatchEvent(new Event("pointerup"))
-    }
-
-    toggleMenu.addEventListener("pointerup", function() {
-        if (leftContent.classList.contains("show"))
+    toggleMenuCheckbox.addEventListener("change", function() {
+        let checked = toggleMenuCheckbox.checked;
+        if (checked)
         {
-            leftContent.classList.remove("show");
-            preventActionScreen.classList.remove("show");
-            body.classList.remove("preventScrolling");
+            preventActionScreen.classList.add("show");
+            preventActionScreen.addEventListener("pointerup", clickToClose);
         }
         else
         {
-            preventActionScreen.classList.add("show");
-            leftContent.classList.add("show");
-            body.classList.add("preventScrolling");
-
-            preventActionScreen.addEventListener("pointerup", clickToClose);
+            preventActionScreen.classList.remove("show");
+            preventActionScreen.removeEventListener("pointerup", clickToClose);
         }
     });
-    
+
+    function clickToClose() {
+        toggleMenuCheckbox.checked = false;
+        toggleMenuCheckbox.dispatchEvent(new Event("change"));
+    }
 }
