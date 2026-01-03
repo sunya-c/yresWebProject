@@ -5,14 +5,12 @@ import java.time.format.DateTimeFormatter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.sunya.yresWebProject.Page;
 import com.sunya.yresWebProject.Url;
-import com.sunya.yresWebProject.accountSecurity.UserAuthContext;
 import com.sunya.yresWebProject.daos.DaoWebdatainfo;
 import com.sunya.yresWebProject.models.ModelWebdatainfo;
 
@@ -36,12 +34,6 @@ public class ControllerHome extends Controller1
 		}
 		return Page.preHome;
 	}
-
-
-	@Autowired
-	private Environment env;
-	@Autowired
-	UserAuthContext userAuth;
 
 	/**
 	 * The Controller for URL pattern 'Home'.
@@ -81,6 +73,11 @@ public class ControllerHome extends Controller1
 	@GetMapping("/login")
 	public String loginPage()
 	{
+		if (userAuth.isAuthenticated())
+		{
+			return redirect+Url.home;
+		}
+		
 		return Page.login;
 	}
 

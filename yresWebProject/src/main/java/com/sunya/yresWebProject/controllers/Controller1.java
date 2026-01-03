@@ -1,7 +1,9 @@
 package com.sunya.yresWebProject.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 
+import com.sunya.yresWebProject.accountSecurity.UserAuthContext;
 import com.sunya.yresWebProject.managers.SessionManager;
 
 import jakarta.servlet.http.HttpServletResponse;
@@ -20,6 +22,10 @@ public class Controller1
 	protected HttpSession session;
 	@Autowired
 	protected SessionManager sm;
+	@Autowired
+	protected Environment env;
+	@Autowired
+	protected UserAuthContext userAuth;
 	
 
 	/**
