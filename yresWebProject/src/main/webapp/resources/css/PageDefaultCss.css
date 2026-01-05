@@ -342,11 +342,29 @@ button, .linkButton {
     color: var(--color-font-important);
 }
 
+.link {
+    display: inline-block;
+    padding: 0px 0.5rem 0.25rem;
+    font-size: 1.4rem;
+    text-decoration-line: underline;
+    text-decoration-thickness: 1px;
+    text-decoration-style: solid;
+    word-wrap: break-word;
+}
+
 .fontSize {
     font-size: 1.5rem;
 }
 .text {
     font-size: 1.5rem;
+    word-wrap: break-word;
+}
+.text-17 {
+    font-size: 1.7rem;
+    word-wrap: break-word;
+}
+.text-16 {
+    font-size: 1.6rem;
     word-wrap: break-word;
 }
 .text-14 {
@@ -376,6 +394,10 @@ button, .linkButton {
     width: fit-content;
     margin-left: auto;
     margin-right: auto;
+}
+
+.list-dash {
+    list-style-type: "- ";
 }
 
 
@@ -497,4 +519,10 @@ button:disabled {
     border-color: transparent;
 }
 
+.link:hover {
+    background-color: var(--color-hover);
+}
 
+.link:active {
+    background-color: hsl(from var(--color-hover) h s 22% / 50%);
+}

@@ -40,6 +40,14 @@
 	filter: brightness(0.65);
 }
 
+#contentCodeExperience .outputWrapper {
+	margin-top: 1.5rem;
+	margin-bottom: 1.5rem;
+}
+#contentCodeExperience .experience:not(:nth-child(1 of .experience)) {
+	margin-top: 5rem;
+}
+
 @media screen and (max-width: 1024px) {
 	#contentCertificate .certificateImage {
 		width: 90%;

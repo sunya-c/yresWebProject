@@ -150,21 +150,62 @@ else
 						</div>
 					</div>
 					<div class="outputWrapper">
-							<span class="label">Phone number :</span>
-							<span class="output">${dataPersInfo.phoneNumber}</span>
+						<span class="label">Phone number :</span>
+						<span class="output">${dataPersInfo.phoneNumber}</span>
 
-							<span class="label">Email :</span>
-							<span class="output">${dataPersInfo.email}</span>
+						<span class="label">Email :</span>
+						<span class="output">${dataPersInfo.email}</span>
 
-							<span class="label">Line ID :</span>
-							<span class="output">${dataPersInfo.lineId}</span>
+						<span class="label">Line ID :</span>
+						<span class="output">${dataPersInfo.lineId}</span>
 					</div>
 				</div>
-				<div class="content">
-					<h1 class="contentLabel">Coding Experience</h1>
-					<div class="outputWrapper">
-						
-					</div>
+				<div id="contentCodeExperience" class="content">
+					<h1 class="contentLabel">Coding Experiences</h1>
+					<c:forEach items="${dataPersInfo.codeExperiences}" var="codeExperience">
+						<div class="experience">
+							<span class="text bold">${codeExperience.title}</span><br>
+							<span class="text text-color-dim">
+								${codeExperience.fromMonth} - 
+								<c:if test="${codeExperience.toMonth != null}">
+									${codeExperience.toMonth}
+								</c:if>
+								<c:if test="${codeExperience.toMonth == null}">
+									Present
+								</c:if>
+							</span><br>
+							<c:if test="${codeExperience.link != null}">
+								<span class="text-13 text-color-dim">Want to see it in pictures? Check out this link:</span>
+								<a href="${codeExperience.link}" target="_blank" class="link">${codeExperience.link}</a>
+							</c:if>
+							<div class="outputWrapper">
+								<span class="label text-color-dim">Detail :</span>
+								<div class="output">
+									<ol>
+										<c:forEach items="${codeExperience.details}" var="detail">
+											<li class="text text-color-dim list-dash">${detail.detail}</li>
+										</c:forEach>
+									</ol>
+								</div>
+								<span class="label text-color-dim">Backend Key Technologies :</span>
+								<div class="output">
+									<ol>
+										<c:forEach items="${codeExperience.backendTechnologies}" var="tech">
+											<li class="text text-color-dim list-dash">${tech.technology}</li>
+										</c:forEach>
+									</ol>
+								</div>
+								<span class="label text-color-dim">Frontend Key Technologies :</span>
+								<div class="output">
+									<ol>
+										<c:forEach items="${codeExperience.frontendTechnologies}" var="tech">
+											<li class="text text-color-dim list-dash">${tech.technology}</li>
+										</c:forEach>
+									</ol>
+								</div>
+							</div>
+						</div>
+					</c:forEach>
 				</div>
 				<div id="contentCertificate" class="content">
 					<h1 class="contentLabel">Certificates</h1>
