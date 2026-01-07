@@ -1,12 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
-
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Yres - personal information</title>
 <link rel="icon" href="/resources/pics/Icon.png" type="image/png">
 <%
@@ -16,8 +15,7 @@ if (System.getenv("SERY_CSS_VERSION")==null || System.getenv("SERY_CSS_VERSION")
 else
 	cssVersion += System.getenv("SERY_CSS_VERSION");
 %>
-<link rel="stylesheet"
-	href="/resources/css/PersonalInformationPageCss.css<%=cssVersion%>" />
+<link rel="stylesheet" href="/resources/css/PersonalInformationPageCss.css<%=cssVersion%>" />
 <link href="https://fonts.googleapis.com" rel="preconnect">
 <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
 <link
@@ -26,149 +24,196 @@ else
 <link
 	href="https://fonts.googleapis.com/css?family=Inter:regular,italic&display=swap"
 	rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=YouTube+Sans:wght@300..900&display=swap" rel="stylesheet">
+<script src="/resources/javascript/NavBar.js" type="module"></script>
 </head>
 
-<body id="io13me">
-	<div id="i1lfxj">
-		<form method="get" id="iop9qh" action="/Home">
-			<button type="submit" id="iqm8le">Home</button>
-		</form>
-		<c:if test="${userAuth.authenticated == false}">
-			<div id="imcix1">
-				<form method="post" action="/sLogin" id="in9rom">
-					<div id="ikd8rh">
-						<label id="i9zt1g">Username<br /></label><input type="text"
-							placeholder="Enter your username" name="username"
-							value="${sessionLogin.usernamePreTyped}" id="iw4bk5" /><label
-							id="icrvof"><br>${sessionLogin.usernameErr}<br /></label>
-					</div>
-					<div id="iriilk">
-						<label id="i0vh8l">Password<br /></label><input type="password"
-							placeholder="Enter your password" name="password" id="i3zobi" /><label
-							id="igf1k3"><br>${sessionLogin.passwordErr}<br /></label>
-					</div>
-					<button type="submit" id="ilwube">Log in</button>
-					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-				</form>
-				<form method="get" action="/createAccount" id="i8bga-2">
-					<button type="submit" id="i3xat-2">Create an account</button>
-				</form>
-			</div>
-		</c:if>
-		<c:if test="${userAuth.authenticated == true}">
-			<div id="ic3x5g">
-				<form method="post" action="/sLogout" id="iuj89x">
-					<label id="iv62jr">Welcome <span id="ig3spq">${userAuth.usernameEscaped}</span>,<br /></label><label
-						id="irlj8d">You're logged in<br /></label>
-					<button type="submit" id="i5ywx4">Log out</button>
-					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-				</form>
-			</div>
-		</c:if>
-		<form method="get" action="/feedback" id="ir5ivx">
-			<button type="submit" id="i0hicj-2">Give feedback / bug report</button>
-		</form>
-	</div>
-	<div id="ihfb5e">
-		<div id="iq7gql">Personal Information</div>
-		<div id="imcst7">
-			<div id="ijzbef">
-				<div id="iyobxw">Name  :</div>
-				<div id="ixssr5">Date of Birth  :</div>
-				<div id="ihqgah">Age  :</div>
-				<div id="i9a8eg">Gender  :</div>
-				<div id="ipeusp">Nationality  :</div>
-				<div id="ij5rfj">Driving license  :</div>
-				<div id="itln1x">Engineering license  :</div>
-			</div>
-			<div id="izyktm">
-				<div id="is526e">${dataPersInfo.firstname}&nbsp;${dataPersInfo.lastname}</div>
-				<div id="i7gimj">${dataPersInfo.dateOfBirth}</div>
-				<div id="imbwyx">${dataPersInfo.age}</div>
-				<div id="itmcmf">${dataPersInfo.gender}</div>
-				<div id="inlbga">${dataPersInfo.nationality}</div>
-				<div id="ifh8ea">${dataPersInfo.drivingLicense}</div>
-				<div id="i213kh">${dataPersInfo.engineeringLicense}</div>
+<body>
+	<div id="wrapper">
+		<div id="header">
+			<div>
+				<span class="bold">Important !!! : </span>
+				<span>${sessionWeb.webNote1}</span>
 			</div>
 		</div>
-		<div id="iyz0zi">
-			<div id="ig7ge7">
-				<div id="ihl9vf">Languages  :</div>
-			</div>
-			<div id="irb5ln">
-				<div id="ihs3wy">
-					<!-- Language -->
-					<%
-					request.setAttribute("counter", 0);
-					%>
-					<c:forEach items="${dataPersInfo.listLanguage}" var="language">
-						${language.language}
-						<br>
-						(${language.proficiency})
-						<c:if test="${counter != 1}">
-							<!-- , -->
-							<br>
-							<br>
+		<div id="preventActionScreen"></div>
+		<div id="leftContent">
+			<label id="toggleMenu" for="toggleMenuCheckbox">
+				Menu
+				<input id="toggleMenuCheckbox" type="checkbox" style="display: none;">
+			</label>
+			<div id="contentLeftMenu">
+				<nav>
+					<ul>
+						<c:if test="${userAuth.authenticated == true}">
+							<li><span id="welcomeMessage">Welcome, ${userAuth.usernameEscaped}</span></li>
 						</c:if>
-						<%
-						int count = (int)request.getAttribute("counter");
-						count += 1;
-						request.setAttribute("counter", count);
-						%>
-					</c:forEach>
-					<%
-					request.setAttribute("counter", 0);
-					%>
-				</div>
-			</div>
-		</div>
-		<div id="i0q6is">
-			<div id="ieml5q">
-				<div id="islcj5">
-					Programming  :<br />languages
-				</div>
-			</div>
-			<div id="isa74l">
-				<div id="ix2psb">
-					<!-- Programming Language -->
-					<c:forEach items="${dataPersInfo.listProgrammingLanguage}"
-						var="programmingLanguage">
-						${programmingLanguage.language}
-						<br>
-						(${programmingLanguage.proficiency})
-						<c:if test="${counter != 3}">
-							<!-- , -->
-							<br>
-							<br>
+						<c:if test="${userAuth.authenticated == false}">
+							<li><a id="welcomeMessage" href="/login">Login</a></li>
 						</c:if>
-						<%
-						int count = (int)request.getAttribute("counter");
-						count += 1;
-						request.setAttribute("counter", count);
-						%>
+						<li><a href="/home">Home</a></li>
+						<li><a href="/accountInfo">My account</a></li>
+						<li><a href="/feedback">Give feedback / bug report</a></li>
+						<c:if test="${userAuth.authenticated == true}">
+							<li>
+								<form id="logoutForm" action="/sLogout" method="post">
+									<button type="submit">Log out</button>
+									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+								</form>
+							</li>
+						</c:if>
+					</ul>
+					<c:if test="${userAuth.admin == true}">
+						<ul>
+							<li><span class="fontSize bold">Admin-only:</span></li>
+							<li><a href="/adminPanel">Admin Panel</a></li>
+						</ul>
+					</c:if>
+				</nav>
+			</div>
+		</div>
+		<div id="mainContent">
+			<div id="contentPane">
+				<div id="contentPersonalInformation" class="content">
+					<h1 class="contentLabel">Personal Information</h1>
+					<div class="outputWrapper">
+							<span class="label">Name :</span>
+							<span class="output">${dataPersInfo.firstname} ${dataPersInfo.lastname}</span>
+							
+							<span class="label">Date of Birth :</span>
+							<span class="output">${dataPersInfo.dateOfBirth}</span>
+
+							<span class="label">Age :</span>
+							<span class="output">${dataPersInfo.age}</span>
+
+							<span class="label">Gender :</span>
+							<span class="output">${dataPersInfo.gender}</span>
+
+							<span class="label">Nationality :</span>
+							<span class="output">${dataPersInfo.nationality}</span>
+
+							<span class="label">Driving license :</span>
+							<span class="output">${dataPersInfo.drivingLicense}</span>
+
+							<span class="label">Engineering license :</span>
+							<span class="output">${dataPersInfo.engineeringLicense}</span>
+					</div>
+					<div class="outputWrapper">
+						<span class="label">Languages :</span>
+						<div class="output">
+							<!-- Language -->
+							<!-- <%
+							request.setAttribute("counter", 0);
+							%> -->
+							<c:forEach items="${dataPersInfo.listLanguage}" var="language">
+								<span>${language.language}<br>
+								(${language.proficiency})
+								</span>
+								<c:if test="${counter != 1}">
+									<!-- , -->
+									<br>
+									<br>
+								</c:if>
+								<!-- <%
+								int count = (int)request.getAttribute("counter");
+								count += 1;
+								request.setAttribute("counter", count);
+								%> -->
+							</c:forEach>
+							<!-- <%
+							request.setAttribute("counter", 0);
+							%> -->
+						</div>
+					</div>
+					<div class="outputWrapper">
+						<span class="label">Programming languages :</span>
+						<div class="output">
+							<!-- Programming Language -->
+							<c:forEach items="${dataPersInfo.listProgrammingLanguage}"
+								var="programmingLanguage">
+								<span>${programmingLanguage.language}<br>
+								(${programmingLanguage.proficiency})</span>
+								<c:if test="${counter != 4}">
+									<!-- , -->
+									<br>
+									<br>
+								</c:if>
+								<!-- <%
+								int count = (int)request.getAttribute("counter");
+								count += 1;
+								request.setAttribute("counter", count);
+								%> -->
+							</c:forEach>
+							<!-- <%
+							request.setAttribute("counter", 0);
+							%> -->
+						</div>
+					</div>
+					<div class="outputWrapper">
+						<span class="label">Phone number :</span>
+						<span class="output">${dataPersInfo.phoneNumber}</span>
+
+						<span class="label">Email :</span>
+						<span class="output">${dataPersInfo.email}</span>
+
+						<span class="label">Line ID :</span>
+						<span class="output">${dataPersInfo.lineId}</span>
+					</div>
+				</div>
+				<div id="contentCodeExperience" class="content">
+					<h1 class="contentLabel">Coding Experiences</h1>
+					<c:forEach items="${dataPersInfo.codeExperiences}" var="codeExperience">
+						<div class="experience">
+							<span class="text bold">${codeExperience.title}</span><br>
+							<span class="text text-color-dim">
+								${codeExperience.fromMonth} - 
+								<c:if test="${codeExperience.toMonth != null}">
+									${codeExperience.toMonth}
+								</c:if>
+								<c:if test="${codeExperience.toMonth == null}">
+									Present
+								</c:if>
+							</span><br>
+							<c:if test="${codeExperience.link != null}">
+								<span class="text-13 text-color-dim">Want to see it in pictures? Check out this link:</span>
+								<a href="${codeExperience.link}" target="_blank" class="link">${codeExperience.link}</a>
+							</c:if>
+							<div class="outputWrapper">
+								<span class="label text-color-dim">Detail :</span>
+								<div class="output">
+									<ol>
+										<c:forEach items="${codeExperience.details}" var="detail">
+											<li class="text text-color-dim list-dash">${detail.detail}</li>
+										</c:forEach>
+									</ol>
+								</div>
+								<span class="label text-color-dim">Backend Key Technologies :</span>
+								<div class="output">
+									<ol>
+										<c:forEach items="${codeExperience.backendTechnologies}" var="tech">
+											<li class="text text-color-dim list-dash">${tech.technology}</li>
+										</c:forEach>
+									</ol>
+								</div>
+								<span class="label text-color-dim">Frontend Key Technologies :</span>
+								<div class="output">
+									<ol>
+										<c:forEach items="${codeExperience.frontendTechnologies}" var="tech">
+											<li class="text text-color-dim list-dash">${tech.technology}</li>
+										</c:forEach>
+									</ol>
+								</div>
+							</div>
+						</div>
 					</c:forEach>
-					<%
-					request.setAttribute("counter", 0);
-					%>
+				</div>
+				<div id="contentCertificate" class="content">
+					<h1 class="contentLabel">Certificates</h1>
+					<img class="certificateImage" src="/resources/pics/Certificate1.png">
+					<img class="certificateImage" src="/resources/pics/Certificate2.png">
 				</div>
 			</div>
 		</div>
-		<div id="il0rsq">
-			<div id="ievfsr">
-				<div id="ia5yky">Phone number  :</div>
-				<div id="ikobp9">Email  :</div>
-				<div id="iwgisy">Line ID  :</div>
-			</div>
-			<div id="inroda">
-				<div id="i40kx2">${dataPersInfo.phoneNumber}</div>
-				<div id="i8nard">${dataPersInfo.email}</div>
-				<div id="iatzbi">${dataPersInfo.lineId}</div>
-			</div>
-		</div>
-	</div>
-	<div id="iipl26">
-		<img id="i1t2dk" src="/resources/pics/Certificate1.png" /><img
-			id="i8tfk1" src="/resources/pics/Certificate2.png" />
 	</div>
 </body>
 </html>

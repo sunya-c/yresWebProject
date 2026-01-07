@@ -1,6 +1,8 @@
 package com.sunya.yresWebProject.models;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.springframework.web.util.HtmlUtils;
 
@@ -34,7 +36,10 @@ public class DataPersInfo
 	private ArrayList<ModelPersinfo.EnglishTest> listEnglishTest = new ArrayList<>();  // {TestName, score1, score2, score3, scoreTotal}
 	
 	
+	/* Coding experience */
+	private List<DataCodeExperience> codeExperiences = new LinkedList<>();
 	
+
 	public String getFirstname()
 	{
 		return firstname;
@@ -226,5 +231,147 @@ public class DataPersInfo
 			});
 		}
 		this.listEnglishTest = listEnglishTest;
+	}
+	
+	public List<DataCodeExperience> getCodeExperiences()
+	{
+		return codeExperiences;
+	}
+	public void setCodeExperiences(List<DataCodeExperience> codeExperiences)
+	{
+		this.codeExperiences = codeExperiences;
+	}
+
+
+	public class DataCodeExperience
+	{
+		private String expId;
+		private String title;
+		private String fromMonth;
+		private String toMonth;
+		private String link;
+		private List<DataCodeExperienceDetail> details;
+		private List<DataCodeExperienceTechnology> frontendTechnologies;
+		private List<DataCodeExperienceTechnology> backendTechnologies;
+		
+		public String getExpId()
+		{
+			return expId;
+		}
+		public void setExpId(String expId)
+		{
+			this.expId = expId;
+		}
+		public String getTitle()
+		{
+			return title;
+		}
+		public void setTitle(String title)
+		{
+			this.title = title;
+		}
+		public String getFromMonth()
+		{
+			return fromMonth;
+		}
+		public void setFromMonth(String fromMonth)
+		{
+			this.fromMonth = fromMonth;
+		}
+		public String getToMonth()
+		{
+			return toMonth;
+		}
+		public void setToMonth(String toMonth)
+		{
+			this.toMonth = toMonth;
+		}
+		public String getLink()
+		{
+			return link;
+		}
+		public void setLink(String link)
+		{
+			this.link = link;
+		}
+		public List<DataCodeExperienceDetail> getDetails()
+		{
+			return details;
+		}
+		public void setDetails(List<DataCodeExperienceDetail> details)
+		{
+			this.details = details;
+		}
+		public List<DataCodeExperienceTechnology> getFrontendTechnologies()
+		{
+			return frontendTechnologies;
+		}
+		public void setFrontendTechnologies(List<DataCodeExperienceTechnology> frontendTechnologies)
+		{
+			this.frontendTechnologies = frontendTechnologies;
+		}
+		public List<DataCodeExperienceTechnology> getBackendTechnologies()
+		{
+			return backendTechnologies;
+		}
+		public void setBackendTechnologies(List<DataCodeExperienceTechnology> backendTechnologies)
+		{
+			this.backendTechnologies = backendTechnologies;
+		}
+	}
+	
+	public class DataCodeExperienceDetail
+	{
+		private String detailId;
+		private String detail;
+		
+		public String getDetailId()
+		{
+			return detailId;
+		}
+		public void setDetailId(String detailId)
+		{
+			this.detailId = detailId;
+		}
+		public String getDetail()
+		{
+			return detail;
+		}
+		public void setDetail(String detail)
+		{
+			this.detail = detail;
+		}
+	}
+	
+	public class DataCodeExperienceTechnology
+	{
+		private String type;
+		private String techId;
+		private String technology;
+		
+		public String getType()
+		{
+			return type;
+		}
+		public void setType(String type)
+		{
+			this.type = type;
+		}
+		public String getTechId()
+		{
+			return techId;
+		}
+		public void setTechId(String techId)
+		{
+			this.techId = techId;
+		}
+		public String getTechnology()
+		{
+			return technology;
+		}
+		public void setTechnology(String technology)
+		{
+			this.technology = technology;
+		}
 	}
 }

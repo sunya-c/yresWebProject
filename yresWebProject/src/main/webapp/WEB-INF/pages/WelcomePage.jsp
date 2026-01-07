@@ -1,10 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Yres home</title>
 <link rel="icon" href="/resources/pics/Icon.png" type="image/png">
 <%
@@ -24,58 +25,83 @@ else
 <link
 	href="https://fonts.googleapis.com/css?family=Inter:regular,italic&display=swap"
 	rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=YouTube+Sans:wght@300..900&display=swap" rel="stylesheet">
+<script src="/resources/javascript/NavBar.js" type="module"></script>
 </head>
 
-<body id="icnopa">
-	<div id="iy0w9r">
-		<div id="i4j7hg">Important : </div>
-		<div id="i7vw6u">${sessionWeb.webNote1}</div>
-	</div>
-	<div id="ij1hw">
-		<form method="get" id="ikz7hf" action="/Home">
-			<button type="submit" id="ifffxi">Home</button>
-		</form>
-		<div id="iqzgf4">
-			<form method="post" action="/sLogout" id="i6yg8g">
-				<label id="iplzo3">Welcome <span id="iy2ne2">${userAuth.usernameEscaped}</span>,<br /></label><label
-					id="iv9349">You're logged in<br /></label>
-				<button type="submit" id="i8e392">Log out</button>
-				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-			</form>
-		</div>
-		<form method="get" action="/feedback" id="ixkbtg">
-			<button type="submit" id="i71s98">Give feedback / bug report</button>
-		</form>
-	</div>
-	<div id="i9w8ag">
-		<div id="i9lqo2">
-			<div id="iybpdh">What are you looking for?</div>
-		</div>
-		<form method="get" action="/personalInformation" id="i7xlhl">
-			<button type="submit" id="iitwbc">Personal Information</button>
-		</form>
-		<form method="get" action="/sDownloadResume" id="i3po9k">
-			<button type="submit" id="ib81jz">Download Resume</button>
-			<div id="idkq7h">
-				Last update: <span id="i9b28cj">${sessionWeb.resumeDate}</span>
+<body>
+	<div id="wrapper">
+		<div id="header">
+			<div>
+				<span class="bold">Important !!! : </span>
+				<span>${sessionWeb.webNote1}</span>
 			</div>
-		</form>
-		<form method="get" action="/webHistory" id="i7yq1c">
-			<button type="submit" id="i5fj2f">About this website</button>
-		</form>
-		<form method="get" action="/restApi" id="iwwaxj">
-			<button type="submit" id="idu7vx">Try REST api</button>
-		</form>
-		<div id="iiawfa">
-			Website's source code:  <a
-				href="https://github.com/sunya-c/yresWebProject" id="inqnnz">https://github.com/sunya-c/yresWebProject</a>
 		</div>
-		<form method="get" action="/accountInfo" id="ithezd">
-			<button type="submit" id="ifuk9u">Account info</button>
-		</form>
-		<form method="get" action="/adminPanel" id="i2vuok">
-			<button type="submit" id="ia0qth">Admin panel</button>
-		</form>
+		<div id="preventActionScreen"></div>
+		<div id="leftContent">
+			<label id="toggleMenu" for="toggleMenuCheckbox">
+				Menu
+				<input id="toggleMenuCheckbox" type="checkbox" style="display: none;">
+			</label>
+			<div id="contentLeftMenu">
+				<nav>
+					<ul>
+						<c:if test="${userAuth.authenticated == true}">
+							<li><span id="welcomeMessage">Welcome, ${userAuth.usernameEscaped}</span></li>
+						</c:if>
+						<c:if test="${userAuth.authenticated == false}">
+							<li><a id="welcomeMessage" href="/login">Login</a></li>
+						</c:if>
+						<li><a href="/home">Home</a></li>
+						<li><a href="/accountInfo">My account</a></li>
+						<li><a href="/feedback">Give feedback / bug report</a></li>
+						<c:if test="${userAuth.authenticated == true}">
+							<li>
+								<form id="logoutForm" action="/sLogout" method="post">
+									<button type="submit">Log out</button>
+									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+								</form>
+							</li>
+						</c:if>
+					</ul>
+					<c:if test="${userAuth.admin == true}">
+						<ul>
+							<li><span class="fontSize bold">Admin-only:</span></li>
+							<li><a href="/adminPanel">Admin Panel</a></li>
+						</ul>
+					</c:if>
+				</nav>
+			</div>
+		</div>
+		<div id="mainContent">
+			<div id="contentPane">
+				<div id="contentMenu" class="content">
+					<h1 class="contentLabel">What are you looking for?</h1>
+					<div class="gridContent">
+						<div class="linkWrapper">
+							<a href="/personalInformation"><span>Online Profile</span></a>
+						</div>
+						<div class="linkWrapper">
+							<a href="/sDownloadResume"><span>Download Resume (pdf)</span></a>
+							<div id="resumeLastUpdateWrapper">
+								<span class="text-color-dim">Last update:&nbsp;</span><span id="resumeLastUpdate">${sessionWeb.resumeDate}</span>
+							</div>
+						</div>
+						<div class="linkWrapper">
+							<a href="/webHistory"><span>About this website</span></a>
+						</div>
+						<div class="linkWrapper">
+							<a href="/restApi"><span>Try REST api</span></a>
+						</div>
+						<div class="linkWrapper">
+							<a href="https://github.com/sunya-c/yresWebProject" target="_blank">
+								<span>This Website's source code</span>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </body>
 </html>

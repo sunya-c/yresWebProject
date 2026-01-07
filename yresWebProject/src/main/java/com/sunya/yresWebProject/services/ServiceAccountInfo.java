@@ -68,7 +68,7 @@ public class ServiceAccountInfo
 									.path(Url.redirecting)
 									.queryParam("message", "Done!")
 									.queryParam("destinationPage", "Home")
-									.queryParam("destinationUrl", "/welcome")
+									.queryParam("destinationUrl", "/home")
 									.queryParam("code", codeRedi)
 									.encode().build().toUriString();
 	}

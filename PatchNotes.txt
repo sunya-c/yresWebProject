@@ -1,9 +1,9 @@
-Implemented Spring Security.
+Redesign UI.
 
 ----------
 
-Implemented Spring Security:
+Redesign UI:
 
--Turning all authentication-related functions into Spring Security.
+-Update backend to work correctly with the new UI.
 
--Read more detail in branch 'SpringSecurity'.
+-Add 'CodeExperience' section to PersonalInformation page.

@@ -1,3 +1,44 @@
+@import "/resources/css/PageDefaultCss.css";
+
+.content {
+	max-width: 80rem;
+}
+
+#contentPageDescription p:not(p:first-of-type) {
+	margin-top: 1.1em;
+}
+
+.webHistory {
+	display: grid;
+	grid-template-columns: 5fr 3fr 25fr;
+	width: 100%;
+}
+
+.webHistory:not(.webHistory:first-child) {
+	margin-top: 3rem;
+}
+
+.webHistory .arrow {
+	font-size: 1.5rem;
+}
+
+.webHistory .version span {
+	display: block;
+}
+
+.webHistory .description .title {
+	display: block;
+	font-size: 1.4rem;
+}
+
+.webHistory .description .body {
+	display: block;
+	margin-top: 0.5em;
+	padding-left: 0.8em;
+	font-size: 1.3rem;
+	color: var(--color-font-light-dim);
+}
+
 * {
 	box-sizing: border-box;
 }

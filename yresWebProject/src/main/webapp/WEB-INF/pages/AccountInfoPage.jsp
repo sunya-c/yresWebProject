@@ -1,9 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Yres - Account info</title>
 <link rel="icon" href="/resources/pics/Icon.png" type="image/png">
 <%
@@ -23,45 +27,90 @@ else
 <link
 	href="https://fonts.googleapis.com/css?family=Inter:regular,italic&display=swap"
 	rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=YouTube+Sans:wght@300..900&display=swap" rel="stylesheet">
+<script src="/resources/javascript/NavBar.js" type="module"></script>
 </head>
-<body id="i96scr-2-2">
-	<div id="ie2uro-2-2">
-		<form method="get" action="/Home" id="i9m7kf-2-2">
-			<button type="submit" id="irgx3m-2-2">Home</button>
-		</form>
-		<div id="iyfwz7-2-2">
-			<form method="post" action="/sLogout" id="ii3nc3-2-2">
-				<label id="i1l84x-2-2">Welcome <span id="ifv1ph-2-2">${userAuth.usernameEscaped}</span>,<br /></label><label
-					id="ilinpi-2-2">You're logged in<br /></label>
-				<button type="submit" id="iwuy1p-2-2">Log out</button>
-				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-			</form>
+<body>
+	<div id="wrapper">
+		<div id="header">
+			<div>
+				<span class="bold">Important !!! : </span>
+				<span>${sessionWeb.webNote1}</span>
+			</div>
 		</div>
-		<form method="get" action="/feedback" id="igi9b8-2-2">
-			<button type="submit" id="i0hicj-3-2">Give feedback / bug
-				report</button>
-		</form>
-	</div>
-	<div id="i1xzpl-2-2">
-		<div id="infkrv-2-2">Account Management</div>
-		<div id="i1uy3zf-2">This page allows you to edit your action
-			information.</div>
-		<div id="i00rjm-2-2">
-			<form method="post" action="/accountInfo/sChangePassword"
-				id="i0g592g-2">
-				<label id="iizqjb8-2">Change password :</label><br />
-				<input type="password" name="currentPassword"
-					placeholder="Current password" id="iahdn4h-2" /><br />
-				<label id="ikeo7ur-2">${dataAccountInfo.currentPasswordErr}</label><br />
-				<input type="password" name="password1"
-					placeholder="New password" id="ix1mpeu-2" /><br />
-				<label id="iga05mf-2">${dataAccountInfo.password1Err}</label><br />
-				<input type="password" name="password2"
-					placeholder="Confirm new password" id="i52w35i-2" /><br />
-				<label id="ik0b94j-2">${dataAccountInfo.password2Err}</label><br />
-				<button type="submit" id="igi5nyu-2">Confirm</button>
-				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-			</form>
+		<div id="preventActionScreen"></div>
+		<div id="leftContent">
+			<label id="toggleMenu" for="toggleMenuCheckbox">
+				Menu
+				<input id="toggleMenuCheckbox" type="checkbox" style="display: none;">
+			</label>
+			<div id="contentLeftMenu">
+				<nav>
+					<ul>
+						<c:if test="${userAuth.authenticated == true}">
+							<li><span id="welcomeMessage">Welcome, ${userAuth.usernameEscaped}</span></li>
+						</c:if>
+						<c:if test="${userAuth.authenticated == false}">
+							<li><a id="welcomeMessage" href="/login">Login</a></li>
+						</c:if>
+						<li><a href="/home">Home</a></li>
+						<li><a href="/accountInfo">My account</a></li>
+						<li><a href="/feedback">Give feedback / bug report</a></li>
+						<c:if test="${userAuth.authenticated == true}">
+							<li>
+								<form id="logoutForm" action="/sLogout" method="post">
+									<button type="submit">Log out</button>
+									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+								</form>
+							</li>
+						</c:if>
+					</ul>
+					<c:if test="${userAuth.admin == true}">
+						<ul>
+							<li><span class="fontSize bold">Admin-only:</span></li>
+							<li><a href="/adminPanel">Admin Panel</a></li>
+						</ul>
+					</c:if>
+				</nav>
+			</div>
+		</div>
+		<div id="mainContent">
+			<div id="contentPane">
+				<div id="contentPageDescription" class="content">
+					<h1 class="contentLabel">Account Management</h1>
+					<div class="text text-color-dim">This page allows you to edit your account information.</div>
+				</div>
+				<div id="contentChangePassword" class="content">
+					<h1 class="contentLabel">Change Password</h1>
+					<form method="post" action="/accountInfo/sChangePassword">
+						<div class="inputWrapper">
+							<label for="password">Current password</label>
+							<input id="password" type="password" name="currentPassword"
+								placeholder="Current password"/>
+							<span class="errMessage">${dataAccountInfo.currentPasswordErr}</span>
+						</div>
+						<div class="inputWrapper">
+							<label for="password1">New password</label>
+							<input id="password1" type="password" name="password1"
+								placeholder="New password"/>
+							<span class="errMessage">${dataAccountInfo.password1Err}</span>
+						</div>
+						<div class="inputWrapper">
+							<label for="password2">Confirm new password</label>
+							<input id="password2" type="password" name="password2"
+								placeholder="Repeat your new password"/>
+							<span class="errMessage">${dataAccountInfo.password2Err}</span>
+						</div>
+						<button type="submit" class="formButton">Confirm</button>
+						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+					</form>
+					<div class="errMessageWrapper">
+						<div>
+							<span class="errMessage mainErr"></span>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </body>
